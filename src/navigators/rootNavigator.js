@@ -1,10 +1,14 @@
 import { SwitchNavigator } from 'react-navigation';
-import Home from '../containers/Home';
+import Home from './tabHome';
+import Auth from './authStack';
 
 export default SwitchNavigator(
   {
     Home: {
       screen: Home,
+    },
+    Auth: {
+      screen: Auth,
     },
   },
   {
