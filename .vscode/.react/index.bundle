@@ -1429,6 +1429,8 @@ __d(function (global, _require, module, exports, _dependencyMap) {
 
   function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
+  _reactNative.YellowBox.ignoreWarnings(['Warning: isMounted(...) is deprecated', 'Module RCTImageLoader']);
+
   _reactNative.AppRegistry.registerComponent('unknown', function () {
     return _App2.default;
   });
@@ -61631,7 +61633,7 @@ __d(function (global, _require, module, exports, _dependencyMap) {
   }(_react2.PureComponent));
 
   exports.default = App;
-},493,[118,130,494,505,516,640,641],"src/App.js");
+},493,[118,130,494,505,516,652,653],"src/App.js");
 __d(function (global, _require, module, exports, _dependencyMap) {
   'use strict';
 
@@ -80257,15 +80259,22 @@ __d(function (global, _require, module, exports, _dependencyMap) {
 
   var _reactNavigation = _require(_dependencyMap[0], "react-navigation");
 
-  var _Home = _require(_dependencyMap[1], "../containers/Home");
+  var _tabHome = _require(_dependencyMap[1], "./tabHome");
 
-  var _Home2 = _interopRequireDefault(_Home);
+  var _tabHome2 = _interopRequireDefault(_tabHome);
+
+  var _authStack = _require(_dependencyMap[2], "./authStack");
+
+  var _authStack2 = _interopRequireDefault(_authStack);
 
   function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
   exports.default = (0, _reactNavigation.SwitchNavigator)({
     Home: {
-      screen: _Home2.default
+      screen: _tabHome2.default
+    },
+    Auth: {
+      screen: _authStack2.default
     }
   }, {
     initialRouteName: 'Home',
@@ -80273,7 +80282,352 @@ __d(function (global, _require, module, exports, _dependencyMap) {
     tabBarVisible: false,
     headerMode: 'none'
   });
-},625,[521,626],"src/navigators/rootNavigator.js");
+},625,[521,626,650],"src/navigators/rootNavigator.js");
+__d(function (global, _require, module, exports, _dependencyMap) {
+  Object.defineProperty(exports, "__esModule", {
+    value: true
+  });
+  var _jsxFileName = "/Users/ducnt/Documents/Unknown-project/src/navigators/tabHome.js";
+
+  var _react = _require(_dependencyMap[0], "react");
+
+  var _react2 = _interopRequireDefault(_react);
+
+  var _reactNative = _require(_dependencyMap[1], "react-native");
+
+  var _reactNavigation = _require(_dependencyMap[2], "react-navigation");
+
+  var _themes = _require(_dependencyMap[3], "../themes");
+
+  var _styles = _require(_dependencyMap[4], "./styles");
+
+  var _styles2 = _interopRequireDefault(_styles);
+
+  var _homeStack = _require(_dependencyMap[5], "./homeStack");
+
+  var _homeStack2 = _interopRequireDefault(_homeStack);
+
+  var _searchStack = _require(_dependencyMap[6], "./searchStack");
+
+  var _searchStack2 = _interopRequireDefault(_searchStack);
+
+  var _mapStack = _require(_dependencyMap[7], "./mapStack");
+
+  var _mapStack2 = _interopRequireDefault(_mapStack);
+
+  var _notificationsStack = _require(_dependencyMap[8], "./notificationsStack");
+
+  var _notificationsStack2 = _interopRequireDefault(_notificationsStack);
+
+  var _pinStack = _require(_dependencyMap[9], "./pinStack");
+
+  var _pinStack2 = _interopRequireDefault(_pinStack);
+
+  function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+  exports.default = (0, _reactNavigation.TabNavigator)({
+    Home: _homeStack2.default,
+    Search: _searchStack2.default,
+    Pointer: _mapStack2.default,
+    Notifications: _notificationsStack2.default,
+    Pin: _pinStack2.default
+  }, {
+    navigationOptions: function navigationOptions(_ref) {
+      var navigation = _ref.navigation;
+      return {
+        tabBarIcon: function tabBarIcon(_ref2) {
+          var focused = _ref2.focused;
+          var routeName = navigation.state.routeName;
+          var iconImage = void 0;
+          var iconBG = void 0;
+
+          if (routeName === 'Home') {
+            iconImage = focused ? _themes.Images.homeed : _themes.Images.home;
+          }
+
+          if (routeName === 'Search') {
+            iconImage = focused ? _themes.Images.searched : _themes.Images.search;
+          }
+
+          if (routeName === 'Pin') {
+            iconImage = focused ? _themes.Images.pined : _themes.Images.pin;
+          }
+
+          if (routeName === 'Notifications') {
+            iconImage = focused ? _themes.Images.notificationed : _themes.Images.notification;
+          } else if (routeName === 'Pointer') {
+            iconBG = _react2.default.createElement(
+              _reactNative.View,
+              {
+                style: _styles2.default.viewPointBG,
+                __source: {
+                  fileName: _jsxFileName,
+                  lineNumber: 40
+                }
+              },
+              _react2.default.createElement(
+                _reactNative.View,
+                {
+                  style: _styles2.default.viewPointBGsmall,
+                  __source: {
+                    fileName: _jsxFileName,
+                    lineNumber: 41
+                  }
+                },
+                _react2.default.createElement(_reactNative.Image, {
+                  source: _themes.Images.pointer,
+                  __source: {
+                    fileName: _jsxFileName,
+                    lineNumber: 42
+                  }
+                })
+              )
+            );
+          }
+
+          return _react2.default.createElement(
+            _reactNative.View,
+            {
+              style: _styles2.default.viewBGTabar,
+              __source: {
+                fileName: _jsxFileName,
+                lineNumber: 48
+              }
+            },
+            iconBG || null,
+            _react2.default.createElement(_reactNative.Image, {
+              source: iconImage,
+              style: {
+                height: 23,
+                width: 21.5
+              },
+              __source: {
+                fileName: _jsxFileName,
+                lineNumber: 50
+              }
+            })
+          );
+        }
+      };
+    },
+    tabBarOptions: {
+      showLabel: false,
+      style: {
+        backgroundColor: '#fff'
+      }
+    }
+  });
+},626,[118,12,521,627,639,640,642,644,646,648],"src/navigators/tabHome.js");
+__d(function (global, _require, module, exports, _dependencyMap) {
+  Object.defineProperty(exports, "__esModule", {
+    value: true
+  });
+  exports.Colors = exports.Images = undefined;
+
+  var _Images = _require(_dependencyMap[0], "./Images");
+
+  var _Images2 = _interopRequireDefault(_Images);
+
+  var _Colors = _require(_dependencyMap[1], "./Colors");
+
+  var _Colors2 = _interopRequireDefault(_Colors);
+
+  function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+  exports.Images = _Images2.default;
+  exports.Colors = _Colors2.default;
+},627,[628,638],"src/themes/index.js");
+__d(function (global, _require, module, exports, _dependencyMap) {
+  Object.defineProperty(exports, "__esModule", {
+    value: true
+  });
+  var images = {
+    home: _require(_dependencyMap[0], '../images/icon/home.png'),
+    homeed: _require(_dependencyMap[1], '../images/icon/homeed.png'),
+    search: _require(_dependencyMap[2], '../images/icon/search.png'),
+    searched: _require(_dependencyMap[3], '../images/icon/searched.png'),
+    notification: _require(_dependencyMap[4], '../images/icon/notification.png'),
+    notificationed: _require(_dependencyMap[5], '../images/icon/notificationed.png'),
+    pointer: _require(_dependencyMap[6], '../images/icon/pointer.png'),
+    pin: _require(_dependencyMap[7], '../images/icon/pin.png'),
+    pined: _require(_dependencyMap[8], '../images/icon/pined.png')
+  };
+  exports.default = images;
+},628,[629,630,631,632,633,634,635,636,637],"src/themes/Images.js");
+__d(function (global, _require, module, exports, _dependencyMap) {
+  module.exports = _require(_dependencyMap[0], "react-native/Libraries/Image/AssetRegistry").registerAsset({
+    "__packager_asset": true,
+    "httpServerLocation": "/assets/src/images/icon",
+    "width": 20,
+    "height": 20,
+    "scales": [1, 2, 3],
+    "hash": "5d6e8871a610e3840fccbe42498c1f84",
+    "name": "home",
+    "type": "png"
+  });
+},629,[326],"src/images/icon/home.png");
+__d(function (global, _require, module, exports, _dependencyMap) {
+  module.exports = _require(_dependencyMap[0], "react-native/Libraries/Image/AssetRegistry").registerAsset({
+    "__packager_asset": true,
+    "httpServerLocation": "/assets/src/images/icon",
+    "width": 20,
+    "height": 20,
+    "scales": [1, 2, 3],
+    "hash": "f75c7fb8666fffe5e8d8b2d7e0fcf1b4",
+    "name": "homeed",
+    "type": "png"
+  });
+},630,[326],"src/images/icon/homeed.png");
+__d(function (global, _require, module, exports, _dependencyMap) {
+  module.exports = _require(_dependencyMap[0], "react-native/Libraries/Image/AssetRegistry").registerAsset({
+    "__packager_asset": true,
+    "httpServerLocation": "/assets/src/images/icon",
+    "width": 21,
+    "height": 21,
+    "scales": [1, 2, 3],
+    "hash": "eeb2e066bfe213c46eac6e95ebf72c26",
+    "name": "search",
+    "type": "png"
+  });
+},631,[326],"src/images/icon/search.png");
+__d(function (global, _require, module, exports, _dependencyMap) {
+  module.exports = _require(_dependencyMap[0], "react-native/Libraries/Image/AssetRegistry").registerAsset({
+    "__packager_asset": true,
+    "httpServerLocation": "/assets/src/images/icon",
+    "width": 21,
+    "height": 21,
+    "scales": [1, 2, 3],
+    "hash": "62f5095c16c4eca9224f62728486def2",
+    "name": "searched",
+    "type": "png"
+  });
+},632,[326],"src/images/icon/searched.png");
+__d(function (global, _require, module, exports, _dependencyMap) {
+  module.exports = _require(_dependencyMap[0], "react-native/Libraries/Image/AssetRegistry").registerAsset({
+    "__packager_asset": true,
+    "httpServerLocation": "/assets/src/images/icon",
+    "width": 16,
+    "height": 20,
+    "scales": [1, 2, 3],
+    "hash": "d03c19696c460414b32630d78c587983",
+    "name": "notification",
+    "type": "png"
+  });
+},633,[326],"src/images/icon/notification.png");
+__d(function (global, _require, module, exports, _dependencyMap) {
+  module.exports = _require(_dependencyMap[0], "react-native/Libraries/Image/AssetRegistry").registerAsset({
+    "__packager_asset": true,
+    "httpServerLocation": "/assets/src/images/icon",
+    "width": 16,
+    "height": 20,
+    "scales": [1, 2, 3],
+    "hash": "f682abcba4c6d4bdc8f09659613bebff",
+    "name": "notificationed",
+    "type": "png"
+  });
+},634,[326],"src/images/icon/notificationed.png");
+__d(function (global, _require, module, exports, _dependencyMap) {
+  module.exports = _require(_dependencyMap[0], "react-native/Libraries/Image/AssetRegistry").registerAsset({
+    "__packager_asset": true,
+    "httpServerLocation": "/assets/src/images/icon",
+    "width": 16,
+    "height": 20,
+    "scales": [1, 2, 3],
+    "hash": "18915419ddd6e10ceeea3fc84948512c",
+    "name": "pointer",
+    "type": "png"
+  });
+},635,[326],"src/images/icon/pointer.png");
+__d(function (global, _require, module, exports, _dependencyMap) {
+  module.exports = _require(_dependencyMap[0], "react-native/Libraries/Image/AssetRegistry").registerAsset({
+    "__packager_asset": true,
+    "httpServerLocation": "/assets/src/images/icon",
+    "width": 21,
+    "height": 21,
+    "scales": [1, 2, 3],
+    "hash": "0bd7a58e2aa9ebe6d1681dc600140c0a",
+    "name": "pin",
+    "type": "png"
+  });
+},636,[326],"src/images/icon/pin.png");
+__d(function (global, _require, module, exports, _dependencyMap) {
+  module.exports = _require(_dependencyMap[0], "react-native/Libraries/Image/AssetRegistry").registerAsset({
+    "__packager_asset": true,
+    "httpServerLocation": "/assets/src/images/icon",
+    "width": 21,
+    "height": 21,
+    "scales": [1, 2, 3],
+    "hash": "b12eb49720171f02cdd29eb6bd8abe7f",
+    "name": "pined",
+    "type": "png"
+  });
+},637,[326],"src/images/icon/pined.png");
+__d(function (global, _require, module, exports, _dependencyMap) {
+  Object.defineProperty(exports, "__esModule", {
+    value: true
+  });
+  var colors = {
+    default: 'rgba(66,183,42,1)',
+    defaultOpacity: 'rgba(66,183,42,0.75)'
+  };
+  exports.default = colors;
+},638,[],"src/themes/Colors.js");
+__d(function (global, _require, module, exports, _dependencyMap) {
+  Object.defineProperty(exports, "__esModule", {
+    value: true
+  });
+
+  var _reactNative = _require(_dependencyMap[0], "react-native");
+
+  var _themes = _require(_dependencyMap[1], "../themes");
+
+  exports.default = _reactNative.StyleSheet.create({
+    viewBGTabar: {
+      alignItems: 'center',
+      justifyContent: 'center'
+    },
+    viewPointBGsmall: {
+      width: 56.5,
+      height: 55,
+      borderRadius: 30,
+      backgroundColor: _themes.Colors.default,
+      position: 'absolute',
+      alignItems: 'center',
+      justifyContent: 'center'
+    },
+    viewPointBG: {
+      width: 75,
+      height: 75,
+      borderRadius: 45,
+      backgroundColor: _themes.Colors.defaultOpacity,
+      position: 'absolute',
+      alignItems: 'center',
+      justifyContent: 'center'
+    }
+  });
+},639,[12,627],"src/navigators/styles.js");
+__d(function (global, _require, module, exports, _dependencyMap) {
+  Object.defineProperty(exports, "__esModule", {
+    value: true
+  });
+
+  var _reactNavigation = _require(_dependencyMap[0], "react-navigation");
+
+  var _Home = _require(_dependencyMap[1], "../containers/Home");
+
+  var _Home2 = _interopRequireDefault(_Home);
+
+  function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+  exports.default = (0, _reactNavigation.createStackNavigator)({
+    Home: {
+      screen: _Home2.default
+    }
+  }, {
+    initialRouteName: 'Home',
+    headerMode: 'none'
+  });
+},640,[521,641],"src/navigators/homeStack.js");
 __d(function (global, _require, module, exports, _dependencyMap) {
   Object.defineProperty(exports, "__esModule", {
     value: true
@@ -80292,10 +80646,6 @@ __d(function (global, _require, module, exports, _dependencyMap) {
   var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
   var _reactNative = _require(_dependencyMap[2], "react-native");
-
-  var _reactNativeMaps = _require(_dependencyMap[3], "react-native-maps");
-
-  var _reactNativeMaps2 = _interopRequireDefault(_reactNativeMaps);
 
   function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -80347,29 +80697,21 @@ __d(function (global, _require, module, exports, _dependencyMap) {
         return _react3.default.createElement(
           _reactNative.View,
           {
-            style: {
-              flex: 1
-            },
             __source: {
               fileName: _jsxFileName,
-              lineNumber: 9
+              lineNumber: 8
             }
           },
-          _react3.default.createElement(_reactNativeMaps2.default, {
-            style: {
-              flex: 1
+          _react3.default.createElement(
+            _reactNative.Text,
+            {
+              __source: {
+                fileName: _jsxFileName,
+                lineNumber: 9
+              }
             },
-            region: {
-              latitude: 37.78825,
-              longitude: -122.4324,
-              latitudeDelta: 0.0922,
-              longitudeDelta: 0.0421
-            },
-            __source: {
-              fileName: _jsxFileName,
-              lineNumber: 10
-            }
-          })
+            "Home"
+          )
         );
       }
     }]);
@@ -80378,101 +80720,31 @@ __d(function (global, _require, module, exports, _dependencyMap) {
   }(_react2.PureComponent));
 
   exports.default = Home;
-},626,[118,130,12,627],"src/containers/Home/index.js");
+},641,[118,130,12],"src/containers/Home/index.js");
 __d(function (global, _require, module, exports, _dependencyMap) {
   Object.defineProperty(exports, "__esModule", {
     value: true
   });
-  exports.OverlayAnimated = exports.MarkerAnimated = exports.PROVIDER_DEFAULT = exports.PROVIDER_GOOGLE = exports.ProviderPropType = exports.MAP_TYPES = exports.Animated = exports.Overlay = exports.Marker = exports.AnimatedRegion = exports.Callout = exports.LocalTile = exports.UrlTile = exports.Circle = exports.Polygon = exports.Polyline = undefined;
 
-  var _MapPolyline = _require(_dependencyMap[0], "./lib/components/MapPolyline.js");
+  var _reactNavigation = _require(_dependencyMap[0], "react-navigation");
 
-  Object.defineProperty(exports, "Polyline", {
-    enumerable: true,
-    get: function get() {
-      return _interopRequireDefault(_MapPolyline).default;
-    }
-  });
+  var _Search = _require(_dependencyMap[1], "../containers/Search");
 
-  var _MapPolygon = _require(_dependencyMap[1], "./lib/components/MapPolygon.js");
-
-  Object.defineProperty(exports, "Polygon", {
-    enumerable: true,
-    get: function get() {
-      return _interopRequireDefault(_MapPolygon).default;
-    }
-  });
-
-  var _MapCircle = _require(_dependencyMap[2], "./lib/components/MapCircle.js");
-
-  Object.defineProperty(exports, "Circle", {
-    enumerable: true,
-    get: function get() {
-      return _interopRequireDefault(_MapCircle).default;
-    }
-  });
-
-  var _MapUrlTile = _require(_dependencyMap[3], "./lib/components/MapUrlTile.js");
-
-  Object.defineProperty(exports, "UrlTile", {
-    enumerable: true,
-    get: function get() {
-      return _interopRequireDefault(_MapUrlTile).default;
-    }
-  });
-
-  var _MapLocalTile = _require(_dependencyMap[4], "./lib/components/MapLocalTile.js");
-
-  Object.defineProperty(exports, "LocalTile", {
-    enumerable: true,
-    get: function get() {
-      return _interopRequireDefault(_MapLocalTile).default;
-    }
-  });
-
-  var _MapCallout = _require(_dependencyMap[5], "./lib/components/MapCallout.js");
-
-  Object.defineProperty(exports, "Callout", {
-    enumerable: true,
-    get: function get() {
-      return _interopRequireDefault(_MapCallout).default;
-    }
-  });
-
-  var _AnimatedRegion = _require(_dependencyMap[6], "./lib/components/AnimatedRegion.js");
-
-  Object.defineProperty(exports, "AnimatedRegion", {
-    enumerable: true,
-    get: function get() {
-      return _interopRequireDefault(_AnimatedRegion).default;
-    }
-  });
-
-  var _MapView = _require(_dependencyMap[7], "./lib/components/MapView");
-
-  var _MapView2 = _interopRequireDefault(_MapView);
-
-  var _MapMarker = _require(_dependencyMap[8], "./lib/components/MapMarker.js");
-
-  var _MapMarker2 = _interopRequireDefault(_MapMarker);
-
-  var _MapOverlay = _require(_dependencyMap[9], "./lib/components/MapOverlay.js");
-
-  var _MapOverlay2 = _interopRequireDefault(_MapOverlay);
+  var _Search2 = _interopRequireDefault(_Search);
 
   function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
-  exports.Marker = _MapMarker2.default;
-  exports.Overlay = _MapOverlay2.default;
-  exports.Animated = _MapView.Animated;
-  exports.MAP_TYPES = _MapView.MAP_TYPES;
-  exports.ProviderPropType = _MapView.ProviderPropType;
-  var PROVIDER_GOOGLE = exports.PROVIDER_GOOGLE = _MapView2.default.PROVIDER_GOOGLE;
-  var PROVIDER_DEFAULT = exports.PROVIDER_DEFAULT = _MapView2.default.PROVIDER_DEFAULT;
-  var MarkerAnimated = exports.MarkerAnimated = _MapMarker2.default.Animated;
-  var OverlayAnimated = exports.OverlayAnimated = _MapOverlay2.default.Animated;
-  exports.default = _MapView2.default;
-},627,[628,631,632,633,634,635,636,637,638,639],"node_modules/react-native-maps/index.js");
+  exports.default = (0, _reactNavigation.StackNavigator)({
+    Search: {
+      screen: _Search2.default
+    }
+  }, {
+    initialRouteName: 'Search',
+    mode: 'card',
+    tabBarVisible: false,
+    headerMode: 'none'
+  });
+},642,[521,643],"src/navigators/searchStack.js");
 __d(function (global, _require, module, exports, _dependencyMap) {
   Object.defineProperty(exports, "__esModule", {
     value: true
@@ -80482,25 +80754,15 @@ __d(function (global, _require, module, exports, _dependencyMap) {
 
   var _react3 = _interopRequireDefault(_react2);
 
-  var _index = _require(_dependencyMap[1], "./../../../react-transform-hmr/lib/index.js");
+  var _index = _require(_dependencyMap[1], "./../../../node_modules/react-transform-hmr/lib/index.js");
 
   var _index2 = _interopRequireDefault(_index);
 
-  var _jsxFileName = "/Users/ducnt/Documents/Unknown-project/node_modules/react-native-maps/lib/components/MapPolyline.js";
+  var _jsxFileName = "/Users/ducnt/Documents/Unknown-project/src/containers/Search/index.js";
 
   var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
-  var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
-
-  var _propTypes = _require(_dependencyMap[2], "prop-types");
-
-  var _propTypes2 = _interopRequireDefault(_propTypes);
-
-  var _reactNative = _require(_dependencyMap[3], "react-native");
-
-  var _decorateMapComponent = _require(_dependencyMap[4], "./decorateMapComponent");
-
-  var _decorateMapComponent2 = _interopRequireDefault(_decorateMapComponent);
+  var _reactNative = _require(_dependencyMap[2], "react-native");
 
   function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -80511,13 +80773,13 @@ __d(function (global, _require, module, exports, _dependencyMap) {
   function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
 
   var _components = {
-    MapPolyline: {
-      displayName: "MapPolyline"
+    Search: {
+      displayName: "Search"
     }
   };
 
-  var _reactTransformHmrLibIndexJs2 = (0, _index2.default)({
-    filename: "/Users/ducnt/Documents/Unknown-project/node_modules/react-native-maps/lib/components/MapPolyline.js",
+  var _node_modulesReactTransformHmrLibIndexJs2 = (0, _index2.default)({
+    filename: "/Users/ducnt/Documents/Unknown-project/src/containers/Search/index.js",
     components: _components,
     locals: [module],
     imports: [_react3.default]
@@ -80525,1758 +80787,80 @@ __d(function (global, _require, module, exports, _dependencyMap) {
 
   function _wrapComponent(id) {
     return function (Component) {
-      return _reactTransformHmrLibIndexJs2(Component, id);
+      return _node_modulesReactTransformHmrLibIndexJs2(Component, id);
     };
   }
 
-  var viewPropTypes = _reactNative.ViewPropTypes || _reactNative.View.propTypes;
+  var Search = _wrapComponent("Search")(function (_PureComponent) {
+    _inherits(Search, _PureComponent);
 
-  var propTypes = _extends({}, viewPropTypes, {
-    coordinates: _propTypes2.default.arrayOf(_propTypes2.default.shape({
-      latitude: _propTypes2.default.number.isRequired,
-      longitude: _propTypes2.default.number.isRequired
-    })),
-    onPress: _propTypes2.default.func,
-    tappable: _propTypes2.default.bool,
-    fillColor: _propTypes2.default.string,
-    strokeWidth: _propTypes2.default.number,
-    strokeColor: _propTypes2.default.string,
-    strokeColors: _propTypes2.default.arrayOf(_propTypes2.default.string),
-    zIndex: _propTypes2.default.number,
-    lineCap: _propTypes2.default.oneOf(['butt', 'round', 'square']),
-    lineJoin: _propTypes2.default.oneOf(['miter', 'round', 'bevel']),
-    miterLimit: _propTypes2.default.number,
-    geodesic: _propTypes2.default.bool,
-    lineDashPhase: _propTypes2.default.number,
-    lineDashPattern: _propTypes2.default.arrayOf(_propTypes2.default.number)
-  });
+    function Search() {
+      var _ref;
 
-  var defaultProps = {
-    strokeColor: '#000',
-    strokeWidth: 1,
-    lineJoin: 'round',
-    lineCap: 'round'
-  };
+      var _temp, _this, _ret;
 
-  var MapPolyline = _wrapComponent("MapPolyline")(function (_React$Component) {
-    _inherits(MapPolyline, _React$Component);
+      _classCallCheck(this, Search);
 
-    function MapPolyline() {
-      _classCallCheck(this, MapPolyline);
+      for (var _len = arguments.length, args = Array(_len), _key = 0; _key < _len; _key++) {
+        args[_key] = arguments[_key];
+      }
 
-      return _possibleConstructorReturn(this, (MapPolyline.__proto__ || Object.getPrototypeOf(MapPolyline)).apply(this, arguments));
+      return _ret = (_temp = (_this = _possibleConstructorReturn(this, (_ref = Search.__proto__ || Object.getPrototypeOf(Search)).call.apply(_ref, [this].concat(args))), _this), _this.state = {}, _temp), _possibleConstructorReturn(_this, _ret);
     }
 
-    _createClass(MapPolyline, [{
-      key: "setNativeProps",
-      value: function setNativeProps(props) {
-        this.polyline.setNativeProps(props);
-      }
-    }, {
+    _createClass(Search, [{
       key: "render",
       value: function render() {
-        var _this2 = this;
-
-        var AIRMapPolyline = this.getAirComponent();
-        return _react3.default.createElement(AIRMapPolyline, _extends({}, this.props, {
-          ref: function ref(_ref) {
-            _this2.polyline = _ref;
-          },
-          __source: {
-            fileName: _jsxFileName,
-            lineNumber: 157
-          }
-        }));
-      }
-    }]);
-
-    return MapPolyline;
-  }(_react3.default.Component));
-
-  MapPolyline.propTypes = propTypes;
-  MapPolyline.defaultProps = defaultProps;
-  exports.default = (0, _decorateMapComponent2.default)(MapPolyline, {
-    componentType: 'Polyline',
-    providers: {
-      google: {
-        ios: _decorateMapComponent.SUPPORTED,
-        android: _decorateMapComponent.USES_DEFAULT_IMPLEMENTATION
-      }
-    }
-  });
-},628,[118,130,294,12,629],"node_modules/react-native-maps/lib/components/MapPolyline.js");
-__d(function (global, _require, module, exports, _dependencyMap) {
-  Object.defineProperty(exports, "__esModule", {
-    value: true
-  });
-  exports.googleMapIsInstalled = exports.createNotSupportedComponent = exports.contextTypes = exports.NOT_SUPPORTED = exports.USES_DEFAULT_IMPLEMENTATION = exports.SUPPORTED = undefined;
-  exports.getAirMapName = getAirMapName;
-  exports.default = decorateMapComponent;
-
-  var _propTypes = _require(_dependencyMap[0], "prop-types");
-
-  var _propTypes2 = _interopRequireDefault(_propTypes);
-
-  var _reactNative = _require(_dependencyMap[1], "react-native");
-
-  var _ProviderConstants = _require(_dependencyMap[2], "./ProviderConstants");
-
-  function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
-  var SUPPORTED = exports.SUPPORTED = 'SUPPORTED';
-  var USES_DEFAULT_IMPLEMENTATION = exports.USES_DEFAULT_IMPLEMENTATION = 'USES_DEFAULT_IMPLEMENTATION';
-  var NOT_SUPPORTED = exports.NOT_SUPPORTED = 'NOT_SUPPORTED';
-
-  function getAirMapName(provider) {
-    if (_reactNative.Platform.OS === 'android') return 'AIRMap';
-    if (provider === _ProviderConstants.PROVIDER_GOOGLE) return 'AIRGoogleMap';
-    return 'AIRMap';
-  }
-
-  function getAirComponentName(provider, component) {
-    return "" + getAirMapName(provider) + component;
-  }
-
-  var contextTypes = exports.contextTypes = {
-    provider: _propTypes2.default.string
-  };
-
-  var createNotSupportedComponent = exports.createNotSupportedComponent = function createNotSupportedComponent(message) {
-    return function () {
-      console.error(message);
-      return null;
-    };
-  };
-
-  var googleMapIsInstalled = exports.googleMapIsInstalled = !!_reactNative.NativeModules.UIManager[getAirMapName(_ProviderConstants.PROVIDER_GOOGLE)];
-
-  function decorateMapComponent(Component, _ref) {
-    var componentType = _ref.componentType,
-        providers = _ref.providers;
-    var components = {};
-
-    var getDefaultComponent = function getDefaultComponent() {
-      return (0, _reactNative.requireNativeComponent)(getAirComponentName(null, componentType), Component);
-    };
-
-    Component.contextTypes = contextTypes;
-
-    Component.prototype.getAirComponent = function getAirComponent() {
-      var provider = this.context.provider || _ProviderConstants.PROVIDER_DEFAULT;
-      if (components[provider]) return components[provider];
-
-      if (provider === _ProviderConstants.PROVIDER_DEFAULT) {
-        components[_ProviderConstants.PROVIDER_DEFAULT] = getDefaultComponent();
-        return components[_ProviderConstants.PROVIDER_DEFAULT];
-      }
-
-      var providerInfo = providers[provider];
-      var platformSupport = providerInfo[_reactNative.Platform.OS];
-      var componentName = getAirComponentName(provider, componentType);
-
-      if (platformSupport === NOT_SUPPORTED) {
-        components[provider] = createNotSupportedComponent("react-native-maps: " + componentName + " is not supported on " + _reactNative.Platform.OS);
-      } else if (platformSupport === SUPPORTED) {
-        if (provider !== _ProviderConstants.PROVIDER_GOOGLE || _reactNative.Platform.OS === 'ios' && googleMapIsInstalled) {
-          components[provider] = (0, _reactNative.requireNativeComponent)(componentName, Component);
-        }
-      } else {
-        if (!components[_ProviderConstants.PROVIDER_DEFAULT]) components[_ProviderConstants.PROVIDER_DEFAULT] = getDefaultComponent();
-        components[provider] = components[_ProviderConstants.PROVIDER_DEFAULT];
-      }
-
-      return components[provider];
-    };
-
-    Component.prototype.getUIManagerCommand = function getUIManagerCommand(name) {
-      return _reactNative.NativeModules.UIManager[getAirComponentName(this.context.provider, componentType)].Commands[name];
-    };
-
-    Component.prototype.getMapManagerCommand = function getMapManagerCommand(name) {
-      var airComponentName = getAirComponentName(this.context.provider, componentType) + "Manager";
-      return _reactNative.NativeModules[airComponentName][name];
-    };
-
-    return Component;
-  }
-},629,[294,12,630],"node_modules/react-native-maps/lib/components/decorateMapComponent.js");
-__d(function (global, _require, module, exports, _dependencyMap) {
-  Object.defineProperty(exports, "__esModule", {
-    value: true
-  });
-  var PROVIDER_DEFAULT = exports.PROVIDER_DEFAULT = null;
-  var PROVIDER_GOOGLE = exports.PROVIDER_GOOGLE = 'google';
-},630,[],"node_modules/react-native-maps/lib/components/ProviderConstants.js");
-__d(function (global, _require, module, exports, _dependencyMap) {
-  Object.defineProperty(exports, "__esModule", {
-    value: true
-  });
-
-  var _react2 = _require(_dependencyMap[0], "react");
-
-  var _react3 = _interopRequireDefault(_react2);
-
-  var _index = _require(_dependencyMap[1], "./../../../react-transform-hmr/lib/index.js");
-
-  var _index2 = _interopRequireDefault(_index);
-
-  var _jsxFileName = "/Users/ducnt/Documents/Unknown-project/node_modules/react-native-maps/lib/components/MapPolygon.js";
-
-  var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
-
-  var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
-
-  var _propTypes = _require(_dependencyMap[2], "prop-types");
-
-  var _propTypes2 = _interopRequireDefault(_propTypes);
-
-  var _reactNative = _require(_dependencyMap[3], "react-native");
-
-  var _decorateMapComponent = _require(_dependencyMap[4], "./decorateMapComponent");
-
-  var _decorateMapComponent2 = _interopRequireDefault(_decorateMapComponent);
-
-  function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
-  function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
-
-  function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
-
-  function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
-
-  var _components = {
-    MapPolygon: {
-      displayName: "MapPolygon"
-    }
-  };
-
-  var _reactTransformHmrLibIndexJs2 = (0, _index2.default)({
-    filename: "/Users/ducnt/Documents/Unknown-project/node_modules/react-native-maps/lib/components/MapPolygon.js",
-    components: _components,
-    locals: [module],
-    imports: [_react3.default]
-  });
-
-  function _wrapComponent(id) {
-    return function (Component) {
-      return _reactTransformHmrLibIndexJs2(Component, id);
-    };
-  }
-
-  var viewPropTypes = _reactNative.ViewPropTypes || _reactNative.View.propTypes;
-
-  var propTypes = _extends({}, viewPropTypes, {
-    coordinates: _propTypes2.default.arrayOf(_propTypes2.default.shape({
-      latitude: _propTypes2.default.number.isRequired,
-      longitude: _propTypes2.default.number.isRequired
-    })),
-    holes: _propTypes2.default.arrayOf(_propTypes2.default.arrayOf(_propTypes2.default.shape({
-      latitude: _propTypes2.default.number.isRequired,
-      longitude: _propTypes2.default.number.isRequired
-    }))),
-    onPress: _propTypes2.default.func,
-    tappable: _propTypes2.default.bool,
-    strokeWidth: _propTypes2.default.number,
-    strokeColor: _propTypes2.default.string,
-    fillColor: _propTypes2.default.string,
-    zIndex: _propTypes2.default.number,
-    lineCap: _propTypes2.default.oneOf(['butt', 'round', 'square']),
-    lineJoin: _propTypes2.default.oneOf(['miter', 'round', 'bevel']),
-    miterLimit: _propTypes2.default.number,
-    geodesic: _propTypes2.default.bool,
-    lineDashPhase: _propTypes2.default.number,
-    lineDashPattern: _propTypes2.default.arrayOf(_propTypes2.default.number)
-  });
-
-  var defaultProps = {
-    strokeColor: '#000',
-    strokeWidth: 1
-  };
-
-  var MapPolygon = _wrapComponent("MapPolygon")(function (_React$Component) {
-    _inherits(MapPolygon, _React$Component);
-
-    function MapPolygon() {
-      _classCallCheck(this, MapPolygon);
-
-      return _possibleConstructorReturn(this, (MapPolygon.__proto__ || Object.getPrototypeOf(MapPolygon)).apply(this, arguments));
-    }
-
-    _createClass(MapPolygon, [{
-      key: "setNativeProps",
-      value: function setNativeProps(props) {
-        this.polygon.setNativeProps(props);
-      }
-    }, {
-      key: "render",
-      value: function render() {
-        var _this2 = this;
-
-        var AIRMapPolygon = this.getAirComponent();
-        return _react3.default.createElement(AIRMapPolygon, _extends({}, this.props, {
-          ref: function ref(_ref) {
-            _this2.polygon = _ref;
-          },
-          __source: {
-            fileName: _jsxFileName,
-            lineNumber: 161
-          }
-        }));
-      }
-    }]);
-
-    return MapPolygon;
-  }(_react3.default.Component));
-
-  MapPolygon.propTypes = propTypes;
-  MapPolygon.defaultProps = defaultProps;
-  exports.default = (0, _decorateMapComponent2.default)(MapPolygon, {
-    componentType: 'Polygon',
-    providers: {
-      google: {
-        ios: _decorateMapComponent.SUPPORTED,
-        android: _decorateMapComponent.USES_DEFAULT_IMPLEMENTATION
-      }
-    }
-  });
-},631,[118,130,294,12,629],"node_modules/react-native-maps/lib/components/MapPolygon.js");
-__d(function (global, _require, module, exports, _dependencyMap) {
-  Object.defineProperty(exports, "__esModule", {
-    value: true
-  });
-
-  var _react2 = _require(_dependencyMap[0], "react");
-
-  var _react3 = _interopRequireDefault(_react2);
-
-  var _index = _require(_dependencyMap[1], "./../../../react-transform-hmr/lib/index.js");
-
-  var _index2 = _interopRequireDefault(_index);
-
-  var _jsxFileName = "/Users/ducnt/Documents/Unknown-project/node_modules/react-native-maps/lib/components/MapCircle.js";
-
-  var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
-
-  var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
-
-  var _propTypes = _require(_dependencyMap[2], "prop-types");
-
-  var _propTypes2 = _interopRequireDefault(_propTypes);
-
-  var _reactNative = _require(_dependencyMap[3], "react-native");
-
-  var _decorateMapComponent = _require(_dependencyMap[4], "./decorateMapComponent");
-
-  var _decorateMapComponent2 = _interopRequireDefault(_decorateMapComponent);
-
-  function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
-  function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
-
-  function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
-
-  function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
-
-  var _components = {
-    MapCircle: {
-      displayName: "MapCircle"
-    }
-  };
-
-  var _reactTransformHmrLibIndexJs2 = (0, _index2.default)({
-    filename: "/Users/ducnt/Documents/Unknown-project/node_modules/react-native-maps/lib/components/MapCircle.js",
-    components: _components,
-    locals: [module],
-    imports: [_react3.default]
-  });
-
-  function _wrapComponent(id) {
-    return function (Component) {
-      return _reactTransformHmrLibIndexJs2(Component, id);
-    };
-  }
-
-  var viewPropTypes = _reactNative.ViewPropTypes || _reactNative.View.propTypes;
-
-  var propTypes = _extends({}, viewPropTypes, {
-    center: _propTypes2.default.shape({
-      latitude: _propTypes2.default.number.isRequired,
-      longitude: _propTypes2.default.number.isRequired
-    }).isRequired,
-    radius: _propTypes2.default.number.isRequired,
-    onPress: _propTypes2.default.func,
-    strokeWidth: _propTypes2.default.number,
-    strokeColor: _propTypes2.default.string,
-    fillColor: _propTypes2.default.string,
-    zIndex: _propTypes2.default.number,
-    lineCap: _propTypes2.default.oneOf(['butt', 'round', 'square']),
-    lineJoin: _propTypes2.default.oneOf(['miter', 'round', 'bevel']),
-    miterLimit: _propTypes2.default.number,
-    lineDashPhase: _propTypes2.default.number,
-    lineDashPattern: _propTypes2.default.arrayOf(_propTypes2.default.number)
-  });
-
-  var defaultProps = {
-    strokeColor: '#000',
-    strokeWidth: 1
-  };
-
-  var MapCircle = _wrapComponent("MapCircle")(function (_React$Component) {
-    _inherits(MapCircle, _React$Component);
-
-    function MapCircle() {
-      _classCallCheck(this, MapCircle);
-
-      return _possibleConstructorReturn(this, (MapCircle.__proto__ || Object.getPrototypeOf(MapCircle)).apply(this, arguments));
-    }
-
-    _createClass(MapCircle, [{
-      key: "setNativeProps",
-      value: function setNativeProps(props) {
-        this.circle.setNativeProps(props);
-      }
-    }, {
-      key: "render",
-      value: function render() {
-        var _this2 = this;
-
-        var AIRMapCircle = this.getAirComponent();
-        return _react3.default.createElement(AIRMapCircle, _extends({}, this.props, {
-          ref: function ref(_ref) {
-            _this2.circle = _ref;
-          },
-          __source: {
-            fileName: _jsxFileName,
-            lineNumber: 140
-          }
-        }));
-      }
-    }]);
-
-    return MapCircle;
-  }(_react3.default.Component));
-
-  MapCircle.propTypes = propTypes;
-  MapCircle.defaultProps = defaultProps;
-  exports.default = (0, _decorateMapComponent2.default)(MapCircle, {
-    componentType: 'Circle',
-    providers: {
-      google: {
-        ios: _decorateMapComponent.SUPPORTED,
-        android: _decorateMapComponent.USES_DEFAULT_IMPLEMENTATION
-      }
-    }
-  });
-},632,[118,130,294,12,629],"node_modules/react-native-maps/lib/components/MapCircle.js");
-__d(function (global, _require, module, exports, _dependencyMap) {
-  Object.defineProperty(exports, "__esModule", {
-    value: true
-  });
-
-  var _react2 = _require(_dependencyMap[0], "react");
-
-  var _react3 = _interopRequireDefault(_react2);
-
-  var _index = _require(_dependencyMap[1], "./../../../react-transform-hmr/lib/index.js");
-
-  var _index2 = _interopRequireDefault(_index);
-
-  var _jsxFileName = "/Users/ducnt/Documents/Unknown-project/node_modules/react-native-maps/lib/components/MapUrlTile.js";
-
-  var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
-
-  var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
-
-  var _propTypes = _require(_dependencyMap[2], "prop-types");
-
-  var _propTypes2 = _interopRequireDefault(_propTypes);
-
-  var _reactNative = _require(_dependencyMap[3], "react-native");
-
-  var _decorateMapComponent = _require(_dependencyMap[4], "./decorateMapComponent");
-
-  var _decorateMapComponent2 = _interopRequireDefault(_decorateMapComponent);
-
-  function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
-  function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
-
-  function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
-
-  function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
-
-  var _components = {
-    MapUrlTile: {
-      displayName: "MapUrlTile"
-    }
-  };
-
-  var _reactTransformHmrLibIndexJs2 = (0, _index2.default)({
-    filename: "/Users/ducnt/Documents/Unknown-project/node_modules/react-native-maps/lib/components/MapUrlTile.js",
-    components: _components,
-    locals: [module],
-    imports: [_react3.default]
-  });
-
-  function _wrapComponent(id) {
-    return function (Component) {
-      return _reactTransformHmrLibIndexJs2(Component, id);
-    };
-  }
-
-  var viewPropTypes = _reactNative.ViewPropTypes || _reactNative.View.propTypes;
-
-  var propTypes = _extends({}, viewPropTypes, {
-    urlTemplate: _propTypes2.default.string.isRequired,
-    zIndex: _propTypes2.default.number,
-    maximumZ: _propTypes2.default.number
-  });
-
-  var MapUrlTile = _wrapComponent("MapUrlTile")(function (_React$Component) {
-    _inherits(MapUrlTile, _React$Component);
-
-    function MapUrlTile() {
-      _classCallCheck(this, MapUrlTile);
-
-      return _possibleConstructorReturn(this, (MapUrlTile.__proto__ || Object.getPrototypeOf(MapUrlTile)).apply(this, arguments));
-    }
-
-    _createClass(MapUrlTile, [{
-      key: "render",
-      value: function render() {
-        var AIRMapUrlTile = this.getAirComponent();
-        return _react3.default.createElement(AIRMapUrlTile, _extends({}, this.props, {
-          __source: {
-            fileName: _jsxFileName,
-            lineNumber: 47
-          }
-        }));
-      }
-    }]);
-
-    return MapUrlTile;
-  }(_react3.default.Component));
-
-  MapUrlTile.propTypes = propTypes;
-  exports.default = (0, _decorateMapComponent2.default)(MapUrlTile, {
-    componentType: 'UrlTile',
-    providers: {
-      google: {
-        ios: _decorateMapComponent.SUPPORTED,
-        android: _decorateMapComponent.USES_DEFAULT_IMPLEMENTATION
-      }
-    }
-  });
-},633,[118,130,294,12,629],"node_modules/react-native-maps/lib/components/MapUrlTile.js");
-__d(function (global, _require, module, exports, _dependencyMap) {
-  Object.defineProperty(exports, "__esModule", {
-    value: true
-  });
-
-  var _react2 = _require(_dependencyMap[0], "react");
-
-  var _react3 = _interopRequireDefault(_react2);
-
-  var _index = _require(_dependencyMap[1], "./../../../react-transform-hmr/lib/index.js");
-
-  var _index2 = _interopRequireDefault(_index);
-
-  var _jsxFileName = "/Users/ducnt/Documents/Unknown-project/node_modules/react-native-maps/lib/components/MapLocalTile.js";
-
-  var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
-
-  var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
-
-  var _propTypes = _require(_dependencyMap[2], "prop-types");
-
-  var _propTypes2 = _interopRequireDefault(_propTypes);
-
-  var _reactNative = _require(_dependencyMap[3], "react-native");
-
-  var _decorateMapComponent = _require(_dependencyMap[4], "./decorateMapComponent");
-
-  var _decorateMapComponent2 = _interopRequireDefault(_decorateMapComponent);
-
-  function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
-  function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
-
-  function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
-
-  function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
-
-  var _components = {
-    MapLocalTile: {
-      displayName: "MapLocalTile"
-    }
-  };
-
-  var _reactTransformHmrLibIndexJs2 = (0, _index2.default)({
-    filename: "/Users/ducnt/Documents/Unknown-project/node_modules/react-native-maps/lib/components/MapLocalTile.js",
-    components: _components,
-    locals: [module],
-    imports: [_react3.default]
-  });
-
-  function _wrapComponent(id) {
-    return function (Component) {
-      return _reactTransformHmrLibIndexJs2(Component, id);
-    };
-  }
-
-  var viewPropTypes = _reactNative.ViewPropTypes || _reactNative.View.propTypes;
-
-  var propTypes = _extends({}, viewPropTypes, {
-    pathTemplate: _propTypes2.default.string.isRequired,
-    zIndex: _propTypes2.default.number,
-    tileSize: _propTypes2.default.number
-  });
-
-  var MapLocalTile = _wrapComponent("MapLocalTile")(function (_React$Component) {
-    _inherits(MapLocalTile, _React$Component);
-
-    function MapLocalTile() {
-      _classCallCheck(this, MapLocalTile);
-
-      return _possibleConstructorReturn(this, (MapLocalTile.__proto__ || Object.getPrototypeOf(MapLocalTile)).apply(this, arguments));
-    }
-
-    _createClass(MapLocalTile, [{
-      key: "render",
-      value: function render() {
-        var AIRMapLocalTile = this.getAirComponent();
-        return _react3.default.createElement(AIRMapLocalTile, _extends({}, this.props, {
-          __source: {
-            fileName: _jsxFileName,
-            lineNumber: 46
-          }
-        }));
-      }
-    }]);
-
-    return MapLocalTile;
-  }(_react3.default.Component));
-
-  MapLocalTile.propTypes = propTypes;
-  exports.default = (0, _decorateMapComponent2.default)(MapLocalTile, {
-    componentType: 'LocalTile',
-    providers: {
-      google: {
-        ios: _decorateMapComponent.SUPPORTED,
-        android: _decorateMapComponent.USES_DEFAULT_IMPLEMENTATION
-      }
-    }
-  });
-},634,[118,130,294,12,629],"node_modules/react-native-maps/lib/components/MapLocalTile.js");
-__d(function (global, _require, module, exports, _dependencyMap) {
-  Object.defineProperty(exports, "__esModule", {
-    value: true
-  });
-
-  var _react2 = _require(_dependencyMap[0], "react");
-
-  var _react3 = _interopRequireDefault(_react2);
-
-  var _index = _require(_dependencyMap[1], "./../../../react-transform-hmr/lib/index.js");
-
-  var _index2 = _interopRequireDefault(_index);
-
-  var _jsxFileName = "/Users/ducnt/Documents/Unknown-project/node_modules/react-native-maps/lib/components/MapCallout.js";
-
-  var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
-
-  var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
-
-  var _propTypes = _require(_dependencyMap[2], "prop-types");
-
-  var _propTypes2 = _interopRequireDefault(_propTypes);
-
-  var _reactNative = _require(_dependencyMap[3], "react-native");
-
-  var _decorateMapComponent = _require(_dependencyMap[4], "./decorateMapComponent");
-
-  var _decorateMapComponent2 = _interopRequireDefault(_decorateMapComponent);
-
-  function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
-  function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
-
-  function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
-
-  function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
-
-  var _components = {
-    MapCallout: {
-      displayName: "MapCallout"
-    }
-  };
-
-  var _reactTransformHmrLibIndexJs2 = (0, _index2.default)({
-    filename: "/Users/ducnt/Documents/Unknown-project/node_modules/react-native-maps/lib/components/MapCallout.js",
-    components: _components,
-    locals: [module],
-    imports: [_react3.default]
-  });
-
-  function _wrapComponent(id) {
-    return function (Component) {
-      return _reactTransformHmrLibIndexJs2(Component, id);
-    };
-  }
-
-  var viewPropTypes = _reactNative.ViewPropTypes || _reactNative.View.propTypes;
-
-  var propTypes = _extends({}, viewPropTypes, {
-    tooltip: _propTypes2.default.bool,
-    onPress: _propTypes2.default.func
-  });
-
-  var defaultProps = {
-    tooltip: false
-  };
-
-  var MapCallout = _wrapComponent("MapCallout")(function (_React$Component) {
-    _inherits(MapCallout, _React$Component);
-
-    function MapCallout() {
-      _classCallCheck(this, MapCallout);
-
-      return _possibleConstructorReturn(this, (MapCallout.__proto__ || Object.getPrototypeOf(MapCallout)).apply(this, arguments));
-    }
-
-    _createClass(MapCallout, [{
-      key: "render",
-      value: function render() {
-        var AIRMapCallout = this.getAirComponent();
-        return _react3.default.createElement(AIRMapCallout, _extends({}, this.props, {
-          style: [styles.callout, this.props.style],
-          __source: {
-            fileName: _jsxFileName,
-            lineNumber: 29
-          }
-        }));
-      }
-    }]);
-
-    return MapCallout;
-  }(_react3.default.Component));
-
-  MapCallout.propTypes = propTypes;
-  MapCallout.defaultProps = defaultProps;
-
-  var styles = _reactNative.StyleSheet.create({
-    callout: {
-      position: 'absolute'
-    }
-  });
-
-  exports.default = (0, _decorateMapComponent2.default)(MapCallout, {
-    componentType: 'Callout',
-    providers: {
-      google: {
-        ios: _decorateMapComponent.SUPPORTED,
-        android: _decorateMapComponent.USES_DEFAULT_IMPLEMENTATION
-      }
-    }
-  });
-},635,[118,130,294,12,629],"node_modules/react-native-maps/lib/components/MapCallout.js");
-__d(function (global, _require, module, exports, _dependencyMap) {
-  Object.defineProperty(exports, "__esModule", {
-    value: true
-  });
-
-  var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
-
-  var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
-
-  var _reactNative = _require(_dependencyMap[0], "react-native");
-
-  function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
-
-  function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
-
-  function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
-
-  var AnimatedWithChildren = Object.getPrototypeOf(_reactNative.Animated.ValueXY);
-
-  if (__DEV__) {
-    if (AnimatedWithChildren.name !== 'AnimatedWithChildren') console.error('AnimatedRegion could not obtain AnimatedWithChildren base class');
-  }
-
-  var _uniqueId = 1;
-
-  var AnimatedMapRegion = function (_AnimatedWithChildren) {
-    _inherits(AnimatedMapRegion, _AnimatedWithChildren);
-
-    function AnimatedMapRegion(valueIn) {
-      _classCallCheck(this, AnimatedMapRegion);
-
-      var _this = _possibleConstructorReturn(this, (AnimatedMapRegion.__proto__ || Object.getPrototypeOf(AnimatedMapRegion)).call(this));
-
-      var value = valueIn || {
-        latitude: 0,
-        longitude: 0,
-        latitudeDelta: 0,
-        longitudeDelta: 0
-      };
-      _this.latitude = value.latitude instanceof _reactNative.Animated.Value ? value.latitude : new _reactNative.Animated.Value(value.latitude);
-      _this.longitude = value.longitude instanceof _reactNative.Animated.Value ? value.longitude : new _reactNative.Animated.Value(value.longitude);
-      _this.latitudeDelta = value.latitudeDelta instanceof _reactNative.Animated.Value ? value.latitudeDelta : new _reactNative.Animated.Value(value.latitudeDelta);
-      _this.longitudeDelta = value.longitudeDelta instanceof _reactNative.Animated.Value ? value.longitudeDelta : new _reactNative.Animated.Value(value.longitudeDelta);
-      _this._listeners = {};
-      return _this;
-    }
-
-    _createClass(AnimatedMapRegion, [{
-      key: "setValue",
-      value: function setValue(value) {
-        this.latitude._value = value.latitude;
-        this.longitude._value = value.longitude;
-        this.latitudeDelta._value = value.latitudeDelta;
-        this.longitudeDelta._value = value.longitudeDelta;
-      }
-    }, {
-      key: "setOffset",
-      value: function setOffset(offset) {
-        this.latitude.setOffset(offset.latitude);
-        this.longitude.setOffset(offset.longitude);
-        this.latitudeDelta.setOffset(offset.latitudeDelta);
-        this.longitudeDelta.setOffset(offset.longitudeDelta);
-      }
-    }, {
-      key: "flattenOffset",
-      value: function flattenOffset() {
-        this.latitude.flattenOffset();
-        this.longitude.flattenOffset();
-        this.latitudeDelta.flattenOffset();
-        this.longitudeDelta.flattenOffset();
-      }
-    }, {
-      key: "__getValue",
-      value: function __getValue() {
-        return {
-          latitude: this.latitude.__getValue(),
-          longitude: this.longitude.__getValue(),
-          latitudeDelta: this.latitudeDelta.__getValue(),
-          longitudeDelta: this.longitudeDelta.__getValue()
-        };
-      }
-    }, {
-      key: "__attach",
-      value: function __attach() {
-        this.latitude.__addChild(this);
-
-        this.longitude.__addChild(this);
-
-        this.latitudeDelta.__addChild(this);
-
-        this.longitudeDelta.__addChild(this);
-      }
-    }, {
-      key: "__detach",
-      value: function __detach() {
-        this.latitude.__removeChild(this);
-
-        this.longitude.__removeChild(this);
-
-        this.latitudeDelta.__removeChild(this);
-
-        this.longitudeDelta.__removeChild(this);
-      }
-    }, {
-      key: "stopAnimation",
-      value: function stopAnimation(callback) {
-        this.latitude.stopAnimation();
-        this.longitude.stopAnimation();
-        this.latitudeDelta.stopAnimation();
-        this.longitudeDelta.stopAnimation();
-        callback && callback(this.__getValue());
-      }
-    }, {
-      key: "addListener",
-      value: function addListener(callback) {
-        var _this2 = this;
-
-        var id = String(_uniqueId++);
-
-        var jointCallback = function jointCallback() {
-          callback(_this2.__getValue());
-        };
-
-        this._listeners[id] = {
-          latitude: this.latitude.addListener(jointCallback),
-          longitude: this.longitude.addListener(jointCallback),
-          latitudeDelta: this.latitudeDelta.addListener(jointCallback),
-          longitudeDelta: this.longitudeDelta.addListener(jointCallback)
-        };
-        return id;
-      }
-    }, {
-      key: "removeListener",
-      value: function removeListener(id) {
-        this.latitude.removeListener(this._listeners[id].latitude);
-        this.longitude.removeListener(this._listeners[id].longitude);
-        this.latitudeDelta.removeListener(this._listeners[id].latitudeDelta);
-        this.longitudeDelta.removeListener(this._listeners[id].longitudeDelta);
-        delete this._listeners[id];
-      }
-    }, {
-      key: "spring",
-      value: function spring(config) {
-        var animations = [];
-        config.hasOwnProperty('latitude') && animations.push(_reactNative.Animated.spring(this.latitude, _extends({}, config, {
-          toValue: config.latitude
-        })));
-        config.hasOwnProperty('longitude') && animations.push(_reactNative.Animated.spring(this.longitude, _extends({}, config, {
-          toValue: config.longitude
-        })));
-        config.hasOwnProperty('latitudeDelta') && animations.push(_reactNative.Animated.spring(this.latitudeDelta, _extends({}, config, {
-          toValue: config.latitudeDelta
-        })));
-        config.hasOwnProperty('longitudeDelta') && animations.push(_reactNative.Animated.spring(this.longitudeDelta, _extends({}, config, {
-          toValue: config.longitudeDelta
-        })));
-        return _reactNative.Animated.parallel(animations);
-      }
-    }, {
-      key: "timing",
-      value: function timing(config) {
-        var animations = [];
-        config.hasOwnProperty('latitude') && animations.push(_reactNative.Animated.timing(this.latitude, _extends({}, config, {
-          toValue: config.latitude
-        })));
-        config.hasOwnProperty('longitude') && animations.push(_reactNative.Animated.timing(this.longitude, _extends({}, config, {
-          toValue: config.longitude
-        })));
-        config.hasOwnProperty('latitudeDelta') && animations.push(_reactNative.Animated.timing(this.latitudeDelta, _extends({}, config, {
-          toValue: config.latitudeDelta
-        })));
-        config.hasOwnProperty('longitudeDelta') && animations.push(_reactNative.Animated.timing(this.longitudeDelta, _extends({}, config, {
-          toValue: config.longitudeDelta
-        })));
-        return _reactNative.Animated.parallel(animations);
-      }
-    }]);
-
-    return AnimatedMapRegion;
-  }(AnimatedWithChildren);
-
-  exports.default = AnimatedMapRegion;
-},636,[12],"node_modules/react-native-maps/lib/components/AnimatedRegion.js");
-__d(function (global, _require, module, exports, _dependencyMap) {
-  Object.defineProperty(exports, "__esModule", {
-    value: true
-  });
-  exports.ProviderPropType = exports.Animated = exports.MAP_TYPES = undefined;
-
-  var _react2 = _require(_dependencyMap[0], "react");
-
-  var _react3 = _interopRequireDefault(_react2);
-
-  var _index = _require(_dependencyMap[1], "./../../../react-transform-hmr/lib/index.js");
-
-  var _index2 = _interopRequireDefault(_index);
-
-  var _jsxFileName = "/Users/ducnt/Documents/Unknown-project/node_modules/react-native-maps/lib/components/MapView.js";
-
-  var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
-
-  var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
-
-  var _propTypes = _require(_dependencyMap[2], "prop-types");
-
-  var _propTypes2 = _interopRequireDefault(_propTypes);
-
-  var _reactNative = _require(_dependencyMap[3], "react-native");
-
-  var _MapMarker = _require(_dependencyMap[4], "./MapMarker");
-
-  var _MapMarker2 = _interopRequireDefault(_MapMarker);
-
-  var _MapPolyline = _require(_dependencyMap[5], "./MapPolyline");
-
-  var _MapPolyline2 = _interopRequireDefault(_MapPolyline);
-
-  var _MapPolygon = _require(_dependencyMap[6], "./MapPolygon");
-
-  var _MapPolygon2 = _interopRequireDefault(_MapPolygon);
-
-  var _MapCircle = _require(_dependencyMap[7], "./MapCircle");
-
-  var _MapCircle2 = _interopRequireDefault(_MapCircle);
-
-  var _MapCallout = _require(_dependencyMap[8], "./MapCallout");
-
-  var _MapCallout2 = _interopRequireDefault(_MapCallout);
-
-  var _MapOverlay = _require(_dependencyMap[9], "./MapOverlay");
-
-  var _MapOverlay2 = _interopRequireDefault(_MapOverlay);
-
-  var _MapUrlTile = _require(_dependencyMap[10], "./MapUrlTile");
-
-  var _MapUrlTile2 = _interopRequireDefault(_MapUrlTile);
-
-  var _MapLocalTile = _require(_dependencyMap[11], "./MapLocalTile");
-
-  var _MapLocalTile2 = _interopRequireDefault(_MapLocalTile);
-
-  var _AnimatedRegion = _require(_dependencyMap[12], "./AnimatedRegion");
-
-  var _AnimatedRegion2 = _interopRequireDefault(_AnimatedRegion);
-
-  var _decorateMapComponent = _require(_dependencyMap[13], "./decorateMapComponent");
-
-  var _ProviderConstants = _require(_dependencyMap[14], "./ProviderConstants");
-
-  var ProviderConstants = _interopRequireWildcard(_ProviderConstants);
-
-  function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key]; } } newObj.default = obj; return newObj; } }
-
-  function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
-  function _toConsumableArray(arr) { if (Array.isArray(arr)) { for (var i = 0, arr2 = Array(arr.length); i < arr.length; i++) { arr2[i] = arr[i]; } return arr2; } else { return Array.from(arr); } }
-
-  function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
-
-  function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
-
-  function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
-
-  var _components = {
-    MapView: {
-      displayName: "MapView"
-    }
-  };
-
-  var _reactTransformHmrLibIndexJs2 = (0, _index2.default)({
-    filename: "/Users/ducnt/Documents/Unknown-project/node_modules/react-native-maps/lib/components/MapView.js",
-    components: _components,
-    locals: [module],
-    imports: [_react3.default]
-  });
-
-  function _wrapComponent(id) {
-    return function (Component) {
-      return _reactTransformHmrLibIndexJs2(Component, id);
-    };
-  }
-
-  var MAP_TYPES = exports.MAP_TYPES = {
-    STANDARD: 'standard',
-    SATELLITE: 'satellite',
-    HYBRID: 'hybrid',
-    TERRAIN: 'terrain',
-    NONE: 'none',
-    MUTEDSTANDARD: 'mutedStandard'
-  };
-  var GOOGLE_MAPS_ONLY_TYPES = [MAP_TYPES.TERRAIN, MAP_TYPES.NONE];
-  var viewConfig = {
-    uiViewClassName: 'AIR<provider>Map',
-    validAttributes: {
-      region: true
-    }
-  };
-  var viewPropTypes = _reactNative.ViewPropTypes || _reactNative.View.propTypes;
-
-  var propTypes = _extends({}, viewPropTypes, {
-    provider: _propTypes2.default.oneOf(['google']),
-    style: viewPropTypes.style,
-    customMapStyle: _propTypes2.default.array,
-    customMapStyleString: _propTypes2.default.string,
-    showsUserLocation: _propTypes2.default.bool,
-    userLocationAnnotationTitle: _propTypes2.default.string,
-    showsMyLocationButton: _propTypes2.default.bool,
-    followsUserLocation: _propTypes2.default.bool,
-    showsPointsOfInterest: _propTypes2.default.bool,
-    showsCompass: _propTypes2.default.bool,
-    zoomEnabled: _propTypes2.default.bool,
-    zoomControlEnabled: _propTypes2.default.bool,
-    rotateEnabled: _propTypes2.default.bool,
-    cacheEnabled: _propTypes2.default.bool,
-    loadingEnabled: _propTypes2.default.bool,
-    loadingBackgroundColor: _reactNative.ColorPropType,
-    loadingIndicatorColor: _reactNative.ColorPropType,
-    scrollEnabled: _propTypes2.default.bool,
-    pitchEnabled: _propTypes2.default.bool,
-    toolbarEnabled: _propTypes2.default.bool,
-    moveOnMarkerPress: _propTypes2.default.bool,
-    showsScale: _propTypes2.default.bool,
-    showsBuildings: _propTypes2.default.bool,
-    showsTraffic: _propTypes2.default.bool,
-    showsIndoors: _propTypes2.default.bool,
-    showsIndoorLevelPicker: _propTypes2.default.bool,
-    mapType: _propTypes2.default.oneOf(Object.values(MAP_TYPES)),
-    region: _propTypes2.default.shape({
-      latitude: _propTypes2.default.number.isRequired,
-      longitude: _propTypes2.default.number.isRequired,
-      latitudeDelta: _propTypes2.default.number.isRequired,
-      longitudeDelta: _propTypes2.default.number.isRequired
-    }),
-    initialRegion: _propTypes2.default.shape({
-      latitude: _propTypes2.default.number.isRequired,
-      longitude: _propTypes2.default.number.isRequired,
-      latitudeDelta: _propTypes2.default.number.isRequired,
-      longitudeDelta: _propTypes2.default.number.isRequired
-    }),
-    liteMode: _propTypes2.default.bool,
-    mapPadding: _reactNative.EdgeInsetsPropType,
-    maxDelta: _propTypes2.default.number,
-    minDelta: _propTypes2.default.number,
-    legalLabelInsets: _reactNative.EdgeInsetsPropType,
-    onMapReady: _propTypes2.default.func,
-    onKmlReady: _propTypes2.default.func,
-    onRegionChange: _propTypes2.default.func,
-    onRegionChangeComplete: _propTypes2.default.func,
-    onPress: _propTypes2.default.func,
-    onLongPress: _propTypes2.default.func,
-    onUserLocationChange: _propTypes2.default.func,
-    onPanDrag: _propTypes2.default.func,
-    onPoiClick: _propTypes2.default.func,
-    onMarkerPress: _propTypes2.default.func,
-    onMarkerSelect: _propTypes2.default.func,
-    onMarkerDeselect: _propTypes2.default.func,
-    onCalloutPress: _propTypes2.default.func,
-    onMarkerDragStart: _propTypes2.default.func,
-    onMarkerDrag: _propTypes2.default.func,
-    onMarkerDragEnd: _propTypes2.default.func,
-    minZoomLevel: _propTypes2.default.number,
-    maxZoomLevel: _propTypes2.default.number,
-    kmlSrc: _propTypes2.default.string
-  });
-
-  var MapView = _wrapComponent("MapView")(function (_React$Component) {
-    _inherits(MapView, _React$Component);
-
-    function MapView(props) {
-      _classCallCheck(this, MapView);
-
-      var _this = _possibleConstructorReturn(this, (MapView.__proto__ || Object.getPrototypeOf(MapView)).call(this, props));
-
-      _this.state = {
-        isReady: _reactNative.Platform.OS === 'ios'
-      };
-      _this._onMapReady = _this._onMapReady.bind(_this);
-      _this._onMarkerPress = _this._onMarkerPress.bind(_this);
-      _this._onChange = _this._onChange.bind(_this);
-      _this._onLayout = _this._onLayout.bind(_this);
-      return _this;
-    }
-
-    _createClass(MapView, [{
-      key: "getChildContext",
-      value: function getChildContext() {
-        return {
-          provider: this.props.provider
-        };
-      }
-    }, {
-      key: "componentWillUpdate",
-      value: function componentWillUpdate(nextProps) {
-        var a = this.__lastRegion;
-        var b = nextProps.region;
-        if (!a || !b) return;
-
-        if (a.latitude !== b.latitude || a.longitude !== b.longitude || a.latitudeDelta !== b.latitudeDelta || a.longitudeDelta !== b.longitudeDelta) {
-          this.map.setNativeProps({
-            region: b
-          });
-        }
-      }
-    }, {
-      key: "componentDidMount",
-      value: function componentDidMount() {
-        var isReady = this.state.isReady;
-
-        if (isReady) {
-          this._updateStyle();
-        }
-      }
-    }, {
-      key: "_updateStyle",
-      value: function _updateStyle() {
-        var customMapStyle = this.props.customMapStyle;
-        this.map.setNativeProps({
-          customMapStyleString: JSON.stringify(customMapStyle)
-        });
-      }
-    }, {
-      key: "_onMapReady",
-      value: function _onMapReady() {
-        var _props = this.props,
-            region = _props.region,
-            initialRegion = _props.initialRegion,
-            onMapReady = _props.onMapReady;
-
-        if (region) {
-          this.map.setNativeProps({
-            region: region
-          });
-        } else if (initialRegion) {
-          this.map.setNativeProps({
-            initialRegion: initialRegion
-          });
-        }
-
-        this._updateStyle();
-
-        this.setState({
-          isReady: true
-        }, function () {
-          if (onMapReady) onMapReady();
-        });
-      }
-    }, {
-      key: "_onLayout",
-      value: function _onLayout(e) {
-        var layout = e.nativeEvent.layout;
-        if (!layout.width || !layout.height) return;
-
-        if (this.state.isReady && !this.__layoutCalled) {
-          var _props2 = this.props,
-              region = _props2.region,
-              initialRegion = _props2.initialRegion;
-
-          if (region) {
-            this.__layoutCalled = true;
-            this.map.setNativeProps({
-              region: region
-            });
-          } else if (initialRegion) {
-            this.__layoutCalled = true;
-            this.map.setNativeProps({
-              initialRegion: initialRegion
-            });
-          }
-        }
-
-        if (this.props.onLayout) {
-          this.props.onLayout(e);
-        }
-      }
-    }, {
-      key: "_onMarkerPress",
-      value: function _onMarkerPress(event) {
-        if (this.props.onMarkerPress) {
-          this.props.onMarkerPress(event.nativeEvent);
-        }
-      }
-    }, {
-      key: "_onChange",
-      value: function _onChange(event) {
-        this.__lastRegion = event.nativeEvent.region;
-
-        if (event.nativeEvent.continuous) {
-          if (this.props.onRegionChange) {
-            this.props.onRegionChange(event.nativeEvent.region);
-          }
-        } else if (this.props.onRegionChangeComplete) {
-          this.props.onRegionChangeComplete(event.nativeEvent.region);
-        }
-      }
-    }, {
-      key: "animateToRegion",
-      value: function animateToRegion(region, duration) {
-        this._runCommand('animateToRegion', [region, duration || 500]);
-      }
-    }, {
-      key: "animateToCoordinate",
-      value: function animateToCoordinate(latLng, duration) {
-        this._runCommand('animateToCoordinate', [latLng, duration || 500]);
-      }
-    }, {
-      key: "animateToBearing",
-      value: function animateToBearing(bearing, duration) {
-        this._runCommand('animateToBearing', [bearing, duration || 500]);
-      }
-    }, {
-      key: "animateToViewingAngle",
-      value: function animateToViewingAngle(angle, duration) {
-        this._runCommand('animateToViewingAngle', [angle, duration || 500]);
-      }
-    }, {
-      key: "fitToElements",
-      value: function fitToElements(animated) {
-        this._runCommand('fitToElements', [animated]);
-      }
-    }, {
-      key: "fitToSuppliedMarkers",
-      value: function fitToSuppliedMarkers(markers, animated) {
-        this._runCommand('fitToSuppliedMarkers', [markers, animated]);
-      }
-    }, {
-      key: "fitToCoordinates",
-      value: function fitToCoordinates() {
-        var coordinates = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : [];
-        var options = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : {};
-        var _options$edgePadding = options.edgePadding,
-            edgePadding = _options$edgePadding === undefined ? {
-          top: 0,
-          right: 0,
-          bottom: 0,
-          left: 0
-        } : _options$edgePadding,
-            _options$animated = options.animated,
-            animated = _options$animated === undefined ? true : _options$animated;
-
-        this._runCommand('fitToCoordinates', [coordinates, edgePadding, animated]);
-      }
-    }, {
-      key: "setMapBoundaries",
-      value: function setMapBoundaries(northEast, southWest) {
-        this._runCommand('setMapBoundaries', [northEast, southWest]);
-      }
-    }, {
-      key: "takeSnapshot",
-      value: function takeSnapshot(args) {
-        var _this2 = this;
-
-        if (_reactNative.Platform.OS === 'ios' && arguments.length === 4) {
-          console.warn('Old takeSnapshot API has been deprecated; will be removed in the near future');
-          var width = arguments[0];
-          var height = arguments[1];
-          var region = arguments[2];
-          var callback = arguments[3];
-
-          this._runCommand('takeSnapshot', [width || 0, height || 0, region || {}, 'png', 1, 'legacy', callback]);
-
-          return undefined;
-        }
-
-        var config = {
-          width: args.width || 0,
-          height: args.height || 0,
-          region: args.region || {},
-          format: args.format || 'png',
-          quality: args.quality || 1.0,
-          result: args.result || 'file'
-        };
-        if (config.format !== 'png' && config.format !== 'jpg') throw new Error('Invalid format specified');
-        if (config.result !== 'file' && config.result !== 'base64') throw new Error('Invalid result specified');
-
-        if (_reactNative.Platform.OS === 'android') {
-          return _reactNative.NativeModules.AirMapModule.takeSnapshot(this._getHandle(), config);
-        } else if (_reactNative.Platform.OS === 'ios') {
-          return new Promise(function (resolve, reject) {
-            _this2._runCommand('takeSnapshot', [config.width, config.height, config.region, config.format, config.quality, config.result, function (err, snapshot) {
-              if (err) {
-                reject(err);
-              } else {
-                resolve(snapshot);
-              }
-            }]);
-          });
-        }
-
-        return Promise.reject('takeSnapshot not supported on this platform');
-      }
-    }, {
-      key: "pointForCoordinate",
-      value: function pointForCoordinate(coordinate) {
-        if (_reactNative.Platform.OS === 'android') {
-          return _reactNative.NativeModules.AirMapModule.pointForCoordinate(this._getHandle(), coordinate);
-        } else if (_reactNative.Platform.OS === 'ios') {
-          return this._runCommand('pointForCoordinate', [coordinate]);
-        }
-
-        return Promise.reject('pointForCoordinate not supported on this platform');
-      }
-    }, {
-      key: "coordinateForPoint",
-      value: function coordinateForPoint(point) {
-        if (_reactNative.Platform.OS === 'android') {
-          return _reactNative.NativeModules.AirMapModule.coordinateForPoint(this._getHandle(), point);
-        } else if (_reactNative.Platform.OS === 'ios') {
-          return this._runCommand('coordinateForPoint', [point]);
-        }
-
-        return Promise.reject('coordinateForPoint not supported on this platform');
-      }
-    }, {
-      key: "_uiManagerCommand",
-      value: function _uiManagerCommand(name) {
-        return _reactNative.NativeModules.UIManager[(0, _decorateMapComponent.getAirMapName)(this.props.provider)].Commands[name];
-      }
-    }, {
-      key: "_mapManagerCommand",
-      value: function _mapManagerCommand(name) {
-        return _reactNative.NativeModules[(0, _decorateMapComponent.getAirMapName)(this.props.provider) + "Manager"][name];
-      }
-    }, {
-      key: "_getHandle",
-      value: function _getHandle() {
-        return (0, _reactNative.findNodeHandle)(this.map);
-      }
-    }, {
-      key: "_runCommand",
-      value: function _runCommand(name, args) {
-        switch (_reactNative.Platform.OS) {
-          case 'android':
-            return _reactNative.NativeModules.UIManager.dispatchViewManagerCommand(this._getHandle(), this._uiManagerCommand(name), args);
-
-          case 'ios':
-            return this._mapManagerCommand(name).apply(undefined, [this._getHandle()].concat(_toConsumableArray(args)));
-
-          default:
-            return Promise.reject("Invalid platform was passed: " + _reactNative.Platform.OS);
-        }
-      }
-    }, {
-      key: "render",
-      value: function render() {
-        var _this3 = this;
-
-        var props = void 0;
-
-        if (this.state.isReady) {
-          props = _extends({
-            region: null,
-            initialRegion: null,
-            onMarkerPress: this._onMarkerPress,
-            onChange: this._onChange,
-            onMapReady: this._onMapReady,
-            onLayout: this._onLayout
-          }, this.props);
-
-          if (_reactNative.Platform.OS === 'ios' && props.provider === ProviderConstants.PROVIDER_DEFAULT && GOOGLE_MAPS_ONLY_TYPES.includes(props.mapType)) {
-            props.mapType = MAP_TYPES.standard;
-          }
-
-          props.handlePanDrag = !!props.onPanDrag;
-        } else {
-          props = {
-            style: this.props.style,
-            region: null,
-            initialRegion: null,
-            onMarkerPress: this._onMarkerPress,
-            onChange: this._onChange,
-            onMapReady: this._onMapReady,
-            onLayout: this._onLayout
-          };
-        }
-
-        if (_reactNative.Platform.OS === 'android' && this.props.liteMode) {
-          return _react3.default.createElement(AIRMapLite, _extends({
-            ref: function ref(_ref) {
-              _this3.map = _ref;
-            }
-          }, props, {
+        return _react3.default.createElement(
+          _reactNative.View,
+          {
             __source: {
               fileName: _jsxFileName,
-              lineNumber: 750
-            }
-          }));
-        }
-
-        var AIRMap = getAirMapComponent(this.props.provider);
-        return _react3.default.createElement(AIRMap, _extends({
-          ref: function ref(_ref2) {
-            _this3.map = _ref2;
-          }
-        }, props, {
-          __source: {
-            fileName: _jsxFileName,
-            lineNumber: 760
-          }
-        }));
-      }
-    }]);
-
-    return MapView;
-  }(_react3.default.Component));
-
-  MapView.propTypes = propTypes;
-  MapView.viewConfig = viewConfig;
-  MapView.childContextTypes = _decorateMapComponent.contextTypes;
-  MapView.MAP_TYPES = MAP_TYPES;
-
-  var nativeComponent = function nativeComponent(Component) {
-    return (0, _reactNative.requireNativeComponent)(Component, MapView, {
-      nativeOnly: {
-        onChange: true,
-        onMapReady: true,
-        onKmlReady: true,
-        handlePanDrag: true
-      }
-    });
-  };
-
-  var airMaps = {
-    default: nativeComponent('AIRMap')
-  };
-
-  if (_reactNative.Platform.OS === 'android') {
-    airMaps.google = airMaps.default;
-  } else {
-    airMaps.google = _decorateMapComponent.googleMapIsInstalled ? nativeComponent('AIRGoogleMap') : (0, _decorateMapComponent.createNotSupportedComponent)('react-native-maps: AirGoogleMaps dir must be added to your xCode project to support GoogleMaps on iOS.');
-  }
-
-  var getAirMapComponent = function getAirMapComponent(provider) {
-    return airMaps[provider || 'default'];
-  };
-
-  var AIRMapLite = _reactNative.NativeModules.UIManager.AIRMapLite && (0, _reactNative.requireNativeComponent)('AIRMapLite', MapView, {
-    nativeOnly: {
-      onChange: true,
-      onMapReady: true,
-      handlePanDrag: true
-    }
-  });
-
-  var Animated = exports.Animated = _reactNative.Animated.createAnimatedComponent(MapView);
-
-  var ProviderPropType = exports.ProviderPropType = _propTypes2.default.oneOf(Object.values(ProviderConstants));
-
-  MapView.Marker = _MapMarker2.default;
-  MapView.Polyline = _MapPolyline2.default;
-  MapView.Polygon = _MapPolygon2.default;
-  MapView.Circle = _MapCircle2.default;
-  MapView.UrlTile = _MapUrlTile2.default;
-  MapView.LocalTile = _MapLocalTile2.default;
-  MapView.Overlay = _MapOverlay2.default;
-  MapView.Callout = _MapCallout2.default;
-
-  _extends(MapView, ProviderConstants);
-
-  MapView.ProviderPropType = ProviderPropType;
-  MapView.Animated = Animated;
-  MapView.AnimatedRegion = _AnimatedRegion2.default;
-  exports.default = MapView;
-},637,[118,130,294,12,638,628,631,632,635,639,633,634,636,629,630],"node_modules/react-native-maps/lib/components/MapView.js");
-__d(function (global, _require, module, exports, _dependencyMap) {
-  Object.defineProperty(exports, "__esModule", {
-    value: true
-  });
-
-  var _react2 = _require(_dependencyMap[0], "react");
-
-  var _react3 = _interopRequireDefault(_react2);
-
-  var _index = _require(_dependencyMap[1], "./../../../react-transform-hmr/lib/index.js");
-
-  var _index2 = _interopRequireDefault(_index);
-
-  var _jsxFileName = "/Users/ducnt/Documents/Unknown-project/node_modules/react-native-maps/lib/components/MapMarker.js";
-
-  var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
-
-  var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
-
-  var _propTypes = _require(_dependencyMap[2], "prop-types");
-
-  var _propTypes2 = _interopRequireDefault(_propTypes);
-
-  var _reactNative = _require(_dependencyMap[3], "react-native");
-
-  var _resolveAssetSource = _require(_dependencyMap[4], "react-native/Libraries/Image/resolveAssetSource");
-
-  var _resolveAssetSource2 = _interopRequireDefault(_resolveAssetSource);
-
-  var _decorateMapComponent = _require(_dependencyMap[5], "./decorateMapComponent");
-
-  var _decorateMapComponent2 = _interopRequireDefault(_decorateMapComponent);
-
-  function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
-  function _toConsumableArray(arr) { if (Array.isArray(arr)) { for (var i = 0, arr2 = Array(arr.length); i < arr.length; i++) { arr2[i] = arr[i]; } return arr2; } else { return Array.from(arr); } }
-
-  function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
-
-  function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
-
-  function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
-
-  var _components = {
-    MapMarker: {
-      displayName: "MapMarker"
-    }
-  };
-
-  var _reactTransformHmrLibIndexJs2 = (0, _index2.default)({
-    filename: "/Users/ducnt/Documents/Unknown-project/node_modules/react-native-maps/lib/components/MapMarker.js",
-    components: _components,
-    locals: [module],
-    imports: [_react3.default]
-  });
-
-  function _wrapComponent(id) {
-    return function (Component) {
-      return _reactTransformHmrLibIndexJs2(Component, id);
-    };
-  }
-
-  var viewConfig = {
-    uiViewClassName: 'AIR<provider>MapMarker',
-    validAttributes: {
-      coordinate: true
-    }
-  };
-  var viewPropTypes = _reactNative.ViewPropTypes || _reactNative.View.propTypes;
-
-  var propTypes = _extends({}, viewPropTypes, {
-    identifier: _propTypes2.default.string,
-    reuseIdentifier: _propTypes2.default.string,
-    title: _propTypes2.default.string,
-    description: _propTypes2.default.string,
-    image: _propTypes2.default.any,
-    opacity: _propTypes2.default.number,
-    pinColor: _propTypes2.default.string,
-    coordinate: _propTypes2.default.shape({
-      latitude: _propTypes2.default.number.isRequired,
-      longitude: _propTypes2.default.number.isRequired
-    }).isRequired,
-    centerOffset: _propTypes2.default.shape({
-      x: _propTypes2.default.number.isRequired,
-      y: _propTypes2.default.number.isRequired
-    }),
-    calloutOffset: _propTypes2.default.shape({
-      x: _propTypes2.default.number.isRequired,
-      y: _propTypes2.default.number.isRequired
-    }),
-    anchor: _propTypes2.default.shape({
-      x: _propTypes2.default.number.isRequired,
-      y: _propTypes2.default.number.isRequired
-    }),
-    calloutAnchor: _propTypes2.default.shape({
-      x: _propTypes2.default.number.isRequired,
-      y: _propTypes2.default.number.isRequired
-    }),
-    flat: _propTypes2.default.bool,
-    draggable: _propTypes2.default.bool,
-    tracksViewChanges: _propTypes2.default.bool,
-    tracksInfoWindowChanges: _propTypes2.default.bool,
-    stopPropagation: _propTypes2.default.bool,
-    onPress: _propTypes2.default.func,
-    onSelect: _propTypes2.default.func,
-    onDeselect: _propTypes2.default.func,
-    onCalloutPress: _propTypes2.default.func,
-    onDragStart: _propTypes2.default.func,
-    onDrag: _propTypes2.default.func,
-    onDragEnd: _propTypes2.default.func
-  });
-
-  var defaultProps = {
-    stopPropagation: false
-  };
-
-  var MapMarker = _wrapComponent("MapMarker")(function (_React$Component) {
-    _inherits(MapMarker, _React$Component);
-
-    function MapMarker(props) {
-      _classCallCheck(this, MapMarker);
-
-      var _this = _possibleConstructorReturn(this, (MapMarker.__proto__ || Object.getPrototypeOf(MapMarker)).call(this, props));
-
-      _this.showCallout = _this.showCallout.bind(_this);
-      _this.hideCallout = _this.hideCallout.bind(_this);
-      _this.animateMarkerToCoordinate = _this.animateMarkerToCoordinate.bind(_this);
-      return _this;
-    }
-
-    _createClass(MapMarker, [{
-      key: "setNativeProps",
-      value: function setNativeProps(props) {
-        this.marker.setNativeProps(props);
-      }
-    }, {
-      key: "showCallout",
-      value: function showCallout() {
-        this._runCommand('showCallout', []);
-      }
-    }, {
-      key: "hideCallout",
-      value: function hideCallout() {
-        this._runCommand('hideCallout', []);
-      }
-    }, {
-      key: "animateMarkerToCoordinate",
-      value: function animateMarkerToCoordinate(coordinate, duration) {
-        this._runCommand('animateMarkerToCoordinate', [coordinate, duration || 500]);
-      }
-    }, {
-      key: "_getHandle",
-      value: function _getHandle() {
-        return (0, _reactNative.findNodeHandle)(this.marker);
-      }
-    }, {
-      key: "_runCommand",
-      value: function _runCommand(name, args) {
-        switch (_reactNative.Platform.OS) {
-          case 'android':
-            _reactNative.NativeModules.UIManager.dispatchViewManagerCommand(this._getHandle(), this.getUIManagerCommand(name), args);
-
-            break;
-
-          case 'ios':
-            this.getMapManagerCommand(name).apply(undefined, [this._getHandle()].concat(_toConsumableArray(args)));
-            break;
-
-          default:
-            break;
-        }
-      }
-    }, {
-      key: "render",
-      value: function render() {
-        var _this2 = this;
-
-        var image = void 0;
-
-        if (this.props.image) {
-          image = (0, _resolveAssetSource2.default)(this.props.image) || {};
-          image = image.uri || this.props.image;
-        }
-
-        var AIRMapMarker = this.getAirComponent();
-        return _react3.default.createElement(AIRMapMarker, _extends({
-          ref: function ref(_ref) {
-            _this2.marker = _ref;
-          }
-        }, this.props, {
-          image: image,
-          style: [styles.marker, this.props.style],
-          onPress: function onPress(event) {
-            if (_this2.props.stopPropagation) {
-              event.stopPropagation();
-            }
-
-            if (_this2.props.onPress) {
-              _this2.props.onPress(event);
+              lineNumber: 8
             }
           },
-          __source: {
-            fileName: _jsxFileName,
-            lineNumber: 299
-          }
-        }));
+          _react3.default.createElement(
+            _reactNative.Text,
+            {
+              __source: {
+                fileName: _jsxFileName,
+                lineNumber: 9
+              }
+            },
+            "Search"
+          )
+        );
       }
     }]);
 
-    return MapMarker;
-  }(_react3.default.Component));
+    return Search;
+  }(_react2.PureComponent));
 
-  MapMarker.propTypes = propTypes;
-  MapMarker.defaultProps = defaultProps;
-  MapMarker.viewConfig = viewConfig;
-
-  var styles = _reactNative.StyleSheet.create({
-    marker: {
-      position: 'absolute',
-      backgroundColor: 'transparent'
-    }
+  exports.default = Search;
+},643,[118,130,12],"src/containers/Search/index.js");
+__d(function (global, _require, module, exports, _dependencyMap) {
+  Object.defineProperty(exports, "__esModule", {
+    value: true
   });
 
-  MapMarker.Animated = _reactNative.Animated.createAnimatedComponent(MapMarker);
-  exports.default = (0, _decorateMapComponent2.default)(MapMarker, {
-    componentType: 'Marker',
-    providers: {
-      google: {
-        ios: _decorateMapComponent.SUPPORTED,
-        android: _decorateMapComponent.USES_DEFAULT_IMPLEMENTATION
-      }
+  var _reactNavigation = _require(_dependencyMap[0], "react-navigation");
+
+  var _MapScreen = _require(_dependencyMap[1], "../containers/MapScreen");
+
+  var _MapScreen2 = _interopRequireDefault(_MapScreen);
+
+  function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+  exports.default = (0, _reactNavigation.StackNavigator)({
+    MapScreen: {
+      screen: _MapScreen2.default
     }
+  }, {
+    initialRouteName: 'MapScreen',
+    tabBarVisible: false,
+    headerMode: 'none'
   });
-},638,[118,130,294,12,325,629],"node_modules/react-native-maps/lib/components/MapMarker.js");
+},644,[521,645],"src/navigators/mapStack.js");
 __d(function (global, _require, module, exports, _dependencyMap) {
   Object.defineProperty(exports, "__esModule", {
     value: true
@@ -82286,29 +80870,15 @@ __d(function (global, _require, module, exports, _dependencyMap) {
 
   var _react3 = _interopRequireDefault(_react2);
 
-  var _index = _require(_dependencyMap[1], "./../../../react-transform-hmr/lib/index.js");
+  var _index = _require(_dependencyMap[1], "./../../../node_modules/react-transform-hmr/lib/index.js");
 
   var _index2 = _interopRequireDefault(_index);
 
-  var _jsxFileName = "/Users/ducnt/Documents/Unknown-project/node_modules/react-native-maps/lib/components/MapOverlay.js";
+  var _jsxFileName = "/Users/ducnt/Documents/Unknown-project/src/containers/MapScreen/index.js";
 
   var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
-  var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
-
-  var _propTypes = _require(_dependencyMap[2], "prop-types");
-
-  var _propTypes2 = _interopRequireDefault(_propTypes);
-
-  var _reactNative = _require(_dependencyMap[3], "react-native");
-
-  var _resolveAssetSource = _require(_dependencyMap[4], "react-native/Libraries/Image/resolveAssetSource");
-
-  var _resolveAssetSource2 = _interopRequireDefault(_resolveAssetSource);
-
-  var _decorateMapComponent = _require(_dependencyMap[5], "./decorateMapComponent");
-
-  var _decorateMapComponent2 = _interopRequireDefault(_decorateMapComponent);
+  var _reactNative = _require(_dependencyMap[2], "react-native");
 
   function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -82319,13 +80889,13 @@ __d(function (global, _require, module, exports, _dependencyMap) {
   function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
 
   var _components = {
-    MapOverlay: {
-      displayName: "MapOverlay"
+    MapScreen: {
+      displayName: "MapScreen"
     }
   };
 
-  var _reactTransformHmrLibIndexJs2 = (0, _index2.default)({
-    filename: "/Users/ducnt/Documents/Unknown-project/node_modules/react-native-maps/lib/components/MapOverlay.js",
+  var _node_modulesReactTransformHmrLibIndexJs2 = (0, _index2.default)({
+    filename: "/Users/ducnt/Documents/Unknown-project/src/containers/MapScreen/index.js",
     components: _components,
     locals: [module],
     imports: [_react3.default]
@@ -82333,81 +80903,403 @@ __d(function (global, _require, module, exports, _dependencyMap) {
 
   function _wrapComponent(id) {
     return function (Component) {
-      return _reactTransformHmrLibIndexJs2(Component, id);
+      return _node_modulesReactTransformHmrLibIndexJs2(Component, id);
     };
   }
 
-  var viewConfig = {
-    uiViewClassName: 'AIR<provider>MapOverlay',
-    validAttributes: {
-      image: true
-    }
-  };
+  var MapScreen = _wrapComponent("MapScreen")(function (_PureComponent) {
+    _inherits(MapScreen, _PureComponent);
 
-  var propTypes = _extends({}, _reactNative.View.propTypes, {
-    image: _propTypes2.default.any.isRequired,
-    bounds: _propTypes2.default.arrayOf(_propTypes2.default.array.isRequired).isRequired
-  });
+    function MapScreen() {
+      var _ref;
 
-  var MapOverlay = _wrapComponent("MapOverlay")(function (_Component) {
-    _inherits(MapOverlay, _Component);
+      var _temp, _this, _ret;
 
-    function MapOverlay() {
-      _classCallCheck(this, MapOverlay);
+      _classCallCheck(this, MapScreen);
 
-      return _possibleConstructorReturn(this, (MapOverlay.__proto__ || Object.getPrototypeOf(MapOverlay)).apply(this, arguments));
+      for (var _len = arguments.length, args = Array(_len), _key = 0; _key < _len; _key++) {
+        args[_key] = arguments[_key];
+      }
+
+      return _ret = (_temp = (_this = _possibleConstructorReturn(this, (_ref = MapScreen.__proto__ || Object.getPrototypeOf(MapScreen)).call.apply(_ref, [this].concat(args))), _this), _this.state = {}, _temp), _possibleConstructorReturn(_this, _ret);
     }
 
-    _createClass(MapOverlay, [{
+    _createClass(MapScreen, [{
       key: "render",
       value: function render() {
-        var image = void 0;
-
-        if (this.props.image) {
-          if (typeof this.props.image.startsWith === 'function' && this.props.image.startsWith('http')) {
-            image = this.props.image;
-          } else {
-            image = (0, _resolveAssetSource2.default)(this.props.image) || {};
-            image = image.uri;
-          }
-        }
-
-        var AIRMapOverlay = this.getAirComponent();
-        return _react3.default.createElement(AIRMapOverlay, _extends({}, this.props, {
-          image: image,
-          style: [styles.overlay, this.props.style],
-          __source: {
-            fileName: _jsxFileName,
-            lineNumber: 47
-          }
-        }));
+        return _react3.default.createElement(
+          _reactNative.View,
+          {
+            __source: {
+              fileName: _jsxFileName,
+              lineNumber: 8
+            }
+          },
+          _react3.default.createElement(
+            _reactNative.Text,
+            {
+              __source: {
+                fileName: _jsxFileName,
+                lineNumber: 9
+              }
+            },
+            "Map"
+          )
+        );
       }
     }]);
 
-    return MapOverlay;
-  }(_react2.Component));
+    return MapScreen;
+  }(_react2.PureComponent));
 
-  MapOverlay.propTypes = propTypes;
-  MapOverlay.viewConfig = viewConfig;
-
-  var styles = _reactNative.StyleSheet.create({
-    overlay: {
-      position: 'absolute',
-      backgroundColor: 'transparent'
-    }
+  exports.default = MapScreen;
+},645,[118,130,12],"src/containers/MapScreen/index.js");
+__d(function (global, _require, module, exports, _dependencyMap) {
+  Object.defineProperty(exports, "__esModule", {
+    value: true
   });
 
-  MapOverlay.Animated = _reactNative.Animated.createAnimatedComponent(MapOverlay);
-  exports.default = (0, _decorateMapComponent2.default)(MapOverlay, {
-    componentType: 'Overlay',
-    providers: {
-      google: {
-        ios: _decorateMapComponent.SUPPORTED,
-        android: _decorateMapComponent.USES_DEFAULT_IMPLEMENTATION
+  var _reactNavigation = _require(_dependencyMap[0], "react-navigation");
+
+  var _Notifications = _require(_dependencyMap[1], "../containers/Notifications");
+
+  var _Notifications2 = _interopRequireDefault(_Notifications);
+
+  function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+  exports.default = (0, _reactNavigation.StackNavigator)({
+    Notifications: {
+      screen: _Notifications2.default
+    }
+  }, {
+    initialRouteName: 'Notifications',
+    tabBarVisible: false,
+    headerMode: 'none'
+  });
+},646,[521,647],"src/navigators/notificationsStack.js");
+__d(function (global, _require, module, exports, _dependencyMap) {
+  Object.defineProperty(exports, "__esModule", {
+    value: true
+  });
+
+  var _react2 = _require(_dependencyMap[0], "react");
+
+  var _react3 = _interopRequireDefault(_react2);
+
+  var _index = _require(_dependencyMap[1], "./../../../node_modules/react-transform-hmr/lib/index.js");
+
+  var _index2 = _interopRequireDefault(_index);
+
+  var _jsxFileName = "/Users/ducnt/Documents/Unknown-project/src/containers/Notifications/index.js";
+
+  var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+  var _reactNative = _require(_dependencyMap[2], "react-native");
+
+  function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+  function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+  function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+
+  function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+
+  var _components = {
+    Notifications: {
+      displayName: "Notifications"
+    }
+  };
+
+  var _node_modulesReactTransformHmrLibIndexJs2 = (0, _index2.default)({
+    filename: "/Users/ducnt/Documents/Unknown-project/src/containers/Notifications/index.js",
+    components: _components,
+    locals: [module],
+    imports: [_react3.default]
+  });
+
+  function _wrapComponent(id) {
+    return function (Component) {
+      return _node_modulesReactTransformHmrLibIndexJs2(Component, id);
+    };
+  }
+
+  var Notifications = _wrapComponent("Notifications")(function (_PureComponent) {
+    _inherits(Notifications, _PureComponent);
+
+    function Notifications() {
+      var _ref;
+
+      var _temp, _this, _ret;
+
+      _classCallCheck(this, Notifications);
+
+      for (var _len = arguments.length, args = Array(_len), _key = 0; _key < _len; _key++) {
+        args[_key] = arguments[_key];
       }
+
+      return _ret = (_temp = (_this = _possibleConstructorReturn(this, (_ref = Notifications.__proto__ || Object.getPrototypeOf(Notifications)).call.apply(_ref, [this].concat(args))), _this), _this.state = {}, _temp), _possibleConstructorReturn(_this, _ret);
     }
+
+    _createClass(Notifications, [{
+      key: "render",
+      value: function render() {
+        return _react3.default.createElement(
+          _reactNative.View,
+          {
+            __source: {
+              fileName: _jsxFileName,
+              lineNumber: 8
+            }
+          },
+          _react3.default.createElement(
+            _reactNative.Text,
+            {
+              __source: {
+                fileName: _jsxFileName,
+                lineNumber: 9
+              }
+            },
+            " Notifications"
+          )
+        );
+      }
+    }]);
+
+    return Notifications;
+  }(_react2.PureComponent));
+
+  exports.default = Notifications;
+},647,[118,130,12],"src/containers/Notifications/index.js");
+__d(function (global, _require, module, exports, _dependencyMap) {
+  Object.defineProperty(exports, "__esModule", {
+    value: true
   });
-},639,[118,130,294,12,325,629],"node_modules/react-native-maps/lib/components/MapOverlay.js");
+
+  var _reactNavigation = _require(_dependencyMap[0], "react-navigation");
+
+  var _Pin = _require(_dependencyMap[1], "../containers/Pin");
+
+  var _Pin2 = _interopRequireDefault(_Pin);
+
+  function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+  exports.default = (0, _reactNavigation.StackNavigator)({
+    Pin: {
+      screen: _Pin2.default
+    }
+  }, {
+    initialRouteName: 'Pin',
+    headerMode: 'none'
+  });
+},648,[521,649],"src/navigators/pinStack.js");
+__d(function (global, _require, module, exports, _dependencyMap) {
+  Object.defineProperty(exports, "__esModule", {
+    value: true
+  });
+
+  var _react2 = _require(_dependencyMap[0], "react");
+
+  var _react3 = _interopRequireDefault(_react2);
+
+  var _index = _require(_dependencyMap[1], "./../../../node_modules/react-transform-hmr/lib/index.js");
+
+  var _index2 = _interopRequireDefault(_index);
+
+  var _jsxFileName = "/Users/ducnt/Documents/Unknown-project/src/containers/Pin/index.js";
+
+  var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+  var _reactNative = _require(_dependencyMap[2], "react-native");
+
+  function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+  function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+  function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+
+  function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+
+  var _components = {
+    Pin: {
+      displayName: "Pin"
+    }
+  };
+
+  var _node_modulesReactTransformHmrLibIndexJs2 = (0, _index2.default)({
+    filename: "/Users/ducnt/Documents/Unknown-project/src/containers/Pin/index.js",
+    components: _components,
+    locals: [module],
+    imports: [_react3.default]
+  });
+
+  function _wrapComponent(id) {
+    return function (Component) {
+      return _node_modulesReactTransformHmrLibIndexJs2(Component, id);
+    };
+  }
+
+  var Pin = _wrapComponent("Pin")(function (_PureComponent) {
+    _inherits(Pin, _PureComponent);
+
+    function Pin() {
+      var _ref;
+
+      var _temp, _this, _ret;
+
+      _classCallCheck(this, Pin);
+
+      for (var _len = arguments.length, args = Array(_len), _key = 0; _key < _len; _key++) {
+        args[_key] = arguments[_key];
+      }
+
+      return _ret = (_temp = (_this = _possibleConstructorReturn(this, (_ref = Pin.__proto__ || Object.getPrototypeOf(Pin)).call.apply(_ref, [this].concat(args))), _this), _this.state = {}, _temp), _possibleConstructorReturn(_this, _ret);
+    }
+
+    _createClass(Pin, [{
+      key: "render",
+      value: function render() {
+        return _react3.default.createElement(
+          _reactNative.View,
+          {
+            __source: {
+              fileName: _jsxFileName,
+              lineNumber: 8
+            }
+          },
+          _react3.default.createElement(
+            _reactNative.Text,
+            {
+              __source: {
+                fileName: _jsxFileName,
+                lineNumber: 9
+              }
+            },
+            "Map"
+          )
+        );
+      }
+    }]);
+
+    return Pin;
+  }(_react2.PureComponent));
+
+  exports.default = Pin;
+},649,[118,130,12],"src/containers/Pin/index.js");
+__d(function (global, _require, module, exports, _dependencyMap) {
+  Object.defineProperty(exports, "__esModule", {
+    value: true
+  });
+
+  var _reactNavigation = _require(_dependencyMap[0], "react-navigation");
+
+  var _Login = _require(_dependencyMap[1], "../containers/Login");
+
+  var _Login2 = _interopRequireDefault(_Login);
+
+  function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+  exports.default = (0, _reactNavigation.createStackNavigator)({
+    Login: {
+      screen: _Login2.default
+    }
+  }, {
+    initialRouteName: 'Login',
+    headerMode: 'none'
+  });
+},650,[521,651],"src/navigators/authStack.js");
+__d(function (global, _require, module, exports, _dependencyMap) {
+  Object.defineProperty(exports, "__esModule", {
+    value: true
+  });
+
+  var _react2 = _require(_dependencyMap[0], "react");
+
+  var _react3 = _interopRequireDefault(_react2);
+
+  var _index = _require(_dependencyMap[1], "./../../../node_modules/react-transform-hmr/lib/index.js");
+
+  var _index2 = _interopRequireDefault(_index);
+
+  var _jsxFileName = "/Users/ducnt/Documents/Unknown-project/src/containers/Login/index.js";
+
+  var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+  var _reactNative = _require(_dependencyMap[2], "react-native");
+
+  function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+  function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+  function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+
+  function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+
+  var _components = {
+    Login: {
+      displayName: "Login"
+    }
+  };
+
+  var _node_modulesReactTransformHmrLibIndexJs2 = (0, _index2.default)({
+    filename: "/Users/ducnt/Documents/Unknown-project/src/containers/Login/index.js",
+    components: _components,
+    locals: [module],
+    imports: [_react3.default]
+  });
+
+  function _wrapComponent(id) {
+    return function (Component) {
+      return _node_modulesReactTransformHmrLibIndexJs2(Component, id);
+    };
+  }
+
+  var Login = _wrapComponent("Login")(function (_PureComponent) {
+    _inherits(Login, _PureComponent);
+
+    function Login() {
+      var _ref;
+
+      var _temp, _this, _ret;
+
+      _classCallCheck(this, Login);
+
+      for (var _len = arguments.length, args = Array(_len), _key = 0; _key < _len; _key++) {
+        args[_key] = arguments[_key];
+      }
+
+      return _ret = (_temp = (_this = _possibleConstructorReturn(this, (_ref = Login.__proto__ || Object.getPrototypeOf(Login)).call.apply(_ref, [this].concat(args))), _this), _this.state = {}, _temp), _possibleConstructorReturn(_this, _ret);
+    }
+
+    _createClass(Login, [{
+      key: "render",
+      value: function render() {
+        return _react3.default.createElement(
+          _reactNative.View,
+          {
+            __source: {
+              fileName: _jsxFileName,
+              lineNumber: 8
+            }
+          },
+          _react3.default.createElement(
+            _reactNative.Text,
+            {
+              __source: {
+                fileName: _jsxFileName,
+                lineNumber: 9
+              }
+            },
+            "Login"
+          )
+        );
+      }
+    }]);
+
+    return Login;
+  }(_react2.PureComponent));
+
+  exports.default = Login;
+},651,[118,130,12],"src/containers/Login/index.js");
 __d(function (global, _require, module, exports, _dependencyMap) {
   Object.defineProperty(exports, "__esModule", {
     value: true
@@ -82514,7 +81406,7 @@ __d(function (global, _require, module, exports, _dependencyMap) {
   };
 
   exports.default = (0, _reactRedux.connect)(mapStateToProps, mapDispatchToProps)(AppWithNavigationState);
-},640,[118,130,294,494,625,641],"src/navigators/index.js");
+},652,[118,130,294,494,625,653],"src/navigators/index.js");
 __d(function (global, _require, module, exports, _dependencyMap) {
   Object.defineProperty(exports, "__esModule", {
     value: true
@@ -82535,7 +81427,7 @@ __d(function (global, _require, module, exports, _dependencyMap) {
   var addListener = (0, _reactNavigationReduxHelpers.createReduxBoundAddListener)('root');
   exports.middleware = middleware;
   exports.addListener = addListener;
-},641,[642,517],"src/utilities/redux/index.js");
+},653,[654,517],"src/utilities/redux/index.js");
 __d(function (global, _require, module, exports, _dependencyMap) {
   'use strict';
 
@@ -82560,7 +81452,7 @@ __d(function (global, _require, module, exports, _dependencyMap) {
   var thunk = createThunkMiddleware();
   thunk.withExtraArgument = createThunkMiddleware;
   exports['default'] = thunk;
-},642,[],"node_modules/redux-thunk/lib/index.js");
+},654,[],"node_modules/redux-thunk/lib/index.js");
 require(52);
 require(11);
 //# sourceMappingURL=index.map
