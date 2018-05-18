@@ -3,14 +3,25 @@
   "version": "0.0.1",
   "private": true,
   "scripts": {
+    "setup": "yarn && cd ./ios && pod install",
     "start": "node node_modules/react-native/local-cli/cli.js start",
-    "test": "jest"
+    "test": "jest",
+    "flow start": "flow start",
+    "flow stop": "flow stop",
+    "flow status": "flow status",
+    "flow coverage": "flow coverage",
+    "run-ios": "react-native run-ios",
+    "run-android": "react-native run-android",
+    "export-apk": "react-native bundle --platform android --dev false --entry-file index.js --bundle-output android/app/src/main/assets/index.android.bundle --assets-dest android/app/src/main/res && cd ./android && ./gradlew assembleDebug",
+    "install-apk": "cd ./android/app/build/outputs/apk/debug && adb install app-debug.apk"
   },
   "dependencies": {
     "axios": "^0.18.0",
     "prop-types": "^15.6.1",
     "react": "16.3.1",
     "react-native": "0.55.4",
+    "react-native-firebase": "^4.1.0",
+    "react-native-maps": "^0.21.0",
     "react-navigation": "^2.0.1",
     "react-navigation-redux-helpers": "^1.0.7",
     "react-redux": "^5.0.7",

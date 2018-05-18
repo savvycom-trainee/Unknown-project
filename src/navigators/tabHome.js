@@ -2,7 +2,8 @@ import React from 'react';
 // import PropTypes from 'prop-types';
 import { View, Image } from 'react-native';
 import { createBottomTabNavigator } from 'react-navigation';
-import { Images } from '../themes';
+
+import { Icons } from '../themes';
 import styles from './styles';
 import HomeStack from './homeStack';
 import SearchStack from './searchStack';
@@ -20,26 +21,27 @@ export default createBottomTabNavigator(
   },
   {
     navigationOptions: ({ navigation }) => ({
+      // eslint-disable-next-line
       tabBarIcon: ({ focused }) => {
         const { routeName } = navigation.state;
         let iconImage;
         let iconBG;
         if (routeName === 'Home') {
-          iconImage = focused ? Images.homeed : Images.home;
+          iconImage = focused ? Icons.homeFocused : Icons.home;
         }
         if (routeName === 'Search') {
-          iconImage = focused ? Images.searched : Images.search;
+          iconImage = focused ? Icons.searchFocused : Icons.search;
         }
         if (routeName === 'Pin') {
-          iconImage = focused ? Images.pined : Images.pin;
+          iconImage = focused ? Icons.pinFocused : Icons.pin;
         }
         if (routeName === 'Notifications') {
-          iconImage = focused ? Images.notificationed : Images.notification;
+          iconImage = focused ? Icons.notificationFocused : Icons.notification;
         } else if (routeName === 'Pointer') {
           iconBG = (
             <View style={styles.viewPointBG}>
               <View style={styles.viewPointBGsmall}>
-                <Image source={Images.pointer} />
+                <Image source={Icons.pointer} />
               </View>
             </View>
           );
