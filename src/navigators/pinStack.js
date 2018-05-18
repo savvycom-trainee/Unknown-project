@@ -1,7 +1,7 @@
-import { StackNavigator } from 'react-navigation';
+import { createStackNavigator } from 'react-navigation';
 import Pin from '../containers/Pin';
 
-export default StackNavigator(
+export default createStackNavigator(
   {
     Pin: {
       screen: Pin,

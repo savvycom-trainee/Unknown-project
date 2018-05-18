@@ -1,7 +1,7 @@
 import React from 'react';
 // import PropTypes from 'prop-types';
 import { View, Image } from 'react-native';
-import { TabNavigator } from 'react-navigation';
+import { createBottomTabNavigator } from 'react-navigation';
 import { Images } from '../themes';
 import styles from './styles';
 import HomeStack from './homeStack';
@@ -10,7 +10,7 @@ import MapStack from './mapStack';
 import NotificationsStack from './notificationsStack';
 import PinStack from './pinStack';
 
-export default TabNavigator(
+export default createBottomTabNavigator(
   {
     Home: HomeStack,
     Search: SearchStack,

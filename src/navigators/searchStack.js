@@ -1,7 +1,7 @@
-import { StackNavigator } from 'react-navigation';
+import { createStackNavigator } from 'react-navigation';
 import Search from '../containers/Search';
 
-export default StackNavigator(
+export default createStackNavigator(
   {
     Search: {
       screen: Search,
