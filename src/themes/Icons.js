@@ -7,9 +7,12 @@ const icons = {
   notification: require('../../assets/icons/notification.png'), // eslint-disable-line
   notificationFocused: require('../../assets/icons/notificationFocused.png'), // eslint-disable-line
   pointer: require('../../assets/icons/pointer.png'), // eslint-disable-line
+  add: require('../../assets/icons/add.png'), // eslint-disable-line
   //   pointerFocused: require('../../assets/icons/pointerFocused.png'),
   pin: require('../../assets/icons/pin.png'), // eslint-disable-line
   pinFocused: require('../../assets/icons/pinFocused.png'), // eslint-disable-line
+  profile: require('../../assets/icons/profile.png'), // eslint-disable-line
+  direct: require('../../assets/icons/direct.png'), // eslint-disable-line
 };
 
 export default icons;
