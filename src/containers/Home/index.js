@@ -1,5 +1,6 @@
 import React, { PureComponent } from 'react';
-import { View, Text, ScrollView, TouchableOpacity, Image } from 'react-native';
+import PropTypes from 'prop-types';
+import { View, Text, ScrollView, TouchableOpacity, Image, Button } from 'react-native';
 // import StarRating from 'react-native-star-rating';
 // import Icon from 'react-native-vector-icons/Ionicons';
 import styles from './styles';
@@ -94,9 +95,22 @@ class Home extends PureComponent {
             </View>
           </ScrollView>
         </View>
+        <Button
+          onPress={() => {
+            this.props.navigation.navigate('HomeDetail');
+          }}
+          title="HomeDetailStack"
+          color="#841584"
+          accessibilityLabel="Learn more about this purple button"
+        />
       </View>
     );
   }
 }
+Home.propTypes = {
+  navigation: PropTypes.shape({
+    navigate: PropTypes.func.isRequired,
+  }).isRequired,
+};
 
 export default Home;
