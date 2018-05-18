@@ -1,15 +1,15 @@
 import React, { PureComponent } from 'react';
 import { View, Text } from 'react-native';
 
-class Notifications extends PureComponent {
+class MenuRestaurant extends PureComponent {
   state = {};
   render() {
     return (
       <View>
-        <Text>Notifications</Text>
+        <Text>MenuRestaurant</Text>
       </View>
     );
   }
 }
 
-export default Notifications;
+export default MenuRestaurant;

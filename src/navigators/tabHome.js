@@ -1,7 +1,7 @@
 import React from 'react';
 // import PropTypes from 'prop-types';
 import { View, Image } from 'react-native';
-import { createBottomTabNavigator } from 'react-navigation';
+import { createBottomTabNavigator, TabNavigator } from 'react-navigation';
 import { Images } from '../themes';
 import styles from './styles';
 import HomeStack from './homeStack';
@@ -12,7 +12,9 @@ import PinStack from './pinStack';
 
 export default createBottomTabNavigator(
   {
-    Home: HomeStack,
+    Home: {
+      screen: HomeStack,
+    },
     Search: SearchStack,
     Pointer: MapStack,
     Notifications: NotificationsStack,
@@ -20,6 +22,9 @@ export default createBottomTabNavigator(
   },
   {
     navigationOptions: ({ navigation }) => ({
+      // navigationOptions: {
+      //   tabBarVisible: false,
+      // },
       tabBarIcon: ({ focused }) => {
         const { routeName } = navigation.state;
         let iconImage;
@@ -53,6 +58,7 @@ export default createBottomTabNavigator(
       },
     }),
     tabBarOptions: {
+      ...TabNavigator.Presets.iOSBottomTabs,
       showLabel: false,
       style: {
         backgroundColor: '#fff',
