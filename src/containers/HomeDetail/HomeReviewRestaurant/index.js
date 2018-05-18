@@ -1,7 +1,7 @@
 import React, { PureComponent } from 'react';
 import { View, Text } from 'react-native';
 
-class ReviewRestaurant extends PureComponent {
+class HomeReviewRestaurant extends PureComponent {
   state = {};
   render() {
     return (
@@ -12,4 +12,4 @@ class ReviewRestaurant extends PureComponent {
   }
 }
 
-export default ReviewRestaurant;
+export default HomeReviewRestaurant;

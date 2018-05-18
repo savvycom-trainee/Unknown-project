@@ -1,21 +1,21 @@
 import { createStackNavigator } from 'react-navigation';
 import Home from '../containers/Home';
-import HomeDetailStack from './homeDetailStack';
+import HomeDetail from '../containers/HomeDetail';
 
 export default createStackNavigator(
   {
     Home: {
       screen: Home,
+    },
+    HomeDetail: {
+      screen: HomeDetail,
       navigationOptions: {
         tabBarVisible: false,
       },
     },
-    HomeDetailStack: {
-      screen: HomeDetailStack,
-    },
   },
   {
-    initialRouteName: 'Home',
+    initialRouteName: 'HomeDetail',
     headerMode: 'none',
   },
 );

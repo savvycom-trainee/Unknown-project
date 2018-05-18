@@ -3,16 +3,18 @@ import { View, Text, Button } from 'react-native';
 import PropTypes from 'prop-types';
 
 class Home extends PureComponent {
+  static navigationOptions = {
+    tabBarVisible: false,
+  };
+
   state = {};
   render() {
     return (
       <View>
-        <Text>Homeie</Text>
+        <Text>Home</Text>
         <Button
           onPress={() => {
-            this.props.navigation.navigate('HomeDetailStack', {
-              params: { navigation: this.props.navigation },
-            });
+            this.props.navigation.navigate('HomeDetail');
           }}
           title="HomeDetailStack"
           color="#841584"

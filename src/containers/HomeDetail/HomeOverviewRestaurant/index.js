@@ -1,12 +1,12 @@
 import React, { PureComponent } from 'react';
 import { View, Text } from 'react-native';
-import styles from './DetailRestaurantStyle';
+import styles from './styles';
 
-class DetailRestaurant extends PureComponent {
-  state = {};
+class HomeOverviewRestaurant extends PureComponent {
   static navigationOptions = {
     tabBarVisible: false,
   };
+  state = {};
   render() {
     return (
       <View style={styles.ViewMain}>
@@ -16,4 +16,4 @@ class DetailRestaurant extends PureComponent {
   }
 }
 
-export default DetailRestaurant;
+export default HomeOverviewRestaurant;

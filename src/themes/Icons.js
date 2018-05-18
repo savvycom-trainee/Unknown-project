@@ -10,6 +10,8 @@ const icons = {
   //   pointerFocused: require('../../assets/icons/pointerFocused.png'),
   pin: require('../../assets/icons/pin.png'), // eslint-disable-line
   pinFocused: require('../../assets/icons/pinFocused.png'), // eslint-disable-line
+
+  back: require('../../assets/icons/back.png'), // eslint-disable-line
 };
 
 export default icons;

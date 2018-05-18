@@ -14,7 +14,11 @@ export default createBottomTabNavigator(
   {
     Home: {
       screen: HomeStack,
+      navigationOptions: {
+        tabBarVisible: false,
+      },
     },
+
     Search: SearchStack,
     Pointer: MapStack,
     Notifications: NotificationsStack,
