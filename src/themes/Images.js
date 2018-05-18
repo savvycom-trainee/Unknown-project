@@ -1,6 +1,6 @@
 // leave off @2x/@3x
 const images = {
-  restaurantPhoto: require('../../assets/images/restaurantPhoto.png'), // eslint-disable-line
+  restaurantPhoto: require('../../assets/Images/restaurantPhoto.png')
 };
 
 export default images;
