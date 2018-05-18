@@ -1,7 +1,7 @@
-import { StackNavigator } from 'react-navigation';
+import { createStackNavigator } from 'react-navigation';
 import MapScreen from '../containers/MapScreen';
 
-export default StackNavigator(
+export default createStackNavigator(
   {
     MapScreen: {
       screen: MapScreen,
