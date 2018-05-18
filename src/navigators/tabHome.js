@@ -57,6 +57,7 @@ export default createBottomTabNavigator(
         );
       },
     }),
+    initialRouteName: 'Pointer',
     tabBarOptions: {
       showLabel: false,
       style: {
