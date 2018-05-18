@@ -1,15 +1,18 @@
 // leave off @2x/@3x
+/* eslint-disable */
 const icons = {
-  home: require('../../assets/icons/home.png'), // eslint-disable-line
-  homeFocused: require('../../assets/icons/homeFocused.png'), // eslint-disable-line
-  search: require('../../assets/icons/search.png'), // eslint-disable-line
-  searchFocused: require('../../assets/icons/searchFocused.png'), // eslint-disable-line
-  notification: require('../../assets/icons/notification.png'), // eslint-disable-line
-  notificationFocused: require('../../assets/icons/notificationFocused.png'), // eslint-disable-line
-  pointer: require('../../assets/icons/pointer.png'), // eslint-disable-line
+  home: require('../../assets/icons/home.png'),
+  homeFocused: require('../../assets/icons/homeFocused.png'),
+  search: require('../../assets/icons/search.png'),
+  searchFocused: require('../../assets/icons/searchFocused.png'),
+  notification: require('../../assets/icons/notification.png'),
+  notificationFocused: require('../../assets/icons/notificationFocused.png'),
+  pointer: require('../../assets/icons/pointer.png'),
   //   pointerFocused: require('../../assets/icons/pointerFocused.png'),
-  pin: require('../../assets/icons/pin.png'), // eslint-disable-line
-  pinFocused: require('../../assets/icons/pinFocused.png'), // eslint-disable-line
+  pin: require('../../assets/icons/pin.png'),
+  pinFocused: require('../../assets/icons/pinFocused.png'),
+  menu: require('../../assets/icons/menu.png'),
+  user: require('../../assets/icons/user.png'),
 };
 
 export default icons;
