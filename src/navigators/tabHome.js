@@ -12,7 +12,10 @@ import PinStack from './pinStack';
 
 export default createBottomTabNavigator(
   {
-    Home: HomeStack,
+    Home: {
+      screen: HomeStack,
+      navigationOptions: ({ navigation }) => ({ tabBarVisible: navigation.state.index === 0 }),
+    },
     Search: SearchStack,
     Pointer: MapStack,
     Notifications: NotificationsStack,
