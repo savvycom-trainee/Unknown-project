@@ -2,6 +2,7 @@ import React from 'react';
 // import PropTypes from 'prop-types';
 import { View, Image } from 'react-native';
 import { createBottomTabNavigator } from 'react-navigation';
+
 import { Icons } from '../themes';
 import styles from './styles';
 import HomeStack from './homeStack';
