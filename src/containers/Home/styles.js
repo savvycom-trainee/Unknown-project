@@ -31,6 +31,24 @@ export default StyleSheet.create({
     width: 95,
     backgroundColor: Colors.white,
   },
+  viewPointForm: {
+    backgroundColor: 'red',
+    zIndex: 12,
+    transform: [{ translate: [-15, 0, 0] }],
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'flex-end',
+  },
+  viewPoint: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'center',
+    backgroundColor: Colors.default,
+    height: 50,
+    width: 50,
+    borderRadius: 25,
+    position: 'absolute',
+  },
   itemMenuIcon: {
     justifyContent: 'center',
     alignItems: 'center',
@@ -44,12 +62,18 @@ export default StyleSheet.create({
     paddingRight: Metrics.doubleBaseMargin1x,
   },
   formItem: {
+    marginBottom: 25,
     borderRadius: 2.5,
     backgroundColor: Colors.white,
     height: Metrics.screenHeight / 2.3,
   },
   formItemText: {
     padding: 25.5,
+  },
+  textPoint: {
+    fontSize: 15,
+    color: Colors.white,
+    fontWeight: '800',
   },
   textName: {
     fontSize: 18,
