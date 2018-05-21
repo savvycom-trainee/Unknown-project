@@ -4,6 +4,7 @@ import MapView from 'react-native-maps';
 import { Header } from '../../components';
 import { Icons } from '../../themes';
 import * as d from '../../utilities/Tranform';
+import mapStyles from './mapStyles';
 
 class MapScreen extends PureComponent {
   state = {};
@@ -17,12 +18,13 @@ class MapScreen extends PureComponent {
         />
         <MapView
           region={{
-            latitude: 37.78825,
-            longitude: -122.4324,
-            latitudeDelta: 0.0922,
-            longitudeDelta: 0.0421,
+            latitude: 21.030244,
+            longitude: 105.784782,
+            latitudeDelta: 0.0301,
+            longitudeDelta: 0.0304,
           }}
           provider="google"
+          customMapStyle={mapStyles}
           style={{ flex: 1 }}
         />
       </View>
