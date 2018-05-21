@@ -1,7 +1,8 @@
 import React, { Component } from 'react';
 import { View, Text, TouchableOpacity, Image } from 'react-native';
 import StarRating from 'react-native-star-rating';
-import { Card } from '../../../components';
+
+import { Card, OpenAndDistance } from '../../../components';
 import styles from './styles';
 
 export default class PinView extends Component {
@@ -31,8 +32,16 @@ export default class PinView extends Component {
 
   render() {
     return (
-      <Card>
-        <Image source={this.props.item.restaurantPhoto} />
+      <Card onPress={() => {}}>
+        <View style={styles.photoContainerStyle}>
+          <View style={styles.photoViewStyle}>
+            <Image source={this.props.item.restaurantPhoto} />
+          </View>
+          <TouchableOpacity style={styles.directStyle}>
+            {/* eslint-disable-next-line */}
+            <Image source={require('../../../../assets/icons/direct.png')} />
+          </TouchableOpacity>
+        </View>
         <View style={styles.detailContainer}>
           <View>
             <Text style={styles.restaurantNameStyle}>{this.props.item.restaurantName}</Text>
@@ -53,18 +62,10 @@ export default class PinView extends Component {
               starSize={12}
             />
           </View>
-          <View style={styles.footerDetailStyle}>
-            <Text
-              style={{
-                color: this.state.openingStatus ? '#4CB33E' : '#F9593A',
-                fontSize: 11,
-              }}
-            >
-              {this.state.openingStatus ? 'Open Now' : 'Closed'}
-            </Text>
-            <Text style={styles.lightSmallTextStyle}>•</Text>
-            <Text style={styles.lightSmallTextStyle}>{this.props.item.distance} from you</Text>
-          </View>
+          <OpenAndDistance
+            openingStatus={this.state.openingStatus}
+            distance={this.props.item.distance}
+          />
         </View>
       </Card>
     );

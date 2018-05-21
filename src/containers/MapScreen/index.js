@@ -22,6 +22,7 @@ class MapScreen extends PureComponent {
             latitudeDelta: 0.0922,
             longitudeDelta: 0.0421,
           }}
+          provider="google"
           style={{ flex: 1 }}
         />
       </View>
