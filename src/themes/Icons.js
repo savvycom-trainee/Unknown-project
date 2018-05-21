@@ -18,6 +18,7 @@ const icons = {
   menu: require('../../assets/icons/menu.png'),
   user: require('../../assets/icons/user.png'),
   close: require('../../assets/icons/close.png'),
+  logo: require('../../assets/icons/logo.png'),
 };
 
 export default icons;
