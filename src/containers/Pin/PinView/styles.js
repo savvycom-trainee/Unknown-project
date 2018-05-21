@@ -1,4 +1,5 @@
 import * as d from '../../../utilities/Tranform';
+import colors from '../../../themes/Colors';
 
 const styles = {
   detailContainer: {
@@ -8,6 +9,7 @@ const styles = {
   restaurantNameStyle: {
     fontSize: 15,
     fontWeight: '700',
+    color: colors.text,
   },
   bodyDetailStyle: {
     flexDirection: 'row',
@@ -16,18 +18,21 @@ const styles = {
   },
   restaurantTypeStyle: {
     fontSize: 10,
-    color: '#00000050',
+    color: colors.textOpacity,
     fontWeight: '700',
   },
-  footerDetailStyle: {
+  photoContainerStyle: {
     flexDirection: 'row',
-    justifyContent: 'space-between',
-    alignItems: 'center',
-    width: 150 * d.ratioW,
+    alignItems: 'flex-end',
   },
-  lightSmallTextStyle: {
-    fontSize: 10,
-    color: '#00000050',
+  photoViewStyle: {
+    borderTopLeftRadius: 2.5,
+    borderBottomLeftRadius: 2.5,
+    overflow: 'hidden',
+  },
+  directStyle: {
+    position: 'absolute',
+    left: 68 * d.ratioW,
   },
 };
 
