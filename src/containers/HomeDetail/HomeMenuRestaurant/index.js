@@ -11,7 +11,7 @@ class HomeMenuRestaurant extends PureComponent {
         imageName: 'restaurantPhotoMenu1',
         Title: 'Salads, Soups & Chili',
         Description: 'Neque porro quisquam est qui dolorem ipsum quia dolor...',
-        Cost: 7.03,
+        Cost: 7,
       },
       {
         imageName: 'restaurantPhotoMenu2',
@@ -58,6 +58,7 @@ class HomeMenuRestaurant extends PureComponent {
           <FlatList
             // refreshing={this.state.isReloading}
             // onRefresh={this.handleRefesh}
+
             data={this.state.data}
             renderItem={({ item }) => <Content data={item} />}
             keyExtractor={(item, index) => index.toString()}
