@@ -1,5 +1,6 @@
 import React, { PureComponent } from 'react';
 import { View, Text, Image } from 'react-native';
+import PropTypes from 'prop-types';
 
 import styles from './styles';
 import { Images } from '../../../../themes';

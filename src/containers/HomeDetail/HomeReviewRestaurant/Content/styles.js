@@ -10,7 +10,6 @@ const styles = StyleSheet.create({
     marginLeft: 25,
     marginRight: 25,
     borderRadius: 5,
-    height: 110,
 
     elevation: 6,
     shadowColor: 'rgba(0,0,0,0.6)',
@@ -18,59 +17,58 @@ const styles = StyleSheet.create({
     shadowOpacity: 0.4,
     shadowRadius: 20,
   },
-  ViewImg: {
-    flex: 1,
-    // backgroundColor: 'blue',
+  ViewMainChild: {
+    padding: 26,
   },
-  Img: {
-    height: 110,
-    width: 110,
-  },
-
-  ViewContent: {
-    flex: 1.7,
-    flexDirection: 'column',
-    marginLeft: 26,
-    marginRight: 23,
-    marginTop: 23,
-    marginBottom: 23,
-    // backgroundColor: 'red',
-  },
-
-  ViewTitleCost: {
+  ViewMainChildTop: {
     flexDirection: 'row',
+  },
+
+  ViewMainChildBottom: {
+    marginTop: 5,
+  },
+
+  ViewGallery: {
+    flexDirection: 'row',
+    marginTop: 5,
+    justifyContent: 'space-between',
+  },
+
+  linkImage: {
+    height: 30,
+    width: 30,
+  },
+  ViewAvatar: {
     flex: 1,
   },
-
-  ViewDescription: {
-    flex: 1,
-
-    marginTop: 10,
+  avatar: {
+    height: 35,
+    width: 35,
+    borderRadius: 35,
   },
 
-  ViewTitle: {
-    flex: 3.2,
+  ViewNameHours: {
+    flex: 5,
+    marginLeft: 10,
+  },
+  ViewScore: {
+    flex: 1.3,
   },
 
-  ViewCost: {
-    flex: 1,
-    alignItems: 'flex-end',
-    justifyContent: 'flex-start',
-  },
-
-  TextTitle: {
+  TextName: {
     fontSize: 14,
     fontWeight: 'bold',
     color: 'rgb(82,82,82)',
   },
 
-  TextCost: {
-    fontSize: 10,
+  TextScore: {
+    fontSize: 12,
     fontWeight: 'bold',
     color: 'rgb(66,183,42)',
   },
-  TextDescription: {
-    fontSize: 9,
+
+  TextHoursComment: {
+    fontSize: 10,
     fontWeight: 'normal',
     color: 'rgb(153,153,153)',
   },

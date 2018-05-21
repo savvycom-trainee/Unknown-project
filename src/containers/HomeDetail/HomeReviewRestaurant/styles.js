@@ -6,7 +6,6 @@ const styles = StyleSheet.create({
     flexDirection: 'column',
     backgroundColor: 'white',
   },
-
   ViewHeader: {
     height: 55,
     flexDirection: 'row',
@@ -29,6 +28,21 @@ const styles = StyleSheet.create({
     height: 17.5,
     width: 17.5,
   },
+  ViewBtnAdd: {
+    marginLeft: 295,
+    height: 35,
+    width: 35,
+    borderRadius: 35,
+    backgroundColor: 'rgb(66,183,42)',
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  BtnAdd: {
+    fontSize: 17,
+    color: 'white',
+    // fontWeight: 'bold',
+  },
+
   ViewContent: {
     flex: 1,
   },

@@ -31,6 +31,7 @@ const styles = StyleSheet.create({
   },
   ViewContent: {
     flex: 1,
+    // backgroundColor: 'red',
   },
 });
 
