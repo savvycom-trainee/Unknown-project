@@ -3,6 +3,7 @@
   "extends": "airbnb",
   "plugins": ["react", "jsx-a11y", "import", "react-native"],
   "rules": {
+    "no-console": "off",
     "no-underscore-dangle": "off",
     "react/jsx-filename-extension": [
       1,
