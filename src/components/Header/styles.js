@@ -12,6 +12,9 @@ const styles = {
     paddingTop: 1.7 * d.statusBarHeight,
     paddingHorizontal: 30 * d.ratioW,
   },
+  leftHeaderStyle: {
+    marginTop: 2 * d.ratioH,
+  },
 };
 
 export default styles;

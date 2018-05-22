@@ -1,31 +1,33 @@
 import React from 'react';
-import { View, TouchableOpacity } from 'react-native';
+import { TouchableOpacity } from 'react-native';
+import PropTypes from 'prop-types';
 import * as d from '../../utilities/Tranform';
 
-const Card = (props, { onPress }) => (
+const Card = props => (
   <TouchableOpacity
-    onPress={onPress}
+    onPress={props.onPress}
     style={{
       backgroundColor: '#FFFFFF',
       borderRadius: 2.5,
-      flexDirection: 'row',
+      flexDirection: props.direction,
       marginHorizontal: 30 * d.ratioW,
       marginTop: 25 * d.ratioH,
+      zIndex: 0,
     }}
   >
-    {/* <View
-      style={{
-        backgroundColor: '#FFFFFF',
-        borderRadius: 2.5,
-        flexDirection: 'row',
-        marginHorizontal: 30 * d.ratioW,
-        marginTop: 25 * d.ratioH,
-      }}
-    > */}
     {/* eslint-disable-next-line */}
     {props.children}
-    {/* </View> */}
   </TouchableOpacity>
 );
+
+Card.propTypes = {
+  onPress: PropTypes.func,
+  direction: PropTypes.string,
+};
+
+Card.defaultProps = {
+  onPress: () => {},
+  direction: 'column',
+};
 
 export default Card;

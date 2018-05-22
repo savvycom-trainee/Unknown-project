@@ -22,8 +22,8 @@ const styles = {
     fontWeight: '700',
   },
   photoContainerStyle: {
-    flexDirection: 'row',
-    alignItems: 'flex-end',
+    justifyContent: 'center',
+    zIndex: 1,
   },
   photoViewStyle: {
     borderTopLeftRadius: 2.5,
@@ -31,8 +31,8 @@ const styles = {
     overflow: 'hidden',
   },
   directStyle: {
-    position: 'absolute',
-    left: 68 * d.ratioW,
+    alignSelf: 'flex-end',
+    right: -19.5 * d.ratioW,
   },
 };
 

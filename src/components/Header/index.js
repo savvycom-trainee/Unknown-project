@@ -13,7 +13,9 @@ const Header = ({
   <View style={styles.container}>
     <StatusBar backgroundColor="transparent" />
     <View style={styles.headerComponent}>
-      <TouchableOpacity onPress={onPressLeftHeader}>{leftHeader}</TouchableOpacity>
+      <TouchableOpacity onPress={onPressLeftHeader} style={styles.leftHeaderStyle}>
+        {leftHeader}
+      </TouchableOpacity>
       <View>{centerHeader}</View>
       <TouchableOpacity onPress={onPressRightHeader}>{rightHeader}</TouchableOpacity>
     </View>
