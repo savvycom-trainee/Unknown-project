@@ -3,8 +3,8 @@ import { View, Text } from 'react-native';
 import PropTypes from 'prop-types';
 import styles from './styles';
 
-const OpenAndDistance = ({ openingStatus, distance }) => (
-  <View style={styles.footerDetailStyle}>
+const OpenAndDistance = ({ openingStatus, distance, otherStyle }) => (
+  <View style={[styles.footerDetailStyle, otherStyle]}>
     <Text
       style={{
         color: openingStatus ? '#4CB33E' : '#F9593A',
@@ -21,11 +21,13 @@ const OpenAndDistance = ({ openingStatus, distance }) => (
 OpenAndDistance.propTypes = {
   openingStatus: PropTypes.bool,
   distance: PropTypes.string,
+  otherStyle: PropTypes.object,
 };
 
 OpenAndDistance.defaultProps = {
   openingStatus: false,
   distance: '',
+  otherStyle: {},
 };
 
 export default OpenAndDistance;

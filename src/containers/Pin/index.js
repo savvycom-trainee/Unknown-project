@@ -2,9 +2,9 @@ import React, { PureComponent } from 'react';
 import { View, Text, Image, FlatList } from 'react-native';
 import { Header } from '../../components';
 import { Icons } from '../../themes';
-import * as d from '../../utilities/Tranform';
 import restaurantData from './PinView/data/restaurantData';
 import PinView from './PinView';
+import styles from './styles';
 
 class Pin extends PureComponent {
   state = {};
@@ -12,8 +12,8 @@ class Pin extends PureComponent {
     return (
       <View style={{ flex: 1 }}>
         <Header
-          leftHeader={<Image source={Icons.menu} style={{ marginTop: 2 * d.ratioH }} />}
-          centerHeader={<Text style={{ fontSize: 15, fontWeight: '600' }}>Bookmark</Text>}
+          leftHeader={<Image source={Icons.menu} />}
+          centerHeader={<Text style={styles.centerHeaderStyle}>Bookmark</Text>}
           rightHeader={<Image source={Icons.user} />}
         />
         <FlatList

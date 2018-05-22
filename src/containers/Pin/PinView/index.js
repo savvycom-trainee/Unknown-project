@@ -1,8 +1,8 @@
 import React, { Component } from 'react';
 import { View, Text, TouchableOpacity, Image } from 'react-native';
 import StarRating from 'react-native-star-rating';
-
-import { Card, OpenAndDistance } from '../../../components';
+import icons from '../../../themes/Icons';
+import { Card, OpenAndDistance, GreenCircle } from '../../../components';
 import styles from './styles';
 
 export default class PinView extends Component {
@@ -32,15 +32,14 @@ export default class PinView extends Component {
 
   render() {
     return (
-      <Card onPress={() => {}}>
+      <Card onPress={() => {}} direction="row">
         <View style={styles.photoContainerStyle}>
           <View style={styles.photoViewStyle}>
             <Image source={this.props.item.restaurantPhoto} />
           </View>
-          <TouchableOpacity style={styles.directStyle}>
-            {/* eslint-disable-next-line */}
-            <Image source={require('../../../../assets/icons/direct.png')} />
-          </TouchableOpacity>
+          <GreenCircle onPress={() => {}} style={styles.directStyle}>
+            <Image source={icons.direct} />
+          </GreenCircle>
         </View>
         <View style={styles.detailContainer}>
           <View>

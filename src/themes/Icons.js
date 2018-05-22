@@ -19,6 +19,7 @@ const icons = {
   user: require('../../assets/icons/user.png'),
   close: require('../../assets/icons/close.png'),
   logo: require('../../assets/icons/logo.png'),
+  greenCircleBG: require('../../assets/icons/greenCircleBG.png'),
 };
 
 export default icons;
