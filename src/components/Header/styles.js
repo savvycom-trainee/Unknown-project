@@ -1,3 +1,4 @@
+import { Platform } from 'react-native';
 import * as d from '../../utilities/Tranform';
 
 const styles = {
@@ -9,7 +10,7 @@ const styles = {
   headerComponent: {
     flexDirection: 'row',
     justifyContent: 'space-between',
-    paddingTop: 1.7 * d.statusBarHeight,
+    paddingTop: Platform.OS === 'ios' ? 1.7 * d.statusBarHeight : d.statusBarHeight,
     paddingHorizontal: 30 * d.ratioW,
   },
   leftHeaderStyle: {
