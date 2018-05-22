@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { View, Text, TouchableOpacity, BackHandler, Button } from 'react-native';
+import { View, Text, TouchableOpacity, BackHandler, Button, Dimensions } from 'react-native';
 import styles from './styles';
 
 import HomeOverviewRestaurant from './HomeOverviewRestaurant';
@@ -16,13 +16,6 @@ class HomeDetail extends Component {
     isMenuClick: false,
     isReviewClick: false,
   };
-  // componentDidMount() {
-  //   BackHandler.addEventListener('hardwareBackPress', this.handleBackPress);
-  // }
-
-  // componentWillUnmount() {
-  //   BackHandler.removeEventListener('hardwareBackPress', this.handleBackPress);
-  // }
   componentDidMount() {
     BackHandler.addEventListener('hardwareBackPress', this.handleBackPress);
   }
@@ -43,7 +36,6 @@ class HomeDetail extends Component {
       isMenuClick: false,
       isReviewClick: false,
     });
-    // console.log('overview');
   };
   clickTab2 = () => {
     this.setState({
@@ -52,7 +44,6 @@ class HomeDetail extends Component {
       isMenuClick: true,
       isReviewClick: false,
     });
-    // console.log('menu');
   };
   clickTab3 = () => {
     this.setState({
@@ -61,33 +52,19 @@ class HomeDetail extends Component {
       isMenuClick: false,
       isReviewClick: true,
     });
-    // console.log('review');
   };
-  //  BackHandler.addEventListener('hardwareBackPress', this.handleBackPress);
-
-  // handleBackPress = () => {
-  //   console.log('back back');
-
-  //   this.props.navigation.goBack();
-  // };
 
   render() {
     const Content = (activeTab) => {
       if (activeTab === 'HomeOverviewRestaurant') {
-        return <HomeOverviewRestaurant />;
+        return <HomeOverviewRestaurant onPressGoBack={() => this.props.navigation.goBack()} />;
       } else if (activeTab === 'HomeMenuRestaurant') {
-        return <HomeMenuRestaurant />;
+        return <HomeMenuRestaurant onPressGoBack={() => this.props.navigation.goBack()} />;
       }
-      return <HomeReviewRestaurant />;
+      return <HomeReviewRestaurant onPressGoBack={() => this.props.navigation.goBack()} />;
     };
     return (
       <View style={styles.ViewMain}>
-        {/* <Button
-          title="clik"
-          onPress={() => {
-            this.props.navigation.goBack();
-          }}
-        /> */}
         <View style={styles.ViewContent}>{Content(this.state.activeTab)}</View>
         <View style={styles.ViewTabbar}>
           <TouchableOpacity

@@ -12,7 +12,7 @@ class HomeReviewRestaurant extends PureComponent {
     return (
       <View style={styles.ViewMain}>
         <View style={styles.ViewHeader}>
-          <TouchableOpacity>
+          <TouchableOpacity onPress={this.props.onPressGoBack}>
             <Image source={Icons.back} style={styles.IconBack} />
           </TouchableOpacity>
           <View>

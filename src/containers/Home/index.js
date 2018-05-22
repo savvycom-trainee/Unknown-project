@@ -19,18 +19,18 @@ class Home extends PureComponent {
   constructor(props) {
     super(props);
     this.state = {
-      modalVisible: true,
+      modalVisible: false,
       // starCount: 2.5,
     };
   }
   state = {};
 
-  hideModal = (message) => {
-    this.setModalVisible(message);
-  };
   setModalVisible(visible) {
     this.setState({ modalVisible: visible });
   }
+  hideModal = (message) => {
+    this.setModalVisible(message);
+  };
   _renderNewFeed() {
     return (
       <FlatList
@@ -140,14 +140,6 @@ class Home extends PureComponent {
             </View>
           </ScrollView>
         </View>
-        {/* <Button
-          onPress={() => {
-            this.props.navigation.navigate('HomeDetail');
-          }}
-          title="HomeDetailStack"
-          color="#841584"
-          accessibilityLabel="Learn more about this purple button"
-        /> */}
       </View>
     );
   }

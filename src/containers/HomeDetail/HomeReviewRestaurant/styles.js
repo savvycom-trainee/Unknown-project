@@ -1,5 +1,7 @@
 import { StyleSheet } from 'react-native';
 
+import * as d from '../../../utilities/Tranform';
+
 const styles = StyleSheet.create({
   ViewMain: {
     flex: 1,
@@ -7,16 +9,16 @@ const styles = StyleSheet.create({
     backgroundColor: 'white',
   },
   ViewHeader: {
-    height: 55,
+    height: 55 * d.ratioH,
     flexDirection: 'row',
     justifyContent: 'space-between',
     alignItems: 'center',
   },
   IconBack: {
     // marginTop: 30,
-    marginLeft: 30,
-    height: 13,
-    width: 20,
+    marginLeft: 30 * d.ratioW,
+    height: 13 * d.ratioH,
+    width: 20 * d.ratioW,
   },
   Title: {
     fontSize: 14,
@@ -24,15 +26,15 @@ const styles = StyleSheet.create({
     color: 'black',
   },
   IconSearch: {
-    marginRight: 30,
-    height: 17.5,
-    width: 17.5,
+    marginRight: 30 * d.ratioW,
+    height: 17.5 * d.ratioH,
+    width: 17.5 * d.ratioW,
   },
   ViewBtnAdd: {
-    marginLeft: 295,
-    height: 35,
-    width: 35,
-    borderRadius: 35,
+    marginLeft: 295 * d.ratioW,
+    height: 35 * d.ratioH,
+    width: 35 * d.ratioW,
+    borderRadius: 35 * d.ratioH,
     backgroundColor: 'rgb(66,183,42)',
     justifyContent: 'center',
     alignItems: 'center',

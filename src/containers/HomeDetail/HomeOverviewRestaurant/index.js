@@ -1,20 +1,20 @@
 import React, { PureComponent } from 'react';
+// import Ionicons from 'react-native-vector-icons/Ionicons';
 import StarRating from 'react-native-star-rating';
 import { View, Text, Image, TouchableOpacity, ScrollView } from 'react-native';
-import { Icons } from '../../../themes';
+import { Icons, Colors } from '../../../themes';
+
+import ButtonCustom from './ButtonCustom';
 
 import styles from './styles';
 /* eslint-disable */
 class HomeOverviewRestaurant extends PureComponent {
-  static navigationOptions = {
-    tabBarVisible: false,
-  };
   state = {};
   render() {
     return (
       <View style={styles.ViewMain}>
         <View style={styles.ViewHeader}>
-          <TouchableOpacity>
+          <TouchableOpacity onPress={this.props.onPressGoBack}>
             <Image source={Icons.back} style={styles.IconBack} />
           </TouchableOpacity>
         </View>
@@ -80,9 +80,14 @@ class HomeOverviewRestaurant extends PureComponent {
             </Text>
           </View>
 
-          <View>
-            <Text />
+          <View style={styles.ViewBtnBottom}>
+            <ButtonCustom title="8am-10pm" iconName={Icons.clockTime} iconColor={Colors.default} />
+            <ButtonCustom title="Direct" iconName={Icons.directOutLine} iconColor={Colors.text} />
+            <ButtonCustom title="Call Now" iconName={Icons.phoneCall} iconColor={Colors.text} />
+            <ButtonCustom title="Bookmarks" iconName={Icons.pin} iconColor={Colors.text} />
           </View>
+
+          <View />
         </View>
       </View>
     );
