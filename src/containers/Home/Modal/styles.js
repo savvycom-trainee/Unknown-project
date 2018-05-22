@@ -33,6 +33,8 @@ export default StyleSheet.create({
     paddingBottom: 30 * d.ratioH,
   },
   textInput: {
+    padding: 0,
+    paddingLeft: 10,
     borderRadius: 2.5,
     width: 265 * d.ratioW,
     height: 50 * d.ratioH,
@@ -68,6 +70,7 @@ export default StyleSheet.create({
     width: 265 * d.ratioW,
     flexDirection: 'row',
     flexWrap: 'wrap',
+    height: 100 * d.ratioH,
   },
   viewItemImagesList: {},
 });
