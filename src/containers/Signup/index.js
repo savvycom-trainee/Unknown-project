@@ -1,13 +1,19 @@
 import React, { PureComponent } from 'react';
-import Icon from 'react-native-vector-icons/FontAwesome';
 import PropTypes from 'prop-types';
-import { ScrollView, View, Image, TextInput, TouchableOpacity, Text } from 'react-native';
+import firebase from 'react-native-firebase';
+import {
+  ScrollView,
+  View,
+  Image,
+  TextInput,
+  TouchableOpacity,
+  Text,
+  Alert,
+  ActivityIndicator,
+} from 'react-native';
 import signup from './style';
 import images from '../../themes/Icons';
 
-const shadow = {
-  elevation: 10,
-};
 class Signup extends PureComponent {
   constructor(props) {
     super(props);
@@ -15,6 +21,7 @@ class Signup extends PureComponent {
       account: '',
       password: '',
       repassword: '',
+      isLoading: false,
     };
   }
   changeAccount = (text) => {
@@ -43,15 +50,65 @@ class Signup extends PureComponent {
     const pass = this.state.password;
     const repass = this.state.repassword;
     if (pass === repass) {
-      if (acc === 'chien123') {
-        if (pass === '123') {
-          console.log('signup success');
-        } else {
-          console.log('password incorrect');
-        }
-      } else {
-        console.log('account not exit!');
-      }
+      this.setState(
+        {
+          isLoading: true,
+        },
+        () => {
+          firebase
+            .auth()
+            .createUserAndRetrieveDataWithEmailAndPassword(acc, pass)
+            .then(() => {
+              this.setState(
+                {
+                  isLoading: false,
+                },
+                () => {
+                  Alert.alert('Notice', 'Đăng ký thành công', [
+                    { text: 'OK', onPress: () => this.props.navigation.goBack() },
+                  ]);
+                },
+              );
+            })
+            .catch((error) => {
+              this.setState(
+                {
+                  isLoading: false,
+                },
+                () => {
+                  const { code } = error;
+                  let message = '';
+                  switch (code) {
+                    case 'auth/email-already-in-use':
+                      message = 'Email đã được sử dụng';
+                      break;
+                    case 'auth/invalid-email':
+                      message = 'Email không đúng định dạng';
+                      break;
+                    case 'auth/user-disabled':
+                      message = 'Tài khoản ngừng hoạt động';
+                      break;
+                    case 'auth/user-not-found':
+                      message = 'Tài khoản không tồn tại';
+                      break;
+                    case 'auth/wrong-password':
+                      message = 'Mật khẩu không chính xác';
+                      break;
+                    case 'auth/weak-password':
+                      message = 'Password cần tối thiểu 6 kí tự';
+                      break;
+                    default:
+                      message = code;
+                      break;
+                  }
+                  Alert.alert('Notice', message, [{ text: 'OK' }]);
+                },
+              );
+            });
+        },
+      );
+    } else {
+      Alert.alert('Notice', 'Xác nhận mật khẩu không khớp', [{ text: 'OK' }]);
     }
   };
   render() {
@@ -65,7 +122,7 @@ class Signup extends PureComponent {
         <View style={signup.signupForm}>
           <View style={signup.form}>
             <TextInput
-              style={[signup.input, shadow]}
+              style={signup.input}
               placeholder="Username"
               underlineColorAndroid="transparent"
               onChangeText={this.changeAccount}
@@ -77,7 +134,7 @@ class Signup extends PureComponent {
               ref={(ref) => {
                 this.passwordField = ref;
               }}
-              style={[signup.input, shadow]}
+              style={signup.input}
               placeholder="Password"
               underlineColorAndroid="transparent"
               secureTextEntry
@@ -89,7 +146,7 @@ class Signup extends PureComponent {
               ref={(ref) => {
                 this.rePasswordField = ref;
               }}
-              style={[signup.input, shadow]}
+              style={signup.input}
               placeholder="Re-Password"
               underlineColorAndroid="transparent"
               secureTextEntry
@@ -100,13 +157,16 @@ class Signup extends PureComponent {
           </View>
           <View style={signup.vButton}>
             <TouchableOpacity style={signup.btnsignup} onPress={this.signupAccount}>
-              <Text style={signup.txtBtn}>SIGN UP</Text>
+              {!this.state.isLoading ? (
+                <Text style={signup.txtBtn}>SIGN UP</Text>
+              ) : (
+                <ActivityIndicator size="small" color="white" />
+              )}
             </TouchableOpacity>
-            <Icon.Button name="facebook" size={26} style={{ justifyContent: 'center' }}>
-              <Text style={{ fontFamily: 'Arial', fontSize: 16, color: 'white' }}>
-                Continue with Facebook
-              </Text>
-            </Icon.Button>
+            <TouchableOpacity style={signup.btnfb}>
+              <Image source={images.logofb} style={signup.logofb} />
+              <Text style={signup.txtfb}>Continue With Facebook</Text>
+            </TouchableOpacity>
           </View>
           <Text style={signup.txtBottom}>
             Not account? Go to{' '}

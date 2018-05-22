@@ -1,5 +1,6 @@
 import { StyleSheet } from 'react-native';
 import Colors from '../../themes/Colors';
+import * as d from '../../utilities/Tranform';
 
 const signup = StyleSheet.create({
   container: {
@@ -8,13 +9,12 @@ const signup = StyleSheet.create({
   },
   cirleView: {
     width: '100%',
-    height: 225,
+    height: 218 * d.ratioH,
     alignItems: 'center',
     justifyContent: 'center',
     overflow: 'hidden',
   },
   cirle: {
-    backgroundColor: 'green',
     position: 'absolute',
     width: 650,
     height: 650,
@@ -31,42 +31,60 @@ const signup = StyleSheet.create({
   },
   signupForm: {
     width: '100%',
-    flex: 1,
-    alignItems: 'center',
+    height: '100%',
   },
   form: {
-    paddingTop: 10,
-    width: '86%',
-    height: 220,
+    paddingTop: 15,
+    paddingLeft: 50 * d.ratioW,
+    paddingRight: 50 * d.ratioW,
+    width: '100%',
     alignItems: 'center',
-    backgroundColor: 'rgba(0,0,0,0.015)',
+    backgroundColor: 'rgba(0,0,0,0.01)',
     borderRadius: 10,
   },
   input: {
-    width: '92%',
-    height: 50,
-    marginBottom: 20,
+    width: '100%',
+    height: 50 * d.ratioH,
+    marginBottom: 17 * d.ratioH,
     backgroundColor: 'white',
     paddingLeft: 20,
   },
   vButton: {
-    height: 130,
-    width: '86%',
+    paddingLeft: 50 * d.ratioW,
+    paddingRight: 50 * d.ratioW,
+    width: '100%',
     marginTop: 30,
   },
   btnsignup: {
-    paddingTop: 15,
-    height: 60,
+    height: 50 * d.ratioH,
     width: '100%',
     alignItems: 'center',
-    marginBottom: '4%',
+    justifyContent: 'center',
+    marginBottom: 17,
     borderRadius: 5,
-    backgroundColor: Colors.default,
+    backgroundColor: 'rgb(76, 196, 57)',
   },
   txtBtn: {
     color: 'white',
-    fontSize: 18,
+    fontSize: 12,
     textAlign: 'center',
+  },
+  btnfb: {
+    height: 50 * d.ratioH,
+    width: '100%',
+    alignItems: 'center',
+    justifyContent: 'center',
+    borderRadius: 5,
+    backgroundColor: 'rgb(71, 89, 147)',
+    flexDirection: 'row',
+  },
+  logofb: {
+    width: 25,
+    height: 25,
+    marginRight: 12.5,
+  },
+  txtfb: {
+    color: 'white',
   },
   txtSignup: {
     fontWeight: 'bold',
