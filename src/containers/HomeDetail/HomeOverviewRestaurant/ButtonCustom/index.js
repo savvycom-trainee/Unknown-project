@@ -1,4 +1,6 @@
 import React, { PureComponent } from 'react';
+
+/* eslint-disable */
 import { View, Text, Image, TouchableOpacity } from 'react-native';
 import PropTypes from 'prop-types';
 
@@ -11,7 +13,7 @@ class ButtonCustom extends PureComponent {
   };
   render() {
     return (
-      <TouchableOpacity style={styles.ViewMain}>
+      <TouchableOpacity style={styles.ViewMain} onPress={this.props.onPressDirect1}>
         <Image source={this.props.iconName} style={styles.iconStyle} />
         <Text
           style={{
@@ -26,5 +28,13 @@ class ButtonCustom extends PureComponent {
     );
   }
 }
+
+ButtonCustom.propTypes = {
+  onPressDirect: PropTypes.func,
+};
+
+ButtonCustom.defaultProps = {
+  onPressDirect: () => {},
+};
 
 export default ButtonCustom;

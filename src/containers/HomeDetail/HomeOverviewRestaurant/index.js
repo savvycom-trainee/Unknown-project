@@ -1,7 +1,7 @@
 import React, { PureComponent } from 'react';
 // import Ionicons from 'react-native-vector-icons/Ionicons';
 import StarRating from 'react-native-star-rating';
-import { View, Text, Image, TouchableOpacity, ScrollView } from 'react-native';
+import { View, Text, Image, TouchableOpacity, ScrollView, Button } from 'react-native';
 import { Icons, Colors } from '../../../themes';
 
 import ButtonCustom from './ButtonCustom';
@@ -19,12 +19,7 @@ class HomeOverviewRestaurant extends PureComponent {
           </TouchableOpacity>
         </View>
         <View style={styles.ScrollViewImages}>
-          <ScrollView
-            horizontal
-            showsHorizontalScrollIndicator={false}
-            // scrollEventThrottle={10} // how often we update the position of the indicator bar
-            // pagingEnabled // scrolls from one image to the next, instead of allowing any value inbetween
-          >
+          <ScrollView horizontal showsHorizontalScrollIndicator={false}>
             <Image source={require('./Data/images/1.png')} style={styles.ImagesOverView} />
             <Image source={require('./Data/images/2.png')} style={styles.ImagesOverView} />
             <Image source={require('./Data/images/1.png')} style={styles.ImagesOverView} />
@@ -82,12 +77,17 @@ class HomeOverviewRestaurant extends PureComponent {
 
           <View style={styles.ViewBtnBottom}>
             <ButtonCustom title="8am-10pm" iconName={Icons.clockTime} iconColor={Colors.default} />
-            <ButtonCustom title="Direct" iconName={Icons.directOutLine} iconColor={Colors.text} />
+            <ButtonCustom
+              title="Direct"
+              iconName={Icons.directOutLine}
+              iconColor={Colors.text}
+              onPressDirect1={this.props.onPressDirect}
+            />
             <ButtonCustom title="Call Now" iconName={Icons.phoneCall} iconColor={Colors.text} />
             <ButtonCustom title="Bookmarks" iconName={Icons.pin} iconColor={Colors.text} />
           </View>
 
-          <View />
+          {/* <Button title="direct" onPress={this.props.onPressDirect} /> */}
         </View>
       </View>
     );

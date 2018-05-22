@@ -1,3 +1,4 @@
+/* eslint-disable */
 const Data = [
   {
     avatar: require('./images/shutterstock615693059.png'),

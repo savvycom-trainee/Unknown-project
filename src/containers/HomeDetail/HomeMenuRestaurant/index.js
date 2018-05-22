@@ -1,6 +1,8 @@
 import React, { PureComponent } from 'react';
+import PropTypes from 'prop-types';
 import { View, Text, Image, TouchableOpacity, FlatList } from 'react-native';
 import styles from './styles';
+
 import { Icons } from '../../../themes';
 import Content from './Content';
 
@@ -68,5 +70,13 @@ class HomeMenuRestaurant extends PureComponent {
     );
   }
 }
+
+HomeMenuRestaurant.propTypes = {
+  onPressGoBack: PropTypes.func,
+};
+
+HomeMenuRestaurant.defaultProps = {
+  onPressGoBack: () => {},
+};
 
 export default HomeMenuRestaurant;

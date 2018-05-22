@@ -1,6 +1,6 @@
 import React, { PureComponent } from 'react';
 import { View, Text, Image } from 'react-native';
-
+/* eslint-disable */
 import styles from './styles';
 import { Images } from '../../../../themes';
 

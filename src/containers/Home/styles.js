@@ -106,4 +106,7 @@ export default StyleSheet.create({
   viewNameRow2Item: {
     flexDirection: 'row',
   },
+  viewContent: {
+    flex: 1,
+  },
 });
