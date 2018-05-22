@@ -37,10 +37,10 @@ export default class PinView extends Component {
           <View style={styles.photoViewStyle}>
             <Image source={this.props.item.restaurantPhoto} />
           </View>
-          <GreenCircle onPress={() => {}} style={styles.directStyle}>
-            <Image source={icons.direct} />
-          </GreenCircle>
         </View>
+        <GreenCircle onPress={() => {}} style={styles.directStyle}>
+          <Image source={icons.direct} />
+        </GreenCircle>
         <View style={styles.detailContainer}>
           <View>
             <Text style={styles.restaurantNameStyle}>{this.props.item.restaurantName}</Text>

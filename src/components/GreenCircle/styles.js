@@ -9,7 +9,9 @@ const styles = {
     height: 40,
     width: 40,
     borderRadius: 20,
+    // position: 'absolute',
     position: 'absolute',
+    zIndex: 5,
   },
 };
 

@@ -33,6 +33,7 @@ const styles = {
   directStyle: {
     alignSelf: 'flex-end',
     right: -19.5 * d.ratioW,
+    transform: [{ translate: [-195, -35, 0] }],
   },
 };
 
