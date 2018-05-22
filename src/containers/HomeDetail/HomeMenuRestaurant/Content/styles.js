@@ -1,16 +1,18 @@
 import { StyleSheet } from 'react-native';
 
+import * as d from '../../../../utilities/Tranform';
+
 const styles = StyleSheet.create({
   ViewMain: {
     flex: 1,
     flexDirection: 'row',
     backgroundColor: 'white',
-    marginTop: 10,
-    marginBottom: 10,
-    marginLeft: 25,
-    marginRight: 25,
-    borderRadius: 5,
-    height: 110,
+    marginTop: 10 * d.ratioH,
+    marginBottom: 10 * d.ratioH,
+    marginLeft: 25 * d.ratioW,
+    marginRight: 25 * d.ratioW,
+    borderRadius: 5 * d.ratioH,
+    height: 110 * d.ratioH,
 
     elevation: 6,
     shadowColor: 'rgba(0,0,0,0.6)',
@@ -23,17 +25,17 @@ const styles = StyleSheet.create({
     // backgroundColor: 'blue',
   },
   Img: {
-    height: 110,
-    width: 110,
+    height: 110 * d.ratioH,
+    width: 110 * d.ratioW,
   },
 
   ViewContent: {
     flex: 1.7,
     flexDirection: 'column',
-    marginLeft: 26,
-    marginRight: 23,
-    marginTop: 23,
-    marginBottom: 23,
+    marginLeft: 26 * d.ratioW,
+    marginRight: 23 * d.ratioW,
+    marginTop: 23 * d.ratioH,
+    marginBottom: 23 * d.ratioH,
     // backgroundColor: 'red',
   },
 
@@ -45,7 +47,7 @@ const styles = StyleSheet.create({
   ViewDescription: {
     flex: 1,
 
-    marginTop: 10,
+    marginTop: 10 * d.ratioH,
   },
 
   ViewTitle: {

@@ -19,18 +19,18 @@ class Home extends PureComponent {
   constructor(props) {
     super(props);
     this.state = {
-      modalVisible: true,
+      modalVisible: false,
       // starCount: 2.5,
     };
   }
   state = {};
 
-  hideModal = (message) => {
-    this.setModalVisible(message);
-  };
   setModalVisible(visible) {
     this.setState({ modalVisible: visible });
   }
+  hideModal = (message) => {
+    this.setModalVisible(message);
+  };
   _renderNewFeed() {
     return (
       <FlatList
@@ -110,7 +110,9 @@ class Home extends PureComponent {
           <Modal animationType="slide" transparent={false} visible={this.state.modalVisible}>
             <ModalView hideModal={this.hideModal} />
           </Modal>
-          <ScrollView style={{ height: '100%' }}>
+
+          {/* <View style={{ flex: 1 }}> */}
+          <ScrollView>
             <View style={styles.viewMenu}>
               <View style={[styles.viewMenuItem, shadow]}>
                 <View style={[styles.itemMenu]}>
@@ -139,15 +141,8 @@ class Home extends PureComponent {
               <View style={styles.viewContentForm}>{this._renderNewFeed()}</View>
             </View>
           </ScrollView>
+          {/* </View> */}
         </View>
-        {/* <Button
-          onPress={() => {
-            this.props.navigation.navigate('HomeDetail');
-          }}
-          title="HomeDetailStack"
-          color="#841584"
-          accessibilityLabel="Learn more about this purple button"
-        /> */}
       </View>
     );
   }

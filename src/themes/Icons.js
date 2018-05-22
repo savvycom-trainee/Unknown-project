@@ -20,6 +20,9 @@ const icons = {
   close: require('../../assets/icons/close.png'),
   logo: require('../../assets/icons/logo.png'),
   greenCircleBG: require('../../assets/icons/greenCircleBG.png'),
+  clockTime: require('../../assets/icons/clockTime.png'),
+  directOutLine: require('../../assets/icons/directOutLine.png'),
+  phoneCall: require('../../assets/icons/phoneCall.png'),
 };
 
 export default icons;
