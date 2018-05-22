@@ -1,6 +1,7 @@
 import { createStackNavigator } from 'react-navigation';
 import Login from '../containers/Login';
 import Signup from '../containers/Signup';
+import Loading from '../containers/Loading';
 
 export default createStackNavigator(
   {
@@ -10,9 +11,12 @@ export default createStackNavigator(
     Signup: {
       screen: Signup,
     },
+    Loading: {
+      screen: Loading,
+    },
   },
   {
-    initialRouteName: 'Login',
+    initialRouteName: 'Loading',
     headerMode: 'none',
   },
 );

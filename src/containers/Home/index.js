@@ -10,10 +10,11 @@ import data from './data';
 import ModalView from './Modal';
 
 const shadow = {
-  shadowRadius: 2.5,
-  shadowOpacity: 0.1,
-  elevation: 1,
-  shadowOffset: { width: 2, height: 1 },
+  // elevation: 6,
+  // shadowColor: 'rgba(0,0,0,0.6)',
+  // shadowOffset: { width: 0, height: 0 },
+  // shadowOpacity: 0.4,
+  // shadowRadius: 20,
 };
 class Home extends PureComponent {
   constructor(props) {
@@ -43,8 +44,8 @@ class Home extends PureComponent {
               }}
             >
               <View>
-                <View>
-                  <Image source={Images.restaurantPhoto} />
+                <View style={styles.imageContent}>
+                  <Image source={Images.restaurantPhoto} style={styles.imageContent} />
                 </View>
                 <View style={styles.viewPointForm}>
                   <View style={styles.viewPoint}>
@@ -110,8 +111,6 @@ class Home extends PureComponent {
           <Modal animationType="slide" transparent={false} visible={this.state.modalVisible}>
             <ModalView hideModal={this.hideModal} />
           </Modal>
-
-          {/* <View style={{ flex: 1 }}> */}
           <ScrollView>
             <View style={styles.viewMenu}>
               <View style={[styles.viewMenuItem, shadow]}>
