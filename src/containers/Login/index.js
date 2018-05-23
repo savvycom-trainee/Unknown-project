@@ -104,9 +104,9 @@ class Login extends PureComponent {
         <StatusBar backgroundColor="rgb(76, 196, 57)" barStyle="light-content" />
         <View style={login.cirleView}>
           <View style={login.cirle}>
-            <Image source={images.logo} style={login.image} />{' '}
-          </View>{' '}
-        </View>{' '}
+            <Image source={images.logo} style={login.image} />
+          </View>
+        </View>
         <View style={login.loginForm}>
           <View style={login.form}>
             <TextInput
@@ -130,28 +130,28 @@ class Login extends PureComponent {
               onSubmitEditing={this.loginAccount}
               autoCapitalize="none"
             />
-          </View>{' '}
+          </View>
           <View style={login.vButton}>
             <TouchableOpacity style={login.btnLogin} onPress={this.loginAccount}>
-              {' '}
               {!this.state.isLoading ? (
                 <Text style={login.txtBtn}> LOG IN </Text>
               ) : (
                 <ActivityIndicator size="small" color="white" />
-              )}{' '}
-            </TouchableOpacity>{' '}
+              )}
+            </TouchableOpacity>
             <TouchableOpacity style={login.btnfb}>
-              <Image source={images.logofb} style={login.logofb} />{' '}
-              <Text style={login.txtfb}> Continue With Facebook </Text>{' '}
-            </TouchableOpacity>{' '}
-          </View>{' '}
+              <Image source={images.logofb} style={login.logofb} />
+              <Text style={login.txtfb}> Continue With Facebook </Text>
+            </TouchableOpacity>
+          </View>
           <Text style={login.txtBottom}>
-            Not account ? Go to{' '}
+            Not account ? Go to
             <Text style={login.txtSignup} onPress={() => this.props.navigation.navigate('Signup')}>
-              Sign up{' '}
-            </Text>{' '}
-          </Text>{' '}
-        </View>{' '}
+              {' '}
+              Sign up
+            </Text>
+          </Text>
+        </View>
       </ScrollView>
     );
   }

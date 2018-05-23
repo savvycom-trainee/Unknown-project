@@ -23,15 +23,14 @@ const login = StyleSheet.create({
     overflow: 'hidden',
   },
   image: {
-    width: '120%',
-    height: '120%',
+    width: 650 * 1.2,
+    height: 650 * 1.2,
     position: 'absolute',
     top: -30,
-    left: '-10%',
+    left: -65,
   },
   loginForm: {
-    width: '100%',
-    height: '100%',
+    flex: 1,
   },
   form: {
     paddingTop: 15,
