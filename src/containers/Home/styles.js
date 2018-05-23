@@ -7,6 +7,9 @@ export default StyleSheet.create({
     flex: 1,
     backgroundColor: Colors.background,
   },
+  body: {
+    flex: 1,
+  },
   viewBGTabar: {
     alignItems: 'center',
     justifyContent: 'center',

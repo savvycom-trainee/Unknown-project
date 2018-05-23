@@ -20,7 +20,7 @@ class Home extends PureComponent {
   constructor(props) {
     super(props);
     this.state = {
-      modalVisible: false,
+      modalVisible: true,
       // starCount: 2.5,
     };
   }
@@ -111,7 +111,7 @@ class Home extends PureComponent {
           <Modal animationType="slide" transparent={false} visible={this.state.modalVisible}>
             <ModalView hideModal={this.hideModal} />
           </Modal>
-          <ScrollView>
+          <ScrollView style={{ flex: 1 }}>
             <View style={styles.viewMenu}>
               <View style={[styles.viewMenuItem, shadow]}>
                 <View style={[styles.itemMenu]}>
