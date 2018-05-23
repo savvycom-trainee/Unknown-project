@@ -31,9 +31,11 @@ const styles = {
     overflow: 'hidden',
   },
   directStyle: {
-    alignSelf: 'flex-end',
-    right: -19.5 * d.ratioW,
-    transform: [{ translate: [-195, -35, 0] }],
+    alignSelf: 'center',
+    left: 93 * d.ratioW,
+    // right: -19.5 * d.ratioW,
+    // left:
+    // transform: [{ translate: [-195, -35, 0] }],
   },
 };
 
