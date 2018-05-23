@@ -1,17 +1,18 @@
 import React, { PureComponent } from 'react';
 import { View, Text, Image, TouchableOpacity } from 'react-native';
+/* eslint-disable */
 
 import styles from './styles';
 
 class Content extends PureComponent {
   state = {};
-  dataContent = (type) => {
+  dataContent = type => {
     if (type === 'follow') {
       return (
         <View style={styles.ViewFollow}>
           <View style={styles.ViewFollowNameTime}>
             <Text style={styles.TextName}>{this.props.data.name}</Text>
-            <Text style={styles.TextFollowYou}>followed</Text>
+            <Text style={styles.TextFollowYou}>followed you</Text>
             <Text style={styles.TextTime}>{this.props.data.time} </Text>
           </View>
           <View>
