@@ -3,8 +3,9 @@ import React, { PureComponent } from 'react';
 import StarRating from 'react-native-star-rating';
 import { View, Text, Image, TouchableOpacity, ScrollView } from 'react-native';
 import { Icons, Colors } from '../../../themes';
-
+import Header from '../../../components/Header';
 import ButtonCustom from './ButtonCustom';
+import * as d from '../../../utilities/Tranform';
 
 import styles from './styles';
 /* eslint-disable */
@@ -13,11 +14,17 @@ class HomeOverviewRestaurant extends PureComponent {
   render() {
     return (
       <View style={styles.ViewMain}>
-        <View style={styles.ViewHeader}>
+        {/* <View style={styles.ViewHeader}>
           <TouchableOpacity onPress={this.props.onPressGoBack}>
             <Image source={Icons.back} style={styles.IconBack} />
           </TouchableOpacity>
-        </View>
+        </View> */}
+        <Header
+          leftHeader={<Image source={Icons.back} style={{ marginTop: 2 * d.ratioH }} />}
+          onPressLeftHeader={this.props.onPressGoBack}
+          centerHeader
+          rightHeader
+        />
         <View style={styles.ScrollViewImages}>
           <ScrollView horizontal showsHorizontalScrollIndicator={false}>
             <Image source={require('./Data/images/1.png')} style={styles.ImagesOverView} />

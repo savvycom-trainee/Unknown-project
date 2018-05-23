@@ -6,13 +6,15 @@ import { Icons } from '../../../themes';
 // import Icons from 'react-native-vector-icons';
 import Content from './Content';
 import Data from './Data';
+import Header from '../../../components/Header';
+import * as d from '../../../utilities/Tranform';
 
 class HomeReviewRestaurant extends PureComponent {
   state = {};
   render() {
     return (
       <View style={styles.ViewMain}>
-        <View style={styles.ViewHeader}>
+        {/* <View style={styles.ViewHeader}>
           <TouchableOpacity onPress={this.props.onPressGoBack}>
             <Image source={Icons.back} style={styles.IconBack} />
           </TouchableOpacity>
@@ -22,7 +24,13 @@ class HomeReviewRestaurant extends PureComponent {
           <TouchableOpacity>
             <Image source={Icons.search} style={styles.IconSearch} />
           </TouchableOpacity>
-        </View>
+        </View> */}
+        <Header
+          leftHeader={<Image source={Icons.back} style={{ marginTop: 2 * d.ratioH }} />}
+          onPressLeftHeader={this.props.onPressGoBack}
+          centerHeader={<Text style={{ fontSize: 15, fontWeight: '600' }}>Review</Text>}
+          rightHeader
+        />
 
         <TouchableOpacity style={styles.ViewBtnAdd}>
           <Text style={styles.BtnAdd}>+</Text>

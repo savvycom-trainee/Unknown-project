@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { View, Text, TouchableOpacity, BackHandler, Button } from 'react-native';
+import { View, Text, TouchableOpacity, BackHandler } from 'react-native';
 import styles from './styles';
 /* eslint-disable */
 
