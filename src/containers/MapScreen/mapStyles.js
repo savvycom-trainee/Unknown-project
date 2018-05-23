@@ -11,7 +11,7 @@ const mapStyles = [
     elementType: 'labels.icon',
     stylers: [
       {
-        visibility: 'off',
+        // visibility: 'off',
       },
     ],
   },

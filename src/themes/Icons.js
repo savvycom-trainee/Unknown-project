@@ -19,7 +19,14 @@ const icons = {
   user: require('../../assets/icons/user.png'),
   close: require('../../assets/icons/close.png'),
   logo: require('../../assets/icons/logo.png'),
+<<<<<<< HEAD
   logofb: require('../../assets/icons/logofb.png'),
+=======
+  greenCircleBG: require('../../assets/icons/greenCircleBG.png'),
+  clockTime: require('../../assets/icons/clockTime.png'),
+  directOutLine: require('../../assets/icons/directOutLine.png'),
+  phoneCall: require('../../assets/icons/phoneCall.png'),
+>>>>>>> f256505978d43e5be61566b96a6acd76221f4c0c
 };
 
 export default icons;

@@ -1,5 +1,6 @@
 import { StyleSheet } from 'react-native';
 import { Colors, Metrics } from '../../themes';
+import * as d from '../../utilities/Tranform';
 
 export default StyleSheet.create({
   container: {
@@ -13,12 +14,16 @@ export default StyleSheet.create({
   viewMenu: {
     padding: Metrics.doubleBaseMargin1x,
   },
+  imageContent: {
+    height: 150 * d.ratioH,
+    width: 315 * d.ratioW,
+  },
   viewMenuItem: {
-    elevation: 2,
-    shadowColor: 'rgba(0,0,0,0.6)',
-    shadowOffset: { width: 0, height: 2 },
-    shadowOpacity: 0.8,
-    shadowRadius: 2,
+    // elevation: 6,
+    // shadowColor: 'rgba(0,0,0,0.6)',
+    // shadowOffset: { width: 0, height: 0 },
+    // shadowOpacity: 0.4,
+    // shadowRadius: 20,
     borderRadius: 8,
     flexDirection: 'row',
     justifyContent: 'space-between',
@@ -27,8 +32,8 @@ export default StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
     borderRadius: 2.5,
-    height: 95,
-    width: 95,
+    height: 95 * d.ratioH,
+    width: 95 * d.ratioW,
     backgroundColor: Colors.white,
   },
   viewPointForm: {
@@ -65,6 +70,7 @@ export default StyleSheet.create({
     marginBottom: 25,
     borderRadius: 2.5,
     backgroundColor: Colors.white,
+    width: 315 * d.ratioW,
     height: Metrics.screenHeight / 2.3,
   },
   formItemText: {
@@ -105,5 +111,8 @@ export default StyleSheet.create({
   },
   viewNameRow2Item: {
     flexDirection: 'row',
+  },
+  viewContent: {
+    flex: 1,
   },
 });

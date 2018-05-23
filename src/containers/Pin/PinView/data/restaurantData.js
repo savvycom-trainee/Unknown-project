@@ -8,6 +8,7 @@ const restaurantData = [
     closedTime: 22,
     distance: '400m',
     starCount: 3,
+    rating: '9,2',
   },
   {
     restaurantPhoto: require('./images/hestonBlumenthal.png'),
@@ -17,6 +18,7 @@ const restaurantData = [
     closedTime: 12,
     distance: '01 Km',
     starCount: 4,
+    rating: '9,0',
   },
   {
     restaurantPhoto: require('./images/leMeurice.png'),
@@ -26,6 +28,7 @@ const restaurantData = [
     closedTime: 12,
     distance: '05 Km',
     starCount: 2,
+    rating: '8,2',
   },
   {
     restaurantPhoto: require('./images/ithaaUndersea.png'),
@@ -35,6 +38,7 @@ const restaurantData = [
     closedTime: 22,
     distance: '400m',
     starCount: 3,
+    rating: '8,5',
   },
 ];
 

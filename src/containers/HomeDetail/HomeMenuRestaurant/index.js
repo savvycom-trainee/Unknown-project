@@ -1,6 +1,8 @@
 import React, { PureComponent } from 'react';
+import PropTypes from 'prop-types';
 import { View, Text, Image, TouchableOpacity, FlatList } from 'react-native';
 import styles from './styles';
+
 import { Icons } from '../../../themes';
 import Content from './Content';
 
@@ -44,7 +46,7 @@ class HomeMenuRestaurant extends PureComponent {
     return (
       <View style={styles.ViewMain}>
         <View style={styles.ViewHeader}>
-          <TouchableOpacity>
+          <TouchableOpacity onPress={this.props.onPressGoBack}>
             <Image source={Icons.back} style={styles.IconBack} />
           </TouchableOpacity>
           <View>
@@ -68,5 +70,13 @@ class HomeMenuRestaurant extends PureComponent {
     );
   }
 }
+
+HomeMenuRestaurant.propTypes = {
+  onPressGoBack: PropTypes.func,
+};
+
+HomeMenuRestaurant.defaultProps = {
+  onPressGoBack: () => {},
+};
 
 export default HomeMenuRestaurant;

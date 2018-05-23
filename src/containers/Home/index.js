@@ -10,27 +10,28 @@ import data from './data';
 import ModalView from './Modal';
 
 const shadow = {
-  shadowRadius: 2.5,
-  shadowOpacity: 0.1,
-  elevation: 1,
-  shadowOffset: { width: 2, height: 1 },
+  // elevation: 6,
+  // shadowColor: 'rgba(0,0,0,0.6)',
+  // shadowOffset: { width: 0, height: 0 },
+  // shadowOpacity: 0.4,
+  // shadowRadius: 20,
 };
 class Home extends PureComponent {
   constructor(props) {
     super(props);
     this.state = {
-      modalVisible: true,
+      modalVisible: false,
       // starCount: 2.5,
     };
   }
   state = {};
 
-  hideModal = (message) => {
-    this.setModalVisible(message);
-  };
   setModalVisible(visible) {
     this.setState({ modalVisible: visible });
   }
+  hideModal = (message) => {
+    this.setModalVisible(message);
+  };
   _renderNewFeed() {
     return (
       <FlatList
@@ -43,8 +44,8 @@ class Home extends PureComponent {
               }}
             >
               <View>
-                <View>
-                  <Image source={Images.restaurantPhoto} />
+                <View style={styles.imageContent}>
+                  <Image source={Images.restaurantPhoto} style={styles.imageContent} />
                 </View>
                 <View style={styles.viewPointForm}>
                   <View style={styles.viewPoint}>
@@ -110,7 +111,7 @@ class Home extends PureComponent {
           <Modal animationType="slide" transparent={false} visible={this.state.modalVisible}>
             <ModalView hideModal={this.hideModal} />
           </Modal>
-          <ScrollView style={{ height: '100%' }}>
+          <ScrollView>
             <View style={styles.viewMenu}>
               <View style={[styles.viewMenuItem, shadow]}>
                 <View style={[styles.itemMenu]}>
@@ -139,15 +140,8 @@ class Home extends PureComponent {
               <View style={styles.viewContentForm}>{this._renderNewFeed()}</View>
             </View>
           </ScrollView>
+          {/* </View> */}
         </View>
-        {/* <Button
-          onPress={() => {
-            this.props.navigation.navigate('HomeDetail');
-          }}
-          title="HomeDetailStack"
-          color="#841584"
-          accessibilityLabel="Learn more about this purple button"
-        /> */}
       </View>
     );
   }

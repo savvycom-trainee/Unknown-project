@@ -1,5 +1,7 @@
 import { StyleSheet } from 'react-native';
 
+import * as d from '../../../utilities/Tranform';
+
 const styles = StyleSheet.create({
   ViewMain: {
     flex: 1,
@@ -7,22 +9,22 @@ const styles = StyleSheet.create({
     backgroundColor: 'white',
   },
   ViewHeader: {
-    height: 55,
+    height: 55 * d.ratioH,
     flexDirection: 'row',
     justifyContent: 'space-between',
     alignItems: 'center',
   },
   IconBack: {
     // marginTop: 15,
-    marginLeft: 30,
-    height: 13,
-    width: 20,
+    marginLeft: 30 * d.ratioW,
+    height: 13 * d.ratioH,
+    width: 20 * d.ratioW,
   },
   ImagesOverView: {
-    height: 210,
-    width: 210,
-    marginLeft: 30,
-    marginTop: 10,
+    height: 240 * d.ratioH,
+    width: 250 * d.ratioW,
+    marginLeft: 30 * d.ratioW,
+    marginTop: 10 * d.ratioH,
   },
 
   ScrollViewImages: {},
@@ -30,13 +32,13 @@ const styles = StyleSheet.create({
   ViewPoint: {
     alignItems: 'center',
     justifyContent: 'center',
-    height: 50,
-    width: 50,
-    borderRadius: 50,
+    height: 50 * d.ratioH,
+    width: 50 * d.ratioW,
+    borderRadius: 50 * d.ratioW,
     zIndex: 5,
     position: 'absolute',
     backgroundColor: 'rgb(66,183,42)',
-    transform: [{ translate: [200, -25, 0] }],
+    transform: [{ translate: [180, -25, 0] }],
 
     elevation: 6,
     shadowColor: 'rgba(0,0,0,0.6)',
@@ -51,12 +53,12 @@ const styles = StyleSheet.create({
   },
 
   ViewContent: {
-    marginLeft: 30,
-    marginRight: 30,
+    marginLeft: 30 * d.ratioW,
+    marginRight: 30 * d.ratioW,
   },
 
   ViewNameRestaurant: {
-    marginTop: 25,
+    marginTop: 25 * d.ratioH,
   },
   TextNameRestaurant: {
     fontSize: 18,
@@ -97,7 +99,13 @@ const styles = StyleSheet.create({
 
   ViewLocation: {
     flexDirection: 'row',
-    marginTop: 10,
+    marginTop: 10 * d.ratioH,
+  },
+
+  ViewBtnBottom: {
+    flexDirection: 'row',
+    marginTop: 28.5 * d.ratioH,
+    justifyContent: 'space-between',
   },
 
   TextStatus: {

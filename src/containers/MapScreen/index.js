@@ -1,10 +1,13 @@
 import React, { PureComponent } from 'react';
-import { View, Text, Image } from 'react-native';
+import { View, Text, Image, FlatList } from 'react-native';
 import MapView from 'react-native-maps';
 import { Header } from '../../components';
 import { Icons } from '../../themes';
-import * as d from '../../utilities/Tranform';
+import restaurantData from '../Pin/PinView/data/restaurantData';
 import mapStyles from './mapStyles';
+import styles from './styles';
+import CardView from './CardView';
+import * as d from '../../utilities/Tranform';
 
 class MapScreen extends PureComponent {
   state = {};
@@ -12,8 +15,8 @@ class MapScreen extends PureComponent {
     return (
       <View style={{ flex: 1 }}>
         <Header
-          leftHeader={<Image source={Icons.menu} style={{ marginTop: 2 * d.ratioH }} />}
-          centerHeader={<Text style={{ fontSize: 15, fontWeight: '600' }}>Map</Text>}
+          leftHeader={<Image source={Icons.menu} />}
+          centerHeader={<Text style={styles.centerHeaderStyle}>Map</Text>}
           rightHeader={<Image source={Icons.user} />}
         />
         <MapView
@@ -26,6 +29,14 @@ class MapScreen extends PureComponent {
           provider="google"
           customMapStyle={mapStyles}
           style={{ flex: 1 }}
+        />
+        <FlatList
+          horizontal
+          showsHorizontalScrollIndicator={false}
+          data={restaurantData}
+          renderItem={({ item }) => <CardView item={item} />}
+          keyExtractor={item => item.restaurantName}
+          style={styles.flatListStyle}
         />
       </View>
     );

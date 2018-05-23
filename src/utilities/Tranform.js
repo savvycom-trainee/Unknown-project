@@ -3,8 +3,7 @@ import { isIphoneX } from './device';
 
 const iOSStatusBarHeight = isIphoneX() === true ? 44 : 20;
 const statusBarHeight = Platform.OS === 'ios' ? iOSStatusBarHeight : 22;
-const navBarHeight =
-  Platform.OS === 'ios' ? 44 + statusBarHeight : 50 + statusBarHeight;
+const navBarHeight = Platform.OS === 'ios' ? 44 + statusBarHeight : 35 + statusBarHeight;
 const windowSize = Dimensions.get('window');
 const ratioH = windowSize.height / 667;
 const ratioW = windowSize.width / 375;
