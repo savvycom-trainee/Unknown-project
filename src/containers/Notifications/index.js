@@ -1,10 +1,11 @@
 import React, { PureComponent } from 'react';
-import { View, Text, Image, ScrollView } from 'react-native';
+import { View, Text, Image, FlatList } from 'react-native';
 import Header from '../../components/Header';
 import { Icons } from '../../themes';
 import * as d from '../../utilities/Tranform';
 import Content from './Content';
 import styles from './styles';
+import Data from './Data';
 
 class Notifications extends PureComponent {
   state = {};
@@ -16,9 +17,11 @@ class Notifications extends PureComponent {
           centerHeader={<Text style={{ fontSize: 15, fontWeight: '600' }}>Notification</Text>}
           rightHeader={<Image source={Icons.user} />}
         />
-        <ScrollView style={styles.ViewContent}>
-          <Content type="follow" />
-        </ScrollView>
+        <FlatList
+          data={Data}
+          renderItem={({ item }) => <Content data={item} />}
+          keyExtractor={(item, index) => index.toString()}
+        />
       </View>
     );
   }

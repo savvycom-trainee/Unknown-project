@@ -56,7 +56,7 @@ export default createBottomTabNavigator(
         );
       },
     }),
-    initialRouteName: 'Home',
+    initialRouteName: 'Notifications',
     tabBarOptions: {
       ...TabNavigator.Presets.iOSBottomTabs,
       showLabel: false,

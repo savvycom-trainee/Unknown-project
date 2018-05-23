@@ -7,7 +7,6 @@ const styles = StyleSheet.create({
     flexDirection: 'column',
   },
   ViewContent: {
-    flex: 7,
     marginLeft: 30 * d.ratioW,
     marginRight: 30 * d.ratioW,
   },
