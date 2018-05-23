@@ -11,7 +11,7 @@ const Card = props => (
       borderRadius: 2.5,
       flexDirection: props.direction,
       marginHorizontal: 30 * d.ratioW,
-      marginTop: 25 * d.ratioH,
+      marginBottom: 25 * d.ratioH,
       zIndex: 0,
     }}
   >

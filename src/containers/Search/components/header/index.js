@@ -7,10 +7,20 @@ class Header extends PureComponent {
   render() {
     return (
       <View style={header.container}>
-        <TextInput placeholder="Search Restaurants and ..." style={header.input} />
+        <View style={header.searchView}>
+          <TextInput
+            placeholder="Search Restaurants and ..."
+            style={header.input}
+            underlineColorAndroid="transparent"
+          />
+        </View>
         <View style={header.place}>
-          <Text>In</Text>
-          <TextInput value="Hanoi, Vietnam" style={header.input} />
+          <Text style={header.in}>in</Text>
+          <TextInput
+            value="Hanoi, Vietnam"
+            style={header.input}
+            underlineColorAndroid="transparent"
+          />
         </View>
       </View>
     );

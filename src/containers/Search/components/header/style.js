@@ -9,13 +9,24 @@ const header = StyleSheet.create({
     paddingTop: 30 * d.ratioH,
   },
   input: {
-    height: 30,
     fontWeight: '600',
     backgroundColor: 'white',
+    lineHeight: 30,
+    color: 'black',
     alignItems: 'center',
+    flex: 1,
+  },
+  searchView: {
+    height: 30 * d.ratioH,
+    borderBottomColor: 'rgb(153, 153, 153)',
+    marginBottom: 19.5 * d.ratioH,
   },
   place: {
     flexDirection: 'row',
+    height: 30 * d.ratioH,
+  },
+  in: {
+    width: 36 * d.ratioW,
   },
 });
 

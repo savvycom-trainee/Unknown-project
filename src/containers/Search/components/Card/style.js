@@ -35,12 +35,54 @@ const card = StyleSheet.create({
   },
   cardInfo: {
     paddingTop: 21.5 * d.ratioH,
+    marginRight: 25.5 * d.ratioW,
     flex: 1,
   },
   name: {
     fontSize: 14,
+    height: 27 * d.ratioH,
+    lineHeight: 14,
+    width: '100%',
     fontWeight: '600',
     color: 'rgb(82, 82, 82)',
+  },
+  typeView: {
+    flexDirection: 'row',
+    width: '100%',
+    justifyContent: 'flex-end',
+  },
+  type: {
+    fontSize: 9,
+    lineHeight: 9,
+    flex: 1,
+    fontWeight: '600',
+    color: 'rgb(153, 153, 153)',
+  },
+  review: {
+    fontSize: 9,
+    lineHeight: 9,
+    fontWeight: '600',
+  },
+  status: {
+    color: 'rgb(66, 183, 42)',
+    fontSize: 9,
+    lineHeight: 9,
+    width: 50,
+  },
+  dot: {
+    textAlign: 'center',
+    lineHeight: 9,
+    fontWeight: 'bold',
+    alignItems: 'center',
+    marginHorizontal: 7 * d.ratioW,
+  },
+  distance: {
+    fontSize: 9,
+    lineHeight: 9,
+  },
+  statusView: {
+    flexDirection: 'row',
+    marginTop: 24 * d.ratioH,
   },
 });
 

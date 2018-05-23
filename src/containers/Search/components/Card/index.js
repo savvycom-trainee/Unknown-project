@@ -24,7 +24,20 @@ class CardSearch extends PureComponent {
                 </View>
               </View>
               <View style={card.cardInfo}>
-                <Text style={card.name}>Sublimotion</Text>
+                <Text style={card.name}>{item.name}</Text>
+                <View style={card.typeView}>
+                  <Text style={card.type}>{item.type}</Text>
+                  <Text style={card.review}>$</Text>
+                  <Text style={[card.review, { color: 'rgb(66, 183, 42)' }]}>$$$</Text>
+                </View>
+                <View style={card.statusView}>
+                  <Text style={card.status}>{item.status === 1 ? 'Open Now' : 'Closed'}</Text>
+                  <Text style={card.dot}>.</Text>
+                  <Text style={card.distance}>
+                    {item.distance < 1 ? `${item.distance * 1000}m` : `${item.distance} Km`} from
+                    you
+                  </Text>
+                </View>
               </View>
             </View>
           </Card>
