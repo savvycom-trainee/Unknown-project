@@ -29,19 +29,22 @@ export default class CardView extends Component {
 
   render() {
     return (
-      <Card>
-        <View style={styles.restaurantPhotoContainer}>
-          <Image source={this.props.item.restaurantPhoto} style={styles.restaurantPhotoStyle} />
-        </View>
-        <GreenCircle onPress={() => {}} style={{ left: -20, bottom: 42 }}>
+      <Card direction="row" style={{ backgroundColor: 'transparent' }}>
+        <View style={{ backgroundColor: 'transparent', width: 30 }} />
+        <GreenCircle onPress={() => {}} style={{ top: 75, left: 10 }}>
           <Text style={styles.ratingTextStyle}>{this.props.item.rating}</Text>
         </GreenCircle>
-        <View style={styles.restaurantDetailContainer}>
-          <Text style={styles.restaurantNameStyle}>{this.props.item.restaurantName}</Text>
-          <OpenAndDistance
-            openingStatus={this.state.openingStatus}
-            distance={this.props.item.distance}
-          />
+        <View style={styles.container}>
+          <View style={styles.restaurantPhotoContainer}>
+            <Image source={this.props.item.restaurantPhoto} style={styles.restaurantPhotoStyle} />
+          </View>
+          <View style={styles.restaurantDetailContainer}>
+            <Text style={styles.restaurantNameStyle}>{this.props.item.restaurantName}</Text>
+            <OpenAndDistance
+              openingStatus={this.state.openingStatus}
+              distance={this.props.item.distance}
+            />
+          </View>
         </View>
       </Card>
     );

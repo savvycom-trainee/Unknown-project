@@ -2,6 +2,10 @@ import * as d from '../../../utilities/Tranform';
 import colors from '../../../themes/Colors';
 
 const styles = {
+  cardStyle: {
+    marginHorizontal: 30 * d.ratioW,
+    marginTop: 25 * d.ratioH,
+  },
   detailContainer: {
     justifyContent: 'space-evenly',
     paddingLeft: 25 * d.ratioW,
@@ -33,9 +37,6 @@ const styles = {
   directStyle: {
     alignSelf: 'center',
     left: 93 * d.ratioW,
-    // right: -19.5 * d.ratioW,
-    // left:
-    // transform: [{ translate: [-195, -35, 0] }],
   },
 };
 
