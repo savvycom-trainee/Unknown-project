@@ -1,12 +1,13 @@
 import React, { PureComponent } from 'react';
 import PropTypes from 'prop-types';
 import { View, Text, ScrollView, TouchableOpacity, Image, FlatList, Modal } from 'react-native';
+import { connect } from 'react-redux';
 import StarRating from 'react-native-star-rating';
 import { Header } from '../../components';
 import styles from './styles';
-import { Icons, Images } from '../../themes';
+import { Icons } from '../../themes';
 import * as d from '../../utilities/Tranform';
-import data from './data';
+import { fetchDatagetNewFeed } from '../../actions/getNewFeedAction';
 import ModalView from './Modal';
 
 const shadow = {
@@ -20,32 +21,36 @@ class Home extends PureComponent {
   constructor(props) {
     super(props);
     this.state = {
-      modalVisible: true,
+      modalVisible: false,
       // starCount: 2.5,
     };
   }
   state = {};
 
+  componentDidMount() {
+    this.props.fetchDatagetNewFeed();
+  }
   setModalVisible(visible) {
     this.setState({ modalVisible: visible });
   }
   hideModal = (message) => {
     this.setModalVisible(message);
   };
+
   _renderNewFeed() {
     return (
       <FlatList
-        data={data}
+        data={this.props.dataNewFeed.data}
         renderItem={({ item }) => (
           <View style={styles.formItem}>
             <TouchableOpacity
               onPress={() => {
-                this.props.navigation.navigate('HomeDetail');
+                this.props.navigation.navigate('HomeDetail', { data: item });
               }}
             >
               <View>
                 <View style={styles.imageContent}>
-                  <Image source={Images.restaurantPhoto} style={styles.imageContent} />
+                  <Image source={{ uri: item.photos[0] }} style={styles.imageContent} />
                 </View>
                 <View style={styles.viewPointForm}>
                   <View style={styles.viewPoint}>
@@ -84,10 +89,10 @@ class Home extends PureComponent {
                     )}
                   </View>
                   <View style={styles.viewNameRow2Item}>
-                    <Text style={styles.textNameRow2}> • {item.form} from you</Text>
+                    <Text style={styles.textNameRow2}> • from you</Text>
                   </View>
                   <View style={styles.viewNameRow2Item}>
-                    <Text style={styles.textNameRow2}> • {item.local}</Text>
+                    <Text style={styles.textNameRow2}> • {item.vicinity}</Text>
                   </View>
                 </View>
                 <View />
@@ -150,6 +155,9 @@ Home.propTypes = {
   navigation: PropTypes.shape({
     navigate: PropTypes.func.isRequired,
   }).isRequired,
+  fetchDatagetNewFeed: PropTypes.func.isRequired,
 };
-
-export default Home;
+const mapStateToProps = state => ({
+  dataNewFeed: state.getNewFeedReducers,
+});
+export default connect(mapStateToProps, { fetchDatagetNewFeed })(Home);
