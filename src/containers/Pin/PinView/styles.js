@@ -36,7 +36,7 @@ const styles = {
   },
   directStyle: {
     alignSelf: 'center',
-    left: 93 * d.ratioW,
+    left: 90 * d.ratioW,
   },
 };
 

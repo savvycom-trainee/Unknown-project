@@ -23,6 +23,9 @@ const icons = {
   clockTime: require('../../assets/icons/clockTime.png'),
   directOutLine: require('../../assets/icons/directOutLine.png'),
   phoneCall: require('../../assets/icons/phoneCall.png'),
+  mapPin: require('../../assets/icons/mapPin.png'),
+  greenMarker: require('../../assets/icons/greenMarker.png'),
+  grayMarker: require('../../assets/icons/grayMarker.png'),
 };
 
 export default icons;
