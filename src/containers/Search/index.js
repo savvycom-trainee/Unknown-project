@@ -1,8 +1,8 @@
 import React, { PureComponent } from 'react';
-import { View, Text, ScrollView, StatusBar } from 'react-native';
-import search from './style';
+import { View, Text, ScrollView, StatusBar, TextInput } from 'react-native';
+import { search, header } from './style';
 import images from '../../themes/Images';
-import { Header, Card } from './components';
+import Card from './components';
 
 class Search extends PureComponent {
   state = {
@@ -54,20 +54,51 @@ class Search extends PureComponent {
       },
     ],
   };
-  searchInfo = (text) => {
-    console.log(text);
+  searchSubmit = () => {
+    const value = this.search._lastNativeText;
+    console.log(value);
+    console.log(this.search);
   };
-  placeInfo = (text) => {
-    console.log(text);
+  placeSubmit = () => {
+    const value = this.place._lastNativeText;
+    console.log(value);
+  };
+  searchBlur = () => {
+    console.log('blur');
   };
   render() {
     return (
       <View style={search.container}>
-        <StatusBar backgroundColor="white" barStyle="light-content" />
-        <View style={search.header}>
-          <Header searchInfo={this.searchInfo} placeInfo={this.placeInfo} />
+        <StatusBar backgroundColor="white" barStyle="dark-content" />
+        <View style={header.container}>
+          <View style={header.searchView}>
+            <TextInput
+              ref={(ref) => {
+                this.search = ref;
+              }}
+              placeholder="Search Restaurants and ..."
+              style={[header.input, { textAlign: 'center' }]}
+              underlineColorAndroid="transparent"
+              onSubmitEditing={this.searchSubmit}
+              onBlur={this.searchBlur}
+            />
+          </View>
+          <View style={header.place}>
+            <Text style={header.in}> in </Text>
+            <View style={header.borderBottom}>
+              <TextInput
+                ref={(ref) => {
+                  this.place = ref;
+                }}
+                defaultValue="Hanoi, Vietnam"
+                style={header.input}
+                underlineColorAndroid="transparent"
+                onSubmitEditing={this.placeSubmit}
+              />
+            </View>
+          </View>
         </View>
-        <Text style={search.title}>Recommended for you</Text>
+        <Text style={search.title}> Recommended for you </Text>
         <ScrollView style={search.resultView}>
           <Card dataSearch={this.state.data} />
         </ScrollView>

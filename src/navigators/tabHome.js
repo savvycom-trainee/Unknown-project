@@ -56,7 +56,7 @@ export default createBottomTabNavigator(
         );
       },
     }),
-    initialRouteName: 'Search',
+    initialRouteName: 'Home',
     tabBarOptions: {
       ...TabNavigator.Presets.iOSBottomTabs,
       showLabel: false,

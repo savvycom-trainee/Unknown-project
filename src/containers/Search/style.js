@@ -27,4 +27,41 @@ const search = StyleSheet.create({
   },
 });
 
-export default search;
+const header = StyleSheet.create({
+  container: {
+    backgroundColor: 'white',
+    paddingHorizontal: 30 * d.ratioW,
+    paddingTop: 30 * d.ratioH,
+    height: 136 * d.ratioH,
+  },
+  input: {
+    fontWeight: '600',
+    backgroundColor: 'transparent',
+    lineHeight: 15,
+    paddingTop: 0,
+    color: 'grey',
+    flex: 1,
+  },
+  searchView: {
+    height: 30 * d.ratioH,
+    borderBottomColor: 'rgb(153, 153, 153)',
+    borderBottomWidth: 1,
+    marginBottom: 19.5 * d.ratioH,
+  },
+  place: {
+    flexDirection: 'row',
+    height: 30 * d.ratioH,
+  },
+  borderBottom: {
+    flex: 1,
+    borderBottomColor: 'rgb(153, 153, 153)',
+    borderBottomWidth: 1,
+  },
+  in: {
+    width: 36 * d.ratioW,
+    lineHeight: 13,
+    fontSize: 13,
+  },
+});
+
+export { search, header };

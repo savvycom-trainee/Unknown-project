@@ -5,9 +5,8 @@ const card = StyleSheet.create({
   component: {
     backgroundColor: '#FFFFFF',
     borderRadius: 2.5,
-    flexDirection: 'row',
     marginHorizontal: 30 * d.ratioW,
-    marginTop: 25 * d.ratioH,
+    marginBottom: 25 * d.ratioH,
     zIndex: 0,
   },
   container: {
