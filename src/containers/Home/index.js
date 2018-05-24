@@ -21,13 +21,26 @@ class Home extends PureComponent {
   constructor(props) {
     super(props);
     this.state = {
+      latitude: null,
+      longitude: null,
       modalVisible: false,
+      error: null,
       // starCount: 2.5,
     };
   }
-  state = {};
 
   componentDidMount() {
+    navigator.geolocation.getCurrentPosition(
+      (position) => {
+        this.setState({
+          latitude: position.coords.latitude,
+          longitude: position.coords.longitude,
+          error: null,
+        });
+      },
+      error => this.setState({ error }),
+      { enableHighAccuracy: true, timeout: 20000, maximumAge: 1000 },
+    );
     this.props.fetchDatagetNewFeed();
   }
   setModalVisible(visible) {
@@ -37,69 +50,95 @@ class Home extends PureComponent {
     this.setModalVisible(message);
   };
 
+  deg2rad = deg => deg * (Math.PI / 180);
+  _getDistanceFromLatLonInKm = (lat1, lon1, lat2, lon2) => {
+    const R = 6371; // Radius of the earth in km
+    const dLat = this.deg2rad(lat2 - lat1); // deg2rad below
+    const dLon = this.deg2rad(lon2 - lon1);
+    const a =
+      Math.sin(dLat / 2) * Math.sin(dLat / 2) +
+      Math.cos(this.deg2rad(lat1)) *
+        Math.cos(this.deg2rad(lat2)) *
+        Math.sin(dLon / 2) *
+        Math.sin(dLon / 2);
+    const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
+    const d = R * c; // Distance in km
+    return d;
+  };
+
   _renderNewFeed() {
+    console.log(this.state.latitude);
+    console.log(this.state.longitude);
     return (
       <FlatList
         data={this.props.dataNewFeed.data}
-        renderItem={({ item }) => (
-          <View style={styles.formItem}>
-            <TouchableOpacity
-              onPress={() => {
-                this.props.navigation.navigate('HomeDetail', { data: item });
-              }}
-            >
-              <View>
-                <View style={styles.imageContent}>
-                  <Image source={{ uri: item.photos[0] }} style={styles.imageContent} />
-                </View>
-                <View style={styles.viewPointForm}>
-                  <View style={styles.viewPoint}>
-                    <Text style={styles.textPoint}>{item.rating}</Text>
+        renderItem={({ item }) => {
+          const distance = this._getDistanceFromLatLonInKm(
+            item.geometry.location.lat,
+            item.geometry.location.lng,
+            this.state.latitude,
+            this.state.longitude,
+          );
+          return (
+            <View style={styles.formItem}>
+              <TouchableOpacity
+                onPress={() => {
+                  this.props.navigation.navigate('HomeDetail', { data: item });
+                }}
+              >
+                <View>
+                  <View style={styles.imageContent}>
+                    <Image source={{ uri: item.photos[0] }} style={styles.imageContent} />
+                  </View>
+                  <View style={styles.viewPointForm}>
+                    <View style={styles.viewPoint}>
+                      <Text style={styles.textPoint}>{item.rating}</Text>
+                    </View>
                   </View>
                 </View>
-              </View>
-              <View style={styles.formItemText}>
-                <View style={styles.viewNameRow1}>
-                  <Text style={styles.textName}>{item.name}</Text>
+                <View style={styles.formItemText}>
+                  <View style={styles.viewNameRow1}>
+                    <Text style={styles.textName}>{item.name}</Text>
+                  </View>
+                  <View style={styles.viewNameRow2}>
+                    <View>
+                      <Text style={styles.textNameRow2}>{item.type}</Text>
+                    </View>
+                    <View>
+                      <StarRating
+                        disabled={false}
+                        emptyStar="ios-star-outline"
+                        fullStar="ios-star"
+                        iconSet="Ionicons"
+                        maxStars={5}
+                        rating={item.rating}
+                        fullStarColor="#4CB33E"
+                        reversed
+                        starSize={12}
+                      />
+                    </View>
+                  </View>
+                  <View style={styles.viewNameRow3}>
+                    <View>
+                      {item.follow ? (
+                        <Text style={styles.textNameRow2Flowed}>Followed</Text>
+                      ) : (
+                        <Text style={styles.textNameRow2}>Follow</Text>
+                      )}
+                    </View>
+                    <View style={styles.viewNameRow2Item}>
+                      <Text style={styles.textNameRow2}> {distance}• from you</Text>
+                    </View>
+                    <View style={styles.viewNameRow2Item}>
+                      <Text style={styles.textNameRow2}> • {item.vicinity}</Text>
+                    </View>
+                  </View>
+                  <View />
                 </View>
-                <View style={styles.viewNameRow2}>
-                  <View>
-                    <Text style={styles.textNameRow2}>{item.type}</Text>
-                  </View>
-                  <View>
-                    <StarRating
-                      disabled={false}
-                      emptyStar="ios-star-outline"
-                      fullStar="ios-star"
-                      iconSet="Ionicons"
-                      maxStars={5}
-                      rating={item.rating}
-                      fullStarColor="#4CB33E"
-                      reversed
-                      starSize={12}
-                    />
-                  </View>
-                </View>
-                <View style={styles.viewNameRow3}>
-                  <View>
-                    {item.follow ? (
-                      <Text style={styles.textNameRow2Flowed}>Followed</Text>
-                    ) : (
-                      <Text style={styles.textNameRow2}>Follow</Text>
-                    )}
-                  </View>
-                  <View style={styles.viewNameRow2Item}>
-                    <Text style={styles.textNameRow2}> • from you</Text>
-                  </View>
-                  <View style={styles.viewNameRow2Item}>
-                    <Text style={styles.textNameRow2}> • {item.vicinity}</Text>
-                  </View>
-                </View>
-                <View />
-              </View>
-            </TouchableOpacity>
-          </View>
-        )}
+              </TouchableOpacity>
+            </View>
+          );
+        }}
         keyExtractor={(item, index) => index.toString()}
       />
     );

@@ -39,8 +39,8 @@
         ],
         "geometry": {
           "location": {
-            "lat": 21.0277644,
-            "lng": 105.8341598
+            "lat": 21.046051,
+            "lng": 105.79014
           }
         },
         "review": [
@@ -56,7 +56,7 @@
           }
         ],
         "iduser": "user123",
-        "vicinity": "32 Lò Sũ, Lý Thái Tổ"
+        "vicinity": "69 Hoàng Quốc Việt"
       },
       {
         "idrestaurant": "idrestaurant666",
