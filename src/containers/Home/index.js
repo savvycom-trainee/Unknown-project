@@ -169,7 +169,10 @@ class Home extends PureComponent {
                   </TouchableOpacity>
                 </View>
                 <View style={styles.itemMenu}>
-                  <TouchableOpacity style={styles.itemMenuIcon}>
+                  <TouchableOpacity
+                    style={styles.itemMenuIcon}
+                    onPress={() => this.props.navigation.navigate('Account')}
+                  >
                     <Image source={Icons.profile} />
                   </TouchableOpacity>
                 </View>
