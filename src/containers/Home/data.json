@@ -1,6 +1,6 @@
 [
   {
-    "id": 0,
+    "id": "idrestaurant123",
     "name": "Test",
     "type": "Test dkkd",
     "rating": 5,
@@ -9,7 +9,7 @@
     "local": "Ha Noi"
   },
   {
-    "id": 1,
+    "id": "idrestaurant666",
     "name": "ACB",
     "type": "ACB",
     "rating": 3,
@@ -18,7 +18,7 @@
     "local": "Ha Noi"
   },
   {
-    "id": 2,
+    "id": "idrestaurant999",
     "name": "XYZ",
     "type": "XYZ",
     "rating": 2,

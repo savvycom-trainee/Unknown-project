@@ -40,7 +40,7 @@ class Home extends PureComponent {
           <View style={styles.formItem}>
             <TouchableOpacity
               onPress={() => {
-                this.props.navigation.navigate('HomeDetail');
+                this.props.navigation.navigate('HomeDetail', { idrestaurant: item.id });
               }}
             >
               <View>

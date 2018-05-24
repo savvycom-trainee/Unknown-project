@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import { View, Text, TouchableOpacity, BackHandler } from 'react-native';
 import styles from './styles';
 /* eslint-disable */
+import firebase from 'react-native-firebase';
 
 import HomeOverviewRestaurant from './HomeOverviewRestaurant';
 import HomeMenuRestaurant from './HomeMenuRestaurant';
@@ -11,13 +12,28 @@ class HomeDetail extends Component {
   static navigationOptions = {
     tabBarVisible: false,
   };
-  state = {
-    activeTab: 'HomeOverviewRestaurant',
-    isOverviewClick: true,
-    isMenuClick: false,
-    isReviewClick: false,
-  };
+  constructor(props) {
+    super(props);
+    this.state = {
+      activeTab: 'HomeOverviewRestaurant',
+      isOverviewClick: true,
+      isMenuClick: false,
+      isReviewClick: false,
+      idrestaurant: this.props.navigation.getParam('idrestaurant', 'null'),
+      data: [],
+    };
+  }
+
   componentDidMount() {
+    console.log(
+      firebase
+        .database()
+        .ref('/restaurant/restaurant')
+        .once('value')
+        .then(snapshot => {
+          this.setState({ data: snapshot.val() });
+        }),
+    );
     BackHandler.addEventListener('hardwareBackPress', this.handleBackPress);
   }
 
@@ -56,6 +72,8 @@ class HomeDetail extends Component {
   };
 
   render() {
+    //console.log(this.state.stores[1]);
+
     const Content = activeTab => {
       if (activeTab === 'HomeOverviewRestaurant') {
         return (
@@ -69,8 +87,10 @@ class HomeDetail extends Component {
       }
       return <HomeReviewRestaurant onPressGoBack={() => this.props.navigation.goBack()} />;
     };
+
     return (
       <View style={styles.ViewMain}>
+        <Text>{this.state.data[0].detail}</Text>
         <View style={styles.ViewContent}>{Content(this.state.activeTab)}</View>
         <View style={styles.ViewTabbar}>
           <TouchableOpacity
