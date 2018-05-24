@@ -1,7 +1,7 @@
 import React, { PureComponent } from 'react';
 // import Ionicons from 'react-native-vector-icons/Ionicons';
 import StarRating from 'react-native-star-rating';
-import { View, Text, Image, TouchableOpacity, ScrollView, Button } from 'react-native';
+import { View, Text, Image, TouchableOpacity, ScrollView } from 'react-native';
 import { Icons, Colors } from '../../../themes';
 
 import ButtonCustom from './ButtonCustom';
@@ -86,8 +86,6 @@ class HomeOverviewRestaurant extends PureComponent {
             <ButtonCustom title="Call Now" iconName={Icons.phoneCall} iconColor={Colors.text} />
             <ButtonCustom title="Bookmarks" iconName={Icons.pin} iconColor={Colors.text} />
           </View>
-
-          {/* <Button title="direct" onPress={this.props.onPressDirect} /> */}
         </View>
       </View>
     );

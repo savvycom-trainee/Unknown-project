@@ -2,6 +2,14 @@ import { StyleSheet } from 'react-native';
 import * as d from '../../../../utilities/Tranform';
 
 const card = StyleSheet.create({
+  component: {
+    backgroundColor: '#FFFFFF',
+    borderRadius: 2.5,
+    flexDirection: 'row',
+    marginHorizontal: 30 * d.ratioW,
+    marginTop: 25 * d.ratioH,
+    zIndex: 0,
+  },
   container: {
     width: 315 * d.ratioW,
     height: 110 * d.ratioH,

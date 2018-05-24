@@ -1,8 +1,22 @@
 import React, { PureComponent } from 'react';
 import PropTypes from 'prop-types';
-import { View, Text, Image } from 'react-native';
+import { View, Text, Image, TouchableOpacity } from 'react-native';
 import card from './style';
-import Card from '../../../../components/Card';
+
+const Card = props => (
+  <TouchableOpacity onPress={props.onPress} style={card.component}>
+    {/* eslint-disable-next-line */}
+    {props.children}
+  </TouchableOpacity>
+);
+
+Card.propTypes = {
+  onPress: PropTypes.func,
+};
+
+Card.defaultProps = {
+  onPress: () => {},
+};
 
 class CardSearch extends PureComponent {
   constructor(props) {

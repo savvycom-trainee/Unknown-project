@@ -14,7 +14,7 @@
     "react/forbid-prop-types": [
       1,
       {
-        "forbid": ["any", "array"]
+        "forbid": ["any"]
       }
     ],
     "linebreak-style": 0,

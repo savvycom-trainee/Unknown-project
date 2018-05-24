@@ -1,5 +1,5 @@
 import React, { PureComponent } from 'react';
-import { View, Text, ScrollView } from 'react-native';
+import { View, Text, ScrollView, StatusBar } from 'react-native';
 import search from './style';
 import images from '../../themes/Images';
 import { Header, Card } from './components';
@@ -54,11 +54,18 @@ class Search extends PureComponent {
       },
     ],
   };
+  searchInfo = (text) => {
+    console.log(text);
+  };
+  placeInfo = (text) => {
+    console.log(text);
+  };
   render() {
     return (
       <View style={search.container}>
+        <StatusBar backgroundColor="white" barStyle="light-content" />
         <View style={search.header}>
-          <Header />
+          <Header searchInfo={this.searchInfo} placeInfo={this.placeInfo} />
         </View>
         <Text style={search.title}>Recommended for you</Text>
         <ScrollView style={search.resultView}>

@@ -7,7 +7,7 @@ import restaurantData from '../Pin/PinView/data/restaurantData';
 import mapStyles from './mapStyles';
 import styles from './styles';
 import CardView from './CardView';
-import * as d from '../../utilities/Tranform';
+// import * as d from '../../utilities/Tranform';
 
 class MapScreen extends PureComponent {
   state = {};

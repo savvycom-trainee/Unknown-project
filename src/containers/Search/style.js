@@ -11,6 +11,7 @@ const search = StyleSheet.create({
   resultView: {},
   title: {
     fontSize: 14,
+    color: 'black',
     marginLeft: 30 * d.ratioW,
     fontWeight: '600',
     marginTop: 49.5 * d.ratioH,

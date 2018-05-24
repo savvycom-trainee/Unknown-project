@@ -10,6 +10,7 @@ const styles = {
     width: 40,
     borderRadius: 20,
     position: 'absolute',
+    zIndex: 1000,
   },
 };
 

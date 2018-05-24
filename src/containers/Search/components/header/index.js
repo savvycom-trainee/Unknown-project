@@ -4,23 +4,46 @@ import header from './style';
 
 class Header extends PureComponent {
   state = {};
+  searchSubmit = () => {
+    const value = this.search._getText();
+    console.log(value);
+    console.log(this.search);
+  };
+  searchBlur = () => {
+    console.log('search blur');
+  };
+  placeSubmit = () => {
+    const value = this.place._value;
+    console.log(value);
+  };
   render() {
     return (
       <View style={header.container}>
         <View style={header.searchView}>
           <TextInput
+            ref={(ref) => {
+              this.search = ref;
+            }}
             placeholder="Search Restaurants and ..."
-            style={header.input}
+            style={[header.input, { textAlign: 'center' }]}
             underlineColorAndroid="transparent"
+            onSubmitEditing={this.searchSubmit}
+            inlineImageLeft="search_icon"
           />
         </View>
         <View style={header.place}>
           <Text style={header.in}>in</Text>
-          <TextInput
-            value="Hanoi, Vietnam"
-            style={header.input}
-            underlineColorAndroid="transparent"
-          />
+          <View style={header.borderBottom}>
+            <TextInput
+              ref={(ref) => {
+                this.place = ref;
+              }}
+              defaultValue="Hanoi, Vietnam"
+              style={header.input}
+              underlineColorAndroid="transparent"
+              onSubmitEditing={this.placeSubmit}
+            />
+          </View>
         </View>
       </View>
     );
