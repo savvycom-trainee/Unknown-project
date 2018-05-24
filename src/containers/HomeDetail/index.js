@@ -19,21 +19,11 @@ class HomeDetail extends Component {
       isOverviewClick: true,
       isMenuClick: false,
       isReviewClick: false,
-      idrestaurant: this.props.navigation.getParam('idrestaurant', 'null'),
-      data: [],
+      data: this.props.navigation.getParam('data', null),
     };
   }
 
   componentDidMount() {
-    console.log(
-      firebase
-        .database()
-        .ref('/restaurant/restaurant')
-        .once('value')
-        .then(snapshot => {
-          this.setState({ data: snapshot.val() });
-        }),
-    );
     BackHandler.addEventListener('hardwareBackPress', this.handleBackPress);
   }
 
@@ -73,24 +63,35 @@ class HomeDetail extends Component {
 
   render() {
     //console.log(this.state.stores[1]);
+    console.log(this.state.data);
 
     const Content = activeTab => {
       if (activeTab === 'HomeOverviewRestaurant') {
         return (
           <HomeOverviewRestaurant
+            data={this.state.data}
             onPressGoBack={() => this.props.navigation.goBack()}
             onPressDirect={() => this.props.navigation.navigate('Direct')}
           />
         );
       } else if (activeTab === 'HomeMenuRestaurant') {
-        return <HomeMenuRestaurant onPressGoBack={() => this.props.navigation.goBack()} />;
+        return (
+          <HomeMenuRestaurant
+            data={this.state.data}
+            onPressGoBack={() => this.props.navigation.goBack()}
+          />
+        );
       }
-      return <HomeReviewRestaurant onPressGoBack={() => this.props.navigation.goBack()} />;
+      return (
+        <HomeReviewRestaurant
+          data={this.state.data}
+          onPressGoBack={() => this.props.navigation.goBack()}
+        />
+      );
     };
 
     return (
       <View style={styles.ViewMain}>
-        <Text>{this.state.data[0].detail}</Text>
         <View style={styles.ViewContent}>{Content(this.state.activeTab)}</View>
         <View style={styles.ViewTabbar}>
           <TouchableOpacity

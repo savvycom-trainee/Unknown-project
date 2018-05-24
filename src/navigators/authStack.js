@@ -16,7 +16,7 @@ export default createStackNavigator(
     },
   },
   {
-    initialRouteName: 'Login',
+    initialRouteName: 'Signup',
     headerMode: 'none',
   },
 );

@@ -8,40 +8,7 @@ import * as d from '../../../utilities/Tranform';
 import Content from './Content';
 
 class HomeMenuRestaurant extends PureComponent {
-  state = {
-    data: [
-      {
-        imageName: 'restaurantPhotoMenu1',
-        Title: 'Salads, Soups & Chili',
-        Description: 'Neque porro quisquam est qui dolorem ipsum quia dolor...',
-        Cost: 7,
-      },
-      {
-        imageName: 'restaurantPhotoMenu2',
-        Title: 'Smokehouse Combos',
-        Description: 'Neque porro quisquam est qui dolorem ipsum quia dolor...',
-        Cost: 12,
-      },
-      {
-        imageName: 'restaurantPhotoMenu3',
-        Title: 'Chicken & Seafood',
-        Description: 'Neque porro quisquam est qui dolorem ipsum quia dolor...',
-        Cost: 5.0,
-      },
-      {
-        imageName: 'restaurantPhotoMenu4',
-        Title: 'Party Platter Add-Ons',
-        Description: 'Neque porro quisquam est qui dolorem ipsum quia dolor...',
-        Cost: 30.0,
-      },
-      {
-        imageName: 'restaurantPhotoMenu1',
-        Title: 'Smokehouse Combos',
-        Description: 'Neque porro quisquam est qui dolorem ipsum quia dolor...',
-        Cost: 13.0,
-      },
-    ],
-  };
+  state = {};
 
   render() {
     return (
@@ -54,10 +21,7 @@ class HomeMenuRestaurant extends PureComponent {
         />
         <View style={styles.ViewContent}>
           <FlatList
-            // refreshing={this.state.isReloading}
-            // onRefresh={this.handleRefesh}
-
-            data={this.state.data}
+            data={this.props.data.menu}
             renderItem={({ item }) => <Content data={item} />}
             keyExtractor={(item, index) => index.toString()}
           />

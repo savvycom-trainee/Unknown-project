@@ -41,7 +41,7 @@ class HomeReviewRestaurant extends PureComponent {
             // refreshing={this.state.isReloading}
             // onRefresh={this.handleRefesh}
 
-            data={Data}
+            data={this.props.data.review}
             renderItem={({ item }) => <Content data={item} />}
             keyExtractor={(item, index) => index.toString()}
           />

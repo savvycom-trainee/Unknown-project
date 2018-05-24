@@ -1,7 +1,7 @@
 import React, { PureComponent } from 'react';
 // import Ionicons from 'react-native-vector-icons/Ionicons';
 import StarRating from 'react-native-star-rating';
-import { View, Text, Image, TouchableOpacity, ScrollView } from 'react-native';
+import { View, Text, Image, FlatList } from 'react-native';
 import { Icons, Colors } from '../../../themes';
 import Header from '../../../components/Header';
 import ButtonCustom from './ButtonCustom';
@@ -10,15 +10,12 @@ import * as d from '../../../utilities/Tranform';
 import styles from './styles';
 /* eslint-disable */
 class HomeOverviewRestaurant extends PureComponent {
-  state = {};
+  state = {
+    time: this.props.data.timeopen + '-' + this.props.data.timeclose,
+  };
   render() {
     return (
       <View style={styles.ViewMain}>
-        {/* <View style={styles.ViewHeader}>
-          <TouchableOpacity onPress={this.props.onPressGoBack}>
-            <Image source={Icons.back} style={styles.IconBack} />
-          </TouchableOpacity>
-        </View> */}
         <Header
           leftHeader={<Image source={Icons.back} style={{ marginTop: 2 * d.ratioH }} />}
           onPressLeftHeader={this.props.onPressGoBack}
@@ -26,29 +23,26 @@ class HomeOverviewRestaurant extends PureComponent {
           rightHeader
         />
         <View style={styles.ScrollViewImages}>
-          <ScrollView horizontal showsHorizontalScrollIndicator={false}>
-            <Image source={require('./Data/images/1.png')} style={styles.ImagesOverView} />
-            <Image source={require('./Data/images/2.png')} style={styles.ImagesOverView} />
-            <Image source={require('./Data/images/1.png')} style={styles.ImagesOverView} />
-            <Image source={require('./Data/images/2.png')} style={styles.ImagesOverView} />
-            <Image source={require('./Data/images/1.png')} style={styles.ImagesOverView} />
-            <Image source={require('./Data/images/1.png')} style={styles.ImagesOverView} />
-            <Image source={require('./Data/images/2.png')} style={styles.ImagesOverView} />
-            <Image source={require('./Data/images/1.png')} style={styles.ImagesOverView} />
-            <Image source={require('./Data/images/2.png')} style={styles.ImagesOverView} />
-            <Image source={require('./Data/images/1.png')} style={styles.ImagesOverView} />
-          </ScrollView>
+          <FlatList
+            horizontal={true}
+            data={this.props.data.photos}
+            showsHorizontalScrollIndicator={false}
+            renderItem={({ item }) => (
+              <Image source={{ uri: item }} style={styles.ImagesOverView} />
+            )}
+            keyExtractor={(item, index) => index.toString()}
+          />
         </View>
 
         <View style={styles.ViewContent}>
           <View style={styles.ViewPointWrap}>
             <View style={styles.ViewPoint}>
-              <Text style={styles.Point}>9.2</Text>
+              <Text style={styles.Point}>{this.props.data.rating * 2}</Text>
             </View>
           </View>
 
           <View style={styles.ViewNameRestaurant}>
-            <Text style={styles.TextNameRestaurant}>Sublimotion</Text>
+            <Text style={styles.TextNameRestaurant}>{this.props.data.name}</Text>
           </View>
 
           <View style={styles.ViewTypeRestaurantCost}>
@@ -62,7 +56,7 @@ class HomeOverviewRestaurant extends PureComponent {
                 fullStar="ios-star"
                 iconSet="Ionicons"
                 maxStars={4}
-                rating={3}
+                rating={this.props.data.rating}
                 fullStarColor="#4CB33E"
                 reversed
                 starSize={12}
@@ -72,18 +66,19 @@ class HomeOverviewRestaurant extends PureComponent {
 
           <View style={styles.ViewLocation}>
             <Text style={styles.TextStatus}>Open Now</Text>
-            <Text style={styles.TextLocation}> • Hanoi, Vietnam</Text>
+            <Text style={styles.TextLocation}> • {this.props.data.vicinity}</Text>
           </View>
 
           <View style={styles.ViewLocation}>
-            <Text style={styles.TextLocation}>
-              Sublimotion is a restaurant located in Sant Josep de sa Talaia, Ibiza, Spain run by
-              Michelin 2-star chef Paco Roncero who utilizes molecular gastronomy in cooking.
-            </Text>
+            <Text style={styles.TextLocation}>{this.props.data.detail}</Text>
           </View>
 
           <View style={styles.ViewBtnBottom}>
-            <ButtonCustom title="8am-10pm" iconName={Icons.clockTime} iconColor={Colors.default} />
+            <ButtonCustom
+              title={this.state.time}
+              iconName={Icons.clockTime}
+              iconColor={Colors.default}
+            />
             <ButtonCustom
               title="Direct"
               iconName={Icons.directOutLine}

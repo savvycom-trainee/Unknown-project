@@ -6,14 +6,16 @@ import * as d from '../../utilities/Tranform';
 const Card = props => (
   <TouchableOpacity
     onPress={props.onPress}
-    style={{
-      backgroundColor: '#FFFFFF',
-      borderRadius: 2.5,
-      flexDirection: props.direction,
-      marginHorizontal: 30 * d.ratioW,
-      marginTop: 25 * d.ratioH,
-      zIndex: 0,
-    }}
+    style={[
+      {
+        backgroundColor: '#FFFFFF',
+        borderRadius: 2.5,
+        flexDirection: props.direction,
+        position: 'relative',
+        zIndex: 0,
+      },
+      props.style,
+    ]}
   >
     {/* eslint-disable-next-line */}
     {props.children}

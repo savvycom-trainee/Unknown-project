@@ -20,6 +20,7 @@ const styles = StyleSheet.create({
     shadowRadius: 20,
   },
   ViewMainChild: {
+    flex: 1,
     padding: 26 * d.ratioW,
   },
   ViewMainChildTop: {
@@ -27,13 +28,20 @@ const styles = StyleSheet.create({
   },
 
   ViewMainChildBottom: {
-    marginTop: 5 * d.ratioH,
+    marginTop: 16.5 * d.ratioH,
+  },
+
+  gallery: {
+    marginRight: 13 * d.ratioW,
+    height: 70 * d.ratioH,
+    width: 80 * d.ratioW,
   },
 
   ViewGallery: {
+    flex: 1,
     flexDirection: 'row',
-    marginTop: 5 * d.ratioH,
-    justifyContent: 'space-between',
+    marginTop: 20 * d.ratioH,
+    justifyContent: 'flex-start',
   },
 
   linkImage: {
@@ -51,7 +59,7 @@ const styles = StyleSheet.create({
 
   ViewNameHours: {
     flex: 5,
-    marginLeft: 10 * d.ratioW,
+    marginLeft: 15 * d.ratioW,
   },
   ViewScore: {
     flex: 1.3,
@@ -70,7 +78,7 @@ const styles = StyleSheet.create({
   },
 
   TextHoursComment: {
-    fontSize: 10,
+    fontSize: 12,
     fontWeight: 'normal',
     color: 'rgb(153,153,153)',
   },

@@ -11,19 +11,19 @@ class Content extends PureComponent {
     return (
       <View style={styles.ViewMain}>
         <View style={styles.ViewImg}>
-          <Image source={Images.restaurantPhotoMenu1} style={styles.Img} />
+          <Image source={{ uri: this.props.data.imagemenu }} style={styles.Img} />
         </View>
         <View style={styles.ViewContent}>
           <View style={styles.ViewTitleCost}>
             <View style={styles.ViewTitle}>
-              <Text style={styles.TextTitle}>{this.props.data.Title}</Text>
+              <Text style={styles.TextTitle}>{this.props.data.namemenu}</Text>
             </View>
             <View style={styles.ViewCost}>
-              <Text style={styles.TextCost}>${this.props.data.Cost},00</Text>
+              <Text style={styles.TextCost}>${this.props.data.pricemenu}</Text>
             </View>
           </View>
           <View style={styles.ViewDescription}>
-            <Text style={styles.TextDescription}>{this.props.data.Description}</Text>
+            <Text style={styles.TextDescription}>{this.props.data.detailmenu}</Text>
           </View>
         </View>
       </View>

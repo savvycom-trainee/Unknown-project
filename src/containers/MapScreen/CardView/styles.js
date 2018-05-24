@@ -2,6 +2,21 @@ import * as d from '../../../utilities/Tranform';
 import colors from '../../../themes/Colors';
 
 const styles = {
+  cardStyle: {
+    backgroundColor: 'transparent',
+  },
+  container: {
+    backgroundColor: '#FFFFFF',
+    borderRadius: 2.5,
+  },
+  blankView: {
+    backgroundColor: 'transparent',
+    width: 30,
+  },
+  greenCircleStyle: {
+    top: 75 * d.ratioH,
+    left: 10 * d.ratioW,
+  },
   restaurantPhotoContainer: {
     overflow: 'hidden',
     borderTopLeftRadius: 2.5,
