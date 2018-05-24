@@ -25,11 +25,13 @@ const Card = props => (
 Card.propTypes = {
   onPress: PropTypes.func,
   direction: PropTypes.string,
+  style: PropTypes.object,
 };
 
 Card.defaultProps = {
   onPress: () => {},
   direction: 'column',
+  style: {},
 };
 
 export default Card;

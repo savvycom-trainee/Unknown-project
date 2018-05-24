@@ -12,6 +12,28 @@ const styles = {
     left: 0,
     right: 0,
   },
+  mapPinStyle: {
+    width: 18 * d.ratioW,
+    height: 25 * d.ratioH,
+  },
+  focusingPhotoMarkerStyle: {
+    height: 51,
+    width: 51,
+    borderRadius: 25.5,
+    position: 'absolute',
+    bottom: 11.5,
+  },
+  defaultPhotoMarkerStyle: {
+    height: 34,
+    width: 34,
+    borderRadius: 17,
+    position: 'absolute',
+    bottom: 8,
+  },
+  markerContainer: {
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
 };
 
 export default styles;

@@ -14,7 +14,7 @@ const styles = {
     width: 30,
   },
   greenCircleStyle: {
-    top: 75 * d.ratioH,
+    top: 80 * d.ratioH,
     left: 10 * d.ratioW,
   },
   restaurantPhotoContainer: {

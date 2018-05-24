@@ -56,7 +56,7 @@ export default createBottomTabNavigator(
         );
       },
     }),
-    initialRouteName: 'Pin',
+    initialRouteName: 'Pointer',
     tabBarOptions: {
       ...TabNavigator.Presets.iOSBottomTabs,
       showLabel: false,

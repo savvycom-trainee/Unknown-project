@@ -29,9 +29,9 @@ export default class CardView extends Component {
 
   render() {
     return (
-      <Card direction="row" style={{ backgroundColor: 'transparent' }}>
-        <View style={{ backgroundColor: 'transparent', width: 30 }} />
-        <GreenCircle onPress={() => {}} style={{ top: 75, left: 10 }}>
+      <Card direction="row" style={styles.cardStyle}>
+        <View style={styles.blankView} />
+        <GreenCircle onPress={() => {}} style={styles.greenCircleStyle}>
           <Text style={styles.ratingTextStyle}>{this.props.item.rating}</Text>
         </GreenCircle>
         <View style={styles.container}>
