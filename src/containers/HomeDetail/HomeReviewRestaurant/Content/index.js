@@ -8,7 +8,7 @@ class Content extends PureComponent {
   state = {};
 
   gallery() {
-    if (this.props.data.image.length == 0) {
+    if (this.props.data.image.length <= 0) {
       return null;
     } else {
       return (

@@ -12,6 +12,12 @@ import styles from './styles';
 class HomeOverviewRestaurant extends PureComponent {
   state = {
     time: this.props.data.timeopen + '-' + this.props.data.timeclose,
+    isBookmark: false,
+  };
+  onPressBookmark = () => {
+    this.setState({
+      isBookmark: !this.state.isBookmark,
+    });
   };
   render() {
     return (
@@ -37,7 +43,7 @@ class HomeOverviewRestaurant extends PureComponent {
         <View style={styles.ViewContent}>
           <View style={styles.ViewPointWrap}>
             <View style={styles.ViewPoint}>
-              <Text style={styles.Point}>{this.props.data.rating * 2}</Text>
+              <Text style={styles.Point}>{this.props.data.rating}</Text>
             </View>
           </View>
 
@@ -55,7 +61,7 @@ class HomeOverviewRestaurant extends PureComponent {
                 emptyStar="ios-star-outline"
                 fullStar="ios-star"
                 iconSet="Ionicons"
-                maxStars={4}
+                maxStars={5}
                 rating={this.props.data.rating}
                 fullStarColor="#4CB33E"
                 reversed
@@ -83,10 +89,15 @@ class HomeOverviewRestaurant extends PureComponent {
               title="Direct"
               iconName={Icons.directOutLine}
               iconColor={Colors.text}
-              onPressDirect1={this.props.onPressDirect}
+              onPressButton={this.props.onPressDirect}
             />
             <ButtonCustom title="Call Now" iconName={Icons.phoneCall} iconColor={Colors.text} />
-            <ButtonCustom title="Bookmarks" iconName={Icons.pin} iconColor={Colors.text} />
+            <ButtonCustom
+              title="Bookmarks"
+              iconName={this.state.isBookmark ? Icons.pinFocused : Icons.pin}
+              iconColor={this.state.isBookmark ? Colors.default : Colors.text}
+              onPressButton={this.onPressBookmark}
+            />
           </View>
         </View>
       </View>
