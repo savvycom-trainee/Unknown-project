@@ -5,10 +5,10 @@
         "iduser": "user123",
         "name": "Mah",
         "date": "20/5/2018",
-        "password": "123456",
-        "repassword": "123456",
+        "gender": "Male",
         "email": "test@gmail.com",
         "avatar": "img.jpg",
+        "location": "Ha Noi",
         "follow": ["user123", "user234"],
         "pin": ["idrestaurant123"]
       }
@@ -22,7 +22,7 @@
         "detail": "Mon nay an nhu shit",
         "photos": [
           "https://c1.staticflickr.com/9/8345/8233271770_70ee15d73a_b.jpg",
-          "https://c1.staticflickr.com/9/8345/8233271770_70ee15d73a_b.jpg",
+          "https://c2.staticflickr.com/8/7030/6544952465_bc1eac064f_b.jpg",
           "https://c1.staticflickr.com/9/8345/8233271770_70ee15d73a_b.jpg",
           "https://c1.staticflickr.com/9/8345/8233271770_70ee15d73a_b.jpg",
           "https://c1.staticflickr.com/9/8345/8233271770_70ee15d73a_b.jpg"
@@ -39,8 +39,8 @@
         ],
         "geometry": {
           "location": {
-            "lat": 21.046051,
-            "lng": 105.79014
+            "lat": 21.065863,
+            "lng": 105.78003
           }
         },
         "review": [
@@ -65,7 +65,7 @@
         "type": "Fast Food",
         "detail": "Mon nay an nhu shit",
         "photos": [
-          "https://c1.staticflickr.com/9/8345/8233271770_70ee15d73a_b.jpg",
+          "https://c2.staticflickr.com/8/7030/6544952465_bc1eac064f_b.jpg",
           "https://c1.staticflickr.com/9/8345/8233271770_70ee15d73a_b.jpg",
           "https://c1.staticflickr.com/9/8345/8233271770_70ee15d73a_b.jpg",
           "https://c1.staticflickr.com/9/8345/8233271770_70ee15d73a_b.jpg",
@@ -109,7 +109,7 @@
         "type": "Fast Food",
         "detail": "Mon nay an nhu shit",
         "photos": [
-          "https://c1.staticflickr.com/9/8345/8233271770_70ee15d73a_b.jpg",
+          "https://c2.staticflickr.com/8/7193/6775817462_142416119a_b.jpg",
           "https://c1.staticflickr.com/9/8345/8233271770_70ee15d73a_b.jpg",
           "https://c1.staticflickr.com/9/8345/8233271770_70ee15d73a_b.jpg",
           "https://c1.staticflickr.com/9/8345/8233271770_70ee15d73a_b.jpg",
@@ -153,7 +153,7 @@
         "type": "Fast Food",
         "detail": "Mon nay an nhu shit",
         "photos": [
-          "https://c1.staticflickr.com/9/8345/8233271770_70ee15d73a_b.jpg",
+          "https://c1.staticflickr.com/9/8386/8468174718_e48722221b_b.jpg",
           "https://c1.staticflickr.com/9/8345/8233271770_70ee15d73a_b.jpg",
           "https://c1.staticflickr.com/9/8345/8233271770_70ee15d73a_b.jpg",
           "https://c1.staticflickr.com/9/8345/8233271770_70ee15d73a_b.jpg",
@@ -197,7 +197,7 @@
         "type": "Fast Food",
         "detail": "Mon nay an nhu shit",
         "photos": [
-          "https://c1.staticflickr.com/9/8345/8233271770_70ee15d73a_b.jpg",
+          "https://c2.staticflickr.com/6/5606/15800083686_2605d81878_b.jpg",
           "https://c1.staticflickr.com/9/8345/8233271770_70ee15d73a_b.jpg",
           "https://c1.staticflickr.com/9/8345/8233271770_70ee15d73a_b.jpg",
           "https://c1.staticflickr.com/9/8345/8233271770_70ee15d73a_b.jpg",

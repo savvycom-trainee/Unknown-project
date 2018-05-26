@@ -5,8 +5,6 @@ const modal = StyleSheet.create({
     backgroundColor: 'rgba(0,0,0, 0.4)',
     width: '100%',
     height: '120%',
-    alignItems: 'center',
-    justifyContent: 'center',
   },
   view: {
     height: '100%',

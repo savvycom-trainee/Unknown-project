@@ -12,7 +12,7 @@ export default createSwitchNavigator(
     },
   },
   {
-    initialRouteName: 'Auth',
+    initialRouteName: 'Home',
     mode: 'card',
     tabBarVisible: false,
     headerMode: 'none',
