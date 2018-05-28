@@ -62,9 +62,15 @@ class Login extends PureComponent {
               },
             );
           })
-          .then(() => {
-            console.log(this.state.user.user._user.uid);
-          })
+          // .then(() => {
+          //   console.log(this.state.user.user._user.uid);
+          //   firebase
+          //     .database()
+          //     .ref('/restaurant/user')
+          //     .push({
+
+          //     });
+          // })
           .catch((error) => {
             this.setState(
               {

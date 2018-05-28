@@ -43,6 +43,7 @@ class Home extends PureComponent {
       { enableHighAccuracy: true, timeout: 20000, maximumAge: 1000 },
     );
     this.props.fetchDatagetNewFeed();
+    console.log(this.props.dataNewFeed.data);
   }
   setModalVisible(visible) {
     this.setState({ modalVisible: visible });
@@ -70,6 +71,8 @@ class Home extends PureComponent {
   _renderNewFeed() {
     console.log(this.state.latitude);
     console.log(this.state.longitude);
+    console.log(this.props.dataNewFeed.data);
+
     return (
       <FlatList
         data={this.props.dataNewFeed.data}
@@ -84,7 +87,7 @@ class Home extends PureComponent {
             <View style={styles.formItem}>
               <TouchableOpacity
                 onPress={() => {
-                  this.props.navigation.navigate('HomeDetail', { data: item });
+                  this.props.navigation.navigate('HomeDetail', { data: '-LDaOpd8zjy0tJad2_ns' });
                 }}
               >
                 <View>
@@ -163,7 +166,12 @@ class Home extends PureComponent {
             centerHeader={<Text style={{ fontSize: 15, fontWeight: '600' }}>NewFeeed</Text>}
             rightHeader={<Image source={Icons.user} />}
           />
-          <Modal animationType="slide" transparent={false} onRequestClose={() => {}} visible={this.state.modalVisible}>
+          <Modal
+            animationType="slide"
+            transparent={false}
+            onRequestClose={() => {}}
+            visible={this.state.modalVisible}
+          >
             <ModalView hideModal={this.hideModal} />
           </Modal>
           <ScrollView style={{ flex: 1 }}>

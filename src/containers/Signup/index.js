@@ -70,6 +70,13 @@ class Signup extends PureComponent {
                 },
               );
             })
+            // .then(() => {
+            //   console.log(this.state.user);
+            //   firebase
+            //     .database()
+            //     .ref('/restaurant/user')
+            //     .set({ id: this.state.user });
+            // })
             .catch((error) => {
               this.setState(
                 {

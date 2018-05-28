@@ -1,5 +1,7 @@
 import React, { PureComponent } from 'react';
 // import Ionicons from 'react-native-vector-icons/Ionicons';
+import firebase from 'react-native-firebase';
+
 import StarRating from 'react-native-star-rating';
 import { View, Text, Image, FlatList } from 'react-native';
 import { Icons, Colors } from '../../../themes';
@@ -14,10 +16,23 @@ class HomeOverviewRestaurant extends PureComponent {
     time: this.props.data.timeopen + '-' + this.props.data.timeclose,
     isBookmark: false,
   };
+  componentDidMount() {
+    console.log(this.props.data);
+  }
   onPressBookmark = () => {
     this.setState({
       isBookmark: !this.state.isBookmark,
     });
+    try {
+      firebase
+        .database()
+        .ref('/restaurant/user/0/pin')
+        .push({
+          id: this.props.data.idrestaurant,
+        });
+    } catch (error) {
+      console.log(error);
+    }
   };
   render() {
     return (
