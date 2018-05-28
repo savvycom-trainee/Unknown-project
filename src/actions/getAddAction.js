@@ -17,10 +17,11 @@ export function getAddFail() {
     type: GET_ADD_FAIL,
   };
 }
-export function fetchDataGetAdd() {
+export function fetchDataGetAdd(latitude, longitude) {
+  console.log('hihi', latitude);
   return (dispatch) => {
     dispatch(getAdd());
-    fetch('https://maps.googleapis.com/maps/api/place/nearbysearch/json?key=AIzaSyB4kVqZAVut6UvbjtMjKnM_Amg5G0qCWWQ&location=21.031292,105.850375&radius=1000&type=restaurant')
+    fetch(`https://maps.googleapis.com/maps/api/place/nearbysearch/json?key=AIzaSyB4kVqZAVut6UvbjtMjKnM_Amg5G0qCWWQ&location=${latitude},${longitude}&radius=1000&type=restaurant`)
       .then(response => response.json())
       .then((responseJson) => {
         dispatch(getAddSuccess(responseJson.results));
@@ -31,4 +32,3 @@ export function fetchDataGetAdd() {
       });
   };
 }
-

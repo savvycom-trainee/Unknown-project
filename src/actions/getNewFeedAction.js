@@ -1,9 +1,5 @@
 import firebase from 'react-native-firebase';
-import {
-  GET_NEWFEED_ING,
-  GET_NEWFEED_SUCCESS,
-  GET_NEWFEED_FAIL,
-} from '../constants/actionTypes';
+import { GET_NEWFEED_ING, GET_NEWFEED_SUCCESS, GET_NEWFEED_FAIL } from '../constants/actionTypes';
 
 export function getNewFeed() {
   return {
@@ -27,11 +23,16 @@ export function fetchDatagetNewFeed() {
     try {
       firebase
         .database()
-        .ref('restaurant/restaurant/')
+        .ref('/restaurant/restaurant')
         .on('value', (snapshot) => {
-          //   console.log('data');
-          //   console.log(snapshot._value);
-          dispatch(getNewFeedSuccess(snapshot._value));
+          const returnArr = [];
+          snapshot.forEach((childSnapshot) => {
+            const item = childSnapshot.val();
+            item.key = childSnapshot.key;
+            returnArr.push(item);
+          });
+          console.log('sskks ', returnArr);
+          dispatch(getNewFeedSuccess(returnArr));
         });
     } catch (error) {
       dispatch(getNewFeedFail(error));
