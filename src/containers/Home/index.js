@@ -2,6 +2,7 @@ import React, { PureComponent } from 'react';
 import PropTypes from 'prop-types';
 import { View, Text, ScrollView, TouchableOpacity, Image, FlatList, Modal } from 'react-native';
 import { connect } from 'react-redux';
+import Icon from 'react-native-vector-icons/Ionicons';
 import StarRating from 'react-native-star-rating';
 import { Header } from '../../components';
 import styles from './styles';
@@ -127,7 +128,17 @@ class Home extends PureComponent {
                       )}
                     </View>
                     <View style={styles.viewNameRow2Item}>
-                      <Text style={styles.textNameRow2}> {distance}• from you</Text>
+                      {Math.round(distance) < 1 ? (
+                        <Text style={styles.textNameRow2}>
+                          {' '}
+                          • {Math.round(distance)} m from you{' '}
+                        </Text>
+                      ) : (
+                        <Text style={styles.textNameRow2}>
+                          {' '}
+                          • {Math.round(distance)} km from you{' '}
+                        </Text>
+                      )}
                     </View>
                     <View style={styles.viewNameRow2Item}>
                       <Text style={styles.textNameRow2}> • {item.vicinity}</Text>
@@ -152,7 +163,7 @@ class Home extends PureComponent {
             centerHeader={<Text style={{ fontSize: 15, fontWeight: '600' }}>NewFeeed</Text>}
             rightHeader={<Image source={Icons.user} />}
           />
-          <Modal animationType="slide" transparent={false} visible={this.state.modalVisible}>
+          <Modal animationType="slide" transparent={false} onRequestClose={() => {}} visible={this.state.modalVisible}>
             <ModalView hideModal={this.hideModal} />
           </Modal>
           <ScrollView style={{ flex: 1 }}>
@@ -173,12 +184,12 @@ class Home extends PureComponent {
                     style={styles.itemMenuIcon}
                     onPress={() => this.props.navigation.navigate('Account')}
                   >
-                    <Image source={Icons.profile} />
+                    <Icon name="md-contacts" size={20} color="#fff" />
                   </TouchableOpacity>
                 </View>
                 <View style={styles.itemMenu}>
                   <TouchableOpacity style={styles.itemMenuIcon}>
-                    <Image source={Icons.direct} />
+                    <Icon name="ios-navigate" size={20} color="#fff" />
                   </TouchableOpacity>
                 </View>
               </View>
@@ -198,6 +209,7 @@ Home.propTypes = {
     navigate: PropTypes.func.isRequired,
   }).isRequired,
   fetchDatagetNewFeed: PropTypes.func.isRequired,
+  dataNewFeed: PropTypes.object.isRequired,
 };
 const mapStateToProps = state => ({
   dataNewFeed: state.getNewFeedReducers,

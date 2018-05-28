@@ -14,17 +14,6 @@ class HomeReviewRestaurant extends PureComponent {
   render() {
     return (
       <View style={styles.ViewMain}>
-        {/* <View style={styles.ViewHeader}>
-          <TouchableOpacity onPress={this.props.onPressGoBack}>
-            <Image source={Icons.back} style={styles.IconBack} />
-          </TouchableOpacity>
-          <View>
-            <Text style={styles.Title}>Review</Text>
-          </View>
-          <TouchableOpacity>
-            <Image source={Icons.search} style={styles.IconSearch} />
-          </TouchableOpacity>
-        </View> */}
         <Header
           leftHeader={<Image source={Icons.back} style={{ marginTop: 2 * d.ratioH }} />}
           onPressLeftHeader={this.props.onPressGoBack}
@@ -38,9 +27,6 @@ class HomeReviewRestaurant extends PureComponent {
 
         <View style={styles.ViewContent}>
           <FlatList
-            // refreshing={this.state.isReloading}
-            // onRefresh={this.handleRefesh}
-
             data={this.props.data.review}
             renderItem={({ item }) => <Content data={item} />}
             keyExtractor={(item, index) => index.toString()}

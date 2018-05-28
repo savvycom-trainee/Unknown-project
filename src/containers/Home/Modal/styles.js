@@ -42,6 +42,9 @@ export default StyleSheet.create({
     fontWeight: '600',
     color: Colors.text,
   },
+  viewTextInputSearch: {
+    paddingBottom: 10 * d.ratioH,
+  },
   viewTextInput: {
     paddingBottom: 10 * d.ratioH,
   },
@@ -51,6 +54,15 @@ export default StyleSheet.create({
     borderRadius: 2.5,
     width: 265 * d.ratioW,
     height: 50 * d.ratioH,
+    borderBottomColor: Colors.textOpacity,
+    borderBottomWidth: 0.3,
+  },
+  textInputSearch: {
+    padding: 0,
+    paddingLeft: 10,
+    borderRadius: 2.5,
+    width: 265 * d.ratioW,
+    height: 30 * d.ratioH,
     borderBottomColor: Colors.textOpacity,
     borderBottomWidth: 0.3,
   },
@@ -89,10 +101,15 @@ export default StyleSheet.create({
     width: 93.7 * d.ratioW,
   },
   viewCustomItem: {
+    justifyContent: 'space-between',
     flexDirection: 'row',
+    alignItems: 'center',
   },
   butonCustomItem: {
-    paddingLeft: 10,
+    paddingLeft: 10 * d.ratioH,
+  },
+  viewStarRating: {
+    height: 45 * d.ratioH,
   },
   viewCustom: {
     backgroundColor: Colors.default,
@@ -137,5 +154,39 @@ export default StyleSheet.create({
     flexWrap: 'wrap',
     justifyContent: 'center',
     alignItems: 'flex-start',
+  },
+  viewHeadModal: {
+    backgroundColor: Colors.default,
+    alignItems: 'center',
+    justifyContent: 'center',
+    height: 60 * d.ratioH,
+  },
+  viewFormRatingItem: {
+    height: 10 * d.ratioH,
+  },
+  viewFormRating: {
+    // height: 500 * d.ratioH,
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  textviewButtonDone: {
+    color: Colors.white,
+    fontWeight: '700',
+  },
+  viewButtonDone: {
+    borderRadius: 30,
+    backgroundColor: Colors.default,
+    alignItems: 'center',
+    justifyContent: 'center',
+    height: 50 * d.ratioH,
+    width: 250 * d.ratioW,
+  },
+  textHeadModal: {
+    color: Colors.white,
+    fontSize: 18,
+    fontWeight: '700',
+  },
+  bodyModal: {
+    alignItems: 'center',
   },
 });

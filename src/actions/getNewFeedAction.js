@@ -1,24 +1,24 @@
 import firebase from 'react-native-firebase';
 import {
-  GET_GET_NEWFEED_ING,
-  GET_GET_NEWFEED_SUCCESS,
-  GET_GET_NEWFEED_FAIL,
+  GET_NEWFEED_ING,
+  GET_NEWFEED_SUCCESS,
+  GET_NEWFEED_FAIL,
 } from '../constants/actionTypes';
 
 export function getNewFeed() {
   return {
-    type: GET_GET_NEWFEED_ING,
+    type: GET_NEWFEED_ING,
   };
 }
 export function getNewFeedSuccess(data) {
   return {
-    type: GET_GET_NEWFEED_SUCCESS,
+    type: GET_NEWFEED_SUCCESS,
     payload: data,
   };
 }
 export function getNewFeedFail() {
   return {
-    type: GET_GET_NEWFEED_FAIL,
+    type: GET_NEWFEED_FAIL,
   };
 }
 export function fetchDatagetNewFeed() {

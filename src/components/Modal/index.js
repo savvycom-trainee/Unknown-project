@@ -6,11 +6,14 @@ import modal from './ModalStyle';
 export default class Modal extends Component {
   state = {
     modalVisible: false,
+    params: 1,
   };
   componentDidMount() {
     this.props.onRef(this);
   }
   open = () => {
+    // this.setState({ params });
+
     this.setState({ modalVisible: true });
   };
   close = () => {

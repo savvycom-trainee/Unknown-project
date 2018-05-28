@@ -9,17 +9,17 @@ import { Images } from '../../../../themes';
 
 class ButtonCustom extends PureComponent {
   state = {
-    color: this.props.iconColor,
+    // color: this.props.iconColor,
   };
   render() {
     return (
-      <TouchableOpacity style={styles.ViewMain} onPress={this.props.onPressDirect1}>
+      <TouchableOpacity style={styles.ViewMain} onPress={this.props.onPressButton}>
         <Image source={this.props.iconName} style={styles.iconStyle} />
         <Text
           style={{
             fontSize: 9,
             fontWeight: 'bold',
-            color: this.state.color,
+            color: this.props.iconColor,
           }}
         >
           {this.props.title}
@@ -30,11 +30,11 @@ class ButtonCustom extends PureComponent {
 }
 
 ButtonCustom.propTypes = {
-  onPressDirect: PropTypes.func,
+  onPressButton: PropTypes.func,
 };
 
 ButtonCustom.defaultProps = {
-  onPressDirect: () => {},
+  onPressButton: () => {},
 };
 
 export default ButtonCustom;

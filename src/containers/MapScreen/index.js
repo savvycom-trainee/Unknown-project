@@ -1,5 +1,5 @@
 import React, { PureComponent } from 'react';
-import { View, Text, Image, FlatList } from 'react-native';
+import { View, Text, Image, FlatList, Platform, PermissionsAndroid } from 'react-native';
 import MapView, { Marker } from 'react-native-maps';
 import { Header } from '../../components';
 import { Icons } from '../../themes';
@@ -26,10 +26,22 @@ class MapScreen extends PureComponent {
   }
 
   componentDidMount() {
-    this.onGetCurrentLocation();
+    if (Platform.OS === 'ios') {
+      this.onGetCurrentLocation();
+    } else {
+      // TODO: implement message if user is not allow accessing to their location permission
+      // & handle error exception
+      this._requestAndroidLocationPermission(() => {
+        this.onGetCurrentLocation();
+      });
+    }
   }
 
   onGetCurrentLocation = () => {
+    if (Platform.OS === 'ios') {
+      // eslint-disable-next-line no-undef
+      navigator.geolocation.requestAuthorization();
+    }
     // eslint-disable-next-line
     navigator.geolocation.getCurrentPosition(
       (position) => {
@@ -47,13 +59,39 @@ class MapScreen extends PureComponent {
         this.setState({ error }); // eslint-disable-line
         console.log(error);
       },
-      { enableHighAccuracy: true, timeout: 20000, maximumAge: 100000 },
+      { enableHighAccuracy: true, timeout: 3000, maximumAge: 1000 },
     );
   };
 
   onPickRestaurant = () => {
     this.setState({ focusing: true });
   };
+
+  // eslint-disable-next-line
+  async _requestAndroidLocationPermission(allowCallback, deniedCallback, failureCallback) {
+    try {
+      const granted = await PermissionsAndroid.request(
+        PermissionsAndroid.PERMISSIONS.ACCESS_FINE_LOCATION,
+        {
+          // TODO replace i18n string key instead of hardcode string
+          title: 'Yêu cầu',
+          message: 'Sử dụng vị trí của bạn để tìm dịch vụ gần nhất.',
+        },
+      );
+      if (granted === PermissionsAndroid.RESULTS.GRANTED) {
+        if (allowCallback) {
+          allowCallback();
+        }
+      }
+      if (deniedCallback) {
+        deniedCallback();
+      }
+    } catch (err) {
+      if (failureCallback) {
+        failureCallback(err);
+      }
+    }
+  }
 
   render() {
     return (
@@ -65,6 +103,7 @@ class MapScreen extends PureComponent {
         />
         <MapView
           initialRegion={this.state.region}
+          region={this.state.region}
           provider="google"
           customMapStyle={mapStyles}
           style={{ flex: 1 }}
@@ -87,18 +126,12 @@ class MapScreen extends PureComponent {
               this.state.focusingRegion === JSON.stringify(markers.region) ? (
                 <View style={styles.markerContainer}>
                   <Image source={Icons.greenMarker} />
-                  <Image
-                    source={markers.restaurantPhoto}
-                    style={styles.focusingPhotoMarkerStyle}
-                  />
+                  <Image source={markers.restaurantPhoto} style={styles.focusingPhotoMarkerStyle} />
                 </View>
               ) : (
                 <View style={styles.markerContainer}>
                   <Image source={Icons.grayMarker} />
-                  <Image
-                    source={markers.restaurantPhoto}
-                    style={styles.defaultPhotoMarkerStyle}
-                  />
+                  <Image source={markers.restaurantPhoto} style={styles.defaultPhotoMarkerStyle} />
                 </View>
               )}
             </Marker>

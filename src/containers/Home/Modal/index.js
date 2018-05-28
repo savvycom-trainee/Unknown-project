@@ -10,13 +10,17 @@ import {
   FlatList,
   Keyboard,
 } from 'react-native';
+
+import PropTypes from 'prop-types';
+import StarRating from 'react-native-star-rating';
 import { RNCamera } from 'react-native-camera';
 import { connect } from 'react-redux';
 import Icon from 'react-native-vector-icons/Ionicons';
 import styles from './styles';
-import { Icons } from '../../../themes';
+import { Icons, Colors } from '../../../themes';
 import { fetchDataGetAdd } from '../../../actions/getAddAction';
-import { green } from 'ansi-colors';
+import ModalCustom from '../../../components/Modal';
+
 // const iosConfig = {};
 // const androidConfig = {};
 const PendingView = () => (
@@ -42,6 +46,15 @@ class ModalView extends PureComponent {
       detail: '',
       name: '',
       photos: [],
+      test: 0,
+      starCount: 0.5,
+      objPost: {
+        name: '',
+        detail: '',
+        image: [],
+        location: '',
+        rating: 0,
+      },
     };
   }
 
@@ -58,6 +71,11 @@ class ModalView extends PureComponent {
       { enableHighAccuracy: true, timeout: 20000, maximumAge: 1000 },
     );
     this._getPhoto();
+  }
+  onStarRatingPress(rating) {
+    this.setState({
+      starCount: rating,
+    });
   }
   takePicture = async function (camera) {
     const options = { quality: 0.5, base64: true };
@@ -98,9 +116,55 @@ class ModalView extends PureComponent {
       Keyboard.dismiss();
     }
   }
+  _onShowModal(a) {
+    this.setState({ test: a });
+    this.modal.open();
+    this.props.fetchDataGetAdd();
+  }
+
   render() {
     return (
       <View style={styles.container}>
+        <ModalCustom onRef={ref => (this.modal = ref)}>
+          <View style={{ flex: 1, width: null, backgroundColor: '#fff' }}>
+            <View style={styles.viewHeadModal}>
+              <Text style={styles.textHeadModal}>List Add</Text>
+            </View>
+
+            <View style={styles.bodyModal}>
+              <View>
+                <View>
+                  <Text> Near Add You </Text>
+                  <View style={styles.viewTextInputSearch}>
+                    <TextInput
+                      underlineColorAndroid="transparent"
+                      placeholder="Detail"
+                      style={styles.textInputSearch}
+                      onChangeText={detail => this.setState({ detail })}
+                      value={this.state.detail}
+                    />
+                  </View>
+                </View>
+                <View>
+                  <FlatList
+                    data={this.props.dataAdd.data}
+                    renderItem={({ item }) => (
+                      <View>
+                        <Text>{item.name} </Text>
+                      </View>
+                    )}
+                    keyExtractor={(item, index) => index.toString()}
+                  />
+                </View>
+                <View>
+                  <TouchableOpacity style={styles.viewButtonDone}>
+                    <Text style={styles.textviewButtonDone}> Done</Text>
+                  </TouchableOpacity>
+                </View>
+              </View>
+            </View>
+          </View>
+        </ModalCustom>
         <View style={styles.viewHead}>
           <View>
             <TouchableOpacity
@@ -198,12 +262,32 @@ class ModalView extends PureComponent {
                   <Text style={styles.textAddPost}>Add post</Text>
                 </View>
                 <View style={styles.viewCustomItem}>
-                  <TouchableOpacity style={styles.butonCustomItem}>
-                    <Icon name="ios-navigate" color="white" size={33} />
-                  </TouchableOpacity>
-                  <TouchableOpacity style={styles.butonCustomItem}>
-                    <Icon name="md-images" color="white" size={33} />
-                  </TouchableOpacity>
+                  <View style={styles.viewStarRating}>
+                    <StarRating
+                      disabled={false}
+                      emptyStar="ios-star-outline"
+                      fullStar="ios-star"
+                      halfStar="ios-star-half"
+                      iconSet="Ionicons"
+                      maxStars={5}
+                      rating={this.state.starCount}
+                      selectedStar={rating => this.onStarRatingPress(rating)}
+                      fullStarColor={Colors.white}
+                    />
+                  </View>
+                  <View>
+                    <TouchableOpacity
+                      style={styles.butonCustomItem}
+                      onPress={() => this._onShowModal(2)}
+                    >
+                      <Icon name="ios-navigate" color="white" size={33} />
+                    </TouchableOpacity>
+                  </View>
+                  <View>
+                    <TouchableOpacity style={styles.butonCustomItem}>
+                      <Icon name="md-images" color="white" size={33} />
+                    </TouchableOpacity>
+                  </View>
                 </View>
               </View>
             </View>
@@ -213,6 +297,11 @@ class ModalView extends PureComponent {
     );
   }
 }
+ModalView.propTypes = {
+  hideModal: PropTypes.func.isRequired,
+  fetchDataGetAdd: PropTypes.func.isRequired,
+  dataAdd: PropTypes.object.isRequired,
+};
 const mapStateToProps = state => ({
   dataAdd: state.getAddReducers,
 });
