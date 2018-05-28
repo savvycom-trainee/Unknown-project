@@ -25,16 +25,18 @@ export function fetchDatagetNewFeed() {
         .database()
         .ref('/restaurant/restaurant')
         .on('value', (snapshot) => {
-          const returnArr = [];
+          let returnArr = [];
           snapshot.forEach((childSnapshot) => {
             const item = childSnapshot.val();
             item.key = childSnapshot.key;
-            returnArr.push(item);
+            returnArr = [...returnArr, item];
           });
           console.log('sskks ', returnArr);
           dispatch(getNewFeedSuccess(returnArr));
         });
     } catch (error) {
+      console.log(error);
+
       dispatch(getNewFeedFail(error));
     }
   };

@@ -11,7 +11,6 @@ import * as d from '../../utilities/Tranform';
 import { fetchDatagetNewFeed } from '../../actions/getNewFeedAction';
 import ModalView from './Modal';
 
-
 const shadow = {
   // elevation: 6,
   // shadowColor: 'rgba(0,0,0,0.6)',
@@ -44,6 +43,7 @@ class Home extends PureComponent {
       { enableHighAccuracy: true, timeout: 20000, maximumAge: 1000 },
     );
     this.props.fetchDatagetNewFeed();
+    console.log(this.props.dataNewFeed.data);
   }
   setModalVisible(visible) {
     this.setState({ modalVisible: visible });
@@ -52,6 +52,7 @@ class Home extends PureComponent {
     this.setModalVisible(message);
   };
 
+  /* eslint-disable */
   deg2rad = deg => deg * (Math.PI / 180);
   _getDistanceFromLatLonInKm = (lat1, lon1, lat2, lon2) => {
     const R = 6371; // Radius of the earth in km
@@ -66,10 +67,14 @@ class Home extends PureComponent {
     const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
     const d = R * c; // Distance in km
     return d;
+    /* eslint-enable */
   };
 
   _renderNewFeed() {
+    console.log(this.state.latitude);
+    console.log(this.state.longitude);
     console.log(this.props.dataNewFeed.data);
+
     return (
       <FlatList
         data={this.props.dataNewFeed.data}
@@ -84,7 +89,7 @@ class Home extends PureComponent {
             <View style={styles.formItem}>
               <TouchableOpacity
                 onPress={() => {
-                  this.props.navigation.navigate('HomeDetail', { data: item });
+                  this.props.navigation.navigate('HomeDetail', { data: '-LDaOpd8zjy0tJad2_ns' });
                 }}
               >
                 <View>
@@ -163,7 +168,12 @@ class Home extends PureComponent {
             centerHeader={<Text style={{ fontSize: 15, fontWeight: '600' }}>NewFeeed</Text>}
             rightHeader={<Image source={Icons.user} />}
           />
-          <Modal animationType="slide" transparent={false} onRequestClose={() => {}} visible={this.state.modalVisible}>
+          <Modal
+            animationType="slide"
+            transparent={false}
+            onRequestClose={() => {}}
+            visible={this.state.modalVisible}
+          >
             <ModalView hideModal={this.hideModal} />
           </Modal>
           <ScrollView style={{ flex: 1 }}>
