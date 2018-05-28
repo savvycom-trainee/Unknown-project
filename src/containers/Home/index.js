@@ -11,6 +11,7 @@ import * as d from '../../utilities/Tranform';
 import { fetchDatagetNewFeed } from '../../actions/getNewFeedAction';
 import ModalView from './Modal';
 
+
 const shadow = {
   // elevation: 6,
   // shadowColor: 'rgba(0,0,0,0.6)',
@@ -24,7 +25,7 @@ class Home extends PureComponent {
     this.state = {
       latitude: null,
       longitude: null,
-      modalVisible: false,
+      modalVisible: true,
       error: null,
       // starCount: 2.5,
     };
@@ -68,8 +69,7 @@ class Home extends PureComponent {
   };
 
   _renderNewFeed() {
-    console.log(this.state.latitude);
-    console.log(this.state.longitude);
+    console.log(this.props.dataNewFeed.data);
     return (
       <FlatList
         data={this.props.dataNewFeed.data}

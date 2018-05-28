@@ -18,7 +18,7 @@ import { connect } from 'react-redux';
 import Icon from 'react-native-vector-icons/Ionicons';
 import styles from './styles';
 import { Icons, Colors } from '../../../themes';
-import { fetchDataGetAdd } from '../../../actions/getAddAction';
+import { fetchDataGetAdd, fetchPostNewFeed } from '../../../actions';
 import ModalCustom from '../../../components/Modal';
 
 // const iosConfig = {};
@@ -46,14 +46,49 @@ class ModalView extends PureComponent {
       detail: '',
       name: '',
       photos: [],
-      test: 0,
-      starCount: 0.5,
-      objPost: {
+      test: {
+        idrestaurant: 'idrestaurant123',
         name: '',
-        detail: '',
-        image: [],
-        location: '',
         rating: 0,
+        type: 'Fast Food',
+        detail: 'Mon nay an nhu shit',
+        photos: [
+          'https://c1.staticflickr.com/9/8345/8233271770_70ee15d73a_b.jpg',
+          'https://c2.staticflickr.com/8/7030/6544952465_bc1eac064f_b.jpg',
+          'https://c1.staticflickr.com/9/8345/8233271770_70ee15d73a_b.jpg',
+          'https://c1.staticflickr.com/9/8345/8233271770_70ee15d73a_b.jpg',
+          'https://c1.staticflickr.com/9/8345/8233271770_70ee15d73a_b.jpg',
+        ],
+        timeopen: '7h00',
+        timeclose: '22h00',
+        menu: [
+          {
+            namemenu: 'Slads',
+            imagemenu: 'https://c1.staticflickr.com/9/8345/8233271770_70ee15d73a_b.jpg',
+            detailmenu: 'Mon nay an nhu shit',
+            pricemenu: 12.6,
+          },
+        ],
+        geometry: {
+          location: {
+            lat: 21.065863,
+            lng: 105.78003,
+          },
+        },
+        review: [
+          {
+            iduser: 'user123',
+            name: 'user123',
+            comment: 'Nhà hàng như shit',
+            rating: 4,
+            image: [
+              'https://c1.staticflickr.com/9/8345/8233271770_70ee15d73a_b.jpg',
+              'https://c1.staticflickr.com/9/8345/8233271770_70ee15d73a_b.jpg',
+            ],
+          },
+        ],
+        iduser: 'user123',
+        vicinity: '',
       },
     };
   }
@@ -74,7 +109,10 @@ class ModalView extends PureComponent {
   }
   onStarRatingPress(rating) {
     this.setState({
-      starCount: rating,
+      test: {
+        ...this.state.test,
+        rating: rating
+      },
     });
   }
   takePicture = async function (camera) {
@@ -111,15 +149,30 @@ class ModalView extends PureComponent {
   //   // }
   //   return true;
   // }
-  _onPost() {
-    if (this._validateonPost()) {
-      Keyboard.dismiss();
-    }
+  _onAdd(item) {
+    this.setState({
+      test: {
+        ...this.state.test,
+        idrestaurant: item.id,
+        geometry: {
+          location: {
+            lat: item.geometry.location.lat,
+            lng: item.geometry.location.lng,
+          },
+        },
+        name: item.name,
+        vicinity: item.vicinity,
+        iduser: '0hJcq7PHg5bXgB414nqBXl3teAg2',
+      },
+    });
   }
-  _onShowModal(a) {
-    this.setState({ test: a });
+  _onPost() {
+    this.props.fetchPostNewFeed(this.state.test);
+  }
+  _onShowModal() {
+    const { latitude, longitude } = this.state;
     this.modal.open();
-    this.props.fetchDataGetAdd();
+    this.props.fetchDataGetAdd(latitude, longitude);
   }
 
   render() {
@@ -130,11 +183,10 @@ class ModalView extends PureComponent {
             <View style={styles.viewHeadModal}>
               <Text style={styles.textHeadModal}>List Add</Text>
             </View>
-
             <View style={styles.bodyModal}>
               <View>
-                <View>
-                  <Text> Near Add You </Text>
+                <View style={styles.ViewHeadFlatList}>
+                  <Text style={styles.textHeadNear}> Near Add You </Text>
                   <View style={styles.viewTextInputSearch}>
                     <TextInput
                       underlineColorAndroid="transparent"
@@ -145,19 +197,36 @@ class ModalView extends PureComponent {
                     />
                   </View>
                 </View>
-                <View>
+                <View style={styles.ViewContentFlatList}>
                   <FlatList
                     data={this.props.dataAdd.data}
                     renderItem={({ item }) => (
-                      <View>
-                        <Text>{item.name} </Text>
+                      <View style={styles.ViewItemFlatList}>
+                        <TouchableOpacity onPress={() => this._onAdd(item)}>
+                          <View style={styles.viewItemAdd}>
+                            <View>
+                              <Text style={styles.textItemName}>{item.name} </Text>
+                            </View>
+                            <View>
+                              <Image
+                                source={{ uri: item.icon }}
+                                style={{ height: 20, width: 20 }}
+                              />
+                            </View>
+                          </View>
+                        </TouchableOpacity>
                       </View>
                     )}
                     keyExtractor={(item, index) => index.toString()}
                   />
                 </View>
-                <View>
-                  <TouchableOpacity style={styles.viewButtonDone}>
+                <View style={styles.ViewButton}>
+                  <Text style={styles.textSelected}>{this.state.test.name}</Text>
+                  <Text style={styles.textSelectedAdd}>{this.state.test.vicinity}</Text>
+                  <TouchableOpacity
+                    style={styles.viewButtonDone}
+                    onPress={() => this.modal.close()}
+                  >
                     <Text style={styles.textviewButtonDone}> Done</Text>
                   </TouchableOpacity>
                 </View>
@@ -181,7 +250,7 @@ class ModalView extends PureComponent {
             </TouchableOpacity>
           </View>
           <View>
-            <TouchableOpacity>
+            <TouchableOpacity onPress={() => this._onPost()}>
               <Text style={styles.textPost}>Post</Text>
             </TouchableOpacity>
           </View>
@@ -190,6 +259,8 @@ class ModalView extends PureComponent {
           <ScrollView style={{ flex: 1 }}>
             <View style={styles.Form}>
               <View style={styles.viewform}>
+                <Text style={styles.textSelected}>{this.state.test.name}</Text>
+                <Text style={styles.textSelectedAdd}>{this.state.test.vicinity}</Text>
                 <View style={styles.viewTextInput}>
                   <TextInput
                     returnKeyType="next"
@@ -270,7 +341,7 @@ class ModalView extends PureComponent {
                       halfStar="ios-star-half"
                       iconSet="Ionicons"
                       maxStars={5}
-                      rating={this.state.starCount}
+                      rating={this.state.test.rating}
                       selectedStar={rating => this.onStarRatingPress(rating)}
                       fullStarColor={Colors.white}
                     />
@@ -300,9 +371,11 @@ class ModalView extends PureComponent {
 ModalView.propTypes = {
   hideModal: PropTypes.func.isRequired,
   fetchDataGetAdd: PropTypes.func.isRequired,
+  fetchPostNewFeed: PropTypes.func.isRequired,
   dataAdd: PropTypes.object.isRequired,
 };
 const mapStateToProps = state => ({
   dataAdd: state.getAddReducers,
+  dataPost: state.postNewFeedReducers,
 });
-export default connect(mapStateToProps, { fetchDataGetAdd })(ModalView);
+export default connect(mapStateToProps, { fetchDataGetAdd, fetchPostNewFeed })(ModalView);
