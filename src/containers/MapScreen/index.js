@@ -7,6 +7,7 @@ import restaurantData from '../Pin/PinView/data/restaurantData';
 import mapStyles from './mapStyles';
 import styles from './styles';
 import CardView from './CardView';
+import { isIphoneX } from '../../utilities/device';
 // import * as d from '../../utilities/Tranform';
 
 class MapScreen extends PureComponent {
@@ -14,8 +15,8 @@ class MapScreen extends PureComponent {
     super(props);
     this.state = {
       region: {
-        latitude: 25.030244,
-        longitude: 110.784782,
+        latitude: 21.025817,
+        longitude: 105.800344,
         latitudeDelta: 0.0301,
         longitudeDelta: 0.0304,
       },
@@ -35,6 +36,12 @@ class MapScreen extends PureComponent {
         this.onGetCurrentLocation();
       });
     }
+    this.watchID = this.onWatchPosition();
+  }
+
+  componentWillUnmount() {
+    // eslint-disable-next-line
+    navigator.geolocation.clearWatch(this.watchID);
   }
 
   onGetCurrentLocation = () => {
@@ -60,6 +67,33 @@ class MapScreen extends PureComponent {
         console.log(error);
       },
       { enableHighAccuracy: true, timeout: 3000, maximumAge: 1000 },
+    );
+  };
+
+  onWatchPosition = () => {
+    // eslint-disable-next-line
+    navigator.geolocation.watchPosition(
+      (position) => {
+        this.setState({
+          region: {
+            latitude: position.coords.latitude,
+            longitude: position.coords.longitude,
+            latitudeDelta: this.state.region.latitudeDelta,
+            longitudeDelta: this.state.region.longitudeDelta,
+          },
+          error: null, // eslint-disable-line
+        });
+      },
+      (error) => {
+        this.setState({ error }); // eslint-disable-line
+        console.log(error);
+      },
+      {
+        enableHighAccuracy: true,
+        timeout: 3000,
+        maximumAge: 1000,
+        distanceFilter: 100,
+      },
     );
   };
 
@@ -102,14 +136,18 @@ class MapScreen extends PureComponent {
           rightHeader={<Image source={Icons.user} />}
         />
         <MapView
-          initialRegion={this.state.region}
+          // initialRegion={this.state.region}
           region={this.state.region}
+          onRegionChange={this.onGetCurrentLocation()}
           provider="google"
           customMapStyle={mapStyles}
           style={{ flex: 1 }}
         >
           <Marker coordinate={this.state.region}>
-            <Image source={Icons.mapPin} style={styles.mapPinStyle} />
+            <Image
+              source={Icons.mapPin}
+              style={isIphoneX() === true ? styles.mapPinIphoneXStyle : styles.mapPinStyle}
+            />
           </Marker>
           {restaurantData.map((markers, index) => (
             <Marker

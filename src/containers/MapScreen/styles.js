@@ -16,6 +16,10 @@ const styles = {
     width: 18 * d.ratioW,
     height: 25 * d.ratioH,
   },
+  mapPinIphoneXStyle: {
+    width: 22 * d.ratioW,
+    height: 25 * d.ratioH,
+  },
   focusingPhotoMarkerStyle: {
     height: 51,
     width: 51,
