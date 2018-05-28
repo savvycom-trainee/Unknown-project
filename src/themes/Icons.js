@@ -27,6 +27,7 @@ const icons = {
   mapPin: require('../../assets/icons/mapPin.png'),
   greenMarker: require('../../assets/icons/greenMarker.png'),
   grayMarker: require('../../assets/icons/grayMarker.png'),
+  follow: require('../../assets/icons/follow.png'),
 };
 
 export default icons;

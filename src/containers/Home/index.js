@@ -144,6 +144,8 @@ class Home extends PureComponent {
     );
   }
   render() {
+    console.log('params');
+    console.log(this.props.user);
     return (
       <View style={styles.container}>
         <View style={styles.body}>
@@ -152,7 +154,12 @@ class Home extends PureComponent {
             centerHeader={<Text style={{ fontSize: 15, fontWeight: '600' }}>NewFeeed</Text>}
             rightHeader={<Image source={Icons.user} />}
           />
-          <Modal animationType="slide" transparent={false} visible={this.state.modalVisible}>
+          <Modal
+            animationType="slide"
+            transparent={false}
+            onRequestClose={() => {}}
+            visible={this.state.modalVisible}
+          >
             <ModalView hideModal={this.hideModal} />
           </Modal>
           <ScrollView style={{ flex: 1 }}>
@@ -199,7 +206,11 @@ Home.propTypes = {
   }).isRequired,
   fetchDatagetNewFeed: PropTypes.func.isRequired,
 };
-const mapStateToProps = state => ({
-  dataNewFeed: state.getNewFeedReducers,
-});
+const mapStateToProps = (state) => {
+  console.log(state);
+  return {
+    dataNewFeed: state.getNewFeedReducers,
+    user: state.user,
+  };
+};
 export default connect(mapStateToProps, { fetchDatagetNewFeed })(Home);
