@@ -36,6 +36,12 @@ const styles = StyleSheet.create({
     height: 70 * d.ratioH,
     width: 80 * d.ratioW,
   },
+  galleryImage3: {
+    backgroundColor: 'red',
+    marginRight: 13 * d.ratioW,
+    height: 70 * d.ratioH,
+    width: 80 * d.ratioW,
+  },
 
   ViewGallery: {
     flex: 1,

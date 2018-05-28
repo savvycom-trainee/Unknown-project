@@ -62,6 +62,9 @@ class Login extends PureComponent {
               },
             );
           })
+          .then(() => {
+            console.log(this.state.user.user._user.uid);
+          })
           .catch((error) => {
             this.setState(
               {
