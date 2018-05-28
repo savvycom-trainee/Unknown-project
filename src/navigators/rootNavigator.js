@@ -12,6 +12,7 @@ export default createSwitchNavigator(
     },
   },
   {
+    // TODO change Home to Auth when has asyncStorage
     initialRouteName: 'Home',
     mode: 'card',
     tabBarVisible: false,
