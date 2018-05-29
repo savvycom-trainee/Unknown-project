@@ -88,6 +88,8 @@ const login = StyleSheet.create({
   },
   txtSignup: {
     fontWeight: 'bold',
+    paddingLeft: 7,
+    paddingVertical: 15,
     color: Colors.default,
   },
   txtBottom: {

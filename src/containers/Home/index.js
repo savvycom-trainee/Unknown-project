@@ -158,6 +158,8 @@ class Home extends PureComponent {
     );
   }
   render() {
+    console.log('params');
+    console.log(this.props.user);
     return (
       <View style={styles.container}>
         <View style={styles.body}>
@@ -219,7 +221,11 @@ Home.propTypes = {
   fetchDatagetNewFeed: PropTypes.func.isRequired,
   dataNewFeed: PropTypes.object.isRequired,
 };
-const mapStateToProps = state => ({
-  dataNewFeed: state.getNewFeedReducers,
-});
+const mapStateToProps = (state) => {
+  console.log(state);
+  return {
+    dataNewFeed: state.getNewFeedReducers,
+    user: state.user,
+  };
+};
 export default connect(mapStateToProps, { fetchDatagetNewFeed })(Home);
