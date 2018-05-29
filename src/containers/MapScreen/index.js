@@ -2,6 +2,7 @@ import React, { PureComponent } from 'react';
 import { View, Text, Image, FlatList, Platform, PermissionsAndroid } from 'react-native';
 import MapView, { Marker } from 'react-native-maps';
 import Icon from 'react-native-vector-icons/Ionicons';
+import { connect } from 'react-redux';
 import { Header } from '../../components';
 import { Icons, Colors } from '../../themes';
 import restaurantData from '../Pin/PinView/data/restaurantData';
@@ -37,7 +38,9 @@ class MapScreen extends PureComponent {
         this.onGetCurrentLocation();
       });
     }
+    this.onGetCurrentLocation();
     this.watchID = this.onWatchPosition();
+    console.log(`region ${JSON.stringify(this.props.region.coords.longitude)}`);
   }
 
   componentWillUnmount() {
@@ -46,28 +49,13 @@ class MapScreen extends PureComponent {
   }
 
   onGetCurrentLocation = () => {
-    if (Platform.OS === 'ios') {
-      // eslint-disable-next-line no-undef
-      navigator.geolocation.requestAuthorization();
-    }
-    // eslint-disable-next-line
-    navigator.geolocation.getCurrentPosition(
-      (position) => {
-        this.setState({
-          region: {
-            latitude: position.coords.latitude,
-            longitude: position.coords.longitude,
-            latitudeDelta: this.state.region.latitudeDelta,
-            longitudeDelta: this.state.region.longitudeDelta,
-          },
-          error: null, // eslint-disable-line
-        });
+    this.setState({
+      region: {
+        ...this.state.region,
+        latitude: this.props.region.coords.latitude,
+        longitude: this.props.region.coords.longitude,
       },
-      (error) => {
-        this.setState({ error }); // eslint-disable-line
-      },
-      { enableHighAccuracy: true, timeout: 3000, maximumAge: 1000 },
-    );
+    });
   };
 
   onWatchPosition = () => {
@@ -76,10 +64,9 @@ class MapScreen extends PureComponent {
       (position) => {
         this.setState({
           region: {
+            ...this.state.region,
             latitude: position.coords.latitude,
             longitude: position.coords.longitude,
-            latitudeDelta: this.state.region.latitudeDelta,
-            longitudeDelta: this.state.region.longitudeDelta,
           },
           error: null, // eslint-disable-line
         });
@@ -145,12 +132,14 @@ class MapScreen extends PureComponent {
               style={styles.directIconStyle}
             />
           }
-          onPressRightHeader={() => this.state.focusing === null ? {} : this.props.navigation.navigate('Direct')}
+          onPressRightHeader={
+            () => (this.state.focusing === null ? {} : this.props.navigation.navigate('Direct')) // eslint-disable-line
+          }
         />
         <MapView
           // initialRegion={this.state.region}
           region={this.state.region}
-          onRegionChange={this.onGetCurrentLocation()}
+          // onRegionChange={this.onGetCurrentLocation()}
           provider="google"
           customMapStyle={mapStyles}
           style={{ flex: 1 }}
@@ -219,4 +208,8 @@ class MapScreen extends PureComponent {
   }
 }
 
-export default MapScreen;
+const mapStateToProps = state => ({
+  region: state.getPositionReducers,
+});
+
+export default connect(mapStateToProps)(MapScreen);

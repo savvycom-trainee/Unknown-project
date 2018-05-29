@@ -9,6 +9,7 @@ import styles from './styles';
 import { Icons } from '../../themes';
 import * as d from '../../utilities/Tranform';
 import { fetchDatagetNewFeed } from '../../actions/getNewFeedAction';
+import { getPositionSuccess } from '../../actions';
 import ModalView from './Modal';
 
 const shadow = {
@@ -31,6 +32,12 @@ class Home extends PureComponent {
   }
 
   componentDidMount() {
+    this.onGetCurrentPosition();
+    this.props.fetchDatagetNewFeed();
+    console.log(this.props.dataNewFeed.data);
+  }
+
+  onGetCurrentPosition = () => {
     navigator.geolocation.getCurrentPosition(
       (position) => {
         this.setState({
@@ -38,13 +45,15 @@ class Home extends PureComponent {
           longitude: position.coords.longitude,
           error: null,
         });
+        this.props.getPositionSuccess(position);
+        console.log('position ' + JSON.stringify(this.props.getPositionSuccess(position)));
+        console.log("state: " + JSON.stringify(this.state));
       },
       error => this.setState({ error }),
       { enableHighAccuracy: true, timeout: 20000, maximumAge: 1000 },
     );
-    this.props.fetchDatagetNewFeed();
-    console.log(this.props.dataNewFeed.data);
-  }
+  };
+
   setModalVisible(visible) {
     this.setState({ modalVisible: visible });
   }
@@ -71,8 +80,6 @@ class Home extends PureComponent {
   };
 
   _renderNewFeed() {
-    console.log(this.state.latitude);
-    console.log(this.state.longitude);
     console.log(this.props.dataNewFeed.data);
 
     return (
@@ -214,6 +221,7 @@ class Home extends PureComponent {
     );
   }
 }
+
 Home.propTypes = {
   navigation: PropTypes.shape({
     navigate: PropTypes.func.isRequired,
@@ -221,7 +229,10 @@ Home.propTypes = {
   fetchDatagetNewFeed: PropTypes.func.isRequired,
   dataNewFeed: PropTypes.object.isRequired,
 };
+
 const mapStateToProps = state => ({
   dataNewFeed: state.getNewFeedReducers,
+  region: state.getPositionReducers,
 });
-export default connect(mapStateToProps, { fetchDatagetNewFeed })(Home);
+
+export default connect(mapStateToProps, { fetchDatagetNewFeed, getPositionSuccess })(Home);
