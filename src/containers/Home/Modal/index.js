@@ -52,13 +52,7 @@ class ModalView extends PureComponent {
         rating: 0,
         type: 'Fast Food',
         detail: 'Mon nay an nhu shit',
-        photos: [
-          'https://c1.staticflickr.com/9/8345/8233271770_70ee15d73a_b.jpg',
-          'https://c2.staticflickr.com/8/7030/6544952465_bc1eac064f_b.jpg',
-          'https://c1.staticflickr.com/9/8345/8233271770_70ee15d73a_b.jpg',
-          'https://c1.staticflickr.com/9/8345/8233271770_70ee15d73a_b.jpg',
-          'https://c1.staticflickr.com/9/8345/8233271770_70ee15d73a_b.jpg',
-        ],
+        photos: [],
         timeopen: '7h00',
         timeclose: '22h00',
         menu: [
@@ -111,7 +105,7 @@ class ModalView extends PureComponent {
     this.setState({
       test: {
         ...this.state.test,
-        rating: rating
+        rating,
       },
     });
   }
@@ -149,6 +143,19 @@ class ModalView extends PureComponent {
   //   // }
   //   return true;
   // }
+  _onAddImages(a) {
+    console.log(a);
+    this.setState({
+      test: {
+        ...this.state.test,
+        photos: this.state.test.photos.concat(a),
+      },
+    });
+    if (this.state.test.photos.length >= 5) {
+      alert('thêm ít thôi');
+    }
+    console.log(this.state.test.photos);
+  }
   _onAdd(item) {
     this.setState({
       test: {
@@ -256,113 +263,127 @@ class ModalView extends PureComponent {
           </View>
         </View>
         <View style={styles.viewContent}>
-          <ScrollView style={{ flex: 1 }}>
-            <View style={styles.Form}>
-              <View style={styles.viewform}>
-                <Text style={styles.textSelected}>{this.state.test.name}</Text>
-                <Text style={styles.textSelectedAdd}>{this.state.test.vicinity}</Text>
-                <View style={styles.viewTextInput}>
-                  <TextInput
-                    returnKeyType="next"
-                    underlineColorAndroid="transparent"
-                    placeholder="Name"
-                    style={styles.textInput}
-                    onChangeText={name => this.setState({ name })}
-                    value={this.state.name}
-                  />
-                </View>
-                <View style={styles.viewTextInput}>
-                  <TextInput
-                    underlineColorAndroid="transparent"
-                    placeholder="Detail"
-                    style={styles.textInput}
-                    onChangeText={detail => this.setState({ detail })}
-                    value={this.state.detail}
-                  />
-                </View>
-                <View style={styles.viewImage}>
-                  <View style={styles.viewCamera}>
-                    <RNCamera
-                      style={styles.preview}
-                      type={RNCamera.Constants.Type.back}
-                      flashMode={RNCamera.Constants.FlashMode.on}
-                      permissionDialogTitle="Permission to use camera"
-                      permissionDialogMessage="We need your permission to use your camera phone"
-                    >
-                      {({ camera, status }) => {
-                        if (status !== 'READY') return <PendingView />;
-                        return (
-                          <View style={styles.camera}>
-                            <TouchableOpacity style={styles.capture}>
-                              <Icon name="ios-reverse-camera-outline" color="white" size={33} />
-                            </TouchableOpacity>
-                            <TouchableOpacity
-                              onPress={() => this.takePicture(camera)}
-                              style={styles.capture}
-                            >
-                              <Icon name="ios-camera" color="white" size={50} />
-                            </TouchableOpacity>
-                            <TouchableOpacity style={styles.capture}>
-                              <Icon name="ios-flash" color="white" size={33} />
-                            </TouchableOpacity>
-                          </View>
-                        );
-                      }}
-                    </RNCamera>
+          {/* <ScrollView style={{ flex: 1 }}> */}
+          <View style={styles.Form}>
+            <View style={styles.viewform}>
+              <View style={styles.viewTextInput}>
+                {/* <TextInput
+                  returnKeyType="next"
+                  underlineColorAndroid="transparent"
+                  placeholder="Name"
+                  style={styles.textInput}
+                  onChangeText={name => this.setState({ name })}
+                  value={this.state.name}
+                /> */}
+              </View>
+              <View style={styles.viewTextInput}>
+                <TextInput
+                  underlineColorAndroid="transparent"
+                  placeholder="Detail"
+                  style={styles.textInput}
+                  onChangeText={detail => this.setState({ detail })}
+                  value={this.state.detail}
+                />
+              </View>
+              <View style={styles.viewImageSelected}>
+                <ScrollView horizontal>
+                  <View style={styles.viewImageSelectedItem}>
+                    {this.state.test.photos.map((p, i) => (
+                      <TouchableOpacity key={i}>
+                        <Image key={i} style={styles.imagePhotoSelectedItem} source={{ uri: p }} />
+                      </TouchableOpacity>
+                    ))}
                   </View>
-                  <View style={styles.viewPhotoMobile}>
-                    <ScrollView>
-                      <View style={styles.viewMenuItem}>
-                        {this.state.photos.map((p, i) => (
-                          <TouchableOpacity key={i}>
-                            <Image
-                              key={i}
-                              style={styles.imagePhotoItem}
-                              source={{ uri: p.node.image.uri }}
-                            />
+                </ScrollView>
+              </View>
+              <View style={styles.viewImage}>
+                <View style={styles.viewCamera}>
+                  <RNCamera
+                    style={styles.preview}
+                    type={RNCamera.Constants.Type.back}
+                    flashMode={RNCamera.Constants.FlashMode.on}
+                    permissionDialogTitle="Permission to use camera"
+                    permissionDialogMessage="We need your permission to use your camera phone"
+                  >
+                    {({ camera, status }) => {
+                      if (status !== 'READY') return <PendingView />;
+                      return (
+                        <View style={styles.camera}>
+                          <TouchableOpacity style={styles.capture}>
+                            <Icon name="ios-reverse-camera-outline" color="white" size={33} />
                           </TouchableOpacity>
-                        ))}
-                      </View>
-                    </ScrollView>
-                  </View>
+                          <TouchableOpacity
+                            onPress={() => this.takePicture(camera)}
+                            style={styles.capture}
+                          >
+                            <Icon name="ios-camera" color="white" size={50} />
+                          </TouchableOpacity>
+                          <TouchableOpacity style={styles.capture}>
+                            <Icon name="ios-flash" color="white" size={33} />
+                          </TouchableOpacity>
+                        </View>
+                      );
+                    }}
+                  </RNCamera>
+                </View>
+                <View style={styles.viewPhotoMobile}>
+                  <ScrollView>
+                    <View style={styles.viewMenuItem}>
+                      {this.state.photos.map((p, i) => (
+                        <TouchableOpacity
+                          key={i}
+                          onPress={() => this._onAddImages(p.node.image.uri)}
+                        >
+                          <Image
+                            key={i}
+                            style={styles.imagePhotoItem}
+                            source={{ uri: p.node.image.uri }}
+                          />
+                        </TouchableOpacity>
+                      ))}
+                    </View>
+                  </ScrollView>
                 </View>
               </View>
+              <Text style={styles.textSelected}>{this.state.test.name}</Text>
+              <Text style={styles.textSelectedAdd}>{this.state.test.vicinity}</Text>
+            </View>
 
-              <View style={styles.viewCustom}>
-                <View>
-                  <Text style={styles.textAddPost}>Add post</Text>
+            <View style={styles.viewCustom}>
+              <View>
+                <Text style={styles.textAddPost}>Add post</Text>
+              </View>
+              <View style={styles.viewCustomItem}>
+                <View style={styles.viewStarRating}>
+                  <StarRating
+                    disabled={false}
+                    emptyStar="ios-star-outline"
+                    fullStar="ios-star"
+                    halfStar="ios-star-half"
+                    iconSet="Ionicons"
+                    maxStars={5}
+                    rating={this.state.test.rating}
+                    selectedStar={rating => this.onStarRatingPress(rating)}
+                    fullStarColor={Colors.white}
+                  />
                 </View>
-                <View style={styles.viewCustomItem}>
-                  <View style={styles.viewStarRating}>
-                    <StarRating
-                      disabled={false}
-                      emptyStar="ios-star-outline"
-                      fullStar="ios-star"
-                      halfStar="ios-star-half"
-                      iconSet="Ionicons"
-                      maxStars={5}
-                      rating={this.state.test.rating}
-                      selectedStar={rating => this.onStarRatingPress(rating)}
-                      fullStarColor={Colors.white}
-                    />
-                  </View>
-                  <View>
-                    <TouchableOpacity
-                      style={styles.butonCustomItem}
-                      onPress={() => this._onShowModal(2)}
-                    >
-                      <Icon name="ios-navigate" color="white" size={33} />
-                    </TouchableOpacity>
-                  </View>
-                  <View>
-                    <TouchableOpacity style={styles.butonCustomItem}>
-                      <Icon name="md-images" color="white" size={33} />
-                    </TouchableOpacity>
-                  </View>
+                <View>
+                  <TouchableOpacity
+                    style={styles.butonCustomItem}
+                    onPress={() => this._onShowModal(2)}
+                  >
+                    <Icon name="ios-navigate" color="white" size={33} />
+                  </TouchableOpacity>
+                </View>
+                <View>
+                  <TouchableOpacity style={styles.butonCustomItem}>
+                    <Icon name="md-images" color="white" size={33} />
+                  </TouchableOpacity>
                 </View>
               </View>
             </View>
-          </ScrollView>
+          </View>
+          {/* </ScrollView> */}
         </View>
       </View>
     );

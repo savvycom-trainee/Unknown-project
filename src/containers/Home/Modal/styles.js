@@ -78,7 +78,12 @@ export default StyleSheet.create({
     fontWeight: '800',
     paddingBottom: 10 * d.ratioH,
   },
-  textSelectedAdd:{
+  viewImageSelected: {
+    padding: 14,
+    width: null,
+    height: 100 * d.ratioH,
+  },
+  textSelectedAdd: {
     color: Colors.text,
     fontSize: 12,
     fontWeight: '600',
@@ -128,6 +133,7 @@ export default StyleSheet.create({
     flex: 0.5,
     height: 300 * d.ratioH,
   },
+
   viewform: {
     height: 550 * d.ratioH,
     alignItems: 'center',
@@ -142,6 +148,12 @@ export default StyleSheet.create({
     borderWidth: 0.4,
     height: 93.7 * d.ratioH,
     width: 93.7 * d.ratioW,
+  },
+  imagePhotoSelectedItem: {
+    borderColor: Colors.white,
+    borderWidth: 0.4,
+    height: 70 * d.ratioH,
+    width: 70 * d.ratioW,
   },
   viewCustomItem: {
     justifyContent: 'space-between',
@@ -193,6 +205,12 @@ export default StyleSheet.create({
   },
   viewItemImagesList: {},
   viewMenuItem: {
+    flexDirection: 'row',
+    flexWrap: 'wrap',
+    justifyContent: 'center',
+    alignItems: 'flex-start',
+  },
+  viewImageSelectedItem: {
     flexDirection: 'row',
     flexWrap: 'wrap',
     justifyContent: 'center',

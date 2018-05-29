@@ -71,13 +71,11 @@ class Home extends PureComponent {
   };
 
   _renderNewFeed() {
-    console.log(this.state.latitude);
-    console.log(this.state.longitude);
-    console.log(this.props.dataNewFeed.data);
+    console.log(this.props.dataNewFeed.data.key);
 
     return (
       <FlatList
-        data={this.props.dataNewFeed.data}
+        data={this.props.dataNewFeed.data.reverse()}
         renderItem={({ item }) => {
           const distance = this._getDistanceFromLatLonInKm(
             item.geometry.location.lat,
@@ -89,7 +87,7 @@ class Home extends PureComponent {
             <View style={styles.formItem}>
               <TouchableOpacity
                 onPress={() => {
-                  this.props.navigation.navigate('HomeDetail', { data: '-LDaOpd8zjy0tJad2_ns' });
+                  this.props.navigation.navigate('HomeDetail', { data: item.key });
                 }}
               >
                 <View>
