@@ -22,7 +22,6 @@
     "react-native": "0.55.4",
     "react-native-camera": "https://github.com/react-native-community/react-native-camera/tarball/master",
     "react-native-fbsdk": "^0.7.0",
-    "react-native-fetch-blob": "^0.10.8",
     "react-native-firebase": "^4.1.0",
     "react-native-maps": "^0.21.0",
     "react-native-star-rating": "^1.0.9",

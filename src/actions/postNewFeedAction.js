@@ -1,6 +1,4 @@
 import firebase from 'react-native-firebase';
-import { Platform } from 'react-native';
-import RNFetchBlob from 'react-native-fetch-blob';
 
 import {
   POST_NEWFEED_ING,
@@ -60,44 +58,44 @@ export function fetchPostNewFeed(obj) {
   return (dispatch) => {
     dispatch(postNewFeed());
     try {
-      // firebase
-      //   .database()
-      //   .ref('restaurant/restaurant/')
-      //   .push(obj);
+      firebase
+        .database()
+        .ref('restaurant/restaurant/')
+        .push(obj);
 
-      const file = obj.photos;
-      // firebase
-      //   .storage()
-      //   .ref('/files/1234')
-      //   .putFile('/path/to/file/1234')
+      // const file = obj.photos;
+      // // firebase
+      // //   .storage()
+      // //   .ref('/files/1234')
+      // //   .putFile('/path/to/file/1234')
+      // //   .then((uploadedFile) => {
+      // //     // success
+      // //   })
+      // //   .catch((err) => {
+      // //     // Error
+      // //   });
+      // const storage = firebase.storage();
+      // const sessionId = new Date().getTime();
+      // const imageRef = storage.ref('images').child(`${sessionId}`);
+      // imageRef
+      //   .putFile(file[0])
       //   .then((uploadedFile) => {
-      //     // success
+      //     console.log('ok', uploadedFile);
       //   })
       //   .catch((err) => {
       //     // Error
+      //     console.log(err);
       //   });
-      const storage = firebase.storage();
-      const sessionId = new Date().getTime();
-      const imageRef = storage.ref('images').child(`${sessionId}`);
-      imageRef
-        .putFile(file[0])
-        .then((uploadedFile) => {
-          console.log('ok', uploadedFile);
-        })
-        .catch((err) => {
-          // Error
-          console.log(err);
-        });
-      console.log('ádasd', imageRef.path);
-      const ref = firebase.storage().ref('images/1527577866158');
-      // imageRef.close();
-      ref.getDownloadURL().then((url) => {
-        console.log(url);
-      });
+      // console.log('ádasd', imageRef.path);
+      // const ref = firebase.storage().ref('images/1527577866158');
+      // // imageRef.close();
+      // ref.getDownloadURL().then((url) => {
+      //   console.log(url);
+      // });
 
       // Create the file metadata
 
-      // dispatch(postNewFeedSuccess());
+      dispatch(postNewFeedSuccess());
     } catch (error) {
       dispatch(postNewFeedFail(error));
     }
