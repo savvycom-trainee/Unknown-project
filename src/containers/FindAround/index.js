@@ -1,9 +1,11 @@
 import React, { PureComponent } from 'react';
-import { View, Text, Image, FlatList } from 'react-native';
+import { View, Text, Image, FlatList, TouchableOpacity } from 'react-native';
+import PropTypes from 'prop-types';
 import Header from '../../components/Header';
 import { Icons } from '../../themes';
 import * as d from '../../utilities/Tranform';
 import FindCard from './FindCard';
+
 // import styles from './styles';
 
 const Data = [
@@ -38,7 +40,7 @@ const Data = [
     distance: '500m',
   },
 ];
-class Notifications extends PureComponent {
+class FindAround extends PureComponent {
   state = {};
   // TODO navigate to user detail
   _renderItem = ({ item, index }) => <FindCard item={item} index={index} />;
@@ -46,7 +48,8 @@ class Notifications extends PureComponent {
     return (
       <View style={{ flex: 1 }}>
         <Header
-          leftHeader={<Image source={Icons.menu} style={{ marginTop: 2 * d.ratioH }} />}
+          leftHeader={<Image source={Icons.back} style={{ width: 30 }} />}
+          onPressLeftHeader={() => this.props.navigation.goBack()}
           centerHeader={<Text style={{ fontSize: 15, fontWeight: '600' }}>Find Around</Text>}
           rightHeader={<Image source={Icons.user} />}
         />
@@ -60,5 +63,7 @@ class Notifications extends PureComponent {
     );
   }
 }
-
-export default Notifications;
+FindAround.propTypes = {
+  navigation: PropTypes.object, // eslint-disable-line
+};
+export default FindAround;

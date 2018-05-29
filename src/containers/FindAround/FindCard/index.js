@@ -12,7 +12,6 @@ export default class FindCard extends React.PureComponent {
   render() {
     const { isFollow } = this.state;
     const { item, index } = this.props;
-    console.log('render', isFollow);
 
     return (
       <TouchableOpacity style={[styles.item, { marginTop: index === 0 ? 10 : 5 }]}>
