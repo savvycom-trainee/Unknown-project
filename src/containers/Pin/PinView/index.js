@@ -39,7 +39,7 @@ export default class PinView extends Component {
         </View>
         {/* </View> */}
         <GreenCircle onPress={() => {}} style={styles.directStyle}>
-          <Image source={icons.direct} />
+          <Image source={icons.direct} style={styles.directIconStyle} />
         </GreenCircle>
         <View style={styles.detailContainer}>
           <View>

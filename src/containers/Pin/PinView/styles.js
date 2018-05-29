@@ -38,6 +38,9 @@ const styles = {
     alignSelf: 'center',
     left: 90 * d.ratioW,
   },
+  directIconStyle: {
+    top: 3 * d.ratioH,
+  },
 };
 
 export default styles;

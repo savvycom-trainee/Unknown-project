@@ -5,6 +5,10 @@ const styles = {
     fontSize: 15,
     fontWeight: '600',
   },
+  directIconStyle: {
+    bottom: 7,
+    transform: [{ rotateZ: '90deg' }],
+  },
   flatListStyle: {
     position: 'absolute',
     bottom: 25 * d.ratioH,

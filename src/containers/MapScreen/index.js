@@ -1,8 +1,9 @@
 import React, { PureComponent } from 'react';
 import { View, Text, Image, FlatList, Platform, PermissionsAndroid } from 'react-native';
 import MapView, { Marker } from 'react-native-maps';
+import Icon from 'react-native-vector-icons/Ionicons';
 import { Header } from '../../components';
-import { Icons } from '../../themes';
+import { Icons, Colors } from '../../themes';
 import restaurantData from '../Pin/PinView/data/restaurantData';
 import mapStyles from './mapStyles';
 import styles from './styles';
@@ -21,9 +22,9 @@ class MapScreen extends PureComponent {
         longitudeDelta: 0.0304,
       },
       error: null, // eslint-disable-line
-      focusing: false,
-      focusingRegion: null,
+      focusing: null,
     };
+    this._marker = [];
   }
 
   componentDidMount() {
@@ -64,7 +65,6 @@ class MapScreen extends PureComponent {
       },
       (error) => {
         this.setState({ error }); // eslint-disable-line
-        console.log(error);
       },
       { enableHighAccuracy: true, timeout: 3000, maximumAge: 1000 },
     );
@@ -86,19 +86,24 @@ class MapScreen extends PureComponent {
       },
       (error) => {
         this.setState({ error }); // eslint-disable-line
-        console.log(error);
       },
       {
         enableHighAccuracy: true,
-        timeout: 3000,
+        timeout: 20000,
         maximumAge: 1000,
-        distanceFilter: 100,
+        distanceFilter: 10,
       },
     );
   };
 
   onPickRestaurant = () => {
     this.setState({ focusing: true });
+  };
+
+  getItemLayout = (data, index) => ({ length: 220, offset: 210 * index, index });
+
+  scrollToIndex = (index) => {
+    this._flatListMarker.scrollToIndex({ animated: true, index, viewOffset: 1 });
   };
 
   // eslint-disable-next-line
@@ -126,14 +131,21 @@ class MapScreen extends PureComponent {
       }
     }
   }
-
   render() {
     return (
       <View style={{ flex: 1 }}>
         <Header
           leftHeader={<Image source={Icons.menu} />}
           centerHeader={<Text style={styles.centerHeaderStyle}>Map</Text>}
-          rightHeader={<Image source={Icons.user} />}
+          rightHeader={
+            <Icon
+              name="md-navigate"
+              color={this.state.focusing === null ? '#AAAAAA' : Colors.default}
+              size={33}
+              style={styles.directIconStyle}
+            />
+          }
+          onPressRightHeader={() => this.state.focusing === null ? {} : this.props.navigation.navigate('Direct')}
         />
         <MapView
           // initialRegion={this.state.region}
@@ -152,26 +164,34 @@ class MapScreen extends PureComponent {
           {restaurantData.map((markers, index) => (
             <Marker
               key={markers.restaurantName}
+              // eslint-disable-next-line
+              ref={marker => (this._marker[index] = { marker, id: markers.restaurantName })}
               coordinate={markers.region}
-              onPress={(e) => {
+              onPress={() => {
                 this.setState({
-                  focusing: true,
-                  focusingRegion: JSON.stringify(e.nativeEvent.coordinate),
+                  focusing: this._marker[index].id,
                 });
+                console.log(index);
+                this.scrollToIndex(index);
               }}
             >
-              {this.state.focusing &&
-              this.state.focusingRegion === JSON.stringify(markers.region) ? (
-                <View style={styles.markerContainer}>
-                  <Image source={Icons.greenMarker} />
-                  <Image source={markers.restaurantPhoto} style={styles.focusingPhotoMarkerStyle} />
-                </View>
-              ) : (
-                <View style={styles.markerContainer}>
-                  <Image source={Icons.grayMarker} />
-                  <Image source={markers.restaurantPhoto} style={styles.defaultPhotoMarkerStyle} />
-                </View>
-              )}
+              <View style={styles.markerContainer}>
+                <Image
+                  source={
+                    this.state.focusing === markers.restaurantName
+                      ? Icons.greenMarker
+                      : Icons.grayMarker
+                  }
+                />
+                <Image
+                  source={markers.restaurantPhoto}
+                  style={
+                    this.state.focusing === markers.restaurantName
+                      ? styles.focusingPhotoMarkerStyle
+                      : styles.defaultPhotoMarkerStyle
+                  }
+                />
+              </View>
             </Marker>
           ))}
         </MapView>
@@ -179,7 +199,18 @@ class MapScreen extends PureComponent {
           horizontal
           showsHorizontalScrollIndicator={false}
           data={restaurantData}
-          renderItem={({ item }) => <CardView item={item} />}
+          // eslint-disable-next-line
+          ref={ref => (this._flatListMarker = ref)}
+          getItemLayout={this.getItemLayout}
+          renderItem={({ item, index }) => (
+            <CardView
+              item={item}
+              onPress={() => {
+                this.setState({ focusing: this._marker[index].id });
+                this.scrollToIndex(index);
+              }}
+            />
+          )}
           keyExtractor={item => item.restaurantName}
           style={styles.flatListStyle}
         />
