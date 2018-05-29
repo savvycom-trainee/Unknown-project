@@ -138,6 +138,11 @@ android {
 }
 
 dependencies {
+    compile project(':react-native-maps')
+    compile(project(':react-native-firebase')) {
+        transitive = false
+    }
+    compile project(':react-native-fetch-blob')
    compile (project(':react-native-camera')) {
     exclude group: "com.google.android.gms"
     compile 'com.android.support:exifinterface:27.1.0'

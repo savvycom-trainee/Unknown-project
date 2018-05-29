@@ -9,8 +9,9 @@ import {
   ScrollView,
   FlatList,
   Keyboard,
+  Platform,
 } from 'react-native';
-
+import firebase from 'react-native-firebase';
 import PropTypes from 'prop-types';
 import StarRating from 'react-native-star-rating';
 import { RNCamera } from 'react-native-camera';
@@ -42,6 +43,7 @@ class ModalView extends PureComponent {
     this.state = {
       latitude: null,
       longitude: null,
+      progressing: null,
       error: null,
       detail: '',
       name: '',
@@ -128,6 +130,37 @@ class ModalView extends PureComponent {
         // Error Loading Images
       });
   };
+  _onUploadPhoto = () => {
+    const file = this.state.test.photos;
+    const storage = firebase.storage();
+    const sessionId = new Date().getTime();
+    const imageRef = storage.ref('images').child(`${sessionId}`);
+    imageRef.putFile(file[0]).on(
+      'state_changed',
+      (snapshot) => {
+        const progress = (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
+        this.setState({ progressing: progress });
+        console.log('Upload is ' + progress + '% done');
+        // Current upload state
+      },
+      (err) => {
+        console.log(err);
+        // Error
+        // imageRef();
+      },
+      (uploadedFile) => {
+        console.log(uploadedFile);
+        // Success
+        
+      },
+    );
+    console.log('ádasd', imageRef.path);
+    const ref = firebase.storage().ref('images/1527577866158');
+    // imageRef.close();
+    ref.getDownloadURL().then((url) => {
+      console.log(url);
+    });
+  };
   _getAdd() {}
   // _validateonPost() {
   //   // const {
@@ -144,7 +177,7 @@ class ModalView extends PureComponent {
   //   return true;
   // }
   _onAddImages(a) {
-    console.log(a);
+    // console.log(a);
     this.setState({
       test: {
         ...this.state.test,
@@ -154,7 +187,7 @@ class ModalView extends PureComponent {
     if (this.state.test.photos.length >= 5) {
       alert('thêm ít thôi');
     }
-    console.log(this.state.test.photos);
+    // console.log(this.state.test.photos);
   }
   _onAdd(item) {
     this.setState({
@@ -174,7 +207,9 @@ class ModalView extends PureComponent {
     });
   }
   _onPost() {
-    this.props.fetchPostNewFeed(this.state.test);
+    this._onUploadPhoto();
+
+    // this.props.fetchPostNewFeed(this.state.test);
   }
   _onShowModal() {
     const { latitude, longitude } = this.state;
@@ -346,6 +381,7 @@ class ModalView extends PureComponent {
                 </View>
               </View>
               <Text style={styles.textSelected}>{this.state.test.name}</Text>
+              <Text style={styles.textSelected}>{this.state.progressing}</Text>
               <Text style={styles.textSelectedAdd}>{this.state.test.vicinity}</Text>
             </View>
 
