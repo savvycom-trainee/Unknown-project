@@ -48,6 +48,11 @@ const styles = StyleSheet.create({
   ViewContent: {
     flex: 1,
   },
+
+  // Comment
+  ViewTextYourComment: {
+    marginLeft: 30 * d.ratioW,
+  },
 });
 
 export default styles;

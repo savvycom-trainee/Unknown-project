@@ -13,11 +13,14 @@ import styles from './styles';
 /* eslint-disable */
 class HomeOverviewRestaurant extends PureComponent {
   state = {
-    time: this.props.data.timeopen + '-' + this.props.data.timeclose,
+    time: '8h00-18h00',
     isBookmark: false,
   };
   componentDidMount() {
     console.log(this.props.data);
+    this.setState({
+      time: this.props.data.timeopen + '-' + this.props.data.timeclose,
+    });
   }
   onPressBookmark = () => {
     this.setState({
