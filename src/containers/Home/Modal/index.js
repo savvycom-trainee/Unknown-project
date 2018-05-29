@@ -9,8 +9,9 @@ import {
   ScrollView,
   FlatList,
   Keyboard,
+  Platform,
 } from 'react-native';
-
+import firebase from 'react-native-firebase';
 import PropTypes from 'prop-types';
 import StarRating from 'react-native-star-rating';
 import { RNCamera } from 'react-native-camera';
@@ -42,10 +43,12 @@ class ModalView extends PureComponent {
     this.state = {
       latitude: null,
       longitude: null,
+      progressing: null,
       error: null,
       detail: '',
       name: '',
       photos: [],
+      photosselect: [],
       test: {
         idrestaurant: 'idrestaurant123',
         name: '',
@@ -125,8 +128,78 @@ class ModalView extends PureComponent {
         console.log(this.state.photos);
       })
       .catch((err) => {
+        console.log(err);
         // Error Loading Images
       });
+  };
+  _onUploadPhoto = () => {
+    const file = this.state.photosselect;
+    const storage = firebase.storage();
+    const sessionId = new Date().getTime();
+    const imageRef = storage.ref('images').child(`${sessionId}`);
+    const promises = [];
+    file.forEach((item) => {
+      const promise = imageRef.putFile(item).on(
+        'state_changed',
+        (snapshot) => {
+          const progress = snapshot.bytesTransferred / snapshot.totalBytes * 100;
+          this.setState({ progressing: progress });
+          console.log(`Upload is ${progress}% done`);
+          // Current upload state
+        },
+        (err) => {
+          console.log(err);
+          return false;
+        },
+        (uploadedFile) => {
+          // return true;
+          console.log(uploadedFile.state);
+          if (uploadedFile.state === 'success') {
+            this.setState({
+              test: {
+                ...this.state.test,
+                photos: this.state.test.photos.concat(uploadedFile.downloadURL),
+              },
+            });
+            // console.log(this.state.test.photos)
+            // this.props.fetchPostNewFeed(this.state.test);
+            return true;
+          }
+        },
+      );
+      promises.push(promise);
+    });
+    // imageRef.putFile(file[0]).on(
+    //   'state_changed',
+    //   (snapshot) => {
+    //     const progress = snapshot.bytesTransferred / snapshot.totalBytes * 100;
+    //     this.setState({ progressing: progress });
+    //     console.log(`Upload is ${progress}% done`);
+    //     // Current upload state
+    //   },
+    //   (err) => {
+    //     console.log(err);
+    //     return false;
+    //   },
+    //   (uploadedFile) => {
+    //     // return true;
+    //     console.log(uploadedFile.state);
+    //     if (uploadedFile.state === 'success') {
+    //       this.setState({
+    //         test: {
+    //           ...this.state.test,
+    //           photos: this.state.test.photos.concat(uploadedFile.downloadURL),
+    //         },
+    //       });
+    //     }
+    //   },
+    // );
+    Promise.all(promises).then(res=>{
+      console.log(this.state.test.photos)
+
+      // this.props.fetchPostNewFeed(this.state.test);
+    }).catch(err=> console.log(err));
+    // success "hhhhhhhhs";
   };
   _getAdd() {}
   // _validateonPost() {
@@ -144,17 +217,14 @@ class ModalView extends PureComponent {
   //   return true;
   // }
   _onAddImages(a) {
-    console.log(a);
+    // console.log(a);
     this.setState({
-      test: {
-        ...this.state.test,
-        photos: this.state.test.photos.concat(a),
-      },
+      photosselect: this.state.photosselect.concat(a),
     });
-    if (this.state.test.photos.length >= 5) {
+    if (this.state.photosselect.length >= 5) {
       alert('thêm ít thôi');
     }
-    console.log(this.state.test.photos);
+    // console.log(this.state.test.photos);
   }
   _onAdd(item) {
     this.setState({
@@ -174,7 +244,10 @@ class ModalView extends PureComponent {
     });
   }
   _onPost() {
-    this.props.fetchPostNewFeed(this.state.test);
+    if (this._onUploadPhoto()) {
+      // this._onUploadPhoto().then(res=>console.log('hihi',res));
+      // this.props.fetchPostNewFeed(this.state.test);
+    }
   }
   _onShowModal() {
     const { latitude, longitude } = this.state;
@@ -288,7 +361,7 @@ class ModalView extends PureComponent {
               <View style={styles.viewImageSelected}>
                 <ScrollView horizontal>
                   <View style={styles.viewImageSelectedItem}>
-                    {this.state.test.photos.map((p, i) => (
+                    {this.state.photosselect.map((p, i) => (
                       <TouchableOpacity key={i}>
                         <Image key={i} style={styles.imagePhotoSelectedItem} source={{ uri: p }} />
                       </TouchableOpacity>
@@ -346,6 +419,7 @@ class ModalView extends PureComponent {
                 </View>
               </View>
               <Text style={styles.textSelected}>{this.state.test.name}</Text>
+              <Text style={styles.textSelected}>{this.state.progressing}</Text>
               <Text style={styles.textSelectedAdd}>{this.state.test.vicinity}</Text>
             </View>
 
