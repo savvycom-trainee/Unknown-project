@@ -12,7 +12,7 @@ export default createStackNavigator(
     },
   },
   {
-    // initialRouteName: 'Home',
+    initialRouteName: 'TabHome',
     headerMode: 'none',
   },
 );

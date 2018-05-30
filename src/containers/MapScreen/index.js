@@ -24,6 +24,7 @@ class MapScreen extends PureComponent {
       },
       error: null, // eslint-disable-line
       focusing: null,
+      destination: null,
     };
     this._marker = [];
   }
@@ -40,13 +41,22 @@ class MapScreen extends PureComponent {
     }
     this.onGetCurrentLocation();
     this.watchID = this.onWatchPosition();
-    console.log(`region ${JSON.stringify(this.props.region.coords.longitude)}`);
+    // console.log(`region ${JSON.stringify(this.props.region.coords.longitude)}`);
+  }
+
+  componentDidUpdate() {
+    console.log(`destination state: ${JSON.stringify(this.state.destination)}`);
   }
 
   componentWillUnmount() {
     // eslint-disable-next-line
     navigator.geolocation.clearWatch(this.watchID);
+    this.onClearState();
   }
+
+  onClearState = () => {
+    this.setState({ focusing: null });
+  };
 
   onGetCurrentLocation = () => {
     this.setState({
@@ -133,13 +143,14 @@ class MapScreen extends PureComponent {
             />
           }
           onPressRightHeader={
-            () => (this.state.focusing === null ? {} : this.props.navigation.navigate('Direct')) // eslint-disable-line
+            () =>
+              (this.state.focusing === null
+                ? {}
+                : this.props.navigation.navigate('Direct', { destination: this.state.destination })) // eslint-disable-line
           }
         />
         <MapView
-          // initialRegion={this.state.region}
           region={this.state.region}
-          // onRegionChange={this.onGetCurrentLocation()}
           provider="google"
           customMapStyle={mapStyles}
           style={{ flex: 1 }}
@@ -159,8 +170,8 @@ class MapScreen extends PureComponent {
               onPress={() => {
                 this.setState({
                   focusing: this._marker[index].id,
+                  destination: this._marker[index].marker.props.coordinate,
                 });
-                console.log(index);
                 this.scrollToIndex(index);
               }}
             >
@@ -195,7 +206,10 @@ class MapScreen extends PureComponent {
             <CardView
               item={item}
               onPress={() => {
-                this.setState({ focusing: this._marker[index].id });
+                this.setState({
+                  focusing: this._marker[index].id,
+                  destination: this._marker[index].marker.props.coordinate,
+                });
                 this.scrollToIndex(index);
               }}
             />

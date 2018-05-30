@@ -6,6 +6,7 @@ const images = {
   restaurantPhotoMenu2: require('../../assets/images/restaurantPhotoMenu2.png'),
   restaurantPhotoMenu3: require('../../assets/images/restaurantPhotoMenu3.png'),
   restaurantPhotoMenu4: require('../../assets/images/restaurantPhotoMenu4.png'),
+  avatar: require('../../assets/images/avata.png'),
 };
 
 export default images;
