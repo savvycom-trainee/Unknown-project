@@ -4,7 +4,7 @@ import { View, Text, ScrollView, TouchableOpacity, Image, FlatList, Modal } from
 import { connect } from 'react-redux';
 import Icon from 'react-native-vector-icons/Ionicons';
 import StarRating from 'react-native-star-rating';
-import { Header, UpdateUser } from '../../components';
+import { Header } from '../../components';
 import styles from './styles';
 import { Icons } from '../../themes';
 import * as d from '../../utilities/Tranform';
