@@ -54,6 +54,23 @@ const account = StyleSheet.create({
     width: 22.5 * d.ratioW,
     marginRight: 9 * d.ratioW,
   },
+  botView: {
+    marginTop: 30 * d.ratioH,
+    height: 334.5 * d.ratioH,
+  },
+  statisticView: {
+    flexDirection: 'row',
+    justifyContent: 'space-around',
+    marginHorizontal: 15 * d.ratioW,
+    height: 60 * d.ratioH,
+  },
+  botRestaurant: {
+    fontSize: 14,
+    fontWeight: '600',
+    marginLeft: 30 * d.ratioW,
+    marginTop: 50 * d.ratioH,
+    marginBottom: 25 * d.ratioH,
+  },
 });
 
 export default account;
