@@ -4,11 +4,12 @@ const defaultState = {
 
 export default (state = defaultState, action) => {
   switch (action.type) {
-    case 'SET_USER':
+    case 'SET_USER': {
       return {
         ...state,
         user: action.user,
       };
+    }
     default:
       return state;
   }
