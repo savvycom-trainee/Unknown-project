@@ -11,6 +11,7 @@ import * as d from '../../utilities/Tranform';
 import { fetchDatagetNewFeed } from '../../actions/getNewFeedAction';
 import { getPositionSuccess } from '../../actions';
 import ModalView from './Modal';
+import Loading from '../../components/LoadingContainer';
 
 const shadow = {
   // elevation: 6,
@@ -82,94 +83,107 @@ class Home extends PureComponent {
   };
 
   _renderNewFeed() {
-    console.log(this.props.dataNewFeed.data);
-
-    return (
-      <FlatList
-        data={this.props.dataNewFeed.data.reverse()}
-        renderItem={({ item }) => {
-          const distance = this._getDistanceFromLatLonInKm(
-            item.geometry.location.lat,
-            item.geometry.location.lng,
-            this.state.latitude,
-            this.state.longitude,
-          );
-          return (
-            <View style={styles.formItem}>
-              <TouchableOpacity
-                onPress={() => {
-                  this.props.navigation.navigate('HomeDetail', { data: item.key });
-                }}
-              >
-                <View>
-                  <View style={styles.imageContent}>
-                    <Image source={{ uri: item.photos[0] }} style={styles.imageContent} />
-                  </View>
-                  <View style={styles.viewPointForm}>
-                    <View style={styles.viewPoint}>
-                      <Text style={styles.textPoint}>{item.rating}</Text>
+    if (this.props.dataNewFeed.isFetching === true) {
+      return <Loading />;
+    }
+    if (this.props.dataNewFeed.dataSuccess === true) {
+      return (
+        <FlatList
+          data={this.props.dataNewFeed.data.reverse()}
+          renderItem={({ item }) => {
+            const distance = this._getDistanceFromLatLonInKm(
+              item.geometry.location.lat,
+              item.geometry.location.lng,
+              this.state.latitude,
+              this.state.longitude,
+            );
+            return (
+              <View style={styles.formItem}>
+                <TouchableOpacity
+                  onPress={() => {
+                    this.props.navigation.navigate('HomeDetail', { data: item.key });
+                  }}
+                >
+                  <View>
+                    <View style={styles.imageContent}>
+                      <Image source={{ uri: item.photos[0] }} style={styles.imageContent} />
+                    </View>
+                    <View style={styles.viewPointForm}>
+                      <View style={styles.viewPoint}>
+                        <Text style={styles.textPoint}>{item.rating}</Text>
+                      </View>
                     </View>
                   </View>
-                </View>
-                <View style={styles.formItemText}>
-                  <View style={styles.viewNameRow1}>
-                    <Text style={styles.textName}>{item.name}</Text>
-                  </View>
-                  <View style={styles.viewNameRow2}>
-                    <View>
-                      <Text style={styles.textNameRow2}>{item.type}</Text>
+                  <View style={styles.formItemText}>
+                    <View style={styles.viewNameRow1}>
+                      <Text numberOfLines={1} style={styles.textName}>
+                        {item.iduser}
+                      </Text>
                     </View>
-                    <View>
-                      <StarRating
-                        disabled={false}
-                        emptyStar="ios-star-outline"
-                        fullStar="ios-star"
-                        iconSet="Ionicons"
-                        maxStars={5}
-                        rating={item.rating}
-                        fullStarColor="#4CB33E"
-                        reversed
-                        starSize={12}
-                      />
-                    </View>
-                  </View>
-                  <View style={styles.viewNameRow3}>
-                    <View>
-                      {item.follow ? (
-                        <Text style={styles.textNameRow2Flowed}>Followed</Text>
-                      ) : (
-                        <Text style={styles.textNameRow2}>Follow</Text>
-                      )}
-                    </View>
-                    <View style={styles.viewNameRow2Item}>
-                      {Math.round(distance) < 1 ? (
-                        <Text style={styles.textNameRow2}>
-                          {' '}
-                          • {Math.round(distance)} m from you{' '}
+                    <View style={styles.viewNameRow2}>
+                      <View>
+                        <Text numberOfLines={1} style={styles.textNameUserRow2}>
+                          {item.name}
                         </Text>
-                      ) : (
-                        <Text style={styles.textNameRow2}>
+                      </View>
+                      <View>
+                        <Text style={styles.textNameRow2}>{item.type}</Text>
+                      </View>
+                      <View>
+                        <StarRating
+                          disabled={false}
+                          emptyStar="ios-star-outline"
+                          fullStar="ios-star"
+                          iconSet="Ionicons"
+                          maxStars={5}
+                          rating={item.rating}
+                          fullStarColor="#4CB33E"
+                          reversed
+                          starSize={12}
+                        />
+                      </View>
+                    </View>
+                    <View style={styles.viewNameRow3}>
+                      <View>
+                        {item.follow ? (
+                          <Text style={styles.textNameRow2Flowed}>Followed</Text>
+                        ) : (
+                          <Text style={styles.textNameRow2}>Follow</Text>
+                        )}
+                      </View>
+                      <View style={styles.viewNameRow2Item}>
+                        {Math.round(distance) < 1 ? (
+                          <Text style={styles.textNameRow2}>
+                            {' '}
+                            • {Math.round(distance)} m from you{' '}
+                          </Text>
+                        ) : (
+                          <Text style={styles.textNameRow2}>
+                            {' '}
+                            • {Math.round(distance)} km from you{' '}
+                          </Text>
+                        )}
+                      </View>
+                      <View style={styles.viewNameRow2Item}>
+                        <Text style={styles.textNameRow2} numberOfLines={1}>
                           {' '}
-                          • {Math.round(distance)} km from you{' '}
+                          • {item.vicinity}
                         </Text>
-                      )}
+                      </View>
                     </View>
-                    <View style={styles.viewNameRow2Item}>
-                      <Text style={styles.textNameRow2}> • {item.vicinity}</Text>
-                    </View>
+                    <View />
                   </View>
-                  <View />
-                </View>
-              </TouchableOpacity>
-            </View>
-          );
-        }}
-        keyExtractor={(item, index) => index.toString()}
-      />
-    );
+                </TouchableOpacity>
+              </View>
+            );
+          }}
+          keyExtractor={(item, index) => index.toString()}
+        />
+      );
+    }
+    return null;
   }
   render() {
-    // const user = this.props.navigation.getParam('user', {});
     return (
       <View style={styles.container}>
         {/* {this.props.navigation.getParam('newUser', false) ? (
