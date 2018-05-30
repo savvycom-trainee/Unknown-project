@@ -1,5 +1,5 @@
 import { StyleSheet } from 'react-native';
-import { Colors, Metrics } from '../../../themes';
+import { Colors } from '../../../themes';
 import * as d from '../../../utilities/Tranform';
 
 export default StyleSheet.create({
@@ -10,17 +10,38 @@ export default StyleSheet.create({
   viewHead: {
     padding: 14,
     backgroundColor: Colors.default,
-    height: 60,
+    flex: 0.06,
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'space-between',
   },
-  viewContent: {
+  body: {
+    flexDirection: 'column',
     flex: 1,
+    justifyContent: 'space-between',
+  },
+  viewContent: {
+    flex: 0.9,
   },
   imgClose: {
     // width: 20,
     // height: 20,
+  },
+  ImageAvatar: {
+    height: 50 * d.ratioH,
+    width: 50 * d.ratioW,
+    borderRadius: 25,
+  },
+  viewFormAddSelected: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    padding: 3,
+    marginLeft: 14,
+    height: 25 * d.ratioH,
+    width: 110 * d.ratioW,
+    borderWidth: 1,
+    borderColor: Colors.text,
+    borderRadius: 6,
   },
   textPost: {
     fontSize: 17,
@@ -78,7 +99,15 @@ export default StyleSheet.create({
     fontWeight: '800',
     paddingBottom: 10 * d.ratioH,
   },
+  textSelectedShow: {
+    width: 90 * d.ratioW,
+    paddingLeft: 2,
+    color: Colors.text,
+    fontSize: 10,
+    fontWeight: '800',
+  },
   viewImageSelected: {
+    // backgroundColor: '#445',
     padding: 14,
     width: null,
     height: 100 * d.ratioH,
@@ -100,10 +129,10 @@ export default StyleSheet.create({
     padding: 0,
     paddingLeft: 10,
     borderRadius: 2.5,
-    width: 265 * d.ratioW,
+    width: 340 * d.ratioW,
     height: 50 * d.ratioH,
-    borderBottomColor: Colors.textOpacity,
-    borderBottomWidth: 0.3,
+    fontSize: 20,
+    fontWeight: '700',
   },
   textInputSearch: {
     padding: 0,
@@ -115,8 +144,25 @@ export default StyleSheet.create({
     borderBottomWidth: 0.3,
   },
   viewImage: {
+    // backgroundColor: '#990',
     justifyContent: 'space-between',
     flexDirection: 'row',
+  },
+  viewFormImageUser: {
+    alignItems: 'center',
+    justifyContent: 'center',
+    // backgroundColor: '#444',
+    height: 50 * d.ratioH,
+    width: 50 * d.ratioW,
+    borderRadius: 25,
+  },
+  viewInfoDetail: {
+    alignItems: 'center',
+    flexDirection: 'row',
+    padding: 14,
+    width: '100%',
+    height: 80 * d.ratioH,
+    // backgroundColor: '#049',
   },
   viewCamera: {
     flex: 0.5,
@@ -135,7 +181,6 @@ export default StyleSheet.create({
   },
 
   viewform: {
-    height: 550 * d.ratioH,
     alignItems: 'center',
   },
   Form: {
@@ -167,14 +212,13 @@ export default StyleSheet.create({
     height: 45 * d.ratioH,
   },
   viewCustom: {
-    backgroundColor: Colors.default,
     padding: 14,
+    backgroundColor: Colors.default,
     justifyContent: 'space-between',
     flexDirection: 'row',
     alignItems: 'center',
-    borderTopLeftRadius: 20,
-    borderTopRightRadius: 20,
-    height: 60 * d.ratioH,
+
+    flex: 0.054,
   },
   viewButton: {
     borderRadius: 2.5,
