@@ -26,7 +26,7 @@ class Home extends PureComponent {
     this.state = {
       latitude: null,
       longitude: null,
-      modalVisible: false,
+      modalVisible: true,
       error: null,
       // starCount: 2.5,
     };

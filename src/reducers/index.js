@@ -7,6 +7,7 @@ import getNewFeedReducers from './getNewFeedReducers';
 import postNewFeedReducers from './postNewFeedReducers';
 import getHomeDetailReducers from './getHomeDetailReducers';
 import getPositionReducers from './getPositionReducers';
+import getAddSearchReducers from './getAddSearchReducers';
 import user from './user';
 
 const navReducer = createNavigationReducer(RootNavigator);
@@ -19,6 +20,7 @@ const rootRecuder = combineReducers({
   getHomeDetailReducers,
   getPositionReducers,
   user,
+  getAddSearchReducers,
 });
 
 export default rootRecuder;

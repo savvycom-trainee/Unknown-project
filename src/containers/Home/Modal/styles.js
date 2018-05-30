@@ -15,6 +15,9 @@ export default StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'space-between',
   },
+  viewTextHead: {
+    alignContent: 'center',
+  },
   body: {
     flexDirection: 'column',
     flex: 1,
@@ -26,6 +29,12 @@ export default StyleSheet.create({
   imgClose: {
     // width: 20,
     // height: 20,
+  },
+  viewFromSearch: {
+    flexDirection: 'row',
+  },
+  buttonSearch: {
+    paddingRight: 5 * d.ratioW,
   },
   ImageAvatar: {
     height: 50 * d.ratioH,
@@ -43,10 +52,18 @@ export default StyleSheet.create({
     borderColor: Colors.text,
     borderRadius: 6,
   },
-  textPost: {
+  ViewButtonSearch: {
+    padding: 3,
+  },
+  textPosted: {
     fontSize: 17,
     fontWeight: '700',
     color: Colors.white,
+  },
+  textPost: {
+    fontSize: 17,
+    fontWeight: '700',
+    color: Colors.textOpacity,
   },
   textCreatePost: {
     fontSize: 14,

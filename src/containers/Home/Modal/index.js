@@ -8,9 +8,7 @@ import {
   CameraRoll,
   ScrollView,
   FlatList,
-  Keyboard,
   Alert,
-  Platform,
 } from 'react-native';
 import firebase from 'react-native-firebase';
 import PropTypes from 'prop-types';
@@ -20,8 +18,14 @@ import { connect } from 'react-redux';
 import Icon from 'react-native-vector-icons/Ionicons';
 import styles from './styles';
 import { Icons, Colors, Images } from '../../../themes';
-import { fetchDataGetAdd, fetchPostNewFeed } from '../../../actions';
+import {
+  fetchDataGetAdd,
+  fetchPostNewFeed,
+  getPositionSuccess,
+  fetchDataGetAddSearch,
+} from '../../../actions';
 import ModalCustom from '../../../components/Modal';
+import Loading from '../../../components/LoadingContainer';
 
 // const iosConfig = {};
 // const androidConfig = {};
@@ -45,8 +49,11 @@ class ModalView extends PureComponent {
       latitude: null,
       longitude: null,
       progressing: null,
+      postdone: false,
       error: null,
+      listadd: true,
       photos: [],
+      keyword: '',
       photosselect: [],
       test: {
         idrestaurant: 'idrestaurant123',
@@ -98,7 +105,7 @@ class ModalView extends PureComponent {
           error: null,
         });
       },
-      error => this.setState({ error: error.message }),
+      error => this.setState({ error }),
       { enableHighAccuracy: true, timeout: 20000, maximumAge: 1000 },
     );
     this._getPhoto();
@@ -283,7 +290,13 @@ class ModalView extends PureComponent {
 
     return false;
   }
+  _validateSearch() {
+    if (this.state.keyword === '') {
+      return true;
+    }
 
+    return false;
+  }
   _validateNameLocal() {
     if (this.state.test.name === '') {
       return true;
@@ -296,7 +309,19 @@ class ModalView extends PureComponent {
     this.modal.open();
     this.props.fetchDataGetAdd(latitude, longitude);
   }
-
+  _onSearch() {
+    const { latitude, longitude, keyword } = this.state;
+    if (!this._validateSearch()) {
+      this.props.fetchDataGetAddSearch(latitude, longitude, keyword);
+      this.setState({ listadd: false });
+    } else {
+      Alert.alert('Mày Nhập hộ tao cái ');
+    }
+  }
+  _onCloserModal() {
+    this.setState({ listadd: true });
+    this.modal.close();
+  }
   render() {
     return (
       <View style={styles.container}>
@@ -309,45 +334,93 @@ class ModalView extends PureComponent {
               <View style={styles.bodyModal}>
                 <View>
                   <View style={styles.ViewHeadFlatList}>
-                    <Text style={styles.textHeadNear}> Near Add You </Text>
-                    <View style={styles.viewTextInputSearch}>
-                      <TextInput
-                        underlineColorAndroid="transparent"
-                        placeholder="Search"
-                        style={styles.textInputSearch}
-                        value={this.state.test.detail}
-                      />
+                    <View style={styles.viewTextHead}>
+                      <Text style={styles.textHeadNear}> Near Add You </Text>
+                    </View>
+                    <View style={styles.viewFromSearch}>
+                      <View style={styles.viewTextInputSearch}>
+                        <TextInput
+                          underlineColorAndroid="transparent"
+                          placeholder="Search"
+                          style={styles.textInputSearch}
+                          value={this.state.test.search}
+                          onChangeText={text => this.setState({ keyword: text })}
+                        />
+                      </View>
+                      <View style={styles.ViewButtonSearch}>
+                        <TouchableOpacity
+                          style={styles.buttonSearch}
+                          onPress={() => this._onSearch()}
+                        >
+                          <Icon name="md-search" color={Colors.default} size={38} />
+                        </TouchableOpacity>
+                      </View>
                     </View>
                   </View>
-                  <View style={styles.ViewContentFlatList}>
-                    <FlatList
-                      data={this.props.dataAdd.data}
-                      renderItem={({ item }) => (
-                        <View style={styles.ViewItemFlatList}>
-                          <TouchableOpacity onPress={() => this._onAdd(item)}>
-                            <View style={styles.viewItemAdd}>
-                              <View>
-                                <Text style={styles.textItemName}>{item.name} </Text>
-                              </View>
-                              <View>
-                                <Image
-                                  source={{ uri: item.icon }}
-                                  style={{ height: 20, width: 20 }}
-                                />
-                              </View>
+                  {this.state.listadd ? (
+                    <View style={styles.ViewContentFlatList}>
+                      {this.props.dataAdd.isFetching ? (
+                        <Loading />
+                      ) : (
+                        <FlatList
+                          data={this.props.dataAdd.data}
+                          renderItem={({ item }) => (
+                            <View style={styles.ViewItemFlatList}>
+                              <TouchableOpacity onPress={() => this._onAdd(item)}>
+                                <View style={styles.viewItemAdd}>
+                                  <View>
+                                    <Text style={styles.textItemName}>{item.name} </Text>
+                                  </View>
+                                  <View>
+                                    <Image
+                                      source={{ uri: item.icon }}
+                                      style={{ height: 20, width: 20 }}
+                                    />
+                                  </View>
+                                </View>
+                              </TouchableOpacity>
                             </View>
-                          </TouchableOpacity>
-                        </View>
+                          )}
+                          keyExtractor={(item, index) => index.toString()}
+                        />
                       )}
-                      keyExtractor={(item, index) => index.toString()}
-                    />
-                  </View>
+                    </View>
+                  ) : (
+                    <View style={styles.ViewContentFlatList}>
+                      {this.props.dataSearchAdd.isFetching ? (
+                        <Loading />
+                      ) : (
+                        <FlatList
+                          data={this.props.dataSearchAdd.data}
+                          renderItem={({ item }) => (
+                            <View style={styles.ViewItemFlatList}>
+                              <TouchableOpacity onPress={() => this._onAdd(item)}>
+                                <View style={styles.viewItemAdd}>
+                                  <View>
+                                    <Text style={styles.textItemName}>{item.name} </Text>
+                                  </View>
+                                  <View>
+                                    <Image
+                                      source={{ uri: item.icon }}
+                                      style={{ height: 20, width: 20 }}
+                                    />
+                                  </View>
+                                </View>
+                              </TouchableOpacity>
+                            </View>
+                          )}
+                          keyExtractor={(item, index) => index.toString()}
+                        />
+                      )}
+                    </View>
+                  )}
+
                   <View style={styles.ViewButton}>
                     <Text style={styles.textSelected}>{this.state.test.name}</Text>
                     <Text style={styles.textSelectedAdd}>{this.state.test.vicinity}</Text>
                     <TouchableOpacity
                       style={styles.viewButtonDone}
-                      onPress={() => this.modal.close()}
+                      onPress={() => this._onCloserModal()}
                     >
                       <Text style={styles.textviewButtonDone}> Done</Text>
                     </TouchableOpacity>
@@ -372,9 +445,15 @@ class ModalView extends PureComponent {
               </TouchableOpacity>
             </View>
             <View>
-              <TouchableOpacity onPress={() => this._onPost()}>
-                <Text style={styles.textPost}>Post</Text>
-              </TouchableOpacity>
+              {this.state.postdone ? (
+                <TouchableOpacity onPress={() => this._onPost()}>
+                  <Text style={styles.textPosted}>Post</Text>
+                </TouchableOpacity>
+              ) : (
+                <TouchableOpacity onPress={() => this._onPost()}>
+                  <Text style={styles.textPost}>Post</Text>
+                </TouchableOpacity>
+              )}
             </View>
           </View>
           <View style={styles.viewContent}>
@@ -383,7 +462,7 @@ class ModalView extends PureComponent {
               <View style={styles.viewform}>
                 <View style={styles.viewInfoDetail}>
                   <View style={styles.viewFormImageUser}>
-                    <Image source={Images.avartar} style={styles.ImageAvatar} />
+                    <Image source={Images.restaurantPhoto} style={styles.ImageAvatar} />
                   </View>
                   <View>
                     <TouchableOpacity style={styles.viewFormAddSelected}>
@@ -543,10 +622,19 @@ ModalView.propTypes = {
   hideModal: PropTypes.func.isRequired,
   fetchDataGetAdd: PropTypes.func.isRequired,
   fetchPostNewFeed: PropTypes.func.isRequired,
+  fetchDataGetAddSearch: PropTypes.func.isRequired,
   dataAdd: PropTypes.object.isRequired,
+  dataSearchAdd: PropTypes.object.isRequired,
 };
 const mapStateToProps = state => ({
   dataAdd: state.getAddReducers,
   dataPost: state.postNewFeedReducers,
+  region: state.getPositionReducers,
+  dataSearchAdd: state.getAddSearchReducers,
 });
-export default connect(mapStateToProps, { fetchDataGetAdd, fetchPostNewFeed })(ModalView);
+export default connect(mapStateToProps, {
+  fetchDataGetAdd,
+  fetchPostNewFeed,
+  getPositionSuccess,
+  fetchDataGetAddSearch,
+})(ModalView);
