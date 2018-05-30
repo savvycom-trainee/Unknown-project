@@ -14,7 +14,7 @@ import {
 import PropTypes from 'prop-types';
 import firebase from 'react-native-firebase';
 import { connect } from 'react-redux';
-import { bindActionCreators } from 'redux';
+import { NavigationActions } from 'react-navigation';
 import login from './style/login';
 import images from '../../themes/Icons';
 import { setUser } from '../../actions';
@@ -35,14 +35,26 @@ class Login extends PureComponent {
     try {
       const user = await AsyncStorage.getItem('user');
       if (user) {
-        setUser(JSON.stringify(user));
-        this.props.navigation.navigate('Home');
+        const tmpUser = JSON.parse(user);
+        this.move(tmpUser);
       } else {
         console.log('eo co gif');
       }
     } catch (error) {
       console.log(error);
     }
+  };
+  move = (user) => {
+    this.props.setUser(user);
+    const navigateAction = NavigationActions.navigate({
+      routeName: 'Home',
+      params: user,
+      action: NavigationActions.navigate({
+        routeName: 'Home',
+        params: { user, newUser: true },
+      }),
+    });
+    this.props.navigation.dispatch(navigateAction);
   };
   changeAccount = (text) => {
     this.setState({
@@ -76,10 +88,7 @@ class Login extends PureComponent {
               () => {
                 try {
                   AsyncStorage.setItem('user', JSON.stringify(loginUser.user_user));
-                  setUser(loginUser.user_user);
-                  this.props.navigation.navigate('Home', {
-                    user: loginUser.user,
-                  });
+                  this.move(loginUser.user._user);
                 } catch (error) {
                   console.log(error);
                 }
@@ -194,10 +203,11 @@ class Login extends PureComponent {
 Login.propTypes = {
   navigation: PropTypes.shape({
     navigate: PropTypes.func.isRequired,
+    dispatch: PropTypes.func.isRequired,
   }).isRequired,
+  setUser: PropTypes.func.isRequired,
 };
 
-function mapDispatchToProps(dispatch) {
-  return bindActionCreators(setUser, dispatch);
-}
+const mapDispatchToProps = dispatch => ({ setUser: user => dispatch(setUser(user)) });
+
 export default connect(null, mapDispatchToProps)(Login);

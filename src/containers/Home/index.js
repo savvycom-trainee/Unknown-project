@@ -4,7 +4,7 @@ import { View, Text, ScrollView, TouchableOpacity, Image, FlatList, Modal } from
 import { connect } from 'react-redux';
 import Icon from 'react-native-vector-icons/Ionicons';
 import StarRating from 'react-native-star-rating';
-import { Header } from '../../components';
+import { Header, UpdateUser } from '../../components';
 import styles from './styles';
 import { Icons } from '../../themes';
 import * as d from '../../utilities/Tranform';
@@ -42,8 +42,9 @@ class Home extends PureComponent {
       error => this.setState({ error }),
       { enableHighAccuracy: true, timeout: 20000, maximumAge: 1000 },
     );
+    const newUser = this.props.navigation.getParam('newUser', false);
+    console.log(newUser);
     this.props.fetchDatagetNewFeed();
-    console.log(this.props.dataNewFeed.data);
   }
   setModalVisible(visible) {
     this.setState({ modalVisible: visible });
@@ -71,8 +72,6 @@ class Home extends PureComponent {
   };
 
   _renderNewFeed() {
-    console.log(this.props.dataNewFeed.data.key);
-
     return (
       <FlatList
         data={this.props.dataNewFeed.data.reverse()}
@@ -158,10 +157,17 @@ class Home extends PureComponent {
     );
   }
   render() {
-    console.log('params');
-    console.log(this.props.user);
+    // const user = this.props.navigation.getParam('user', {});
     return (
       <View style={styles.container}>
+        {/* {this.props.navigation.getParam('newUser', false) ? (
+          <UpdateUser
+            onRef={(ref) => {
+              this.update = ref;
+            }}
+            user={user}
+          />
+        ) : null} */}
         <View style={styles.body}>
           <Header
             leftHeader={<Image source={Icons.menu} style={{ marginTop: 2 * d.ratioH }} />}
@@ -224,11 +230,8 @@ Home.propTypes = {
   fetchDatagetNewFeed: PropTypes.func.isRequired,
   dataNewFeed: PropTypes.object.isRequired,
 };
-const mapStateToProps = (state) => {
-  console.log(state);
-  return {
-    dataNewFeed: state.getNewFeedReducers,
-    user: state.user,
-  };
-};
+const mapStateToProps = state => ({
+  dataNewFeed: state.getNewFeedReducers,
+  user: state.user,
+});
 export default connect(mapStateToProps, { fetchDatagetNewFeed })(Home);
