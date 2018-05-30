@@ -1,5 +1,13 @@
 import React, { PureComponent } from 'react';
-import { View, Text, StatusBar, Image, TouchableOpacity, FlatList } from 'react-native';
+import {
+  View,
+  Text,
+  StatusBar,
+  Image,
+  TouchableOpacity,
+  BackHandler,
+  FlatList,
+} from 'react-native';
 import PropTypes from 'prop-types';
 import { Header } from '../../components';
 import icon from '../../themes/Icons';
@@ -67,6 +75,17 @@ class Account extends PureComponent {
     const { params } = this.props.navigation;
     this.state = params || defaultParam;
   }
+  componentDidMount() {
+    BackHandler.addEventListener('hardwareBackPress', this.handleBackPress);
+  }
+
+  componentWillUnmount() {
+    BackHandler.removeEventListener('hardwareBackPress', this.handleBackPress);
+  }
+  handleBackPress = () => {
+    this.props.navigation.goBack(null);
+    return true;
+  };
   render() {
     return (
       <View style={account.container}>
