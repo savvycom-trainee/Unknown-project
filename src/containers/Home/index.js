@@ -43,6 +43,7 @@ class Home extends PureComponent {
       { enableHighAccuracy: true, timeout: 20000, maximumAge: 1000 },
     );
     this.props.fetchDatagetNewFeed();
+    console.log(this.props.dataNewFeed.data);
   }
   setModalVisible(visible) {
     this.setState({ modalVisible: visible });
@@ -51,6 +52,7 @@ class Home extends PureComponent {
     this.setModalVisible(message);
   };
 
+  /* eslint-disable */
   deg2rad = deg => deg * (Math.PI / 180);
   _getDistanceFromLatLonInKm = (lat1, lon1, lat2, lon2) => {
     const R = 6371; // Radius of the earth in km
@@ -65,14 +67,15 @@ class Home extends PureComponent {
     const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
     const d = R * c; // Distance in km
     return d;
+    /* eslint-enable */
   };
 
   _renderNewFeed() {
-    console.log(this.state.latitude);
-    console.log(this.state.longitude);
+    console.log(this.props.dataNewFeed.data.key);
+
     return (
       <FlatList
-        data={this.props.dataNewFeed.data}
+        data={this.props.dataNewFeed.data.reverse()}
         renderItem={({ item }) => {
           const distance = this._getDistanceFromLatLonInKm(
             item.geometry.location.lat,
@@ -84,7 +87,7 @@ class Home extends PureComponent {
             <View style={styles.formItem}>
               <TouchableOpacity
                 onPress={() => {
-                  this.props.navigation.navigate('HomeDetail', { data: item });
+                  this.props.navigation.navigate('HomeDetail', { data: item.key });
                 }}
               >
                 <View>
@@ -155,6 +158,8 @@ class Home extends PureComponent {
     );
   }
   render() {
+    console.log('params');
+    console.log(this.props.user);
     return (
       <View style={styles.container}>
         <View style={styles.body}>
@@ -163,7 +168,12 @@ class Home extends PureComponent {
             centerHeader={<Text style={{ fontSize: 15, fontWeight: '600' }}>NewFeeed</Text>}
             rightHeader={<Image source={Icons.user} />}
           />
-          <Modal animationType="slide" transparent={false} onRequestClose={() => {}} visible={this.state.modalVisible}>
+          <Modal
+            animationType="slide"
+            transparent={false}
+            onRequestClose={() => {}}
+            visible={this.state.modalVisible}
+          >
             <ModalView hideModal={this.hideModal} />
           </Modal>
           <ScrollView style={{ flex: 1 }}>
@@ -188,7 +198,10 @@ class Home extends PureComponent {
                   </TouchableOpacity>
                 </View>
                 <View style={styles.itemMenu}>
-                  <TouchableOpacity style={styles.itemMenuIcon}>
+                  <TouchableOpacity
+                    style={styles.itemMenuIcon}
+                    onPress={() => this.props.navigation.navigate('FindAround')}
+                  >
                     <Icon name="ios-navigate" size={20} color="#fff" />
                   </TouchableOpacity>
                 </View>
@@ -211,7 +224,11 @@ Home.propTypes = {
   fetchDatagetNewFeed: PropTypes.func.isRequired,
   dataNewFeed: PropTypes.object.isRequired,
 };
-const mapStateToProps = state => ({
-  dataNewFeed: state.getNewFeedReducers,
-});
+const mapStateToProps = (state) => {
+  console.log(state);
+  return {
+    dataNewFeed: state.getNewFeedReducers,
+    user: state.user,
+  };
+};
 export default connect(mapStateToProps, { fetchDatagetNewFeed })(Home);

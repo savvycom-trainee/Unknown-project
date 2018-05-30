@@ -45,6 +45,54 @@ export default StyleSheet.create({
   viewTextInputSearch: {
     paddingBottom: 10 * d.ratioH,
   },
+  ViewContentFlatList: {
+    height: 350 * d.ratioH,
+    padding: 34,
+  },
+  ViewItemFlatList: {
+    padding: 10,
+  },
+  textHeadNear: {
+    color: Colors.text,
+    padding: 34,
+    fontSize: 24,
+    fontWeight: '700',
+  },
+  viewItemAdd: {
+    justifyContent: 'space-between',
+    flexDirection: 'row',
+  },
+  textItemName: {
+    color: Colors.text,
+    fontSize: 12,
+    fontWeight: '600',
+  },
+  ViewHeadFlatList: {
+    justifyContent: 'center',
+    alignItems: 'center',
+    height: 60 * d.ratioH,
+  },
+  textSelected: {
+    color: Colors.text,
+    fontSize: 14,
+    fontWeight: '800',
+    paddingBottom: 10 * d.ratioH,
+  },
+  viewImageSelected: {
+    padding: 14,
+    width: null,
+    height: 100 * d.ratioH,
+  },
+  textSelectedAdd: {
+    color: Colors.text,
+    fontSize: 12,
+    fontWeight: '600',
+    paddingBottom: 10 * d.ratioH,
+  },
+  ViewButton: {
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
   viewTextInput: {
     paddingBottom: 10 * d.ratioH,
   },
@@ -85,6 +133,7 @@ export default StyleSheet.create({
     flex: 0.5,
     height: 300 * d.ratioH,
   },
+
   viewform: {
     height: 550 * d.ratioH,
     alignItems: 'center',
@@ -99,6 +148,12 @@ export default StyleSheet.create({
     borderWidth: 0.4,
     height: 93.7 * d.ratioH,
     width: 93.7 * d.ratioW,
+  },
+  imagePhotoSelectedItem: {
+    borderColor: Colors.white,
+    borderWidth: 0.4,
+    height: 70 * d.ratioH,
+    width: 70 * d.ratioW,
   },
   viewCustomItem: {
     justifyContent: 'space-between',
@@ -150,6 +205,12 @@ export default StyleSheet.create({
   },
   viewItemImagesList: {},
   viewMenuItem: {
+    flexDirection: 'row',
+    flexWrap: 'wrap',
+    justifyContent: 'center',
+    alignItems: 'flex-start',
+  },
+  viewImageSelectedItem: {
     flexDirection: 'row',
     flexWrap: 'wrap',
     justifyContent: 'center',

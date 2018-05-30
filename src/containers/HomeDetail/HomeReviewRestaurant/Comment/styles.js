@@ -88,6 +88,21 @@ const styles = StyleSheet.create({
     fontWeight: 'normal',
     color: 'rgb(153,153,153)',
   },
+  confirmBtn: {
+    marginTop: 10 * d.ratioH,
+    backgroundColor: 'rgb(66,183,42)',
+    height: 30 * d.ratioH,
+    width: 50 * d.ratioW,
+    alignItems: 'center',
+    justifyContent: 'center',
+    borderRadius: 5 * d.ratioW,
+  },
+
+  TextConfirm: {
+    fontSize: 12,
+    fontWeight: 'bold',
+    color: 'white',
+  },
 });
 
 export default styles;
