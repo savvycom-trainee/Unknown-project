@@ -52,8 +52,10 @@ class Home extends PureComponent {
       error => this.setState({ error }),
       { enableHighAccuracy: true, timeout: 20000, maximumAge: 1000 },
     );
-  };
-
+    const newUser = this.props.navigation.getParam('newUser', false);
+    console.log(newUser);
+    this.props.fetchDatagetNewFeed();
+  }
   setModalVisible(visible) {
     this.setState({ modalVisible: visible });
   }
@@ -84,7 +86,7 @@ class Home extends PureComponent {
 
     return (
       <FlatList
-        data={this.props.dataNewFeed.data}
+        data={this.props.dataNewFeed.data.reverse()}
         renderItem={({ item }) => {
           const distance = this._getDistanceFromLatLonInKm(
             item.geometry.location.lat,
@@ -96,7 +98,7 @@ class Home extends PureComponent {
             <View style={styles.formItem}>
               <TouchableOpacity
                 onPress={() => {
-                  this.props.navigation.navigate('HomeDetail', { data: '-LDaOpd8zjy0tJad2_ns' });
+                  this.props.navigation.navigate('HomeDetail', { data: item.key });
                 }}
               >
                 <View>
@@ -167,8 +169,17 @@ class Home extends PureComponent {
     );
   }
   render() {
+    // const user = this.props.navigation.getParam('user', {});
     return (
       <View style={styles.container}>
+        {/* {this.props.navigation.getParam('newUser', false) ? (
+          <UpdateUser
+            onRef={(ref) => {
+              this.update = ref;
+            }}
+            user={user}
+          />
+        ) : null} */}
         <View style={styles.body}>
           <Header
             leftHeader={<Image source={Icons.menu} style={{ marginTop: 2 * d.ratioH }} />}
@@ -205,7 +216,10 @@ class Home extends PureComponent {
                   </TouchableOpacity>
                 </View>
                 <View style={styles.itemMenu}>
-                  <TouchableOpacity style={styles.itemMenuIcon}>
+                  <TouchableOpacity
+                    style={styles.itemMenuIcon}
+                    onPress={() => this.props.navigation.navigate('FindAround')}
+                  >
                     <Icon name="ios-navigate" size={20} color="#fff" />
                   </TouchableOpacity>
                 </View>
@@ -233,6 +247,7 @@ Home.propTypes = {
 const mapStateToProps = state => ({
   dataNewFeed: state.getNewFeedReducers,
   region: state.getPositionReducers,
+  user: state.user,
 });
 
 export default connect(mapStateToProps, { fetchDatagetNewFeed, getPositionSuccess })(Home);

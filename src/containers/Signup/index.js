@@ -11,8 +11,10 @@ import {
   Alert,
   ActivityIndicator,
 } from 'react-native';
+import { connect } from 'react-redux';
 import signup from './style';
 import images from '../../themes/Icons';
+import { setUser } from '../../actions';
 
 class Signup extends PureComponent {
   constructor(props) {
@@ -58,25 +60,9 @@ class Signup extends PureComponent {
           firebase
             .auth()
             .createUserAndRetrieveDataWithEmailAndPassword(acc, pass)
-            .then(() => {
-              this.setState(
-                {
-                  isLoading: false,
-                },
-                () => {
-                  Alert.alert('Notice', 'Đăng ký thành công', [
-                    { text: 'OK', onPress: () => this.props.navigation.goBack() },
-                  ]);
-                },
-              );
+            .then(({ user }) => {
+              this.props.navigation.navigate('UpdateUser', { user: user._user });
             })
-            // .then(() => {
-            //   console.log(this.state.user);
-            //   firebase
-            //     .database()
-            //     .ref('/restaurant/user')
-            //     .set({ id: this.state.user });
-            // })
             .catch((error) => {
               this.setState(
                 {
@@ -87,22 +73,22 @@ class Signup extends PureComponent {
                   let message = '';
                   switch (code) {
                     case 'auth/email-already-in-use':
-                      message = 'Email đã được sử dụng';
+                      message = 'Email is already';
                       break;
                     case 'auth/invalid-email':
-                      message = 'Email không đúng định dạng';
+                      message = 'Email invalid';
                       break;
                     case 'auth/user-disabled':
-                      message = 'Tài khoản ngừng hoạt động';
+                      message = 'User is block';
                       break;
                     case 'auth/user-not-found':
-                      message = 'Tài khoản không tồn tại';
+                      message = 'Email is not exist';
                       break;
                     case 'auth/wrong-password':
-                      message = 'Mật khẩu không chính xác';
+                      message = 'Password incorrect';
                       break;
                     case 'auth/weak-password':
-                      message = 'Password cần tối thiểu 6 kí tự';
+                      message = 'Password is weak';
                       break;
                     default:
                       message = code;
@@ -115,7 +101,7 @@ class Signup extends PureComponent {
         },
       );
     } else {
-      Alert.alert('Notice', 'Xác nhận mật khẩu không khớp', [{ text: 'OK' }]);
+      Alert.alert('Notice', 'Comfirm Password incorrect', [{ text: 'OK' }]);
     }
   };
   render() {
@@ -190,6 +176,9 @@ Signup.propTypes = {
   navigation: PropTypes.shape({
     navigate: PropTypes.func.isRequired,
     goBack: PropTypes.func.isRequired,
+    dispatch: PropTypes.func.isRequired,
   }).isRequired,
+  // setUser: PropTypes.func.isRequired,
 };
-export default Signup;
+
+export default connect(null, { setUser })(Signup);

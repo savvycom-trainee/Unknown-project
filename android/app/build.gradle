@@ -138,13 +138,13 @@ android {
 }
 
 dependencies {
-   compile (project(':react-native-camera')) {
-    exclude group: "com.google.android.gms"
-    compile 'com.android.support:exifinterface:27.1.0'
-    compile ('com.google.android.gms:play-services-vision:15.0.0') {
-        force = true
+    compile (project(':react-native-camera')) {
+        exclude group: "com.google.android.gms"
+        compile 'com.android.support:exifinterface:27.1.0'
+        compile ('com.google.android.gms:play-services-vision:15.0.0') {
+            force = true
+        }
     }
-}
     compile project(':react-native-fbsdk')
     compile project(':react-native-vector-icons')
     implementation(project(':react-native-firebase')) {
@@ -169,7 +169,7 @@ dependencies {
     implementation "com.google.firebase:firebase-auth:15.1.0"
     implementation "com.google.firebase:firebase-database:15.0.0"
     implementation "com.google.firebase:firebase-storage:15.0.2"
-
+    implementation "com.google.firebase:firebase-messaging:15.0.2"
     implementation 'com.facebook.android:facebook-android-sdk:[4,5)'
 }
 

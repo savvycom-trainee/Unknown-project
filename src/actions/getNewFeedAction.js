@@ -31,7 +31,6 @@ export function fetchDatagetNewFeed() {
             item.key = childSnapshot.key;
             returnArr = [...returnArr, item];
           });
-          console.log('sskks ', returnArr);
           dispatch(getNewFeedSuccess(returnArr));
         });
     } catch (error) {

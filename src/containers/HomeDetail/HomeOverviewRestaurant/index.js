@@ -13,12 +13,24 @@ import styles from './styles';
 /* eslint-disable */
 class HomeOverviewRestaurant extends PureComponent {
   state = {
-    time: this.props.data.timeopen + '-' + this.props.data.timeclose,
     isBookmark: false,
   };
   componentDidMount() {
     console.log(this.props.data);
+    // var d = new Date();
+    // var n = d.getHours();
+    // console.log(n);
+
+    //console.log(Date().getHours().toLocaleString();
   }
+
+  checkOpenRestaurant = timeNow => {
+    var date = new Date();
+    var hoursNow = d.getHours();
+    var open = this.props.data.timeopen.split('h');
+    var close = this.props.data.timeclose.split('h');
+  };
+
   onPressBookmark = () => {
     this.setState({
       isBookmark: !this.state.isBookmark,
@@ -96,7 +108,7 @@ class HomeOverviewRestaurant extends PureComponent {
 
           <View style={styles.ViewBtnBottom}>
             <ButtonCustom
-              title={this.state.time}
+              title={this.props.data.timeopen + '-' + this.props.data.timeclose}
               iconName={Icons.clockTime}
               iconColor={Colors.default}
             />

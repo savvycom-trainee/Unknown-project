@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { View, Text, TouchableOpacity, BackHandler } from 'react-native';
-import firebase from 'react-native-firebase';
+// import firebase from 'react-native-firebase';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { fetchDatagetHomeDetail } from '../../actions/getHomeDetailAction';
@@ -25,7 +25,7 @@ class HomeDetail extends Component {
   }
 
   componentDidMount() {
-    this.props.fetchDatagetHomeDetail(this.state.idRestaurant);
+    this.fetchData(this.state.idRestaurant);
     console.log('didmount');
     BackHandler.addEventListener('hardwareBackPress', this.handleBackPress);
   }
@@ -37,6 +37,10 @@ class HomeDetail extends Component {
   handleBackPress = () => {
     this.props.navigation.goBack(null);
     return true;
+  };
+
+  fetchData = (id) => {
+    this.props.fetchDatagetHomeDetail(id);
   };
 
   clickTab1 = () => {
@@ -73,6 +77,7 @@ class HomeDetail extends Component {
       if (activeTab === 'HomeOverviewRestaurant') {
         return (
           <HomeOverviewRestaurant
+            idRestaurant={this.state.idRestaurant}
             data={this.props.dataHomeDetail.data}
             onPressGoBack={() => this.props.navigation.goBack()}
             onPressDirect={() => this.props.navigation.navigate('Direct')}
@@ -81,6 +86,7 @@ class HomeDetail extends Component {
       } else if (activeTab === 'HomeMenuRestaurant') {
         return (
           <HomeMenuRestaurant
+            idRestaurant={this.state.idRestaurant}
             data={this.props.dataHomeDetail.data}
             onPressGoBack={() => this.props.navigation.goBack()}
           />
@@ -88,6 +94,8 @@ class HomeDetail extends Component {
       }
       return (
         <HomeReviewRestaurant
+          // onPressRefesh={() => this.fetchData(this.state.idRestaurant)}
+          idRestaurant={this.state.idRestaurant}
           data={this.props.dataHomeDetail.data}
           onPressGoBack={() => this.props.navigation.goBack()}
         />
@@ -128,9 +136,11 @@ class HomeDetail extends Component {
   }
 }
 
-HomeDetail.PropTypes = {
+HomeDetail.propTypes = {
   navigation: PropTypes.shape({
     navigate: PropTypes.func.isRequired,
+    getParam: PropTypes.func.isRequired,
+    goBack: PropTypes.func.isRequired,
   }).isRequired,
   fetchDatagetHomeDetail: PropTypes.func.isRequired,
   dataHomeDetail: PropTypes.object.isRequired,

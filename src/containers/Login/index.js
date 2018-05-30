@@ -9,11 +9,15 @@ import {
   Text,
   Alert,
   ActivityIndicator,
+  AsyncStorage,
 } from 'react-native';
 import PropTypes from 'prop-types';
 import firebase from 'react-native-firebase';
+import { connect } from 'react-redux';
+import { NavigationActions } from 'react-navigation';
 import login from './style/login';
 import images from '../../themes/Icons';
+import { setUser } from '../../actions';
 
 class Login extends PureComponent {
   constructor(props) {
@@ -21,10 +25,37 @@ class Login extends PureComponent {
     this.state = {
       account: '',
       password: '',
-      user: null,
       isLoading: false,
     };
   }
+  componentDidMount() {
+    this.getUser();
+  }
+  getUser = async () => {
+    try {
+      const user = await AsyncStorage.getItem('user');
+      if (user) {
+        const tmpUser = JSON.parse(user);
+        this.move(tmpUser);
+      } else {
+        console.log('eo co gif');
+      }
+    } catch (error) {
+      console.log(error);
+    }
+  };
+  move = (user) => {
+    this.props.setUser(user);
+    const navigateAction = NavigationActions.navigate({
+      routeName: 'Home',
+      params: user,
+      action: NavigationActions.navigate({
+        routeName: 'Home',
+        params: { user, newUser: true },
+      }),
+    });
+    this.props.navigation.dispatch(navigateAction);
+  };
   changeAccount = (text) => {
     this.setState({
       account: text,
@@ -52,13 +83,16 @@ class Login extends PureComponent {
           .then((loginUser) => {
             this.setState(
               {
-                user: loginUser,
                 isLoading: false,
               },
               () => {
-                this.props.navigation.navigate('Home', {
-                  user: this.state.user,
-                });
+                try {
+                  // console.warn('', loginUser);
+                  AsyncStorage.setItem('user', JSON.stringify(loginUser.user._user));
+                  this.move(loginUser.user._user);
+                } catch (error) {
+                  console.log(error);
+                }
               },
             );
           })
@@ -81,19 +115,19 @@ class Login extends PureComponent {
                 let message = '';
                 switch (code) {
                   case 'auth/invalid-email':
-                    message = 'Email không đúng định dạng';
+                    message = 'Email invalidate';
                     break;
                   case 'auth/user-disabled':
-                    message = 'Tài khoản ngừng hoạt động';
+                    message = 'user disabled';
                     break;
                   case 'auth/user-not-found':
-                    message = 'Tài khoản không tồn tại';
+                    message = 'Email not exist';
                     break;
                   case 'auth/wrong-password':
-                    message = 'Mật khẩu không chính xác';
+                    message = 'Password incorrect';
                     break;
                   default:
-                    message = 'Tài khoản hoặc mật khẩu không đúng';
+                    message = 'Email or password incorrect';
                     break;
                 }
                 Alert.alert('Notice', message, [
@@ -148,15 +182,17 @@ class Login extends PureComponent {
                 <ActivityIndicator size="small" color="white" />
               )}
             </TouchableOpacity>
-            <TouchableOpacity style={login.btnfb}>
+            <TouchableOpacity
+              style={login.btnfb}
+              onPress={() => this.props.navigation.navigate('Home')}
+            >
               <Image source={images.logofb} style={login.logofb} />
               <Text style={login.txtfb}> Continue With Facebook </Text>
             </TouchableOpacity>
           </View>
           <Text style={login.txtBottom}>
-            Not account ? Go to
+            Not account ? Go to{' '}
             <Text style={login.txtSignup} onPress={() => this.props.navigation.navigate('Signup')}>
-              {' '}
               Sign up
             </Text>
           </Text>
@@ -168,6 +204,11 @@ class Login extends PureComponent {
 Login.propTypes = {
   navigation: PropTypes.shape({
     navigate: PropTypes.func.isRequired,
+    dispatch: PropTypes.func.isRequired,
   }).isRequired,
+  setUser: PropTypes.func.isRequired,
 };
-export default Login;
+
+const mapDispatchToProps = dispatch => ({ setUser: user => dispatch(setUser(user)) });
+
+export default connect(null, mapDispatchToProps)(Login);

@@ -8,17 +8,22 @@ class Content extends PureComponent {
   state = {};
 
   gallery() {
-    if (this.props.data.image.length <= 0) {
-      return null;
+    //console.log();
+    if (this.props.data.hasOwnProperty('image')) {
+      if (this.props.data.image.length <= 0) {
+        return null;
+      } else {
+        return (
+          <FlatList
+            style={styles.ViewGallery}
+            data={this.props.data.image}
+            renderItem={({ item }) => <Image source={{ uri: item }} style={styles.gallery} />}
+            keyExtractor={(item, index) => index.toString()}
+          />
+        );
+      }
     } else {
-      return (
-        <FlatList
-          style={styles.ViewGallery}
-          data={this.props.data.image}
-          renderItem={({ item }) => <Image source={{ uri: item }} style={styles.gallery} />}
-          keyExtractor={(item, index) => index.toString()}
-        />
-      );
+      return null;
     }
   }
 
@@ -35,7 +40,7 @@ class Content extends PureComponent {
               <Text style={styles.TextHoursComment}>12 hour</Text>
             </View>
             <View style={styles.ViewScore}>
-              <Text style={styles.TextScore}>{this.props.data.rating}/10</Text>
+              <Text style={styles.TextScore}>{this.props.data.rating}/4</Text>
             </View>
           </View>
           <View style={styles.ViewMainChildBottom}>

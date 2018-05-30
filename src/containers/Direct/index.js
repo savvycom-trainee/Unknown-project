@@ -140,6 +140,7 @@ class Direct extends PureComponent {
   };
 
   render() {
+    console.log(this.props.navigation.getParam('user'));
     return (
       <View style={{ flex: 1 }}>
         <Header
