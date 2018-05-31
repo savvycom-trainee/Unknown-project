@@ -1,16 +1,41 @@
 import React, { Component } from 'react';
-import { View, Text, Image, TouchableOpacity } from 'react-native';
+import { View, Text, Image, TouchableOpacity, AsyncStorage, Alert } from 'react-native';
+import { connect } from 'react-redux';
+import PropTypes from 'prop-types';
 import styles from './styles';
 import Icons from '../../themes/Icons';
+import { fetchDataGetUserFBAdd } from '../../actions';
 
 const FBSDK = require('react-native-fbsdk');
 
 const { LoginButton, AccessToken } = FBSDK;
-export default class Loading extends Component {
+class Loading extends Component {
   constructor(props) {
     super(props);
-    this.state = {};
+    this.state = {
+      token: '',
+    };
   }
+  componentDidMount() {
+    this.getToken();
+  }
+  getToken = async () => {
+    try {
+      const Token = await AsyncStorage.getItem('Token');
+      if (Token) {
+        const userToken = JSON.parse(Token);
+        this.setState({
+          token: userToken,
+        });
+        console.log('skks', this.state.token);
+      } else {
+        console.log('loi');
+      }
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
   render() {
     return (
       <View style={styles.container}>
@@ -20,7 +45,10 @@ export default class Loading extends Component {
           </View>
         </View>
         <View style={styles.viewForm}>
-          <TouchableOpacity style={styles.viewButton} onPress={() => this._onPost()}>
+          <TouchableOpacity
+            style={styles.viewButton}
+            onPress={() => this.props.fetchDataGetUserFBAdd(this.state.token)}
+          >
             <Text style={styles.textButtonPost}>Login</Text>
           </TouchableOpacity>
           {/* tesst login facebook */}
@@ -28,19 +56,35 @@ export default class Loading extends Component {
             publishPermissions={['publish_actions']}
             onLoginFinished={(error, result) => {
               if (error) {
-                alert(`login has error: ${result.error}`);
+                Alert.alert(`login has error: ${result.error}`);
               } else if (result.isCancelled) {
-                alert('login is cancelled.');
+                Alert.alert('login is cancelled.');
               } else {
                 AccessToken.getCurrentAccessToken().then((data) => {
-                  alert(data.accessToken.toString());
+                  const { accessToken } = data;
+                  try {
+                    AsyncStorage.setItem('Token', JSON.stringify(accessToken));
+                    console.log(accessToken);
+                  } catch (error) {
+                    console.log(error);
+                  }
                 });
               }
             }}
-            onLogoutFinished={() => alert('logout.')}
+            onLogoutFinished={() => {
+              Alert.alert('logout.');
+              AsyncStorage.removeItem('Token');
+            }}
           />
         </View>
       </View>
     );
   }
 }
+Loading.protoType = {
+  fetchDataGetUserFBAdd: PropTypes.func.isRequired,
+};
+const mapStateToProps = state => ({
+  userFacebook: state.getUserFacebookReducers,
+});
+export default connect(mapStateToProps, { fetchDataGetUserFBAdd })(Loading);
