@@ -5,8 +5,8 @@ import { connect } from 'react-redux';
 import Polyline from '@mapbox/polyline';
 import mapStyles from './mapStyles';
 import styles from './styles';
-import { Header } from '../../components';
-import { Icons, Images } from '../../themes';
+import { Header, Card } from '../../components';
+import { Icons, Images, Colors } from '../../themes';
 
 const COORDINATES = [
   { latitude: 21.030675, longitude: 105.784853 },
@@ -33,8 +33,9 @@ class Direct extends PureComponent {
       animatedLargeMarkerFade: new Animated.Value(1),
       animatedMediumMarkerFade: new Animated.Value(1),
       animatedSmallMarkerFade: new Animated.Value(1),
-      directionAPI: null,
-      direction: []
+      direction: [],
+      distance: null,
+      travelTime: null
     };
     this.destination = this.props.navigation.getParam('destination', 'null');
   }
@@ -71,7 +72,8 @@ class Direct extends PureComponent {
       latitude: point[0],
       longitude: point[1],
     }));
-    this.setState({ coords });
+
+    this.setState({ direction: coords, travelTime: resJson.routes[0].legs[0].duration.text, distance: resJson.routes[0].legs[0].distance.text });
 
     console.log(this.direction);
   };
@@ -228,11 +230,23 @@ class Direct extends PureComponent {
             </View>
           </Marker>
           <MapView.Polyline
-            coordinates={this.state.coords}
+            coordinates={this.state.direction}
             strokeColor="rgb(66, 183, 42)"
             strokeWidth={3}
           />
         </MapView>
+        <Card style={{bottom: 30, position: 'absolute', alignSelf: 'center', width: 315}} direction='row'>
+          <View style={{justifyContent: 'center', alignItems: 'center', backgroundColor: Colors.default, borderTopLeftRadius: 2.5, borderBottomLeftRadius: 2.5, height: 75, width: 75}}>
+            <Image source={Icons.direct} style={{top: 3}}/>
+          </View>
+          <View style={{justifyContent: 'space-evenly', paddingHorizontal: 25 }}>
+            <View style={{flexDirection: 'row'}}>
+              <Text style={{fontSize: 16, fontWeight: 'bold'}}>{this.state.travelTime}</Text>
+              <Text style={{fontSize: 16, fontWeight: 'bold', color: Colors.textOpacity, paddingLeft: 5}}>({this.state.distance})</Text>
+            </View>
+            <Text style={{fontSize: 10, color: Colors.textOpacity}}>Fastest route</Text>
+          </View>
+        </Card>
       </View>
     );
   }
