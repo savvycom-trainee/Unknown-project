@@ -21,7 +21,7 @@
   [[FBSDKApplicationDelegate sharedInstance] application:application
     didFinishLaunchingWithOptions:launchOptions];
   [FIRApp configure];
-  [GMSServices provideAPIKey:@"AIzaSyDnva88GSkmlgjQLiLESaJ7qIIxKL_Wu6U"];
+  [GMSServices provideAPIKey:@"AIzaSyCthR5BEn21xBOMCGo-qqui8a9jDRNLDOk"];
   NSURL *jsCodeLocation;
 
   jsCodeLocation = [[RCTBundleURLProvider sharedSettings] jsBundleURLForBundleRoot:@"index" fallbackResource:nil];

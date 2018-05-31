@@ -2,10 +2,19 @@ import React, { PureComponent } from 'react';
 import { View, Text, Image, Animated, Easing } from 'react-native';
 import MapView, { Marker } from 'react-native-maps';
 import { connect } from 'react-redux';
+import Polyline from '@mapbox/polyline';
 import mapStyles from './mapStyles';
 import styles from './styles';
 import { Header } from '../../components';
 import { Icons, Images } from '../../themes';
+
+const COORDINATES = [
+  { latitude: 21.030675, longitude: 105.784853 },
+  { latitude: 21.0303099, longitude: 105.7879763 },
+  { latitude: 21.0295683, longitude: 105.7918811 },
+  { latitude: 21.0297938, longitude: 105.7919458 },
+  { latitude: 21.029785, longitude: 105.791981 },
+];
 
 class Direct extends PureComponent {
   constructor(props) {
@@ -14,8 +23,8 @@ class Direct extends PureComponent {
       region: {
         latitude: 21.025817,
         longitude: 105.800344,
-        latitudeDelta: 0.0301,
-        longitudeDelta: 0.0304,
+        latitudeDelta: 0.0201,
+        longitudeDelta: 0.0204,
       },
       err: null,
       animatedLargeMarker: new Animated.Value(0),
@@ -24,16 +33,16 @@ class Direct extends PureComponent {
       animatedLargeMarkerFade: new Animated.Value(1),
       animatedMediumMarkerFade: new Animated.Value(1),
       animatedSmallMarkerFade: new Animated.Value(1),
-      destinationAPI: null,
+      directionAPI: null,
+      direction: []
     };
     this.destination = this.props.navigation.getParam('destination', 'null');
   }
 
   componentDidMount() {
-    this.onGetDirection();
+    this.onGetDirectionAPI();
     this.onGetCurrentLocation();
     this.animationMarker();
-    // console.log('destinationAPI ' + this.state.destinationAPI);
   }
 
   componentWillUnmount() {
@@ -41,12 +50,31 @@ class Direct extends PureComponent {
     navigator.geolocation.clearWatch(this.watchID);
   }
 
-  onGetDirection = () => {
-    fetch(`https://maps.googleapis.com/maps/api/distancematrix/json?origins=${this.props.region.coords.latitude},${this.props.region.coords.longitude}&destinations=${this.destination.latitude},${this.destination.longitude}&key=AIzaSyDnva88GSkmlgjQLiLESaJ7qIIxKL_Wu6U`)
-      .then((res) => res.json())
-      .then((resJson) => {this.setState({destinationAPI: resJson}), console.log(resJson)})
-      .catch(err => console.log('Get API error: ' + err))
-  }
+  onGetDirectionAPI = () => {
+    fetch(`https://maps.googleapis.com/maps/api/directions/json?origin=${
+      this.props.region.coords.latitude
+    },${this.props.region.coords.longitude}&destination=${this.destination.latitude},${
+      this.destination.longitude
+    }&key=AIzaSyAW5rqaM6BzeUu5ww0xEXBWhPNv9p5sdIE`)
+      .then(res => res.json())
+      .then((resJson) => {
+        // this.setState({ directionAPI: resJson });
+        console.log(resJson);
+        this.onGetDirection(resJson);
+      })
+      .catch(err => console.log(`Get API error: ${err}`));
+  };
+
+  onGetDirection = (resJson) => {
+    const points = Polyline.decode(resJson.routes[0].overview_polyline.points);
+    const coords = points.map(point => ({
+      latitude: point[0],
+      longitude: point[1],
+    }));
+    this.setState({ coords });
+
+    console.log(this.direction);
+  };
 
   onGetCurrentLocation = () => {
     this.setState({
@@ -155,18 +183,16 @@ class Direct extends PureComponent {
           style={{ flex: 1 }}
         >
           <Marker coordinate={this.state.region} anchor={{ x: 0.5, y: 0.5 }}>
-            <View
-              style={{
-                height: 120,
-                width: 120,
-                justifyContent: 'center',
-                alignItems: 'center',
-              }}
-            >
+            <View style={styles.smallMarkerLocation}>
+              <View style={styles.smallCenterMarker} />
+            </View>
+          </Marker>
+          <Marker coordinate={this.state.region} anchor={{ x: 0.5, y: 0.5 }}>
+            <View style={styles.userMarker}>
               <Animated.View
                 style={[
                   styles.circleMarkerStyle,
-                  { height: 100, width: 100, borderRadius: 50 },
+                  styles.largeMarker,
                   {
                     transform: [{ scale: this.state.animatedLargeMarker }],
                     opacity: this.state.animatedLargeMarkerFade,
@@ -176,7 +202,7 @@ class Direct extends PureComponent {
               <Animated.View
                 style={[
                   styles.circleMarkerStyle,
-                  { height: 75, width: 75, borderRadius: 37.5 },
+                  styles.mediumMarker,
                   {
                     transform: [{ scale: this.state.animatedMediumMarker }],
                     opacity: this.state.animatedMediumMarkerFade,
@@ -186,16 +212,26 @@ class Direct extends PureComponent {
               <Animated.View
                 style={[
                   styles.circleMarkerStyle,
-                  { height: 50, width: 50, borderRadius: 25 },
+                  styles.smallMarker,
                   {
                     transform: [{ scale: this.state.animatedSmallMarker }],
                     opacity: this.state.animatedSmallMarkerFade,
                   },
                 ]}
               />
-              <Image source={Images.avatar} style={{ height: 25, width: 25, borderRadius: 12.5 }} />
+              <Image source={Images.avatar} style={styles.userImageMarker} />
             </View>
           </Marker>
+          <Marker coordinate={this.destination} anchor={{ x: 0.5, y: 0.5 }}>
+            <View style={styles.smallMarkerLocation}>
+              <View style={styles.smallCenterMarker} />
+            </View>
+          </Marker>
+          <MapView.Polyline
+            coordinates={this.state.coords}
+            strokeColor="rgb(66, 183, 42)"
+            strokeWidth={3}
+          />
         </MapView>
       </View>
     );

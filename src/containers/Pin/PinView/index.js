@@ -32,13 +32,13 @@ export default class PinView extends Component {
 
   render() {
     return (
-      <Card onPress={() => {}} direction="row" style={styles.cardStyle}>
+      <Card onPress={this.props.onPress} direction="row" style={styles.cardStyle}>
         {/* <View style={styles.photoContainerStyle}> */}
         <View style={styles.photoViewStyle}>
           <Image source={this.props.item.restaurantPhoto} />
         </View>
         {/* </View> */}
-        <GreenCircle onPress={() => {}} style={styles.directStyle}>
+        <GreenCircle onPress={this.props.onDirectPress} style={styles.directStyle}>
           <Image source={icons.direct} style={styles.directIconStyle} />
         </GreenCircle>
         <View style={styles.detailContainer}>

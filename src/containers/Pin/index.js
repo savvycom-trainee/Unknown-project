@@ -18,7 +18,18 @@ class Pin extends PureComponent {
         />
         <FlatList
           data={restaurantData}
-          renderItem={({ item, index }) => <PinView item={item} index={index} />}
+          renderItem={({ item, index }) => (
+            <PinView
+              item={item}
+              index={index}
+              onPress={() => {
+                this.props.navigation.navigate('HomeDetail');
+              }}
+              onDirectPress={() => {
+                this.props.navigation.navigate('Direct');
+              }}
+            />
+          )}
           keyExtractor={item => item.restaurantName.toString()}
         />
       </View>
