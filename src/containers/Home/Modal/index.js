@@ -15,6 +15,7 @@ import PropTypes from 'prop-types';
 import StarRating from 'react-native-star-rating';
 import { RNCamera } from 'react-native-camera';
 import { connect } from 'react-redux';
+import * as Progress from 'react-native-progress';
 import Icon from 'react-native-vector-icons/Ionicons';
 import styles from './styles';
 import { Icons, Colors, Images } from '../../../themes';
@@ -61,14 +62,14 @@ class ModalView extends PureComponent {
         rating: 0,
         type: 'Fast Food',
         detail: '',
+        createtime: '',
         photos: [],
         timeopen: '7h00',
         timeclose: '22h00',
         menu: [
           {
-            namemenu: 'Slads',
-            imagemenu:
-              'https://c1.staticflickr.com/9/8345/8233271770_70ee15d73a_b.jpg',
+            namemenu: 'Salads',
+            imagemenu: 'https://c1.staticflickr.com/9/8345/8233271770_70ee15d73a_b.jpg',
             detailmenu: 'Mon nay an nhu shit',
             pricemenu: 12.6,
           },
@@ -81,17 +82,17 @@ class ModalView extends PureComponent {
         },
         review: [
           {
-            iduser: 'user123',
-            name: 'user123',
+            iduser: 'fkFIKXHMFPSaCGerCXhirvZkF8D2',
             comment: 'Nhà hàng như shit',
             rating: 4,
             image: [
               'https://c1.staticflickr.com/9/8345/8233271770_70ee15d73a_b.jpg',
               'https://c1.staticflickr.com/9/8345/8233271770_70ee15d73a_b.jpg',
             ],
+            timeadd: '',
           },
         ],
-        iduser: 'user123',
+        iduser: 'fkFIKXHMFPSaCGerCXhirvZkF8D2',
         vicinity: '',
       },
     };
@@ -135,7 +136,7 @@ class ModalView extends PureComponent {
   };
   _getPhoto = () => {
     CameraRoll.getPhotos({
-      first: 20,
+      first: 30,
       assetType: 'Photos',
     })
       .then(r => {
@@ -152,7 +153,6 @@ class ModalView extends PureComponent {
     const storage = firebase.storage();
     const sessionId = new Date().getTime();
     const imageRef = storage.ref('images').child(`${sessionId}`);
-    const promises = [];
     for (let i = 0; i < file.length; i++) {
       imageRef.putFile(file[i]).on(
         'state_changed',
@@ -173,10 +173,13 @@ class ModalView extends PureComponent {
             uploadedFile.state === 'success' &&
             this.state.test.photos.indexOf(uploadedFile.downloadURL) === -1
           ) {
+            console.log( this.state.test.photos.indexOf(uploadedFile.downloadURL) === -1)
+            const timeadd = new Date().toLocaleString();
             this.setState({
               test: {
                 ...this.state.test,
-                photos: [...this.state.test.photos, uploadedFile.downloadURL],
+                createtime: timeadd,
+                photos: this.state.test.photos.concat(uploadedFile.downloadURL),
               },
             });
             console.log(this.state.test.photos, `${i} ${file.length}`);
@@ -313,7 +316,11 @@ class ModalView extends PureComponent {
     }
     return false;
   }
-
+  // _clearName(){
+  //   this.setState({ ...this.state.test,
+  //   name: '',
+  //   });
+  // }
   _onShowModal() {
     const { latitude, longitude } = this.state;
     this.modal.open();
@@ -511,10 +518,12 @@ class ModalView extends PureComponent {
                       </Text>
                     </TouchableOpacity>
                   </View>
-                  <View>
-                    <Text style={styles.textSelected}>
-                      {this.state.progressing}
-                    </Text>
+                  <View style={{ paddingLeft: 10 }}>
+                    <Progress.Pie
+                      progress={this.state.progressing}
+                      size={25}
+                      color={Colors.default}
+                    />
                   </View>
                 </View>
 

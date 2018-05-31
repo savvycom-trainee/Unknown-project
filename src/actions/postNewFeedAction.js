@@ -22,6 +22,7 @@ export function postNewFeedFail() {
   };
 }
 export function fetchPostNewFeed(obj) {
+  console.log(obj);
   return (dispatch) => {
     dispatch(postNewFeed());
     try {
