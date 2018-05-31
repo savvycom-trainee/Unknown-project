@@ -18,8 +18,7 @@ import { NavigationActions } from 'react-navigation';
 import login from './style/login';
 import images from '../../themes/Icons';
 import { setUser } from '../../actions';
-import LoadingOverlap from '../LoadingOverlap';
-import Loading from '../Loading';
+import LoadingContainer from '../../components/LoadingContainer';
 
 class Login extends PureComponent {
   constructor(props) {
@@ -41,6 +40,7 @@ class Login extends PureComponent {
         this.move(tmpUser);
       } else {
         console.log('eo co gif');
+        this.setState({ isLoading: false });
       }
     } catch (error) {
       console.log(error);
@@ -144,9 +144,7 @@ class Login extends PureComponent {
     );
   };
   render() {
-    return this.state.isLoading ? (
-      <Loading />
-    ) : (
+    return (
       <View style={{ flex: 1, backgroundColor: '#FFF' }}>
         <ScrollView style={login.container}>
           <StatusBar backgroundColor="rgb(76, 196, 57)" barStyle="light-content" />
@@ -155,57 +153,61 @@ class Login extends PureComponent {
               <Image source={images.logo} style={login.image} />
             </View>
           </View>
-          <View style={login.loginForm}>
-            <View style={login.form}>
-              <TextInput
-                style={login.input}
-                placeholder="Email"
-                keyboardType="email-address"
-                underlineColorAndroid="transparent"
-                onChangeText={this.changeAccount}
-                onSubmitEditing={this.accNext}
-                returnKeyType="next"
-                autoCapitalize="none"
-              />
-              <TextInput
-                ref={(ref) => {
-                  this.passwordField = ref;
-                }}
-                style={login.input}
-                placeholder="Password"
-                underlineColorAndroid="transparent"
-                secureTextEntry
-                onChangeText={this.changePassword}
-                onSubmitEditing={this.loginAccount}
-                autoCapitalize="none"
-              />
-            </View>
-            <View style={login.vButton}>
-              <TouchableOpacity style={login.btnLogin} onPress={this.loginAccount}>
-                {!this.state.isLoading ? (
-                  <Text style={login.txtBtn}> LOG IN </Text>
-                ) : (
-                  <ActivityIndicator size="small" color="white" />
-                )}
-              </TouchableOpacity>
-              <TouchableOpacity
-                style={login.btnfb}
-                onPress={() => this.props.navigation.navigate('Home')}
-              >
-                <Image source={images.logofb} style={login.logofb} />
-                <Text style={login.txtfb}> Continue With Facebook </Text>
-              </TouchableOpacity>
-            </View>
-            <Text style={login.txtBottom}>
-              Not account ? Go to{' '}
-              <Text
-                style={login.txtSignup}
-                onPress={() => this.props.navigation.navigate('Signup')}
-              >
-                Sign up
+          {this.state.isLoading ? (
+            <LoadingContainer />
+          ) : (
+            <View style={login.loginForm}>
+              <View style={login.form}>
+                <TextInput
+                  style={login.input}
+                  placeholder="Email"
+                  keyboardType="email-address"
+                  underlineColorAndroid="transparent"
+                  onChangeText={this.changeAccount}
+                  onSubmitEditing={this.accNext}
+                  returnKeyType="next"
+                  autoCapitalize="none"
+                />
+                <TextInput
+                  ref={(ref) => {
+                    this.passwordField = ref;
+                  }}
+                  style={login.input}
+                  placeholder="Password"
+                  underlineColorAndroid="transparent"
+                  secureTextEntry
+                  onChangeText={this.changePassword}
+                  onSubmitEditing={this.loginAccount}
+                  autoCapitalize="none"
+                />
+              </View>
+              <View style={login.vButton}>
+                <TouchableOpacity style={login.btnLogin} onPress={this.loginAccount}>
+                  {!this.state.isLoading ? (
+                    <Text style={login.txtBtn}> LOG IN </Text>
+                  ) : (
+                    <ActivityIndicator size="small" color="white" />
+                  )}
+                </TouchableOpacity>
+                <TouchableOpacity
+                  style={login.btnfb}
+                  onPress={() => this.props.navigation.navigate('Home')}
+                >
+                  <Image source={images.logofb} style={login.logofb} />
+                  <Text style={login.txtfb}> Continue With Facebook </Text>
+                </TouchableOpacity>
+              </View>
+              <Text style={login.txtBottom}>
+                Not account ? Go to{' '}
+                <Text
+                  style={login.txtSignup}
+                  onPress={() => this.props.navigation.navigate('Signup')}
+                >
+                  Sign up
+                </Text>
               </Text>
-            </Text>
-          </View>
+            </View>
+          )}
         </ScrollView>
       </View>
     );
