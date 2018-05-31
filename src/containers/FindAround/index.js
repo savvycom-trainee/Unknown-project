@@ -1,5 +1,5 @@
 import React, { PureComponent } from 'react';
-import { View, Text, Image, FlatList, TouchableOpacity } from 'react-native';
+import { View, Text, Image, FlatList, TouchableOpacity, BackHandler } from 'react-native';
 import PropTypes from 'prop-types';
 import Header from '../../components/Header';
 import { Icons } from '../../themes';
@@ -42,6 +42,18 @@ const Data = [
 ];
 class FindAround extends PureComponent {
   state = {};
+  componentDidMount() {
+    BackHandler.addEventListener('hardwareBackPress', this.handleBackPress);
+  }
+
+  componentWillUnmount() {
+    BackHandler.removeEventListener('hardwareBackPress', this.handleBackPress);
+  }
+  handleBackPress = () => {
+    this.props.navigation.goBack(null);
+    return true;
+  };
+
   // TODO navigate to user detail
   _renderItem = ({ item, index }) => <FindCard item={item} index={index} />;
   render() {

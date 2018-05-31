@@ -1,5 +1,14 @@
 import React, { PureComponent } from 'react';
-import { View, Text, StatusBar, Image, TouchableOpacity, FlatList, AsyncStorage } from 'react-native';
+import {
+  View,
+  Text,
+  StatusBar,
+  Image,
+  TouchableOpacity,
+  BackHandler,
+  FlatList,
+  AsyncStorage,
+} from 'react-native';
 import PropTypes from 'prop-types';
 import { NavigationActions } from 'react-navigation';
 import { Header } from '../../components';
@@ -68,6 +77,18 @@ class Account extends PureComponent {
     const { params } = this.props.navigation;
     this.state = params || defaultParam;
   }
+
+  componentDidMount() {
+    BackHandler.addEventListener('hardwareBackPress', this.handleBackPress);
+  }
+
+  componentWillUnmount() {
+    BackHandler.removeEventListener('hardwareBackPress', this.handleBackPress);
+  }
+  handleBackPress = () => {
+    this.props.navigation.goBack(null);
+    return true;
+  };
   logOut = () => {
     console.log('logout');
     AsyncStorage.removeItem('user');
@@ -76,7 +97,7 @@ class Account extends PureComponent {
       action: NavigationActions.navigate({ routeName: 'Login' }),
     });
     this.props.navigation.dispatch(navigateAction);
-  }
+  };
   render() {
     return (
       <View style={account.container}>
