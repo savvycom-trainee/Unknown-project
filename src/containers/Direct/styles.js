@@ -1,6 +1,46 @@
 import * as d from '../../utilities/Tranform';
+import { Colors } from '../../themes';
 
 const styles = {
+  cardStyle: {
+    bottom: 30 * d.ratioH,
+    position: 'absolute',
+    alignSelf: 'center',
+    width: 315 * d.ratioW,
+  },
+  firstViewStyle: {
+    justifyContent: 'center',
+    alignItems: 'center',
+    backgroundColor: Colors.default,
+    borderTopLeftRadius: 2.5,
+    borderBottomLeftRadius: 2.5,
+    height: 75 * d.ratioH,
+    width: 75 * d.ratioW,
+  },
+  secondViewStyle: {
+    justifyContent: 'space-evenly',
+    paddingHorizontal: 25 * d.ratioW,
+  },
+  detailStyle: {
+    flexDirection: 'row',
+  },
+  travelTimeStyle: {
+    fontSize: 16,
+    fontWeight: 'bold',
+  },
+  distanceStyle: {
+    fontSize: 16,
+    fontWeight: 'bold',
+    color: Colors.textOpacity,
+    paddingLeft: 5,
+  },
+  directStyle: {
+    top: 3,
+  },
+  textStyle: {
+    fontSize: 10,
+    color: Colors.textOpacity,
+  },
   circleMarkerStyle: {
     position: 'absolute',
     justifyContent: 'center',
@@ -8,8 +48,8 @@ const styles = {
     backgroundColor: 'rgba(63, 175, 40, 0.2)',
   },
   smallMarkerLocation: {
-    height: 20,
-    width: 20,
+    height: 20 * d.ratioH,
+    width: 20 * d.ratioW,
     borderRadius: 10,
     justifyContent: 'center',
     alignItems: 'center',

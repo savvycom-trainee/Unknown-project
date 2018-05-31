@@ -5,16 +5,9 @@ import { connect } from 'react-redux';
 import Polyline from '@mapbox/polyline';
 import mapStyles from './mapStyles';
 import styles from './styles';
+import { fetchDataGetAdd } from '../../actions';
 import { Header, Card } from '../../components';
-import { Icons, Images, Colors } from '../../themes';
-
-const COORDINATES = [
-  { latitude: 21.030675, longitude: 105.784853 },
-  { latitude: 21.0303099, longitude: 105.7879763 },
-  { latitude: 21.0295683, longitude: 105.7918811 },
-  { latitude: 21.0297938, longitude: 105.7919458 },
-  { latitude: 21.029785, longitude: 105.791981 },
-];
+import { Icons, Images } from '../../themes';
 
 class Direct extends PureComponent {
   constructor(props) {
@@ -26,7 +19,7 @@ class Direct extends PureComponent {
         latitudeDelta: 0.0201,
         longitudeDelta: 0.0204,
       },
-      err: null,
+      err: null, // eslint-disable-line
       animatedLargeMarker: new Animated.Value(0),
       animatedMediumMarker: new Animated.Value(0),
       animatedSmallMarker: new Animated.Value(0),
@@ -35,9 +28,9 @@ class Direct extends PureComponent {
       animatedSmallMarkerFade: new Animated.Value(1),
       direction: [],
       distance: null,
-      travelTime: null
+      travelTime: null,
     };
-    this.destination = this.props.navigation.getParam('destination', 'null');
+    this.destination = this.props.navigation.getParam('destination', 'null'); // eslint-disable-line
   }
 
   componentDidMount() {
@@ -73,7 +66,11 @@ class Direct extends PureComponent {
       longitude: point[1],
     }));
 
-    this.setState({ direction: coords, travelTime: resJson.routes[0].legs[0].duration.text, distance: resJson.routes[0].legs[0].distance.text });
+    this.setState({
+      direction: coords,
+      travelTime: resJson.routes[0].legs[0].duration.text,
+      distance: resJson.routes[0].legs[0].distance.text,
+    });
 
     console.log(this.direction);
   };
@@ -235,16 +232,16 @@ class Direct extends PureComponent {
             strokeWidth={3}
           />
         </MapView>
-        <Card style={{bottom: 30, position: 'absolute', alignSelf: 'center', width: 315}} direction='row'>
-          <View style={{justifyContent: 'center', alignItems: 'center', backgroundColor: Colors.default, borderTopLeftRadius: 2.5, borderBottomLeftRadius: 2.5, height: 75, width: 75}}>
-            <Image source={Icons.direct} style={{top: 3}}/>
+        <Card style={styles.cardStyle} direction="row" >
+          <View style={styles.firstViewStyle}>
+            <Image source={Icons.direct} style={styles.directStyle} />
           </View>
-          <View style={{justifyContent: 'space-evenly', paddingHorizontal: 25 }}>
-            <View style={{flexDirection: 'row'}}>
-              <Text style={{fontSize: 16, fontWeight: 'bold'}}>{this.state.travelTime}</Text>
-              <Text style={{fontSize: 16, fontWeight: 'bold', color: Colors.textOpacity, paddingLeft: 5}}>({this.state.distance})</Text>
+          <View style={styles.secondViewStyle}>
+            <View style={styles.detailStyle}>
+              <Text style={styles.travelTimeStyle}>{this.state.travelTime}</Text>
+              <Text style={styles.distanceStyle}>({this.state.distance})</Text>
             </View>
-            <Text style={{fontSize: 10, color: Colors.textOpacity}}>Fastest route</Text>
+            <Text style={styles.textStyle}>Fastest route</Text>
           </View>
         </Card>
       </View>
@@ -254,6 +251,7 @@ class Direct extends PureComponent {
 
 const mapStateToProps = state => ({
   region: state.getPositionReducers,
+  dataRestaurantAround: state.getAddReducers,
 });
 
-export default connect(mapStateToProps)(Direct);
+export default connect(mapStateToProps, { fetchDataGetAdd })(Direct);

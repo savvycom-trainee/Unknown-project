@@ -90,19 +90,17 @@ class ModalView extends PureComponent {
   }
 
   componentDidMount() {
-    navigator.geolocation.getCurrentPosition(
-      (position) => {
-        this.setState({
-          latitude: position.coords.latitude,
-          longitude: position.coords.longitude,
-          error: null,
-        });
-      },
-      error => this.setState({ error: error.message }),
-      { enableHighAccuracy: true, timeout: 20000, maximumAge: 1000 },
-    );
+    this.onGetCurrentLocation();
     this._getPhoto();
   }
+
+  onGetCurrentLocation = () => {
+    this.setState({
+      latitude: this.props.region.coords.latitude, // eslint-disable-line
+      longitude: this.props.region.coords.longitude, // eslint-disable-line
+    });
+  };
+
   onStarRatingPress(rating) {
     this.setState({
       test: {
@@ -548,5 +546,6 @@ ModalView.propTypes = {
 const mapStateToProps = state => ({
   dataAdd: state.getAddReducers,
   dataPost: state.postNewFeedReducers,
+  region: state.getPositionReducers,
 });
 export default connect(mapStateToProps, { fetchDataGetAdd, fetchPostNewFeed })(ModalView);
