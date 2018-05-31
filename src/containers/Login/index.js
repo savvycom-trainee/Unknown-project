@@ -36,6 +36,8 @@ class Login extends PureComponent {
       const user = await AsyncStorage.getItem('user');
       if (user) {
         const tmpUser = JSON.parse(user);
+        console.log(tmpUser);
+
         this.move(tmpUser);
       } else {
         console.log('eo co gif');

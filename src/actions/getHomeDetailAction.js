@@ -33,7 +33,7 @@ export function fetchDatagetHomeDetail(id) {
         .ref(`restaurant/restaurant/${id}`)
         .on('value', (snapshot) => {
           //   console.log('data');
-          console.log(snapshot.val());
+          // console.log(snapshot.val());
 
           // const returnArr = [];
           // console.log(returnArr);

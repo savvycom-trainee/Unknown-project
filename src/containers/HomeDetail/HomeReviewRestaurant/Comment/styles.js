@@ -103,6 +103,21 @@ const styles = StyleSheet.create({
     fontWeight: 'bold',
     color: 'white',
   },
+
+  ViewBtnAdd: {
+    marginLeft: 295 * d.ratioW,
+    height: 35 * d.ratioH,
+    width: 35 * d.ratioW,
+    borderRadius: 35 * d.ratioH,
+    backgroundColor: 'rgb(66,183,42)',
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  BtnAdd: {
+    fontSize: 17,
+    color: 'white',
+    // fontWeight: 'bold',
+  },
 });
 
 export default styles;
