@@ -67,7 +67,8 @@ class ModalView extends PureComponent {
         menu: [
           {
             namemenu: 'Slads',
-            imagemenu: 'https://c1.staticflickr.com/9/8345/8233271770_70ee15d73a_b.jpg',
+            imagemenu:
+              'https://c1.staticflickr.com/9/8345/8233271770_70ee15d73a_b.jpg',
             detailmenu: 'Mon nay an nhu shit',
             pricemenu: 12.6,
           },
@@ -98,7 +99,7 @@ class ModalView extends PureComponent {
 
   componentDidMount() {
     navigator.geolocation.getCurrentPosition(
-      (position) => {
+      position => {
         this.setState({
           latitude: position.coords.latitude,
           longitude: position.coords.longitude,
@@ -110,6 +111,14 @@ class ModalView extends PureComponent {
     );
     this._getPhoto();
   }
+
+  onGetCurrentLocation = () => {
+    this.setState({
+      latitude: this.props.region.coords.latitude, // eslint-disable-line
+      longitude: this.props.region.coords.longitude, // eslint-disable-line
+    });
+  };
+
   onStarRatingPress(rating) {
     this.setState({
       test: {
@@ -118,7 +127,7 @@ class ModalView extends PureComponent {
       },
     });
   }
-  takePicture = async function (camera) {
+  takePicture = async function(camera) {
     const options = { quality: 0.5, base64: true };
     const data = await camera.takePictureAsync(options);
     //  eslint-disable-next-line
@@ -129,11 +138,11 @@ class ModalView extends PureComponent {
       first: 20,
       assetType: 'Photos',
     })
-      .then((r) => {
+      .then(r => {
         this.setState({ photos: r.edges });
         // console.log(this.state.photos);
       })
-      .catch((err) => {
+      .catch(err => {
         console.log(err);
         // Error Loading Images
       });
@@ -147,17 +156,18 @@ class ModalView extends PureComponent {
     for (let i = 0; i < file.length; i++) {
       imageRef.putFile(file[i]).on(
         'state_changed',
-        (snapshot) => {
-          const progress = snapshot.bytesTransferred / snapshot.totalBytes * 100;
+        snapshot => {
+          const progress =
+            snapshot.bytesTransferred / snapshot.totalBytes * 100;
           this.setState({ progressing: progress });
           // console.log(`Upload is ${progress}% done`);
           // Current upload state
         },
-        (err) => {
+        err => {
           console.log(err);
           return false;
         },
-        (uploadedFile) => {
+        uploadedFile => {
           // return true;
           if (
             uploadedFile.state === 'success' &&
@@ -344,7 +354,9 @@ class ModalView extends PureComponent {
                           placeholder="Search"
                           style={styles.textInputSearch}
                           value={this.state.test.search}
-                          onChangeText={text => this.setState({ keyword: text })}
+                          onChangeText={text =>
+                            this.setState({ keyword: text })
+                          }
                         />
                       </View>
                       <View style={styles.ViewButtonSearch}>
@@ -352,7 +364,11 @@ class ModalView extends PureComponent {
                           style={styles.buttonSearch}
                           onPress={() => this._onSearch()}
                         >
-                          <Icon name="md-search" color={Colors.default} size={38} />
+                          <Icon
+                            name="md-search"
+                            color={Colors.default}
+                            size={38}
+                          />
                         </TouchableOpacity>
                       </View>
                     </View>
@@ -366,10 +382,14 @@ class ModalView extends PureComponent {
                           data={this.props.dataAdd.data}
                           renderItem={({ item }) => (
                             <View style={styles.ViewItemFlatList}>
-                              <TouchableOpacity onPress={() => this._onAdd(item)}>
+                              <TouchableOpacity
+                                onPress={() => this._onAdd(item)}
+                              >
                                 <View style={styles.viewItemAdd}>
                                   <View>
-                                    <Text style={styles.textItemName}>{item.name} </Text>
+                                    <Text style={styles.textItemName}>
+                                      {item.name}{' '}
+                                    </Text>
                                   </View>
                                   <View>
                                     <Image
@@ -394,10 +414,14 @@ class ModalView extends PureComponent {
                           data={this.props.dataSearchAdd.data}
                           renderItem={({ item }) => (
                             <View style={styles.ViewItemFlatList}>
-                              <TouchableOpacity onPress={() => this._onAdd(item)}>
+                              <TouchableOpacity
+                                onPress={() => this._onAdd(item)}
+                              >
                                 <View style={styles.viewItemAdd}>
                                   <View>
-                                    <Text style={styles.textItemName}>{item.name} </Text>
+                                    <Text style={styles.textItemName}>
+                                      {item.name}{' '}
+                                    </Text>
                                   </View>
                                   <View>
                                     <Image
@@ -416,8 +440,12 @@ class ModalView extends PureComponent {
                   )}
 
                   <View style={styles.ViewButton}>
-                    <Text style={styles.textSelected}>{this.state.test.name}</Text>
-                    <Text style={styles.textSelectedAdd}>{this.state.test.vicinity}</Text>
+                    <Text style={styles.textSelected}>
+                      {this.state.test.name}
+                    </Text>
+                    <Text style={styles.textSelectedAdd}>
+                      {this.state.test.vicinity}
+                    </Text>
                     <TouchableOpacity
                       style={styles.viewButtonDone}
                       onPress={() => this._onCloserModal()}
@@ -462,7 +490,10 @@ class ModalView extends PureComponent {
               <View style={styles.viewform}>
                 <View style={styles.viewInfoDetail}>
                   <View style={styles.viewFormImageUser}>
-                    <Image source={Images.restaurantPhoto} style={styles.ImageAvatar} />
+                    <Image
+                      source={Images.restaurantPhoto}
+                      style={styles.ImageAvatar}
+                    />
                   </View>
                   <View>
                     <TouchableOpacity style={styles.viewFormAddSelected}>
@@ -481,7 +512,9 @@ class ModalView extends PureComponent {
                     </TouchableOpacity>
                   </View>
                   <View>
-                    <Text style={styles.textSelected}>{this.state.progressing}</Text>
+                    <Text style={styles.textSelected}>
+                      {this.state.progressing}
+                    </Text>
                   </View>
                 </View>
 
@@ -541,7 +574,11 @@ class ModalView extends PureComponent {
                         return (
                           <View style={styles.camera}>
                             <TouchableOpacity style={styles.capture}>
-                              <Icon name="ios-reverse-camera-outline" color="white" size={33} />
+                              <Icon
+                                name="ios-reverse-camera-outline"
+                                color="white"
+                                size={33}
+                              />
                             </TouchableOpacity>
                             <TouchableOpacity
                               onPress={() => this.takePicture(camera)}
