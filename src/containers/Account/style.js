@@ -11,7 +11,7 @@ const account = StyleSheet.create({
     alignItems: 'center',
   },
   back: {
-    width: 30 * d.ratioW,
+    width: 26 * d.ratioW,
   },
   title: {
     fontWeight: '600',

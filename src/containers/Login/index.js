@@ -87,7 +87,8 @@ class Login extends PureComponent {
               },
               () => {
                 try {
-                  AsyncStorage.setItem('user', JSON.stringify(loginUser.user_user));
+                  // console.warn('', loginUser);
+                  AsyncStorage.setItem('user', JSON.stringify(loginUser.user._user));
                   this.move(loginUser.user._user);
                 } catch (error) {
                   console.log(error);

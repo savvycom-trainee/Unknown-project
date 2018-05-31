@@ -1,6 +1,7 @@
 import React, { PureComponent } from 'react';
-import { View, Text } from 'react-native';
+import { ScrollView, View, Text, TouchableOpacity, Image, TextInput } from 'react-native';
 import PropTypes from 'prop-types';
+import { NavigationActions } from 'react-navigation';
 import firebase from 'react-native-firebase';
 import images from '../../themes/Images';
 import styles from './style';
@@ -15,15 +16,10 @@ const defaultProps = {
 class UpdateUser extends PureComponent {
   constructor(props) {
     super(props);
-    this.state = {};
-    if (!props.user) {
-      this.setState(defaultProps);
-    } else {
+    this.state = defaultProps;
+    if (props.user) {
       this.getUser(props.user);
     }
-  }
-  componentDidMount() {
-    this.props.onRef(this);
   }
   getUser = (user) => {
     firebase
@@ -34,18 +30,78 @@ class UpdateUser extends PureComponent {
         this.setState(data._value);
       });
   };
+  submit = () => {
+    const user = this.props.navigation.getParam('user', {});
+    const navigateAction = NavigationActions.navigate({
+      routeName: 'Home',
+      action: NavigationActions.navigate({ routeName: 'Home', params: { user, newUser: true } }),
+    });
+    this.props.navigation.dispatch(navigateAction);
+  };
+
   render() {
     return (
-      <View style={styles.container}>
-        <Text>Update</Text>
-      </View>
+      <ScrollView style={styles.container}>
+        <View style={styles.topView}>
+          <Text style={styles.title}>Information</Text>
+          <TouchableOpacity style={styles.imageView}>
+            <Image source={this.state.photoURL} style={styles.image} />
+          </TouchableOpacity>
+        </View>
+        <View style={styles.botView}>
+          <TextInput
+            ref={(node) => {
+              this.fullname = node;
+            }}
+            style={styles.input}
+            placeholder="Fullname"
+            underlineColorAndroid="transparent"
+            onSubmitEditing={() => this.gender.focus()}
+          />
+          <TextInput
+            ref={(node) => {
+              this.gender = node;
+            }}
+            style={styles.input}
+            placeholder="Gender: Male or Female"
+            underlineColorAndroid="transparent"
+            onSubmitEditing={() => this.phone.focus()}
+          />
+          <TextInput
+            ref={(node) => {
+              this.phone = node;
+            }}
+            style={styles.input}
+            placeholder="Phone"
+            underlineColorAndroid="transparent"
+            onSubmitEditing={() => this.home.focus()}
+          />
+          <TextInput
+            ref={(node) => {
+              this.home = node;
+            }}
+            style={styles.input}
+            placeholder="Home: Hanoi, Vietnam"
+            underlineColorAndroid="transparent"
+            returnKeyType="done"
+            onSubmitEditing={this.submit}
+          />
+          <TouchableOpacity onPress={this.submit} style={styles.btnSubmit}>
+            <Text style={styles.txtSubmit}>SUBMIT</Text>
+          </TouchableOpacity>
+        </View>
+      </ScrollView>
     );
   }
 }
 
 UpdateUser.propTypes = {
-  onRef: PropTypes.func.isRequired,
   user: PropTypes.bool,
+  navigation: PropTypes.shape({
+    navigate: PropTypes.func.isRequired,
+    dispatch: PropTypes.func.isRequired,
+    getParam: PropTypes.func.isRequired,
+  }).isRequired,
 };
 
 UpdateUser.defaultProps = {

@@ -1,6 +1,7 @@
 import React, { PureComponent } from 'react';
-import { View, Text, StatusBar, Image, TouchableOpacity, FlatList } from 'react-native';
+import { View, Text, StatusBar, Image, TouchableOpacity, FlatList, AsyncStorage } from 'react-native';
 import PropTypes from 'prop-types';
+import { NavigationActions } from 'react-navigation';
 import { Header } from '../../components';
 import icon from '../../themes/Icons';
 import account from './style';
@@ -67,6 +68,15 @@ class Account extends PureComponent {
     const { params } = this.props.navigation;
     this.state = params || defaultParam;
   }
+  logOut = () => {
+    console.log('logout');
+    AsyncStorage.removeItem('user');
+    const navigateAction = NavigationActions.navigate({
+      routeName: 'Auth',
+      action: NavigationActions.navigate({ routeName: 'Login' }),
+    });
+    this.props.navigation.dispatch(navigateAction);
+  }
   render() {
     return (
       <View style={account.container}>
@@ -80,7 +90,11 @@ class Account extends PureComponent {
                 </TouchableOpacity>
               }
               centerHeader={<Text style={account.title}>Account</Text>}
-              rightHeader={<Text />}
+              rightHeader={
+                <TouchableOpacity onPress={() => this.logOut()}>
+                  <Text>Log Out</Text>
+                </TouchableOpacity>
+              }
             />
             <View style={account.info}>
               <Image source={this.state.avatar} style={account.avatar} />
@@ -137,6 +151,7 @@ Account.propTypes = {
     navigate: PropTypes.func.isRequired,
     goBack: PropTypes.func.isRequired,
     params: PropTypes.object,
+    dispatch: PropTypes.func.isRequired,
   }).isRequired,
 };
 

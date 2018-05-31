@@ -29,7 +29,7 @@ export default class CardView extends Component {
 
   render() {
     return (
-      <Card direction="row" style={styles.cardStyle}>
+      <Card direction="row" style={styles.cardStyle} onPress={this.props.onPress}>
         <View style={styles.blankView} />
         <GreenCircle onPress={() => {}} style={styles.greenCircleStyle}>
           <Text style={styles.ratingTextStyle}>{this.props.item.rating}</Text>

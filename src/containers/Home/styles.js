@@ -90,11 +90,13 @@ export default StyleSheet.create({
     fontWeight: '800',
   },
   viewNameRow2: {
+    alignItems: 'center',
     paddingBottom: 23.5,
     justifyContent: 'space-between',
     flexDirection: 'row',
   },
   viewNameRow3: {
+    alignItems: 'center',
     width: '90%',
     justifyContent: 'space-between',
     flexDirection: 'row',
@@ -103,8 +105,13 @@ export default StyleSheet.create({
     paddingBottom: 14.5,
   },
   textNameRow2: {
-    fontSize: 11,
+    fontSize: 10,
     color: Colors.textOpacity,
+    fontWeight: '700',
+  },
+  textNameUserRow2: {
+    fontSize: 12,
+    color: Colors.text,
     fontWeight: '700',
   },
   textNameRow2Flowed: {

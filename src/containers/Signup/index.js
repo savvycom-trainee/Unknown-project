@@ -12,7 +12,6 @@ import {
   ActivityIndicator,
 } from 'react-native';
 import { connect } from 'react-redux';
-import { NavigationActions } from 'react-navigation';
 import signup from './style';
 import images from '../../themes/Icons';
 import { setUser } from '../../actions';
@@ -62,11 +61,7 @@ class Signup extends PureComponent {
             .auth()
             .createUserAndRetrieveDataWithEmailAndPassword(acc, pass)
             .then(({ user }) => {
-              const navigateAction = NavigationActions.navigate({
-                routeName: 'Home',
-                action: NavigationActions.navigate({ routeName: 'Home', params: { user, newUser: true } }),
-              });
-              this.props.navigation.dispatch(navigateAction);
+              this.props.navigation.navigate('UpdateUser', { user: user._user });
             })
             .catch((error) => {
               this.setState(

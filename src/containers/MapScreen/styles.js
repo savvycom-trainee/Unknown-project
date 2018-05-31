@@ -5,6 +5,10 @@ const styles = {
     fontSize: 15,
     fontWeight: '600',
   },
+  directIconStyle: {
+    bottom: 7,
+    transform: [{ rotateZ: '90deg' }],
+  },
   flatListStyle: {
     position: 'absolute',
     bottom: 25 * d.ratioH,
@@ -14,6 +18,10 @@ const styles = {
   },
   mapPinStyle: {
     width: 18 * d.ratioW,
+    height: 25 * d.ratioH,
+  },
+  mapPinIphoneXStyle: {
+    width: 22 * d.ratioW,
     height: 25 * d.ratioH,
   },
   focusingPhotoMarkerStyle: {
