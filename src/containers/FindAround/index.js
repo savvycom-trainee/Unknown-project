@@ -1,9 +1,11 @@
 import React, { PureComponent } from 'react';
-import { View, Text, Image, FlatList, TouchableOpacity } from 'react-native';
+import { View, Text, Image, FlatList } from 'react-native';
+import firebase from 'react-native-firebase';
+import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import Header from '../../components/Header';
 import { Icons } from '../../themes';
-import * as d from '../../utilities/Tranform';
+// import * as d from '../../utilities/Tranform';
 import FindCard from './FindCard';
 
 // import styles from './styles';
@@ -42,6 +44,19 @@ const Data = [
 ];
 class FindAround extends PureComponent {
   state = {};
+  componentDidMount() {
+    this._getUserAround();
+  }
+
+  _getUserAround = () => {
+    const { uid } = this.props.user.user;
+    // console.log(this.props.user);
+    firebase
+      .database()
+      .ref(`/restaurant/user/${uid}/followed`)
+      .once('value')
+      .then(snapshot => console.log(snapshot));
+  };
   // TODO navigate to user detail
   _renderItem = ({ item, index }) => <FindCard item={item} index={index} />;
   render() {
@@ -65,5 +80,9 @@ class FindAround extends PureComponent {
 }
 FindAround.propTypes = {
   navigation: PropTypes.object, // eslint-disable-line
+  user: PropTypes.object, // eslint-disable-line
 };
-export default FindAround;
+const mapStateToProps = state => ({
+  user: state.user,
+});
+export default connect(mapStateToProps)(FindAround);

@@ -14,9 +14,9 @@ export default class FindCard extends React.PureComponent {
     const { item, index } = this.props;
 
     return (
-      <TouchableOpacity style={[styles.item, { marginTop: index === 0 ? 10 : 5 }]}>
+      <TouchableOpacity style={[styles.item, { marginTop: index === 0 ? 15 : 10 }]}>
         <View style={styles.content_layout}>
-          <Image source={Images.avartar} style={styles.avartar} />
+          <Image source={Images.avatar} style={styles.avatar} />
           <View style={{ marginLeft: 10 }}>
             <Text style={styles.name}>{item.name}</Text>
             <View style={styles.item_layout}>

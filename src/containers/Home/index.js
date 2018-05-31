@@ -2,6 +2,7 @@ import React, { PureComponent } from 'react';
 import PropTypes from 'prop-types';
 import { View, Text, ScrollView, TouchableOpacity, Image, FlatList, Modal } from 'react-native';
 import { connect } from 'react-redux';
+import firebase from 'react-native-firebase';
 import Icon from 'react-native-vector-icons/Ionicons';
 import StarRating from 'react-native-star-rating';
 import { Header } from '../../components';
@@ -26,7 +27,7 @@ class Home extends PureComponent {
     this.state = {
       latitude: null,
       longitude: null,
-      modalVisible: true,
+      modalVisible: false,
       error: null,
       // starCount: 2.5,
     };
@@ -47,8 +48,9 @@ class Home extends PureComponent {
           error: null,
         });
         this.props.getPositionSuccess(position);
-        console.log('position ' + JSON.stringify(this.props.getPositionSuccess(position)));
-        console.log("state: " + JSON.stringify(this.state));
+        // this._updateLocation(position.coords.latitude, position.coords.longitude);
+        console.log(`position ${JSON.stringify(this.props.getPositionSuccess(position))}`);
+        console.log(`state: ${JSON.stringify(this.state)}`);
       },
       error => this.setState({ error }),
       { enableHighAccuracy: true, timeout: 20000, maximumAge: 1000 },
@@ -56,14 +58,26 @@ class Home extends PureComponent {
     const newUser = this.props.navigation.getParam('newUser', false);
     console.log(newUser);
     this.props.fetchDatagetNewFeed();
-  }
+  };
+
   setModalVisible(visible) {
     this.setState({ modalVisible: visible });
   }
   hideModal = (message) => {
     this.setModalVisible(message);
   };
-
+  _updateLocation = (lat, lng) => {
+    const { uid } = this.props.user.user;
+    const updates = {};
+    updates[`/restaurant/user/${uid}/location`] = {
+      latitude: lat,
+      longitude: lng,
+    };
+    firebase
+      .database()
+      .ref()
+      .update(updates);
+  };
   /* eslint-disable */
   deg2rad = deg => deg * (Math.PI / 180);
   _getDistanceFromLatLonInKm = (lat1, lon1, lat2, lon2) => {
@@ -256,6 +270,7 @@ Home.propTypes = {
   }).isRequired,
   fetchDatagetNewFeed: PropTypes.func.isRequired,
   dataNewFeed: PropTypes.object.isRequired,
+  user: PropTypes.object, //eslint-disable-line
 };
 
 const mapStateToProps = state => ({
