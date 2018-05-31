@@ -22,6 +22,7 @@ class UpdateUser extends PureComponent {
     }
   }
   getUser = (user) => {
+    console.log('getUser');
     firebase
       .database()
       .ref('/restaurant/user')
@@ -32,11 +33,40 @@ class UpdateUser extends PureComponent {
   };
   submit = () => {
     const user = this.props.navigation.getParam('user', {});
-    const navigateAction = NavigationActions.navigate({
-      routeName: 'Home',
-      action: NavigationActions.navigate({ routeName: 'Home', params: { user, newUser: true } }),
-    });
-    this.props.navigation.dispatch(navigateAction);
+    console.log(user);
+    const fullname = this.fullname._lastNativeText;
+    const home = this.home._lastNativeText;
+    const gender = this.gender._lastNativeText;
+    const phone = this.phone._lastNativeText;
+    const info = {
+      email: user.email,
+      fullname,
+      home,
+      gender,
+      phone,
+      photoURL: '',
+    };
+    firebase
+      .database()
+      .ref('restaurant/user')
+      .child(user.uid)
+      .set(info, (error) => {
+        if (!error) {
+          console.log(info);
+          const navigateAction = NavigationActions.navigate({
+            routeName: 'Home',
+            action: NavigationActions.navigate({
+              routeName: 'Home',
+              params: {
+                user: { ...info, uid: user.uid },
+              },
+            }),
+          });
+          this.props.navigation.dispatch(navigateAction);
+        } else {
+          console.log(error);
+        }
+      });
   };
 
   render() {
@@ -72,6 +102,7 @@ class UpdateUser extends PureComponent {
               this.phone = node;
             }}
             style={styles.input}
+            keyboardType="phone-pad"
             placeholder="Phone"
             underlineColorAndroid="transparent"
             onSubmitEditing={() => this.home.focus()}

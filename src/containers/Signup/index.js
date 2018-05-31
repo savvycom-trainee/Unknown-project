@@ -118,6 +118,7 @@ class Signup extends PureComponent {
               style={signup.input}
               placeholder="Email"
               underlineColorAndroid="transparent"
+              keyboardType="email-address"
               onChangeText={this.changeAccount}
               onSubmitEditing={this.accNext}
               returnKeyType="next"

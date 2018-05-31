@@ -53,8 +53,6 @@ class Home extends PureComponent {
       error => this.setState({ error }),
       { enableHighAccuracy: true, timeout: 20000, maximumAge: 1000 },
     );
-    const newUser = this.props.navigation.getParam('newUser', false);
-    console.log(newUser);
     this.props.fetchDatagetNewFeed();
   }
   setModalVisible(visible) {
@@ -186,14 +184,6 @@ class Home extends PureComponent {
   render() {
     return (
       <View style={styles.container}>
-        {/* {this.props.navigation.getParam('newUser', false) ? (
-          <UpdateUser
-            onRef={(ref) => {
-              this.update = ref;
-            }}
-            user={user}
-          />
-        ) : null} */}
         <View style={styles.body}>
           <Header
             leftHeader={<Image source={Icons.menu} style={{ marginTop: 2 * d.ratioH }} />}

@@ -104,7 +104,7 @@ class Account extends PureComponent {
               </Text>
             </View>
           </View>
-          <View style={{ height: 20, width: 10, backgroundColor: 'red' }} />
+          <View style={{ height: 20, width: 10 }} />
           <TouchableOpacity style={account.btnFollow}>
             <Image source={icon.follow} style={account.imageFollow} />
             <Text

@@ -155,6 +155,7 @@ class Login extends PureComponent {
             <TextInput
               style={login.input}
               placeholder="Email"
+              keyboardType="email-address"
               underlineColorAndroid="transparent"
               onChangeText={this.changeAccount}
               onSubmitEditing={this.accNext}
