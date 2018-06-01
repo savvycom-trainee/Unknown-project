@@ -1,14 +1,24 @@
 import React, { PureComponent } from 'react';
-import { ScrollView, View, Text, TouchableOpacity, Image, TextInput } from 'react-native';
+import {
+  ScrollView,
+  View,
+  Text,
+  TouchableOpacity,
+  Image,
+  TextInput,
+  Alert,
+  ActivityIndicator,
+} from 'react-native';
 import PropTypes from 'prop-types';
+import { connect } from 'react-redux';
 import { NavigationActions } from 'react-navigation';
 import firebase from 'react-native-firebase';
-import images from '../../themes/Images';
 import styles from './style';
+import Gallery from '../Gallery';
 
 const defaultProps = {
   name: '',
-  photoURL: images.defaultAvatar,
+  photoURL: 'https://www.vccircle.com/wp-content/uploads/2017/03/default-profile.png',
   gender: '',
   home: '',
 };
@@ -16,36 +26,65 @@ const defaultProps = {
 class UpdateUser extends PureComponent {
   constructor(props) {
     super(props);
-    this.state = defaultProps;
-    if (props.user) {
-      this.getUser(props.user);
+    this.state = {
+      ...defaultProps,
+      isSubmit: false,
+    };
+    const user = props.navigation.getParam('user', {});
+    if (!user) {
+      this.getUser();
     }
   }
-  getUser = (user) => {
+  getUser = () => {
     console.log('getUser');
+    const { uid } = this.props.user;
     firebase
       .database()
       .ref('/restaurant/user')
-      .child(user.uid)
+      .child(uid)
       .on('value', (data) => {
-        this.setState(data._value);
+        this.setState({
+          ...data._value,
+          uid,
+        });
       });
   };
-  submit = () => {
-    const user = this.props.navigation.getParam('user', {});
-    console.log(user);
-    const fullname = this.fullname._lastNativeText;
-    const home = this.home._lastNativeText;
-    const gender = this.gender._lastNativeText;
-    const phone = this.phone._lastNativeText;
-    const info = {
-      email: user.email,
-      fullname,
-      home,
-      gender,
-      phone,
-      photoURL: '',
-    };
+  uploadPhoto = (tmpInfo, url) => {
+    const storage = firebase.storage();
+    const sessionId = new Date().getTime();
+    const imageRef = storage.ref('images').child(`${sessionId}`);
+    console.log(url);
+    imageRef.putFile(url).on(
+      'state_changed',
+      () => {
+        this.setState({
+          isSubmit: true,
+        });
+      },
+      (err) => {
+        console.log(err);
+        this.setState({
+          isSubmit: false,
+        });
+      },
+      (uploadedFile) => {
+        console.log(uploadedFile);
+        if (uploadedFile.state === 'success') {
+          this.setState({
+            isSubmit: false,
+          });
+          let info = tmpInfo;
+          info = {
+            ...info,
+            photoURL: uploadedFile.downloadURL,
+          };
+          this.uploadUser(info);
+        }
+      },
+    );
+  };
+  uploadUser = (info) => {
+    const user = this.state;
     firebase
       .database()
       .ref('restaurant/user')
@@ -68,14 +107,56 @@ class UpdateUser extends PureComponent {
         }
       });
   };
-
+  submit = () => {
+    const user = this.props.navigation.getParam('user', {});
+    console.log(user);
+    const fullname = this.fullname._lastNativeText;
+    const home = this.home._lastNativeText;
+    const gender = this.gender._lastNativeText;
+    const phone = this.phone._lastNativeText;
+    if (!(fullname === '' && home === '' && gender === '' && phone === '')) {
+      const { photoURL } = this.state;
+      const info = {
+        email: user.email,
+        fullname,
+        home,
+        gender,
+        phone,
+        photoURL: defaultProps.photoURL,
+      };
+      if (photoURL !== defaultProps.photoURL) {
+        this.uploadPhoto(info, photoURL);
+      } else {
+        console.log('xit roi');
+        this.uploadUser(info);
+      }
+    } else {
+      Alert.alert('Please enter full information');
+    }
+  };
+  selectAvatar = (uri) => {
+    this.setState(
+      {
+        photoURL: uri,
+      },
+      () => {
+        this.gallery.close();
+      },
+    );
+  };
   render() {
     return (
       <ScrollView style={styles.container}>
+        <Gallery
+          select={this.selectAvatar}
+          onRef={(node) => {
+            this.gallery = node;
+          }}
+        />
         <View style={styles.topView}>
           <Text style={styles.title}>Information</Text>
-          <TouchableOpacity style={styles.imageView}>
-            <Image source={this.state.photoURL} style={styles.image} />
+          <TouchableOpacity style={styles.imageView} onPress={() => this.gallery.open()}>
+            <Image source={{ uri: this.state.photoURL }} style={styles.image} />
           </TouchableOpacity>
         </View>
         <View style={styles.botView}>
@@ -115,10 +196,13 @@ class UpdateUser extends PureComponent {
             placeholder="Home: Hanoi, Vietnam"
             underlineColorAndroid="transparent"
             returnKeyType="done"
-            onSubmitEditing={this.submit}
           />
           <TouchableOpacity onPress={this.submit} style={styles.btnSubmit}>
-            <Text style={styles.txtSubmit}>SUBMIT</Text>
+            {!this.state.isSubmit ? (
+              <Text style={styles.txtSubmit}>SUBMIT</Text>
+            ) : (
+              <ActivityIndicator size="small" color="white" />
+            )}
           </TouchableOpacity>
         </View>
       </ScrollView>
@@ -127,16 +211,16 @@ class UpdateUser extends PureComponent {
 }
 
 UpdateUser.propTypes = {
-  user: PropTypes.bool,
   navigation: PropTypes.shape({
     navigate: PropTypes.func.isRequired,
     dispatch: PropTypes.func.isRequired,
     getParam: PropTypes.func.isRequired,
   }).isRequired,
+  user: PropTypes.object.isRequired,
 };
 
-UpdateUser.defaultProps = {
-  user: false,
-};
+const mapStateToProps = state => ({
+  user: state.user,
+});
 
-export default UpdateUser;
+export default connect(mapStateToProps)(UpdateUser);
