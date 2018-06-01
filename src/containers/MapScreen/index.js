@@ -180,7 +180,7 @@ class MapScreen extends PureComponent {
           onLayout={() => setTimeout(() => this.map.fitToCoordinates(this.markers, {
             edgePadding: PADDING,
             animated: true,
-          }), 500)}
+          }), 1000)}
           provider="google"
           customMapStyle={mapStyles}
           style={{ flex: 1 }}
