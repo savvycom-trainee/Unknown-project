@@ -4,13 +4,19 @@ import MapView, { Marker } from 'react-native-maps';
 import Icon from 'react-native-vector-icons/Ionicons';
 import { connect } from 'react-redux';
 import { Header } from '../../components';
-import { Icons, Colors } from '../../themes';
-import restaurantData from '../Pin/PinView/data/restaurantData';
+import { Icons, Colors, Images } from '../../themes';
 import mapStyles from './mapStyles';
 import styles from './styles';
 import CardView from './CardView';
 import { isIphoneX } from '../../utilities/device';
-// import * as d from '../../utilities/Tranform';
+import * as d from '../../utilities/Tranform';
+
+const PADDING = {
+  top: 80 * d.ratioH,
+  right: 80 * d.ratioW,
+  bottom: 80 * d.ratioH,
+  left: 80 * d.ratioW,
+};
 
 class MapScreen extends PureComponent {
   constructor(props) {
@@ -25,8 +31,10 @@ class MapScreen extends PureComponent {
       error: null, // eslint-disable-line
       focusing: null,
       destination: null,
+      dataRestaurantAround: null,
     };
     this._marker = [];
+    this.markers = [];
   }
 
   componentDidMount() {
@@ -39,8 +47,9 @@ class MapScreen extends PureComponent {
         this.onGetCurrentLocation();
       });
     }
-    this.onGetCurrentLocation();
+    // this.onGetCurrentLocation();
     this.watchID = this.onWatchPosition();
+    this.onGetRestaurantAround();
     // console.log(`region ${JSON.stringify(this.props.region.coords.longitude)}`);
   }
 
@@ -51,19 +60,14 @@ class MapScreen extends PureComponent {
   componentWillUnmount() {
     // eslint-disable-next-line
     navigator.geolocation.clearWatch(this.watchID);
-    this.onClearState();
   }
-
-  onClearState = () => {
-    this.setState({ focusing: null });
-  };
 
   onGetCurrentLocation = () => {
     this.setState({
       region: {
         ...this.state.region,
-        latitude: this.props.region.coords.latitude,
-        longitude: this.props.region.coords.longitude,
+        latitude: this.props.region.coords.latitude, // eslint-disable-line
+        longitude: this.props.region.coords.longitude, // eslint-disable-line
       },
     });
   };
@@ -93,9 +97,29 @@ class MapScreen extends PureComponent {
     );
   };
 
-  onPickRestaurant = () => {
-    this.setState({ focusing: true });
+  onGetRestaurantAround = () => {
+    // eslint-disable-next-line
+    fetch(
+      `https://maps.googleapis.com/maps/api/place/nearbysearch/json?key=AIzaSyCthR5BEn21xBOMCGo-qqui8a9jDRNLDOk&location=${
+        this.props.region.coords.latitude
+      },${this.props.region.coords.longitude}&radius=1000&type=restaurant`)
+      .then(res => res.json())
+      .then((resJson) => {
+        this.setState({ dataRestaurantAround: resJson.results });
+        console.log('restaurant around: ', resJson.results);
+        resJson.results.forEach((markerRegion) => {
+          this.markers.push({
+            latitude: markerRegion.geometry.location.lat,
+            longitude: markerRegion.geometry.location.lng,
+          });
+        });
+        console.log(this.markers);
+      })
+      .catch(err => console.log(`Get restaurant around error: ${err}`));
   };
+
+  onGetRestaurantPhoto = ref =>
+    `https://maps.googleapis.com/maps/api/place/photo?photoreference=${ref}&sensor=false&maxheight=200&maxwidth=200&key=AIzaSyCthR5BEn21xBOMCGo-qqui8a9jDRNLDOk`;
 
   getItemLayout = (data, index) => ({ length: 220, offset: 210 * index, index });
 
@@ -128,6 +152,7 @@ class MapScreen extends PureComponent {
       }
     }
   }
+
   render() {
     return (
       <View style={{ flex: 1 }}>
@@ -151,6 +176,11 @@ class MapScreen extends PureComponent {
         />
         <MapView
           region={this.state.region}
+          ref={ref => { this.map = ref }} // eslint-disable-line
+          onLayout={() => setTimeout(() => this.map.fitToCoordinates(this.markers, {
+            edgePadding: PADDING,
+            animated: true,
+          }), 500)}
           provider="google"
           customMapStyle={mapStyles}
           style={{ flex: 1 }}
@@ -161,49 +191,60 @@ class MapScreen extends PureComponent {
               style={isIphoneX() === true ? styles.mapPinIphoneXStyle : styles.mapPinStyle}
             />
           </Marker>
-          {restaurantData.map((markers, index) => (
-            <Marker
-              key={markers.restaurantName}
-              // eslint-disable-next-line
-              ref={marker => (this._marker[index] = { marker, id: markers.restaurantName })}
-              coordinate={markers.region}
-              onPress={() => {
-                this.setState({
-                  focusing: this._marker[index].id,
-                  destination: this._marker[index].marker.props.coordinate,
-                });
-                this.scrollToIndex(index);
-              }}
-            >
-              <View style={styles.markerContainer}>
-                <Image
-                  source={
-                    this.state.focusing === markers.restaurantName
-                      ? Icons.greenMarker
-                      : Icons.grayMarker
-                  }
-                />
-                <Image
-                  source={markers.restaurantPhoto}
-                  style={
-                    this.state.focusing === markers.restaurantName
-                      ? styles.focusingPhotoMarkerStyle
-                      : styles.defaultPhotoMarkerStyle
-                  }
-                />
-              </View>
-            </Marker>
-          ))}
+          {this.state.dataRestaurantAround !== null
+            ? this.state.dataRestaurantAround.map((markers, index) => (
+              <Marker
+                key={markers.id}
+                // eslint-disable-next-line
+                ref={marker => (this._marker[index] = { marker, id: markers.id })}
+                coordinate={{
+                  latitude: markers.geometry.location.lat,
+                  longitude: markers.geometry.location.lng,
+                }}
+                onPress={() => {
+                  this.setState({
+                    focusing: this._marker[index].id,
+                    destination: this._marker[index].marker.props.coordinate,
+                  });
+                  this.scrollToIndex(index);
+                }}
+              >
+                <View style={styles.markerContainer}>
+                  <Image
+                    source={this.state.focusing === markers.id
+                              ? Icons.greenMarker : Icons.grayMarker}
+                  />
+                  <Image
+                    source={markers.photos !== undefined
+                            ? { uri: this.onGetRestaurantPhoto(markers.photos[0].photo_reference) }
+                            : Images.defaultImage}
+                    style={
+                      this.state.focusing === markers.id
+                        ? styles.focusingPhotoMarkerStyle
+                        : styles.defaultPhotoMarkerStyle
+                    }
+                  />
+                </View>
+              </Marker>
+          )) : null}
         </MapView>
         <FlatList
           horizontal
           showsHorizontalScrollIndicator={false}
-          data={restaurantData}
+          data={this.state.dataRestaurantAround}
           // eslint-disable-next-line
           ref={ref => (this._flatListMarker = ref)}
           getItemLayout={this.getItemLayout}
           renderItem={({ item, index }) => (
             <CardView
+              restaurantPhoto={item.photos !== undefined
+                                ? this.onGetRestaurantPhoto(item.photos[0].photo_reference)
+                                : null
+                              }
+              regionLat={this.props.region.coords.latitude}
+              regionLng={this.props.region.coords.longitude}
+              latitude={item.geometry.location.lat}
+              longitude={item.geometry.location.lng}
               item={item}
               onPress={() => {
                 this.setState({
@@ -214,7 +255,7 @@ class MapScreen extends PureComponent {
               }}
             />
           )}
-          keyExtractor={item => item.restaurantName}
+          keyExtractor={item => item.id}
           style={styles.flatListStyle}
         />
       </View>

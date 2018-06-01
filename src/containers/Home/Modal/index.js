@@ -99,17 +99,7 @@ class ModalView extends PureComponent {
   }
 
   componentDidMount() {
-    navigator.geolocation.getCurrentPosition(
-      position => {
-        this.setState({
-          latitude: position.coords.latitude,
-          longitude: position.coords.longitude,
-          error: null,
-        });
-      },
-      error => this.setState({ error }),
-      { enableHighAccuracy: true, timeout: 20000, maximumAge: 1000 },
-    );
+    this.onGetCurrentLocation();
     this._getPhoto();
   }
 
