@@ -5,8 +5,4 @@ export * from './getHomeDetailAction';
 export * from './getPositionAction';
 export * from './getAddbySearchAction';
 export * from './getUserFacebookAction';
-
-export const setUser = user => ({
-  type: 'SET_USER',
-  user,
-});
+export * from './user';

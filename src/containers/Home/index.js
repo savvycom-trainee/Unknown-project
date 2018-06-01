@@ -2,6 +2,7 @@ import React, { PureComponent } from 'react';
 import PropTypes from 'prop-types';
 import { View, Text, ScrollView, TouchableOpacity, Image, FlatList, Modal } from 'react-native';
 import { connect } from 'react-redux';
+import firebase from 'react-native-firebase';
 import Icon from 'react-native-vector-icons/Ionicons';
 import StarRating from 'react-native-star-rating';
 import { Header } from '../../components';
@@ -9,7 +10,7 @@ import styles from './styles';
 import { Icons } from '../../themes';
 import * as d from '../../utilities/Tranform';
 import { fetchDatagetNewFeed } from '../../actions/getNewFeedAction';
-import { getPositionSuccess } from '../../actions';
+import { getPositionSuccess, setUser } from '../../actions';
 import ModalView from './Modal';
 import Loading from '../../components/LoadingContainer';
 
@@ -26,7 +27,7 @@ class Home extends PureComponent {
     this.state = {
       latitude: null,
       longitude: null,
-      modalVisible: true,
+      modalVisible: false,
       error: null,
       // starCount: 2.5,
     };
@@ -39,6 +40,7 @@ class Home extends PureComponent {
   }
 
   onGetCurrentPosition = () => {
+    // eslint-disable-next-line
     navigator.geolocation.getCurrentPosition(
       (position) => {
         this.setState({
@@ -47,21 +49,40 @@ class Home extends PureComponent {
           error: null,
         });
         this.props.getPositionSuccess(position);
-        console.log('position ' + JSON.stringify(this.props.getPositionSuccess(position)));
-        console.log("state: " + JSON.stringify(this.state));
+        this._updateLocation(position.coords.latitude, position.coords.longitude);
+        console.log(`position ${JSON.stringify(this.props.getPositionSuccess(position))}`);
+        console.log(`state: ${JSON.stringify(this.state)}`);
       },
       error => this.setState({ error }),
       { enableHighAccuracy: true, timeout: 20000, maximumAge: 1000 },
     );
+    // eslint-disable-next-line
+    const newUser = this.props.navigation.getParam('newUser', false);
+    console.log(newUser);
     this.props.fetchDatagetNewFeed();
-  }
+  };
+
   setModalVisible(visible) {
     this.setState({ modalVisible: visible });
   }
   hideModal = (message) => {
     this.setModalVisible(message);
   };
+  _updateLocation = (lat, lng) => {
+    const { uid } = this.props.user.user;
+    console.log(this.props.user);
 
+    const updates = {};
+    updates[`/restaurant/user/${uid}/location`] = { lat, lng };
+    firebase
+      .database()
+      .ref()
+      .update(updates, () => {
+        const { user } = this.props.user;
+        user.location = { lat, lng };
+        this.props.setUser(user);
+      });
+  };
   /* eslint-disable */
   deg2rad = deg => deg * (Math.PI / 180);
   _getDistanceFromLatLonInKm = (lat1, lon1, lat2, lon2) => {
@@ -246,12 +267,14 @@ Home.propTypes = {
   }).isRequired,
   fetchDatagetNewFeed: PropTypes.func.isRequired,
   dataNewFeed: PropTypes.object.isRequired,
+  user: PropTypes.object, //eslint-disable-line
+  setUser: PropTypes.func, //eslint-disable-line
+  getPositionSuccess: PropTypes.func, //eslint-disable-line
 };
-
 const mapStateToProps = state => ({
   dataNewFeed: state.getNewFeedReducers,
   region: state.getPositionReducers,
   user: state.user,
 });
 
-export default connect(mapStateToProps, { fetchDatagetNewFeed, getPositionSuccess })(Home);
+export default connect(mapStateToProps, { fetchDatagetNewFeed, getPositionSuccess, setUser })(Home);

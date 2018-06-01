@@ -19,8 +19,8 @@ const styles = StyleSheet.create({
     alignSelf: 'center',
   },
   avatar: {
-    width: 70 * d.ratioW,
-    height: 70 * d.ratioW,
+    width: 62 * d.ratioW,
+    height: 57 * d.ratioW,
   },
   name: {
     fontSize: 16,
@@ -31,13 +31,14 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   item: {
-    width: 315 * d.ratioH,
+    width: 330 * d.ratioH,
     height: 107 * d.ratioH,
     backgroundColor: '#fff',
     justifyContent: 'center',
     alignItems: 'center',
     alignSelf: 'center',
     margin: 5,
+    borderRadius: 10,
   },
 });
 
