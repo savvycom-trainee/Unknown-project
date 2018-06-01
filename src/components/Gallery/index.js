@@ -27,7 +27,6 @@ class Gallery extends Component {
       };
     }
     CameraRoll.getPhotos(params).then((data) => {
-      console.log(data);
       this.setState({
         photos: data.edges,
       });

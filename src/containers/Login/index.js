@@ -39,7 +39,6 @@ class Login extends PureComponent {
         const tmpUser = JSON.parse(user);
         this.move(tmpUser);
       } else {
-        console.log('eo co gif');
         this.setState({ isLoading: false });
       }
     } catch (error) {
@@ -90,7 +89,6 @@ class Login extends PureComponent {
               .ref('/restaurant/user')
               .child(loginUser.user.uid)
               .on('value', (data) => {
-                console.log(data);
                 this.setState(
                   {
                     isLoading: false,

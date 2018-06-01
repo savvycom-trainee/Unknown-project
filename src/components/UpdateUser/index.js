@@ -36,7 +36,6 @@ class UpdateUser extends PureComponent {
     }
   }
   getUser = () => {
-    console.log('getUser');
     const { uid } = this.props.user;
     firebase
       .database()
@@ -53,7 +52,6 @@ class UpdateUser extends PureComponent {
     const storage = firebase.storage();
     const sessionId = new Date().getTime();
     const imageRef = storage.ref('images').child(`${sessionId}`);
-    console.log(url);
     imageRef.putFile(url).on(
       'state_changed',
       () => {
@@ -68,7 +66,6 @@ class UpdateUser extends PureComponent {
         });
       },
       (uploadedFile) => {
-        console.log(uploadedFile);
         if (uploadedFile.state === 'success') {
           this.setState({
             isSubmit: false,
@@ -109,7 +106,6 @@ class UpdateUser extends PureComponent {
   };
   submit = () => {
     const user = this.props.navigation.getParam('user', {});
-    console.log(user);
     const fullname = this.fullname._lastNativeText;
     const home = this.home._lastNativeText;
     const gender = this.gender._lastNativeText;
@@ -127,7 +123,6 @@ class UpdateUser extends PureComponent {
       if (photoURL !== defaultProps.photoURL) {
         this.uploadPhoto(info, photoURL);
       } else {
-        console.log('xit roi');
         this.uploadUser(info);
       }
     } else {
