@@ -241,6 +241,7 @@ class MapScreen extends PureComponent {
                                 ? this.onGetRestaurantPhoto(item.photos[0].photo_reference)
                                 : null
                               }
+              navigation={this.props.navigation}
               regionLat={this.props.region.coords.latitude}
               regionLng={this.props.region.coords.longitude}
               latitude={item.geometry.location.lat}

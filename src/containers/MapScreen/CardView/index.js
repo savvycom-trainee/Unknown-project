@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import { View, Image, Text } from 'react-native';
+import Icon from 'react-native-vector-icons/Ionicons';
 import { Card, OpenAndDistance, GreenCircle } from '../../../components';
 import { Images } from '../../../themes';
 import styles from './styles';
@@ -10,7 +11,6 @@ export default class CardView extends Component {
     this.state = {
       openingStatus: false,
       distance: 'NaN',
-      momentTime: 15,
     };
   }
 
@@ -45,8 +45,14 @@ export default class CardView extends Component {
     return (
       <Card direction="row" style={styles.cardStyle} onPress={this.props.onPress}>
         <View style={styles.blankView} />
-        <GreenCircle onPress={() => {}} style={styles.greenCircleStyle}>
-          <Text style={styles.ratingTextStyle}>{this.props.item.rating}</Text>
+        <GreenCircle
+          onPress={() => {
+            this.props.navigation.navigate('Direct');
+          }}
+          style={styles.greenCircleStyle}
+        >
+          {/* <Text style={styles.ratingTextStyle}>{this.props.item.rating}</Text> */}
+          <Icon name="ios-document" size={20} color="#FFF" />
         </GreenCircle>
         <View style={styles.container}>
           <View style={styles.restaurantPhotoContainer}>
