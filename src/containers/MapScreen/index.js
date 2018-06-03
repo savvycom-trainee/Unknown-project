@@ -121,7 +121,7 @@ class MapScreen extends PureComponent {
   onGetRestaurantPhoto = ref =>
     `https://maps.googleapis.com/maps/api/place/photo?photoreference=${ref}&sensor=false&maxheight=200&maxwidth=200&key=AIzaSyCthR5BEn21xBOMCGo-qqui8a9jDRNLDOk`;
 
-  getItemLayout = (data, index) => ({ length: 220, offset: 210 * index, index });
+  getItemLayout = (data, index) => ({ length: 220, offset: isIphoneX ? 219 * index : 210 * index, index });
 
   scrollToIndex = (index) => {
     this._flatListMarker.scrollToIndex({ animated: true, index, viewOffset: 1 });
@@ -180,7 +180,7 @@ class MapScreen extends PureComponent {
           onLayout={() => setTimeout(() => this.map.fitToCoordinates(this.markers, {
             edgePadding: PADDING,
             animated: true,
-          }), 1000)}
+          }), 1500)}
           provider="google"
           customMapStyle={mapStyles}
           style={{ flex: 1 }}

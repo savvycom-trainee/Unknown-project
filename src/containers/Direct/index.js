@@ -55,10 +55,6 @@ class Direct extends PureComponent {
     this.onGetDirectionAPI();
     this.onGetCurrentLocation();
     this.animationMarker();
-    // setTimeout(() => this.map.fitToCoordinates(this.markers, {
-    //   edgePadding: { top: 100, right: 100, bottom: 100, left: 100 },
-    //   animated: true,
-    // }), 500)
   }
 
   componentWillUnmount() {
@@ -204,7 +200,7 @@ class Direct extends PureComponent {
           onLayout={() => setTimeout(() => this.map.fitToCoordinates(this.markers, {
             edgePadding: PADDING,
             animated: true,
-          }), 500)}
+          }), 1000)}
           provider="google"
           customMapStyle={mapStyles}
           style={{ flex: 1 }}
