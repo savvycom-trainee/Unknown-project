@@ -1,5 +1,5 @@
 import React, { PureComponent } from 'react';
-import { View, Text, Image, Animated, Easing } from 'react-native';
+import { View, Text, Image, Animated } from 'react-native';
 import MapView, { Marker } from 'react-native-maps';
 import { connect } from 'react-redux';
 import Polyline from '@mapbox/polyline';
@@ -8,6 +8,14 @@ import styles from './styles';
 import { fetchDataGetAdd } from '../../actions';
 import { Header, Card } from '../../components';
 import { Icons, Images } from '../../themes';
+import * as d from '../../utilities/Tranform';
+
+const PADDING = {
+  top: 50 * d.ratioH,
+  right: 50 * d.ratioW,
+  bottom: 50 * d.ratioH,
+  left: 50 * d.ratioW,
+};
 
 class Direct extends PureComponent {
   constructor(props) {
@@ -16,8 +24,8 @@ class Direct extends PureComponent {
       region: {
         latitude: 21.025817,
         longitude: 105.800344,
-        latitudeDelta: 0.0201,
-        longitudeDelta: 0.0204,
+        latitudeDelta: 0.0021,
+        longitudeDelta: 0.0024,
       },
       err: null, // eslint-disable-line
       animatedLargeMarker: new Animated.Value(0),
@@ -31,6 +39,16 @@ class Direct extends PureComponent {
       travelTime: null,
     };
     this.destination = this.props.navigation.getParam('destination', 'null'); // eslint-disable-line
+    this.markers = [
+      {
+        latitude: this.props.region.coords.latitude, // eslint-disable-line
+        longitude: this.props.region.coords.longitude, // eslint-disable-line
+      },
+      {
+        latitude: this.destination.latitude,
+        longitude: this.destination.longitude,
+      },
+    ];
   }
 
   componentDidMount() {
@@ -45,18 +63,19 @@ class Direct extends PureComponent {
   }
 
   onGetDirectionAPI = () => {
+    // eslint-disable-next-line
     fetch(`https://maps.googleapis.com/maps/api/directions/json?origin=${
       this.props.region.coords.latitude
     },${this.props.region.coords.longitude}&destination=${this.destination.latitude},${
       this.destination.longitude
-    }&key=AIzaSyAW5rqaM6BzeUu5ww0xEXBWhPNv9p5sdIE`)
+    }&key=AIzaSyCthR5BEn21xBOMCGo-qqui8a9jDRNLDOk`)
       .then(res => res.json())
       .then((resJson) => {
         // this.setState({ directionAPI: resJson });
         console.log(resJson);
         this.onGetDirection(resJson);
       })
-      .catch(err => console.log(`Get API error: ${err}`));
+      .catch(err => console.log(`Get API direction error: ${err}`));
   };
 
   onGetDirection = (resJson) => {
@@ -177,6 +196,11 @@ class Direct extends PureComponent {
         />
         <MapView
           region={this.state.region}
+          ref={(ref) => this.map = ref} // eslint-disable-line
+          onLayout={() => setTimeout(() => this.map.fitToCoordinates(this.markers, {
+            edgePadding: PADDING,
+            animated: true,
+          }), 1000)}
           provider="google"
           customMapStyle={mapStyles}
           style={{ flex: 1 }}
@@ -232,7 +256,7 @@ class Direct extends PureComponent {
             strokeWidth={3}
           />
         </MapView>
-        <Card style={styles.cardStyle} direction="row" >
+        <Card style={styles.cardStyle} direction="row">
           <View style={styles.firstViewStyle}>
             <Image source={Icons.direct} style={styles.directStyle} />
           </View>

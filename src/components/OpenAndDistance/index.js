@@ -26,7 +26,7 @@ OpenAndDistance.propTypes = {
 
 OpenAndDistance.defaultProps = {
   openingStatus: false,
-  distance: '',
+  distance: 'NaN',
   otherStyle: {},
 };
 

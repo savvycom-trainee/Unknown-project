@@ -39,6 +39,7 @@ const styles = {
     fontWeight: '700',
     color: colors.text,
     paddingBottom: 5 * d.ratioH,
+    width: 150 * d.ratioW,
   },
 };
 
