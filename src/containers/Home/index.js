@@ -207,9 +207,7 @@ class Home extends PureComponent {
       <View style={styles.container}>
         <View style={styles.body}>
           <Header
-            leftHeader={<Image source={Icons.menu} style={{ marginTop: 2 * d.ratioH }} />}
             centerHeader={<Text style={{ fontSize: 15, fontWeight: '600' }}>NewFeeed</Text>}
-            rightHeader={<Image source={Icons.user} />}
           />
           <Modal
             animationType="slide"

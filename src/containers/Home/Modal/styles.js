@@ -311,4 +311,7 @@ export default StyleSheet.create({
   bodyModal: {
     alignItems: 'center',
   },
+  viewButton: {
+    flexDirection: 'row',
+  },
 });

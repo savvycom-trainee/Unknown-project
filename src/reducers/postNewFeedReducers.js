@@ -19,7 +19,7 @@ export default (state = INIT_STATE, action) => {
         isFetching: true,
       };
     case POST_NEWFEED_SUCCESS:
-      // console.log(action.payload);
+      console.log(action);
       return {
         ...state,
         isFetching: false,

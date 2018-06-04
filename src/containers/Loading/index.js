@@ -45,7 +45,30 @@ class Loading extends Component {
             <Image source={Icons.logo} style={styles.imageLogo} />
           </View>
         </View>
-        <LoadingContainer />
+        <LoginButton
+          publishPermissions={['publish_actions']}
+          onLoginFinished={(error, result) => {
+            if (error) {
+              Alert.alert(`login has error: ${result.error}`);
+            } else if (result.isCancelled) {
+              Alert.alert('login is cancelled.');
+            } else {
+              AccessToken.getCurrentAccessToken().then((data) => {
+                const { accessToken } = data;
+                try {
+                  AsyncStorage.setItem('Token', JSON.stringify(accessToken));
+                  console.log(accessToken);
+                } catch (error) {
+                  console.log(error);
+                }
+              });
+            }
+          }}
+          onLogoutFinished={() => {
+            Alert.alert('logout.');
+            AsyncStorage.removeItem('Token');
+          }}
+        />
       </View>
     );
   }
