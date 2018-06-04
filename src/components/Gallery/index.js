@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import PropTypes from 'prop-types';
 import { View, Text, ScrollView, CameraRoll, TouchableOpacity, Image } from 'react-native';
 import * as d from '../../utilities/Tranform.js';
 
@@ -8,9 +9,11 @@ class Gallery extends Component {
     this.state = {
       photos: [],
       isShow: false,
-      selectPhoto: {},
     };
     this.loadPhoto();
+  }
+  componentDidMount() {
+    this.props.onRef(this);
   }
   loadPhoto = () => {
     let params = {
@@ -24,7 +27,6 @@ class Gallery extends Component {
       };
     }
     CameraRoll.getPhotos(params).then((data) => {
-      console.log(data);
       this.setState({
         photos: data.edges,
       });
@@ -38,39 +40,24 @@ class Gallery extends Component {
   randomKey = () => {
     let text = '';
     const possible = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
-    for (let i = 0; i < 20; i++) {
+    for (let i = 0; i < 20; i += 1) {
       text += possible.charAt(Math.floor(Math.random() * possible.length));
     }
     return text;
   };
-  select = (node) => {
-    console.log('selectNode');
+  close = () => {
     this.setState({
-      isShow: !this.state.isShow,
-      selectPhoto: node,
+      isShow: false,
     });
   };
-  showGallery = () => {
-    console.log('showgallery');
+  open = () => {
     this.setState({
-      isShow: !this.state.isShow,
+      isShow: true,
     });
   };
   render() {
-    return !this.state.isShow ? (
-      <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>
-        <TouchableOpacity onPress={() => this.showGallery()}>
-          <Text>Load</Text>
-        </TouchableOpacity>
-        {this.state.selectPhoto.image ? (
-          <Image
-            source={{ uri: this.state.selectPhoto.image.uri }}
-            style={{ marginTop: 30, width: 120, height: 100 }}
-          />
-        ) : null}
-      </View>
-    ) : (
-      <ScrollView style={{ flex: 1 }}>
+    return !this.state.isShow ? null : (
+      <ScrollView style={{ flex: 1, position: 'absolute', zIndex: 2 }}>
         <View style={{ height: 30, alignItems: 'center', justifyContent: 'center' }}>
           <Text style={{ textAlign: 'center', fontWeight: '600', fontSize: 14 }}>
             Recent Gellary
@@ -87,7 +74,11 @@ class Gallery extends Component {
           {this.state.photos.map(({ node }) => {
             const key = this.randomKey();
             return (
-              <TouchableOpacity key={key} style={{ margin: 2 }} onPress={() => this.select(node)}>
+              <TouchableOpacity
+                key={key}
+                style={{ margin: 2 }}
+                onPress={() => this.props.select(node.image.uri)}
+              >
                 <Image
                   style={{
                     width: 120 * d.ratioW,
@@ -103,5 +94,10 @@ class Gallery extends Component {
     );
   }
 }
+
+Gallery.propTypes = {
+  select: PropTypes.func.isRequired,
+  onRef: PropTypes.func.isRequired,
+};
 
 export default Gallery;

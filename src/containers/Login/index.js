@@ -39,7 +39,6 @@ class Login extends PureComponent {
         const tmpUser = JSON.parse(user);
         this.move(tmpUser);
       } else {
-        console.log('eo co gif');
         this.setState({ isLoading: false });
       }
     } catch (error) {
@@ -79,34 +78,36 @@ class Login extends PureComponent {
         isLoading: true,
       },
       () => {
+        console.log(acc, pass);
         firebase
           .auth()
           .signInAndRetrieveDataWithEmailAndPassword(acc, pass)
           .then((loginUser) => {
-            this.setState(
-              {
-                isLoading: false,
-              },
-              () => {
-                try {
-                  // console.warn('', loginUser);
-                  AsyncStorage.setItem('user', JSON.stringify(loginUser.user._user));
-                  this.move(loginUser.user._user);
-                } catch (error) {
-                  console.log(error);
-                }
-              },
-            );
+            console.log(loginUser);
+            firebase
+              .database()
+              .ref('/restaurant/user')
+              .child(loginUser.user.uid)
+              .on('value', (data) => {
+                this.setState(
+                  {
+                    isLoading: false,
+                  },
+                  () => {
+                    try {
+                      const user = {
+                        ...data._value,
+                        uid: data.key,
+                      };
+                      AsyncStorage.setItem('user', JSON.stringify(user));
+                      this.move(user);
+                    } catch (error) {
+                      console.log(error);
+                    }
+                  },
+                );
+              });
           })
-          // .then(() => {
-          //   console.log(this.state.user.user._user.uid);
-          //   firebase
-          //     .database()
-          //     .ref('/restaurant/user')
-          //     .push({
-
-          //     });
-          // })
           .catch((error) => {
             this.setState(
               {
@@ -129,6 +130,7 @@ class Login extends PureComponent {
                     message = 'Password incorrect';
                     break;
                   default:
+                    console.log(code);
                     message = 'Email or password incorrect';
                     break;
                 }
