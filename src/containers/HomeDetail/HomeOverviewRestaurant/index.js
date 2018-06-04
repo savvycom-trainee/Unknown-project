@@ -38,7 +38,7 @@ class HomeOverviewRestaurant extends PureComponent {
     try {
       firebase
         .database()
-        .ref('/restaurant/user/0/pin')
+        .ref('/restaurant/user/' + this.props.userId + '/pin')
         .push({
           id: this.props.data.idrestaurant,
         });
@@ -46,7 +46,11 @@ class HomeOverviewRestaurant extends PureComponent {
       console.log(error);
     }
   };
+
+  showPin = () => {};
+
   render() {
+    console.log(this.props.dataUser.pin == null);
     return (
       <View style={styles.ViewMain}>
         <Header

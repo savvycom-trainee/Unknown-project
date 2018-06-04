@@ -104,6 +104,7 @@ class HomeDetail extends Component {
           <HomeOverviewRestaurant
             idRestaurant={this.state.idRestaurant}
             data={this.props.dataHomeDetail.data}
+            dataUser={this.props.dataUserDetail.data}
             onPressGoBack={() => this.props.navigation.goBack()}
             onPressDirect={() => this.props.navigation.navigate('Direct')}
           />
