@@ -173,19 +173,16 @@ class Home extends PureComponent {
                       <View style={styles.viewNameRow2Item}>
                         {Math.round(distance) < 1 ? (
                           <Text style={styles.textNameRow2}>
-                            {' '}
-                            • {Math.round(distance)} m from you{' '}
+                            • {Math.round(distance)} m from you
                           </Text>
                         ) : (
                           <Text style={styles.textNameRow2}>
-                            {' '}
-                            • {Math.round(distance)} km from you{' '}
+                            • {Math.round(distance)} km from you
                           </Text>
                         )}
                       </View>
                       <View style={styles.viewNameRow2Item}>
                         <Text style={styles.textNameRow2} numberOfLines={1}>
-                          {' '}
                           • {item.vicinity}
                         </Text>
                       </View>
@@ -208,6 +205,7 @@ class Home extends PureComponent {
         <View style={styles.body}>
           <Header
             centerHeader={<Text style={{ fontSize: 15, fontWeight: '600' }}>NewFeeed</Text>}
+            // centerHeader={<Text style={{ fontSize: 15, fontWeight: '600' }}>Menu</Text>}
           />
           <Modal
             animationType="slide"
@@ -252,7 +250,6 @@ class Home extends PureComponent {
               <View style={styles.viewContentForm}>{this._renderNewFeed()}</View>
             </View>
           </ScrollView>
-          {/* </View> */}
         </View>
       </View>
     );
@@ -275,4 +272,7 @@ const mapStateToProps = state => ({
   user: state.user,
 });
 
-export default connect(mapStateToProps, { fetchDatagetNewFeed, getPositionSuccess, setUser })(Home);
+export default connect(
+  mapStateToProps,
+  { fetchDatagetNewFeed, getPositionSuccess, setUser },
+)(Home);

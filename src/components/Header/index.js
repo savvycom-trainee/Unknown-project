@@ -1,5 +1,5 @@
 import React from 'react';
-import { View, TouchableOpacity, StatusBar } from 'react-native';
+import { View, TouchableOpacity, StatusBar, Text } from 'react-native';
 import PropTypes from 'prop-types';
 import styles from './styles';
 
@@ -16,7 +16,9 @@ const Header = ({
       <TouchableOpacity onPress={onPressLeftHeader} style={styles.leftHeaderStyle}>
         {leftHeader}
       </TouchableOpacity>
-      <View>{centerHeader}</View>
+      <View>
+        <Text>{centerHeader}</Text>
+      </View>
       <TouchableOpacity onPress={onPressRightHeader}>{rightHeader}</TouchableOpacity>
     </View>
   </View>
@@ -31,9 +33,9 @@ Header.propTypes = {
 };
 
 Header.defaultProps = {
-  leftHeader: '',
-  centerHeader: '',
-  rightHeader: '',
+  leftHeader: null,
+  centerHeader: null,
+  rightHeader: null,
   onPressLeftHeader: () => {},
   onPressRightHeader: () => {},
 };
