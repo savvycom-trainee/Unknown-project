@@ -447,7 +447,7 @@ class ModalView extends PureComponent {
                 </View>
                 <View style={styles.viewImage}>
                   <View style={styles.viewCamera}>
-                    <RNCamera
+                    {/* <RNCamera
                       style={styles.preview}
                       type={RNCamera.Constants.Type.back}
                       flashMode={RNCamera.Constants.FlashMode.on}
@@ -473,7 +473,7 @@ class ModalView extends PureComponent {
                           </View>
                         );
                       }}
-                    </RNCamera>
+                    </RNCamera> */}
                   </View>
                   <View style={styles.viewPhotoMobile}>
                     <ScrollView>
