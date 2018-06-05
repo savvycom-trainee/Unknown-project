@@ -11,11 +11,7 @@ class Pin extends PureComponent {
   render() {
     return (
       <View style={{ flex: 1 }}>
-        <Header
-          leftHeader={<Image source={Icons.menu} />}
-          centerHeader={<Text style={styles.centerHeaderStyle}>Bookmark</Text>}
-          rightHeader={<Image source={Icons.user} />}
-        />
+        <Header centerHeader={<Text style={styles.centerHeaderStyle}>Bookmark</Text>} />
         <FlatList
           data={restaurantData}
           renderItem={({ item, index }) => (

@@ -11,6 +11,7 @@ import {
   ActivityIndicator,
   AsyncStorage,
 } from 'react-native';
+
 import PropTypes from 'prop-types';
 import firebase from 'react-native-firebase';
 import { connect } from 'react-redux';
@@ -20,6 +21,9 @@ import images from '../../themes/Icons';
 import { setUser } from '../../actions';
 import LoadingContainer from '../../components/LoadingContainer';
 
+const FBSDK = require('react-native-fbsdk');
+
+const { LoginManager, AccessToken } = FBSDK;
 class Login extends PureComponent {
   constructor(props) {
     super(props);
@@ -145,6 +149,29 @@ class Login extends PureComponent {
       },
     );
   };
+  loginFacebook = () => {
+    LoginManager.logInWithReadPermissions(['public_profile', 'user_friends', 'email']).then(
+      (result) => {
+        if (result.isCancelled) {
+          Alert.alert('Whoops!', 'You cancelled the sign in.');
+        } else {
+          AccessToken.getCurrentAccessToken().then((data) => {
+            const credential = firebase.auth.FacebookAuthProvider.credential(data.accessToken);
+            firebase
+              .auth()
+              .signInWithCredential(credential)
+              .then(this.props.navigation.navigate('Home'))
+              .catch((error) => {
+                console.log(error);
+              });
+          });
+        }
+      },
+      (error) => {
+        Alert.alert('Sign in error', error);
+      },
+    );
+  };
   render() {
     return (
       <View style={{ flex: 1, backgroundColor: '#FFF' }}>
@@ -191,10 +218,7 @@ class Login extends PureComponent {
                     <ActivityIndicator size="small" color="white" />
                   )}
                 </TouchableOpacity>
-                <TouchableOpacity
-                  style={login.btnfb}
-                  onPress={() => this.props.navigation.navigate('Home')}
-                >
+                <TouchableOpacity style={login.btnfb} onPress={() => this.loginFacebook()}>
                   <Image source={images.logofb} style={login.logofb} />
                   <Text style={login.txtfb}> Continue With Facebook </Text>
                 </TouchableOpacity>
