@@ -30,16 +30,21 @@ class UpdateUser extends PureComponent {
       ...defaultProps,
       isSubmit: false,
     };
-    const user = props.navigation.getParam('user', {});
-    if (!user) {
+    this.user = this.props.navigation.getParam('user', {});
+    if (!this.user) {
       this.getUser();
     }
   }
+
+  componentDidMount() {
+    console.log('user', this.user.uid);
+  }
+
   getUser = () => {
-    const { uid } = this.props.user;
+    const { uid } = this.user;
     firebase
       .database()
-      .ref('/restaurant/user')
+      .ref('/root/users')
       .child(uid)
       .on('value', (data) => {
         this.setState({
@@ -81,11 +86,11 @@ class UpdateUser extends PureComponent {
     );
   };
   uploadUser = (info) => {
-    const user = this.state;
+    // const user = this.state;
     firebase
       .database()
-      .ref('restaurant/user')
-      .child(user.uid)
+      .ref('root/users')
+      .child(this.user.uid)
       .set(info, (error) => {
         if (!error) {
           console.log(info);
@@ -94,7 +99,7 @@ class UpdateUser extends PureComponent {
             action: NavigationActions.navigate({
               routeName: 'Home',
               params: {
-                user: { ...info, uid: user.uid },
+                user: { ...info, uid: this.user.uid },
               },
             }),
           });
@@ -105,16 +110,15 @@ class UpdateUser extends PureComponent {
       });
   };
   submit = () => {
-    const user = this.props.navigation.getParam('user', {});
-    const fullname = this.fullname._lastNativeText;
+    const fullName = this.fullName._lastNativeText;
     const home = this.home._lastNativeText;
     const gender = this.gender._lastNativeText;
     const phone = this.phone._lastNativeText;
-    if (!(fullname === '' && home === '' && gender === '' && phone === '')) {
+    if (!(fullName === '' && home === '' && gender === '' && phone === '')) {
       const { photoURL } = this.state;
       const info = {
-        email: user.email,
-        fullname,
+        email: this.user.email,
+        fullName,
         home,
         gender,
         phone,
@@ -157,10 +161,10 @@ class UpdateUser extends PureComponent {
         <View style={styles.botView}>
           <TextInput
             ref={(node) => {
-              this.fullname = node;
+              this.fullName = node;
             }}
             style={styles.input}
-            placeholder="Fullname"
+            placeholder="Full name"
             underlineColorAndroid="transparent"
             onSubmitEditing={() => this.gender.focus()}
           />
@@ -211,7 +215,6 @@ UpdateUser.propTypes = {
     dispatch: PropTypes.func.isRequired,
     getParam: PropTypes.func.isRequired,
   }).isRequired,
-  user: PropTypes.object.isRequired,
 };
 
 const mapStateToProps = state => ({

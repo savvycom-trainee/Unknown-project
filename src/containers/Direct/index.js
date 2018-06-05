@@ -1,5 +1,5 @@
 import React, { PureComponent } from 'react';
-import { View, Text, Image, Animated } from 'react-native';
+import { View, Text, Image, Animated, Modal } from 'react-native';
 import MapView, { Marker } from 'react-native-maps';
 import { connect } from 'react-redux';
 import Polyline from '@mapbox/polyline';
@@ -7,6 +7,7 @@ import mapStyles from './mapStyles';
 import styles from './styles';
 import { fetchDataGetAdd } from '../../actions';
 import { Header, Card } from '../../components';
+import ModalView from '../Home/Modal';
 import { Icons, Images } from '../../themes';
 import * as d from '../../utilities/Tranform';
 
@@ -37,6 +38,7 @@ class Direct extends PureComponent {
       direction: [],
       distance: null,
       travelTime: null,
+      modalVisible: false,
     };
     this.destination = this.props.navigation.getParam('destination', 'null'); // eslint-disable-line
     this.markers = [
@@ -127,6 +129,14 @@ class Direct extends PureComponent {
         distanceFilter: 10,
       },
     );
+  };
+
+  setModalVisible = (visible) => {
+    this.setState({ modalVisible: visible });
+  };
+
+  hideModal = (message) => {
+    this.setModalVisible(message);
   };
 
   animationMarker = () => {
@@ -256,7 +266,7 @@ class Direct extends PureComponent {
             strokeWidth={3}
           />
         </MapView>
-        <Card style={styles.cardStyle} direction="row">
+        <Card style={styles.cardStyle} direction="row" onPress={() => this.setModalVisible(true)}>
           <View style={styles.firstViewStyle}>
             <Image source={Icons.direct} style={styles.directStyle} />
           </View>
@@ -268,6 +278,14 @@ class Direct extends PureComponent {
             <Text style={styles.textStyle}>Fastest route</Text>
           </View>
         </Card>
+        <Modal
+          animationType="slide"
+          transparent={false}
+          onRequestClose={() => {}}
+          visible={this.state.modalVisible}
+        >
+          <ModalView hideModal={this.hideModal} />
+        </Modal>
       </View>
     );
   }

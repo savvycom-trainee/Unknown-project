@@ -13,7 +13,6 @@ import {
 import firebase from 'react-native-firebase';
 import PropTypes from 'prop-types';
 import StarRating from 'react-native-star-rating';
-import { RNCamera } from 'react-native-camera';
 import { connect } from 'react-redux';
 import * as Progress from 'react-native-progress';
 import Icon from 'react-native-vector-icons/Ionicons';
@@ -27,21 +26,6 @@ import {
 } from '../../../actions';
 import ModalCustom from '../../../components/Modal';
 import Loading from '../../../components/LoadingContainer';
-
-// const iosConfig = {};
-// const androidConfig = {};
-const PendingView = () => (
-  <View
-    style={{
-      flex: 1,
-      backgroundColor: 'lightgreen',
-      justifyContent: 'center',
-      alignItems: 'center',
-    }}
-  >
-    <Text>Waiting</Text>
-  </View>
-);
 
 class ModalView extends PureComponent {
   constructor(props) {
@@ -118,7 +102,7 @@ class ModalView extends PureComponent {
       },
     });
   }
-  takePicture = async function(camera) {
+  takePicture = async function (camera) {
     const options = { quality: 0.5, base64: true };
     const data = await camera.takePictureAsync(options);
     //  eslint-disable-next-line
@@ -129,11 +113,11 @@ class ModalView extends PureComponent {
       first: 30,
       assetType: 'Photos',
     })
-      .then(r => {
+      .then((r) => {
         this.setState({ photos: r.edges });
         // console.log(this.state.photos);
       })
-      .catch(err => {
+      .catch((err) => {
         console.log(err);
         // Error Loading Images
       });
@@ -146,24 +130,23 @@ class ModalView extends PureComponent {
     for (let i = 0; i < file.length; i++) {
       imageRef.putFile(file[i]).on(
         'state_changed',
-        snapshot => {
-          const progress =
-            snapshot.bytesTransferred / snapshot.totalBytes * 100;
+        (snapshot) => {
+          const progress = (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
           this.setState({ progressing: progress });
           // console.log(`Upload is ${progress}% done`);
           // Current upload state
         },
-        err => {
+        (err) => {
           console.log(err);
           return false;
         },
-        uploadedFile => {
+        (uploadedFile) => {
           // return true;
           if (
             uploadedFile.state === 'success' &&
             this.state.test.photos.indexOf(uploadedFile.downloadURL) === -1
           ) {
-            console.log( this.state.test.photos.indexOf(uploadedFile.downloadURL) === -1)
+            console.log(this.state.test.photos.indexOf(uploadedFile.downloadURL) === -1);
             const timeadd = new Date().toLocaleString();
             this.setState({
               test: {
@@ -182,49 +165,8 @@ class ModalView extends PureComponent {
         },
       );
     }
-
-    // imageRef.putFile(file[0]).on(
-    //   'state_changed',
-    //   (snapshot) => {
-    //     const progress = snapshot.bytesTransferred / snapshot.totalBytes * 100;
-    //     this.setState({ progressing: progress });
-    //     console.log(`Upload is ${progress}% done`);
-    //     // Current upload state
-    //   },
-    //   (err) => {
-    //     console.log(err);
-    //     return false;
-    //   },
-    //   (uploadedFile) => {
-    //     // return true;
-    //     console.log(uploadedFile.state);
-    //     if (uploadedFile.state === 'success') {
-    //       this.setState({
-    //         test: {
-    //           ...this.state.test,
-    //           photos: this.state.test.photos.concat(uploadedFile.downloadURL),
-    //         },
-    //       });
-    //     }
-    //   },
-    // );
-    // success "hhhhhhhhs";
   };
-  _getAdd() {}
-  // _validateonPost() {
-  //   // const {
-  //   //   name, detail, latitude, longitude,
-  //   // } = this.state;
-  //   // if (name || detail === '') {
-  //   //   Alert.alert('Name null or Detail');
-  //   //   return false;
-  //   // }
-  //   // if (latitude || longitude == null) {
-  //   //   Alert.alert('Not get Local');
-  //   //   return false;
-  //   // }
-  //   return true;
-  // }
+
   _onAddImages(a) {
     // console.log(a);
     this.setState({
@@ -306,154 +248,15 @@ class ModalView extends PureComponent {
     }
     return false;
   }
-  // _clearName(){
-  //   this.setState({ ...this.state.test,
-  //   name: '',
-  //   });
-  // }
   _onShowModal() {
     const { latitude, longitude } = this.state;
     this.modal.open();
     this.props.fetchDataGetAdd(latitude, longitude);
   }
-  _onSearch() {
-    const { latitude, longitude, keyword } = this.state;
-    if (!this._validateSearch()) {
-      this.props.fetchDataGetAddSearch(latitude, longitude, keyword);
-      this.setState({ listadd: false });
-    } else {
-      Alert.alert('Mày Nhập hộ tao cái ');
-    }
-  }
-  _onCloserModal() {
-    this.setState({ listadd: true });
-    this.modal.close();
-  }
   render() {
     return (
       <View style={styles.container}>
         <View style={styles.body}>
-          <ModalCustom onRef={ref => (this.modal = ref)}>
-            <View style={{ flex: 1, width: null, backgroundColor: '#fff' }}>
-              <View style={styles.viewHeadModal}>
-                <Text style={styles.textHeadModal}>List Add</Text>
-              </View>
-              <View style={styles.bodyModal}>
-                <View>
-                  <View style={styles.ViewHeadFlatList}>
-                    <View style={styles.viewTextHead}>
-                      <Text style={styles.textHeadNear}> Near Add You </Text>
-                    </View>
-                    <View style={styles.viewFromSearch}>
-                      <View style={styles.viewTextInputSearch}>
-                        <TextInput
-                          underlineColorAndroid="transparent"
-                          placeholder="Search"
-                          style={styles.textInputSearch}
-                          value={this.state.test.search}
-                          onChangeText={text =>
-                            this.setState({ keyword: text })
-                          }
-                        />
-                      </View>
-                      <View style={styles.ViewButtonSearch}>
-                        <TouchableOpacity
-                          style={styles.buttonSearch}
-                          onPress={() => this._onSearch()}
-                        >
-                          <Icon
-                            name="md-search"
-                            color={Colors.default}
-                            size={38}
-                          />
-                        </TouchableOpacity>
-                      </View>
-                    </View>
-                  </View>
-                  {this.state.listadd ? (
-                    <View style={styles.ViewContentFlatList}>
-                      {this.props.dataAdd.isFetching ? (
-                        <Loading />
-                      ) : (
-                        <FlatList
-                          data={this.props.dataAdd.data}
-                          renderItem={({ item }) => (
-                            <View style={styles.ViewItemFlatList}>
-                              <TouchableOpacity
-                                onPress={() => this._onAdd(item)}
-                              >
-                                <View style={styles.viewItemAdd}>
-                                  <View>
-                                    <Text style={styles.textItemName}>
-                                      {item.name}{' '}
-                                    </Text>
-                                  </View>
-                                  <View>
-                                    <Image
-                                      source={{ uri: item.icon }}
-                                      style={{ height: 20, width: 20 }}
-                                    />
-                                  </View>
-                                </View>
-                              </TouchableOpacity>
-                            </View>
-                          )}
-                          keyExtractor={(item, index) => index.toString()}
-                        />
-                      )}
-                    </View>
-                  ) : (
-                    <View style={styles.ViewContentFlatList}>
-                      {this.props.dataSearchAdd.isFetching ? (
-                        <Loading />
-                      ) : (
-                        <FlatList
-                          data={this.props.dataSearchAdd.data}
-                          renderItem={({ item }) => (
-                            <View style={styles.ViewItemFlatList}>
-                              <TouchableOpacity
-                                onPress={() => this._onAdd(item)}
-                              >
-                                <View style={styles.viewItemAdd}>
-                                  <View>
-                                    <Text style={styles.textItemName}>
-                                      {item.name}{' '}
-                                    </Text>
-                                  </View>
-                                  <View>
-                                    <Image
-                                      source={{ uri: item.icon }}
-                                      style={{ height: 20, width: 20 }}
-                                    />
-                                  </View>
-                                </View>
-                              </TouchableOpacity>
-                            </View>
-                          )}
-                          keyExtractor={(item, index) => index.toString()}
-                        />
-                      )}
-                    </View>
-                  )}
-
-                  <View style={styles.ViewButton}>
-                    <Text style={styles.textSelected}>
-                      {this.state.test.name}
-                    </Text>
-                    <Text style={styles.textSelectedAdd}>
-                      {this.state.test.vicinity}
-                    </Text>
-                    <TouchableOpacity
-                      style={styles.viewButtonDone}
-                      onPress={() => this._onCloserModal()}
-                    >
-                      <Text style={styles.textviewButtonDone}> Done</Text>
-                    </TouchableOpacity>
-                  </View>
-                </View>
-              </View>
-            </View>
-          </ModalCustom>
           <View style={styles.viewHead}>
             <View>
               <TouchableOpacity
@@ -465,32 +268,20 @@ class ModalView extends PureComponent {
               </TouchableOpacity>
             </View>
             <View>
-              <TouchableOpacity>
-                <Text style={styles.textCreatePost}>Create post</Text>
-              </TouchableOpacity>
+              <Text style={styles.textCreatePost}>Create post</Text>
             </View>
             <View>
-              {this.state.postdone ? (
-                <TouchableOpacity onPress={() => this._onPost()}>
-                  <Text style={styles.textPosted}>Post</Text>
-                </TouchableOpacity>
-              ) : (
-                <TouchableOpacity onPress={() => this._onPost()}>
-                  <Text style={styles.textPost}>Post</Text>
-                </TouchableOpacity>
-              )}
+              <TouchableOpacity onPress={() => this._onPost()}>
+                <Text style={this.state.postdone ? styles.textPosted : styles.textPost}>Post</Text>
+              </TouchableOpacity>
             </View>
           </View>
           <View style={styles.viewContent}>
-            {/* <ScrollView style={{ flex: 1 }}> */}
             <View style={styles.Form}>
               <View style={styles.viewform}>
                 <View style={styles.viewInfoDetail}>
                   <View style={styles.viewFormImageUser}>
-                    <Image
-                      source={Images.restaurantPhoto}
-                      style={styles.ImageAvatar}
-                    />
+                    <Image source={Images.restaurantPhoto} style={styles.ImageAvatar} />
                   </View>
                   <View>
                     <TouchableOpacity style={styles.viewFormAddSelected}>
@@ -516,18 +307,7 @@ class ModalView extends PureComponent {
                     />
                   </View>
                 </View>
-
                 <View style={styles.viewFormInput}>
-                  {/* <View style={styles.viewTextInput}>
-                <TextInput
-                  returnKeyType="next"
-                  underlineColorAndroid="transparent"
-                  placeholder="Name"
-                  style={styles.textInput}
-                  onChangeText={name => this.setState({ name })}
-                  value={this.state.name}
-                />
-              </View> */}
                   <View style={styles.viewTextInput}>
                     <TextInput
                       underlineColorAndroid="transparent"
@@ -560,39 +340,6 @@ class ModalView extends PureComponent {
                   </ScrollView>
                 </View>
                 <View style={styles.viewImage}>
-                  <View style={styles.viewCamera}>
-                    <RNCamera
-                      style={styles.preview}
-                      type={RNCamera.Constants.Type.back}
-                      flashMode={RNCamera.Constants.FlashMode.on}
-                      permissionDialogTitle="Permission to use camera"
-                      permissionDialogMessage="We need your permission to use your camera phone"
-                    >
-                      {({ camera, status }) => {
-                        if (status !== 'READY') return <PendingView />;
-                        return (
-                          <View style={styles.camera}>
-                            <TouchableOpacity style={styles.capture}>
-                              <Icon
-                                name="ios-reverse-camera-outline"
-                                color="white"
-                                size={33}
-                              />
-                            </TouchableOpacity>
-                            <TouchableOpacity
-                              onPress={() => this.takePicture(camera)}
-                              style={styles.capture}
-                            >
-                              <Icon name="ios-camera" color="white" size={50} />
-                            </TouchableOpacity>
-                            <TouchableOpacity style={styles.capture}>
-                              <Icon name="ios-flash" color="white" size={33} />
-                            </TouchableOpacity>
-                          </View>
-                        );
-                      }}
-                    </RNCamera>
-                  </View>
                   <View style={styles.viewPhotoMobile}>
                     <ScrollView>
                       <View style={styles.viewMenuItem}>
@@ -614,7 +361,6 @@ class ModalView extends PureComponent {
                 </View>
               </View>
             </View>
-            {/* </ScrollView> */}
           </View>
           <View style={styles.viewCustom}>
             <View>
@@ -633,19 +379,6 @@ class ModalView extends PureComponent {
                   selectedStar={rating => this.onStarRatingPress(rating)}
                   fullStarColor={Colors.white}
                 />
-              </View>
-              <View>
-                <TouchableOpacity
-                  style={styles.butonCustomItem}
-                  onPress={() => this._onShowModal(2)}
-                >
-                  <Icon name="ios-navigate" color="white" size={33} />
-                </TouchableOpacity>
-              </View>
-              <View>
-                <TouchableOpacity style={styles.butonCustomItem}>
-                  <Icon name="ios-list" color="white" size={33} />
-                </TouchableOpacity>
               </View>
             </View>
           </View>
@@ -668,9 +401,12 @@ const mapStateToProps = state => ({
   region: state.getPositionReducers,
   dataSearchAdd: state.getAddSearchReducers,
 });
-export default connect(mapStateToProps, {
-  fetchDataGetAdd,
-  fetchPostNewFeed,
-  getPositionSuccess,
-  fetchDataGetAddSearch,
-})(ModalView);
+export default connect(
+  mapStateToProps,
+  {
+    fetchDataGetAdd,
+    fetchPostNewFeed,
+    getPositionSuccess,
+    fetchDataGetAddSearch,
+  },
+)(ModalView);

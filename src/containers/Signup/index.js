@@ -162,12 +162,15 @@ class Signup extends PureComponent {
               <Text style={signup.txtfb}>Continue With Facebook</Text>
             </TouchableOpacity>
           </View>
-          <Text style={signup.txtBottom}>
-            Not account? Go to{' '}
-            <Text style={signup.txtSignup} onPress={() => this.props.navigation.goBack()}>
-              SignIn
-            </Text>
-          </Text>
+          <View style={signup.textContainer}>
+            <Text style={signup.txtBottom}>Not account? Go to </Text>
+            <TouchableOpacity
+              style={signup.textSignUpContainer}
+              onPress={() => this.props.navigation.goBack()}
+            >
+              <Text style={signup.txtSignUp}>Sign up</Text>
+            </TouchableOpacity>
+          </View>
         </View>
       </ScrollView>
     );
@@ -182,4 +185,7 @@ Signup.propTypes = {
   // setUser: PropTypes.func.isRequired,
 };
 
-export default connect(null, { setUser })(Signup);
+export default connect(
+  null,
+  { setUser },
+)(Signup);

@@ -86,7 +86,7 @@ class Login extends PureComponent {
             console.log(loginUser);
             firebase
               .database()
-              .ref('/restaurant/user')
+              .ref('/root/users')
               .child(loginUser.user.uid)
               .on('value', (data) => {
                 this.setState(
@@ -199,15 +199,15 @@ class Login extends PureComponent {
                   <Text style={login.txtfb}> Continue With Facebook </Text>
                 </TouchableOpacity>
               </View>
-              <Text style={login.txtBottom}>
-                Not account ? Go to{' '}
-                <Text
-                  style={login.txtSignup}
+              <View style={login.textContainer}>
+                <Text style={login.txtBottom}>Not account? Go to </Text>
+                <TouchableOpacity
+                  style={login.textSignUpContainer}
                   onPress={() => this.props.navigation.navigate('Signup')}
                 >
-                  Sign up
-                </Text>
-              </Text>
+                  <Text style={login.txtSignup}>Sign up</Text>
+                </TouchableOpacity>
+              </View>
             </View>
           )}
         </ScrollView>
@@ -225,4 +225,7 @@ Login.propTypes = {
 
 const mapDispatchToProps = dispatch => ({ setUser: user => dispatch(setUser(user)) });
 
-export default connect(null, mapDispatchToProps)(Login);
+export default connect(
+  null,
+  mapDispatchToProps,
+)(Login);

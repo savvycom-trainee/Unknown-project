@@ -86,15 +86,21 @@ const login = StyleSheet.create({
     fontSize: 12,
     textAlign: 'center',
   },
+  textContainer: {
+    flexDirection: 'row',
+    flex: 1,
+    alignSelf: 'center',
+  },
+  textSignUpContainer: {
+    top: 25 * d.ratioH,
+    left: -8 * d.ratioW,
+  },
   txtSignup: {
     fontWeight: 'bold',
-    paddingLeft: 7,
-    paddingVertical: 15,
     color: Colors.default,
   },
   txtBottom: {
     marginTop: 15,
-    width: '100%',
     textAlign: 'center',
     padding: 10,
   },

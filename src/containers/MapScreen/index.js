@@ -25,8 +25,8 @@ class MapScreen extends PureComponent {
       region: {
         latitude: 21.025817,
         longitude: 105.800344,
-        latitudeDelta: 0.0301,
-        longitudeDelta: 0.0304,
+        latitudeDelta: 0.0101,
+        longitudeDelta: 0.0104,
       },
       error: null, // eslint-disable-line
       focusing: null,
@@ -177,10 +177,10 @@ class MapScreen extends PureComponent {
         <MapView
           region={this.state.region}
           ref={ref => { this.map = ref }} // eslint-disable-line
-          onLayout={() => setTimeout(() => this.map.fitToCoordinates(this.markers, {
-            edgePadding: PADDING,
-            animated: true,
-          }), 1500)}
+          // onLayout={() => setTimeout(() => this.map.fitToCoordinates(this.markers, {
+          //   edgePadding: PADDING,
+          //   animated: true,
+          // }), 1500)}
           provider="google"
           customMapStyle={mapStyles}
           style={{ flex: 1 }}

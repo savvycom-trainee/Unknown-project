@@ -86,14 +86,20 @@ const signup = StyleSheet.create({
   txtfb: {
     color: 'white',
   },
-  txtSignup: {
+  textContainer: {
+    flexDirection: 'row',
+    flex: 1,
+    alignSelf: 'center',
+  },
+  textSignUpContainer: {
+    top: 10 * d.ratioH,
+    left: -8 * d.ratioW,
+  },
+  txtSignUp: {
     fontWeight: 'bold',
-    paddingLeft: 7,
-    paddingVertical: 15,
     color: Colors.default,
   },
   txtBottom: {
-    width: '100%',
     textAlign: 'center',
     padding: 10,
   },
