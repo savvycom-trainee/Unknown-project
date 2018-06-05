@@ -13,12 +13,15 @@ import {
 } from 'react-native';
 import PropTypes from 'prop-types';
 import firebase from 'react-native-firebase';
+import FBSDK from 'react-native-fbsdk';
 import { connect } from 'react-redux';
 import { NavigationActions } from 'react-navigation';
 import login from './style/login';
 import images from '../../themes/Icons';
 import { setUser } from '../../actions';
 import LoadingContainer from '../../components/LoadingContainer';
+
+const { LoginButton, AccessToken, LoginManager } = FBSDK;
 
 class Login extends PureComponent {
   constructor(props) {
@@ -57,6 +60,22 @@ class Login extends PureComponent {
     });
     this.props.navigation.dispatch(navigateAction);
   };
+  handleFacebookLogin() {
+    console.log(this.state.isLoading);
+    LoginManager.logInWithReadPermissions(['public_profile', 'email', 'user_friends']).then(
+      (result) => {
+        console.log(result);
+        if (result.isCancelled) {
+          console.log('Login cancelled');
+        } else {
+          console.log(`Login success with permissions: ${result.grantedPermissions.toString()}`);
+        }
+      },
+      (error) => {
+        console.log(`Login fail with error: ${error}`);
+      },
+    );
+  }
   changeAccount = (text) => {
     this.setState({
       account: text,
@@ -130,7 +149,6 @@ class Login extends PureComponent {
                     message = 'Password incorrect';
                     break;
                   default:
-                    console.log(code);
                     message = 'Email or password incorrect';
                     break;
                 }
@@ -191,13 +209,36 @@ class Login extends PureComponent {
                     <ActivityIndicator size="small" color="white" />
                   )}
                 </TouchableOpacity>
-                <TouchableOpacity
-                  style={login.btnfb}
-                  onPress={() => this.props.navigation.navigate('Home')}
-                >
+                <TouchableOpacity style={login.btnfb} onPress={() => this.handleFacebookLogin()}>
                   <Image source={images.logofb} style={login.logofb} />
                   <Text style={login.txtfb}> Continue With Facebook </Text>
                 </TouchableOpacity>
+                {/* <LoginButton
+                  publishPermissions={['publish_actions']}
+                  onLoginFinished={(error, result) => {
+                    if (error) {
+                      console.log(`login has error: ${result.error}`);
+                      Alert.alert(`login has error: ${result.error}`);
+                    } else if (result.isCancelled) {
+                      console.log('login is cancelled.');
+                      Alert.alert('login is cancelled.');
+                    } else {
+                      AccessToken.getCurrentAccessToken().then((data) => {
+                        console.log(data);
+                        const { accessToken } = data;
+                        try {
+                          AsyncStorage.setItem('Token', JSON.stringify(accessToken));
+                        } catch (error1) {
+                          console.log(error1);
+                        }
+                      });
+                    }
+                  }}
+                  onLogoutFinished={() => {
+                    console.log('logout.');
+                    AsyncStorage.removeItem('Token');
+                  }}
+                /> */}
               </View>
               <Text style={login.txtBottom}>
                 Not account ? Go to{' '}
