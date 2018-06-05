@@ -13,6 +13,7 @@ import { fetchDatagetNewFeed } from '../../actions/getNewFeedAction';
 import { getPositionSuccess, setUser } from '../../actions';
 import ModalView from './Modal';
 import Loading from '../../components/LoadingContainer';
+import ProgressiveImage from '../../components/progressiveImage';
 
 const shadow = {
   // elevation: 6,
@@ -125,7 +126,10 @@ class Home extends PureComponent {
                 >
                   <View>
                     <View style={styles.imageContent}>
-                      <Image source={{ uri: item.photos[0] }} style={styles.imageContent} />
+                      <Image
+                        source={{ uri: item.photos[0] }}
+                        style={styles.imageContent}
+                      />
                     </View>
                     <View style={styles.viewPointForm}>
                       <View style={styles.viewPoint}>
@@ -275,4 +279,7 @@ const mapStateToProps = state => ({
   user: state.user,
 });
 
-export default connect(mapStateToProps, { fetchDatagetNewFeed, getPositionSuccess, setUser })(Home);
+export default connect(
+  mapStateToProps,
+  { fetchDatagetNewFeed, getPositionSuccess, setUser },
+)(Home);

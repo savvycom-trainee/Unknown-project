@@ -14,6 +14,12 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     borderRadius: 5 * d.ratioH,
   },
+  ViewAge: {
+    paddingTop: 4 * d.ratioH,
+    flexDirection: 'row',
+    alignItems: 'center',
+  },
+  icon: {},
   ViewAvatar: {
     // borderRadius: 10,
     flex: 1,
@@ -22,9 +28,9 @@ const styles = StyleSheet.create({
     marginRight: 14.5 * d.ratioW,
   },
   Avatar: {
-    width: 62.5 * d.ratioW,
-    height: 57.5 * d.ratioH,
-    borderRadius: 5 * d.ratioH,
+    width: 60 * d.ratioW,
+    height: 60 * d.ratioH,
+    borderRadius: 30 * d.ratioH,
   },
   ViewContent: {
     // backgroundColor: 'red',
@@ -38,6 +44,10 @@ const styles = StyleSheet.create({
     // alignItems: 'space-between',
   },
   ViewFollowNameTime: {},
+  ViewBTN: {
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
   ViewFollowBtn: {
     marginTop: 5 * d.ratioH,
     marginRight: 5 * d.ratioW,
@@ -57,9 +67,10 @@ const styles = StyleSheet.create({
     color: 'rgb(82,82,82)',
   },
   TextTime: {
-    marginTop: 5 * d.ratioH,
-    fontSize: 10,
-    fontWeight: 'normal',
+    paddingLeft: 10 * d.ratioW,
+    // marginTop: 5 * d.ratioH,
+    fontSize: 11,
+    fontWeight: '800',
     color: 'rgb(153,153,153)',
   },
 

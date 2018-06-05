@@ -160,7 +160,7 @@ class Login extends PureComponent {
             firebase
               .auth()
               .signInWithCredential(credential)
-              .then(this.props.navigation.navigate('Home'))
+              .then(this.props.navigation.navigate('Notifications'))
               .catch((error) => {
                 console.log(error);
               });

@@ -31,9 +31,9 @@ Header.propTypes = {
 };
 
 Header.defaultProps = {
-  leftHeader: '',
-  centerHeader: '',
-  rightHeader: '',
+  leftHeader: null,
+  centerHeader: null,
+  rightHeader: null,
   onPressLeftHeader: () => {},
   onPressRightHeader: () => {},
 };
