@@ -11,7 +11,8 @@ const account = StyleSheet.create({
     alignItems: 'center',
   },
   back: {
-    width: 26 * d.ratioW,
+    height: 19 * d.ratioH,
+    width: 28 * d.ratioW,
   },
   title: {
     fontWeight: '600',
@@ -70,6 +71,9 @@ const account = StyleSheet.create({
     marginLeft: 30 * d.ratioW,
     marginTop: 50 * d.ratioH,
     marginBottom: 25 * d.ratioH,
+  },
+  viewButton: {
+    flexDirection: 'row',
   },
 });
 

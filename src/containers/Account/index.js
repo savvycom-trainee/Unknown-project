@@ -1,6 +1,15 @@
 import React, { PureComponent } from 'react';
-import { View, Text, StatusBar, Image, TouchableOpacity, FlatList, AsyncStorage } from 'react-native';
+import {
+  View,
+  Text,
+  StatusBar,
+  Image,
+  TouchableOpacity,
+  FlatList,
+  AsyncStorage,
+} from 'react-native';
 import PropTypes from 'prop-types';
+import Icon from 'react-native-vector-icons/Ionicons';
 import { NavigationActions } from 'react-navigation';
 import { Header } from '../../components';
 import icon from '../../themes/Icons';
@@ -76,7 +85,7 @@ class Account extends PureComponent {
       action: NavigationActions.navigate({ routeName: 'Login' }),
     });
     this.props.navigation.dispatch(navigateAction);
-  }
+  };
   render() {
     return (
       <View style={account.container}>
@@ -91,9 +100,14 @@ class Account extends PureComponent {
               }
               centerHeader={<Text style={account.title}>Account</Text>}
               rightHeader={
-                <TouchableOpacity onPress={() => this.logOut()}>
-                  <Text>Log Out</Text>
-                </TouchableOpacity>
+                <View style={account.viewButton}>
+                  <TouchableOpacity onPress={() => this.props.navigation.navigate('UpdateUser')}>
+                    <Icon name="ios-contact" size={30} color="#000" />
+                  </TouchableOpacity>
+                  <TouchableOpacity onPress={() => this.logOut()}>
+                    <Icon name="md-log-out" style={{ paddingLeft: 12 }} size={30} color="red" />
+                  </TouchableOpacity>
+                </View>
               }
             />
             <View style={account.info}>

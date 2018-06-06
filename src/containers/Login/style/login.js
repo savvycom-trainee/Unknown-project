@@ -40,6 +40,7 @@ const login = StyleSheet.create({
     alignItems: 'center',
     backgroundColor: 'rgba(0,0,0,0.01)',
     borderRadius: 10,
+    marginBottom: 5,
   },
   input: {
     width: '100%',
@@ -48,6 +49,7 @@ const login = StyleSheet.create({
     backgroundColor: 'white',
     paddingLeft: 20,
     borderRadius: 3,
+    elevation: 5,
   },
   vButton: {
     paddingLeft: 50 * d.ratioW,
