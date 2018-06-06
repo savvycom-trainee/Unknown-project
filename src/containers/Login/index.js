@@ -19,7 +19,7 @@ import { connect } from 'react-redux';
 import { NavigationActions } from 'react-navigation';
 import login from './style/login';
 import images from '../../themes/Icons';
-import { setUser } from '../../actions';
+import { setUser, fetchDataGetUserFBAdd } from '../../actions';
 import LoadingContainer from '../../components/LoadingContainer';
 
 const { LoginManager, AccessToken } = FBSDK;
@@ -42,7 +42,16 @@ class Login extends PureComponent {
         const tmpUser = JSON.parse(user);
         this.move(tmpUser);
       } else {
-        this.setState({ isLoading: false });
+        const accessToken = await AsyncStorage.getItem('accessToken');
+        if (accessToken) {
+          const data = await fetchDataGetUserFBAdd(accessToken);
+          console.log(data);
+          this.setState({
+            ...data,
+            accessToken,
+            isLoading: false,
+          });
+        }
       }
     } catch (error) {
       console.log(error);
@@ -50,6 +59,9 @@ class Login extends PureComponent {
   };
   move = (user) => {
     this.props.setUser(user);
+    this.setState({
+      isLoading: false,
+    });
     const navigateAction = NavigationActions.navigate({
       routeName: 'Home',
       params: user,
@@ -60,22 +72,6 @@ class Login extends PureComponent {
     });
     this.props.navigation.dispatch(navigateAction);
   };
-  handleFacebookLogin() {
-    console.log(this.state.isLoading);
-    LoginManager.logInWithReadPermissions(['public_profile', 'email', 'user_friends']).then(
-      (result) => {
-        console.log(result);
-        if (result.isCancelled) {
-          console.log('Login cancelled');
-        } else {
-          console.log(`Login success with permissions: ${result.grantedPermissions.toString()}`);
-        }
-      },
-      (error) => {
-        console.log(`Login fail with error: ${error}`);
-      },
-    );
-  }
   changeAccount = (text) => {
     this.setState({
       account: text,
@@ -164,27 +160,49 @@ class Login extends PureComponent {
     );
   };
   loginFacebook = () => {
-    LoginManager.logInWithReadPermissions(['public_profile', 'user_friends', 'email']).then(
-      (result) => {
-        if (result.isCancelled) {
-          Alert.alert('Whoops!', 'You cancelled the sign in.');
-        } else {
-          AccessToken.getCurrentAccessToken().then((data) => {
-            const credential = firebase.auth.FacebookAuthProvider.credential(data.accessToken);
-            firebase
-              .auth()
-              .signInWithCredential(credential)
-              .then(this.props.navigation.navigate('Home'))
-              .catch((error) => {
-                console.log(error);
+    if (!this.state.accessToken) {
+      LoginManager.logInWithReadPermissions([
+        'public_profile',
+        'user_gender',
+        'user_hometown',
+        'email',
+      ]).then(
+        (result) => {
+          if (result.isCancelled) {
+            Alert.alert('Whoops!', 'You cancelled the sign in.');
+          } else {
+            AccessToken.getCurrentAccessToken().then(async (data) => {
+              const credential = firebase.auth.FacebookAuthProvider.credential(data.accessToken);
+              console.log(credential);
+              AsyncStorage.setItem('accessToken', data.accessToken);
+              const data1 = await fetchDataGetUserFBAdd(data.accessToken);
+              this.setState({
+                accessToken: data.accessToken,
+                ...data1,
               });
-          });
-        }
-      },
-      (error) => {
-        Alert.alert('Sign in error', error);
-      },
-    );
+              console.log(data1);
+              firebase
+                .auth()
+                .signInWithCredential(credential)
+                .then(this.props.navigation.navigate('Home'))
+                .catch((error) => {
+                  console.log(error);
+                });
+            });
+          }
+        },
+        (error) => {
+          Alert.alert('Sign in error', error);
+        },
+      );
+    } else {
+      LoginManager.logOut();
+      AsyncStorage.removeItem('accessToken');
+      console.log('logout');
+      this.setState({
+        accessToken: null,
+      });
+    }
   };
   render() {
     return (
@@ -232,11 +250,7 @@ class Login extends PureComponent {
                     <ActivityIndicator size="small" color="white" />
                   )}
                 </TouchableOpacity>
-<<<<<<< HEAD
-                <TouchableOpacity style={login.btnfb} onPress={() => this.handleFacebookLogin()}>
-=======
                 <TouchableOpacity style={login.btnfb} onPress={() => this.loginFacebook()}>
->>>>>>> bbf6867eb57d362cda2e237aea6fb3bbedaf11c5
                   <Image source={images.logofb} style={login.logofb} />
                   <Text style={login.txtfb}> Continue With Facebook </Text>
                 </TouchableOpacity>
@@ -293,4 +307,7 @@ Login.propTypes = {
 
 const mapDispatchToProps = dispatch => ({ setUser: user => dispatch(setUser(user)) });
 
-export default connect(null, mapDispatchToProps)(Login);
+export default connect(
+  null,
+  mapDispatchToProps,
+)(Login);

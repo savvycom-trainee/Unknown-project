@@ -26,15 +26,21 @@ const defaultProps = {
 class UpdateUser extends PureComponent {
   constructor(props) {
     super(props);
+    const user = props.navigation.getParam('user', null);
     this.state = {
-      ...defaultProps,
+      ...user,
       isSubmit: false,
+      isNewUser: true,
+      photoURL: 'https://www.vccircle.com/wp-content/uploads/2017/03/default-profile.png',
     };
-    const user = props.navigation.getParam('user', {});
     if (!user) {
       this.getUser();
+      this.setState({
+        isNewUser: false,
+      });
     }
   }
+
   getUser = () => {
     const { uid } = this.props.user;
     firebase
@@ -42,16 +48,20 @@ class UpdateUser extends PureComponent {
       .ref('/restaurant/user')
       .child(uid)
       .on('value', (data) => {
-        this.setState({
-          ...data._value,
-          uid,
-        });
+        this.setState(
+          {
+            ...data._value,
+            uid,
+          },
+          () => console.log(this.state),
+        );
       });
   };
   uploadPhoto = (tmpInfo, url) => {
     const storage = firebase.storage();
     const sessionId = new Date().getTime();
     const imageRef = storage.ref('images').child(`${sessionId}`);
+    console.log('uploadphoto');
     imageRef.putFile(url).on(
       'state_changed',
       () => {
@@ -82,11 +92,21 @@ class UpdateUser extends PureComponent {
   };
   uploadUser = (info) => {
     const user = this.state;
-    firebase
+    const child = firebase
       .database()
       .ref('restaurant/user')
-      .child(user.uid)
-      .set(info, (error) => {
+      .child(user.uid);
+    if (!this.state.isNewUser) {
+      child.update(info, (error) => {
+        if (!error) {
+          console.log(info);
+          this.props.navigation.goBack();
+        } else {
+          console.log(error);
+        }
+      });
+    } else {
+      child.set(info, (error) => {
         if (!error) {
           console.log(info);
           const navigateAction = NavigationActions.navigate({
@@ -103,9 +123,10 @@ class UpdateUser extends PureComponent {
           console.log(error);
         }
       });
+    }
   };
   submit = () => {
-    const user = this.props.navigation.getParam('user', {});
+    const user = this.props.navigation.getParam('user', null);
     const fullname = this.fullname._lastNativeText;
     const home = this.home._lastNativeText;
     const gender = this.gender._lastNativeText;
@@ -192,7 +213,7 @@ class UpdateUser extends PureComponent {
             underlineColorAndroid="transparent"
             returnKeyType="done"
           />
-          <TouchableOpacity onPress={this.submit} style={styles.btnSubmit}>
+          <TouchableOpacity onPress={() => this.submit()} style={styles.btnSubmit}>
             {!this.state.isSubmit ? (
               <Text style={styles.txtSubmit}>SUBMIT</Text>
             ) : (
@@ -210,6 +231,7 @@ UpdateUser.propTypes = {
     navigate: PropTypes.func.isRequired,
     dispatch: PropTypes.func.isRequired,
     getParam: PropTypes.func.isRequired,
+    goBack: PropTypes.func.isRequired,
   }).isRequired,
   user: PropTypes.object.isRequired,
 };
