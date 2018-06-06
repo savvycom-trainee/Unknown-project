@@ -6,11 +6,13 @@ import firebase from 'react-native-firebase';
 import { connect } from 'react-redux';
 import styles from './styles';
 import { Images } from '../../../themes';
+import * as d from '../../../utilities/Tranform';
 
 class FindCard extends React.PureComponent {
   constructor(props) {
     super(props);
     this.item = this.props.item;
+    this.user = this.props.user;
   }
   state = {
     isFollow: this.props.item.isFollow,
@@ -20,43 +22,42 @@ class FindCard extends React.PureComponent {
   }
   componentDidUpdate() {
     const { isFollow } = this.state;
-    const { item } = this;
-    const { user } = this.props;
+    const { item, user } = this;
     console.log(user);
 
-    // if (isFollow) {
-    //   const updates = {};
-    //   if (item.follower) {
-    //     this.props.item.follower = [...item.follower, user.uid];
-    //     updates[`/restaurant/user/${item.uid}/folower`] = [...item.follower, user.uid];
-    //   } else {
-    //     firebase
-    //       .database()
-    //       .ref(`/restaurant/user/${item.uid}`)
-    //       .set({
-    //         follower: [user.id],
-    //       });
-    //   }
-    //   updates[`/restaurant/user/${user.uid}/followed`] = [...user.followed, item.uid];
-    //   firebase
-    //     .database()
-    //     .ref()
-    //     .update(updates);
-    // } else {
-    //   const updates = {};
-    //   const index = item.follower.indexOf(user.uid);
-    //   item.follower.splice(index, 1);
-    //   updates[`/restaurant/user/${item.uid}/follower`] = [...item.follower];
-    //   const index1 = user.followed.indexOf(item.uid);
-    //   user.followed.splice(index1, 1);
-    //   updates[`/restaurant/user/${user.uid}/followed`] = [...user.followed];
-    //   console.log(updates);
-
-    //   firebase
-    //     .database()
-    //     .ref()
-    //     .update(updates);
-    // }
+    if (isFollow) {
+      const updates = {};
+      item.follower = item.follower || [];
+      user.followed = user.followed || [];
+      updates[`/restaurant/user/${item.uid}/follower`] = [...item.follower, user.uid];
+      //  {
+      //   ...item,
+      //   follower: [...item.follower, user.uid],
+      // };
+      this.item.follower = [...item.follower, user.uid];
+      updates[`/restaurant/user/${user.uid}/followed`] = [...user.followed, item.uid];
+      // {
+      //   ...user,
+      //   followed: [...user.followed, item.uid],
+      // };
+      this.user.followed = [...user.followed, item.uid];
+      firebase
+        .database()
+        .ref()
+        .update(updates);
+    } else {
+      const updates = {};
+      const index = item.follower ? item.follower.indexOf(user.uid) : -1;
+      if (index !== -1) item.follower.splice(index, 1);
+      updates[`/restaurant/user/${item.uid}/follower`] = item.follower ? [...item.follower] : [];
+      const index1 = user.followed ? user.followed.indexOf(item.uid) : -1;
+      if (index1 !== -1) user.followed.splice(index1, 1);
+      updates[`/restaurant/user/${user.uid}/followed`] = user.followed ? [...user.followed] : [];
+      firebase
+        .database()
+        .ref()
+        .update(updates);
+    }
   }
   _onPress = () => this.setState({ isFollow: !this.state.isFollow });
   render() {
@@ -69,7 +70,7 @@ class FindCard extends React.PureComponent {
             source={item.photoURL ? { uri: item.photoURL } : Images.avatar}
             style={styles.avatar}
           />
-          <View style={{ marginLeft: 10 }}>
+          <View style={{ marginLeft: 10, flex: 1 }}>
             <Text style={styles.name}>{item.name}</Text>
             <View style={styles.item_layout}>
               <Icon
@@ -81,11 +82,11 @@ class FindCard extends React.PureComponent {
               <Text>{item.gender === 'Male' ? 'Nam' : 'Nữ'}</Text>
             </View>
             <View style={styles.item_layout}>
-              <Icon name="ios-compass-outline" size={15} style={{ margin: 5 }} />
+              <Icon name="ios-compass-outline" color="green" size={18} style={{ margin: 5 }} />
               <Text> {item.distance} km</Text>
             </View>
           </View>
-          <View style={{ flex: 1 }}>
+          <View style={{ width: 80 * d.ratioH }}>
             <TouchableOpacity
               onPress={this._onPress}
               style={[styles.button, { borderColor: !isFollow ? 'green' : 'blue' }]}
@@ -106,6 +107,6 @@ FindCard.propTypes = {
   user: PropTypes.object, //eslint-disable-line
 };
 const mapStateToProps = state => ({
-  user: state.user,
+  user: state.user.userDatabase,
 });
 export default connect(mapStateToProps)(FindCard);
