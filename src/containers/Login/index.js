@@ -11,6 +11,7 @@ import {
   ActivityIndicator,
   AsyncStorage,
 } from 'react-native';
+import { LoginManager, AccessToken, GraphRequest, GraphRequestManager } from 'react-native-fbsdk';
 
 import PropTypes from 'prop-types';
 import firebase from 'react-native-firebase';
@@ -21,9 +22,6 @@ import images from '../../themes/Icons';
 import { setUser } from '../../actions';
 import LoadingContainer from '../../components/LoadingContainer';
 
-const FBSDK = require('react-native-fbsdk');
-
-const { LoginManager, AccessToken } = FBSDK;
 class Login extends PureComponent {
   constructor(props) {
     super(props);
@@ -32,6 +30,7 @@ class Login extends PureComponent {
       password: '',
       isLoading: true,
     };
+    this.permissions = ['user_age_range', 'user_hometown', 'email', 'user_gender', 'user_birthday'];
   }
   componentDidMount() {
     this.getUser();
@@ -71,6 +70,7 @@ class Login extends PureComponent {
       password: text,
     });
   };
+
   accNext = () => {
     this.passwordField.focus();
   };
@@ -150,16 +150,19 @@ class Login extends PureComponent {
     );
   };
   loginFacebook = () => {
-    LoginManager.logInWithReadPermissions(['public_profile', 'user_friends', 'email']).then(
+    console.log(this.permissions);
+
+    LoginManager.logInWithReadPermissions(this.permissions).then(
       (result) => {
         if (result.isCancelled) {
           Alert.alert('Whoops!', 'You cancelled the sign in.');
         } else {
           AccessToken.getCurrentAccessToken().then((data) => {
+            this._getInfoFb();
             const credential = firebase.auth.FacebookAuthProvider.credential(data.accessToken);
             firebase
               .auth()
-              .signInWithCredential(credential)
+              .signInAndRetrieveDataWithCredential(credential)
               .then(this.props.navigation.navigate('Home'))
               .catch((error) => {
                 console.log(error);
@@ -171,6 +174,20 @@ class Login extends PureComponent {
         Alert.alert('Sign in error', error);
       },
     );
+  };
+  _getInfoFb = () => {
+    const infoRequest = new GraphRequest(
+      'me?fields=id,name,birthday,email,gender,hometown',
+      null,
+      (err, res) => {
+        if (err) {
+          Alert.alert('Error', 'Cant get info');
+        } else {
+          console.log('_getInfoFb', res);
+        }
+      },
+    );
+    new GraphRequestManager().addRequest(infoRequest).start();
   };
   render() {
     return (
@@ -249,4 +266,7 @@ Login.propTypes = {
 
 const mapDispatchToProps = dispatch => ({ setUser: user => dispatch(setUser(user)) });
 
-export default connect(null, mapDispatchToProps)(Login);
+export default connect(
+  null,
+  mapDispatchToProps,
+)(Login);
