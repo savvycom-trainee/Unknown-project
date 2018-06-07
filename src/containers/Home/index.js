@@ -49,6 +49,8 @@ class Home extends PureComponent {
           longitude: position.coords.longitude,
           error: null,
         });
+        console.log(position);
+        
         this.props.getPositionSuccess(position);
         this._updateLocation(position.coords.latitude, position.coords.longitude);
         console.log(`position ${JSON.stringify(this.props.getPositionSuccess(position))}`);

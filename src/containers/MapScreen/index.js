@@ -66,8 +66,8 @@ class MapScreen extends PureComponent {
     this.setState({
       region: {
         ...this.state.region,
-        latitude: this.props.region.coords.latitude, // eslint-disable-line
-        longitude: this.props.region.coords.longitude, // eslint-disable-line
+        // latitude: this.props.region.coords.latitude, // eslint-disable-line
+        // longitude: this.props.region.coords.longitude, // eslint-disable-line
       },
     });
   };
