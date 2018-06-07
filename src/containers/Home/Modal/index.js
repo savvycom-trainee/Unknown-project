@@ -51,11 +51,9 @@ class ModalView extends PureComponent {
       },
       restaurant: {
         idRestaurant: 'idrestaurant123',
-        geometry: {
-          location: {
-            lat: 21.065863,
-            lng: 105.78003,
-          },
+        location: {
+          lat: 21.065863,
+          lng: 105.78003,
         },
         photo: '',
         idUser: [],
@@ -129,21 +127,23 @@ class ModalView extends PureComponent {
             uploadedFile.state === 'success' &&
             this.state.post.content.photos.indexOf(uploadedFile.downloadURL) === -1
           ) {
-            console.log(this.state.post.content.photos.indexOf(uploadedFile.downloadURL) === -1);
+            // console.log(this.state.post.content.photos.indexOf(uploadedFile.downloadURL) === -1);
             const timeadd = new Date().toLocaleString();
             this.setState({
               post: {
                 ...this.state.post,
                 created: timeadd,
                 content: {
+                  ...this.state.post.content,
                   photos: this.state.post.content.photos.concat(uploadedFile.downloadURL),
                 },
               },
             });
-            console.log(this.state.post.content.photos, `${i} ${file.length}`);
+            // console.log(this.state.post.content.photos, `${i} ${file.length}`);
             if (this.state.post.content.photos.length === file.length) {
               const { post, restaurant } = this.state;
               this.props.fetchPostNewFeed(post, restaurant);
+              console.log(post);
               if (this.props.dataPost.dataSuccess === true) {
                 this.props.hideModal(false);
               }
@@ -171,11 +171,9 @@ class ModalView extends PureComponent {
       restaurant: {
         ...this.state.restaurant,
         idRestaurant: item.id,
-        geometry: {
-          location: {
-            lat: item.geometry.location.lat,
-            lng: item.geometry.location.lng,
-          },
+        location: {
+          lat: item.geometry.location.lat,
+          lng: item.geometry.location.lng,
         },
         name: item.name,
         vicinity: item.vicinity,
@@ -193,12 +191,9 @@ class ModalView extends PureComponent {
       if (!this._validateInputDetail()) {
         if (!this._validateRating()) {
           if (!this._validateImages()) {
-            const { post, restaurant } = this.state;
-            this.props.fetchPostNewFeed(post, restaurant);
-            // if (this._onUploadPhoto()) {
-            //   // this._onUploadPhoto().then(res=>console.log('hihi',res));
-            //   // this.props.fetchPostNewFeed(this.state.test);
-            // }
+            // const { post, restaurant } = this.state;
+            // this.props.fetchPostNewFeed(post, restaurant);
+            this._onUploadPhoto();
           } else {
             Alert.alert('Mày chọn tối thiểu 3 ảnh hộ tao cái');
           }
@@ -248,6 +243,10 @@ class ModalView extends PureComponent {
     const { latitude, longitude } = this.state;
     this.modal.open();
     this.props.fetchDataGetAdd(latitude, longitude);
+  }
+  _onCloserModal() {
+    this.setState({ listadd: true });
+    this.modal.close();
   }
   render() {
     return (
@@ -411,6 +410,7 @@ class ModalView extends PureComponent {
                       underlineColorAndroid="transparent"
                       placeholder="What review about?"
                       style={styles.textInput}
+                      autoCorrect={false}
                       onChangeText={text =>
                         this.setState({
                           post: {
@@ -441,35 +441,6 @@ class ModalView extends PureComponent {
                   </ScrollView>
                 </View>
                 <View style={styles.viewImage}>
-                  <View style={styles.viewCamera}>
-                    {/* <RNCamera
-                      style={styles.preview}
-                      type={RNCamera.Constants.Type.back}
-                      flashMode={RNCamera.Constants.FlashMode.on}
-                      permissionDialogTitle="Permission to use camera"
-                      permissionDialogMessage="We need your permission to use your camera phone"
-                    >
-                      {({ camera, status }) => {
-                        if (status !== 'READY') return <PendingView />;
-                        return (
-                          <View style={styles.camera}>
-                            <TouchableOpacity style={styles.capture}>
-                              <Icon name="ios-reverse-camera-outline" color="white" size={33} />
-                            </TouchableOpacity>
-                            <TouchableOpacity
-                              onPress={() => this.takePicture(camera)}
-                              style={styles.capture}
-                            >
-                              <Icon name="ios-camera" color="white" size={50} />
-                            </TouchableOpacity>
-                            <TouchableOpacity style={styles.capture}>
-                              <Icon name="ios-flash" color="white" size={33} />
-                            </TouchableOpacity>
-                          </View>
-                        );
-                      }}
-                    </RNCamera> */}
-                  </View>
                   <View style={styles.viewPhotoMobile}>
                     <ScrollView>
                       <View style={styles.viewMenuItem}>
@@ -510,6 +481,19 @@ class ModalView extends PureComponent {
                   selectedStar={rating => this.onStarRatingPress(rating)}
                   fullStarColor={Colors.white}
                 />
+              </View>
+              <View>
+                <TouchableOpacity
+                  style={styles.butonCustomItem}
+                  onPress={() => this._onShowModal(2)}
+                >
+                  <Icon name="ios-navigate" color="white" size={33} />
+                </TouchableOpacity>
+              </View>
+              <View>
+                <TouchableOpacity style={styles.butonCustomItem}>
+                  <Icon name="ios-list" color="white" size={33} />
+                </TouchableOpacity>
               </View>
             </View>
           </View>
