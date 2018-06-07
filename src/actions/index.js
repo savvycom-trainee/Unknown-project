@@ -6,3 +6,4 @@ export * from './getPositionAction';
 export * from './getAddbySearchAction';
 export * from './getUserFacebookAction';
 export * from './user';
+export * from './getUserDetailAction';

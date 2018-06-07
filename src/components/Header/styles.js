@@ -12,12 +12,12 @@ const styles = StyleSheet.create({
   headerComponent: {
     flexDirection: 'row',
     justifyContent: 'space-between',
-    paddingTop: 17,
-    // Platform.OS === 'ios'
-    //   ? isIphoneX() === true
-    //     ? 1.3 * d.statusBarHeight
-    //     : 1.7 * d.statusBarHeight
-    //   : d.statusBarHeight,
+    paddingTop:
+      Platform.OS === 'ios'
+        ? isIphoneX() === true
+          ? 1.3 * d.statusBarHeight
+          : 1.7 * d.statusBarHeight
+        : d.statusBarHeight,
     paddingHorizontal: 30 * d.ratioW,
   },
   leftHeaderStyle: {

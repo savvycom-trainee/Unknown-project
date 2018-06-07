@@ -10,6 +10,8 @@ import getPositionReducers from './getPositionReducers';
 import getAddSearchReducers from './getAddSearchReducers';
 import user from './user';
 
+import getUserDetailReducers from './getUserDetailReducers';
+
 const navReducer = createNavigationReducer(RootNavigator);
 
 const rootRecuder = combineReducers({
@@ -21,6 +23,7 @@ const rootRecuder = combineReducers({
   getPositionReducers,
   user,
   getAddSearchReducers,
+  getUserDetailReducers,
 });
 
 export default rootRecuder;

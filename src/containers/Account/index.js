@@ -8,9 +8,12 @@ import {
   FlatList,
   AsyncStorage,
 } from 'react-native';
+
 import PropTypes from 'prop-types';
 import Icon from 'react-native-vector-icons/Ionicons';
 import { NavigationActions } from 'react-navigation';
+import { connect } from 'react-redux';
+import { fetchDatagetUserDetail } from '../../actions/getUserDetailAction';
 import { Header } from '../../components';
 import icon from '../../themes/Icons';
 import account from './style';
@@ -77,6 +80,14 @@ class Account extends PureComponent {
     const { params } = this.props.navigation;
     this.state = params || defaultParam;
   }
+  componentDidMount(){
+    
+  }
+
+  getUserId = () =>{
+    
+  }
+
   logOut = () => {
     console.log('logout');
     AsyncStorage.removeItem('user');
@@ -169,4 +180,14 @@ Account.propTypes = {
   }).isRequired,
 };
 
-export default Account;
+const mapStateToProps = state => ({
+  dataUserDetail: state.getUserDetailReducers,
+});
+
+const mapDispatchToProps = dispatch => ({
+  fetchDatagetUserDetail: id => dispatch(fetchDatagetUserDetail(id)),
+});
+
+export default connect(mapStateToProps, mapDispatchToProps)(Account);
+
+// export default HomeDetail;
