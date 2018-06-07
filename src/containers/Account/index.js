@@ -11,18 +11,19 @@ import {
 import PropTypes from 'prop-types';
 import Icon from 'react-native-vector-icons/Ionicons';
 import { NavigationActions } from 'react-navigation';
+import { connect } from 'react-redux';
 import { Header } from '../../components';
 import icon from '../../themes/Icons';
 import account from './style';
 import { Card, Statistic } from './component';
 import images from '../../themes/Images';
 
-const defaultParam = {
-  name: 'Chiến Mạnh Vũ',
-  gender: 'Male',
-  location: 'Hanoi',
-  avatar: require('../../../assets/images/avata.png'), // eslint-disable-line
-};
+// const defaultParam = {
+//   name: 'Chiến Mạnh Vũ',
+//   gender: 'Male',
+//   location: 'Hanoi',
+//   avatar: require('../../../assets/images/avata.png'), // eslint-disable-line
+// };
 const data = [
   {
     id: 'abcd',
@@ -75,7 +76,18 @@ class Account extends PureComponent {
   constructor(props) {
     super(props);
     const { params } = this.props.navigation;
-    this.state = params || defaultParam;
+    console.log(params);
+    if (params) {
+      this.state = {
+        ...params,
+        isOwner: false,
+      };
+    } else {
+      this.state = {
+        ...props.user,
+        isOwner: true,
+      };
+    }
   }
   logOut = () => {
     console.log('logout');
@@ -87,6 +99,7 @@ class Account extends PureComponent {
     this.props.navigation.dispatch(navigateAction);
   };
   render() {
+    console.log(this.state);
     return (
       <View style={account.container}>
         <StatusBar hidden />
@@ -94,20 +107,24 @@ class Account extends PureComponent {
           <View style={{ flex: 1, backgroundColor: 'white' }}>
             <Header
               leftHeader={
-                <TouchableOpacity onPress={() => this.props.navigation.goBack()}>
-                  <Image source={icon.back} style={account.back} />
-                </TouchableOpacity>
+                this.state.isOwner ? (
+                  <TouchableOpacity onPress={() => this.props.navigation.goBack()}>
+                    <Image source={icon.back} style={account.back} />
+                  </TouchableOpacity>
+                ) : null
               }
               centerHeader={<Text style={account.title}>Account</Text>}
               rightHeader={
-                <View style={account.viewButton}>
-                  <TouchableOpacity onPress={() => this.props.navigation.navigate('UpdateUser')}>
-                    <Icon name="ios-contact" size={30} color="#000" />
-                  </TouchableOpacity>
-                  <TouchableOpacity onPress={() => this.logOut()}>
-                    <Icon name="md-log-out" style={{ paddingLeft: 12 }} size={30} color="red" />
-                  </TouchableOpacity>
-                </View>
+                this.state.isOwner ? (
+                  <View style={account.viewButton}>
+                    <TouchableOpacity onPress={() => this.props.navigation.navigate('UpdateUser')}>
+                      <Icon name="ios-contact" size={30} color="#000" />
+                    </TouchableOpacity>
+                    <TouchableOpacity onPress={() => this.logOut()}>
+                      <Icon name="md-log-out" style={{ paddingLeft: 12 }} size={30} color="red" />
+                    </TouchableOpacity>
+                  </View>
+                ) : null
               }
             />
             <View style={account.info}>
@@ -119,19 +136,21 @@ class Account extends PureComponent {
             </View>
           </View>
           <View style={{ height: 20, width: 10 }} />
-          <TouchableOpacity style={account.btnFollow}>
-            <Image source={icon.follow} style={account.imageFollow} />
-            <Text
-              style={{
-                fontSize: 14,
-                lineHeight: 14,
-                color: 'white',
-                textAlign: 'center',
-              }}
-            >
-              Follow
-            </Text>
-          </TouchableOpacity>
+          {!this.state.isOwner ? (
+            <TouchableOpacity style={account.btnFollow}>
+              <Image source={icon.follow} style={account.imageFollow} />
+              <Text
+                style={{
+                  fontSize: 14,
+                  lineHeight: 14,
+                  color: 'white',
+                  textAlign: 'center',
+                }}
+              >
+                Follow
+              </Text>
+            </TouchableOpacity>
+          ) : null}
         </View>
         <View style={account.botView}>
           <View style={account.statisticView}>
@@ -167,6 +186,11 @@ Account.propTypes = {
     params: PropTypes.object,
     dispatch: PropTypes.func.isRequired,
   }).isRequired,
+  user: PropTypes.object.isRequired,
 };
 
-export default Account;
+const mapStateToProp = state => ({
+  user: state.user,
+});
+
+export default connect(mapStateToProp)(Account);

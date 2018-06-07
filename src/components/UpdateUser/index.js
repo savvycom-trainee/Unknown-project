@@ -16,12 +16,7 @@ import firebase from 'react-native-firebase';
 import styles from './style';
 import Gallery from '../Gallery';
 
-const defaultProps = {
-  name: '',
-  photoURL: 'https://www.vccircle.com/wp-content/uploads/2017/03/default-profile.png',
-  gender: '',
-  home: '',
-};
+const defaultPhotoURL = 'https://www.vccircle.com/wp-content/uploads/2017/03/default-profile.png';
 
 class UpdateUser extends PureComponent {
   constructor(props) {
@@ -37,26 +32,11 @@ class UpdateUser extends PureComponent {
       this.getUser();
       this.setState({
         isNewUser: false,
+        ...props.user,
       });
     }
   }
 
-  getUser = () => {
-    const { uid } = this.props.user;
-    firebase
-      .database()
-      .ref('/restaurant/user')
-      .child(uid)
-      .on('value', (data) => {
-        this.setState(
-          {
-            ...data._value,
-            uid,
-          },
-          () => console.log(this.state),
-        );
-      });
-  };
   uploadPhoto = (tmpInfo, url) => {
     const storage = firebase.storage();
     const sessionId = new Date().getTime();
@@ -139,9 +119,9 @@ class UpdateUser extends PureComponent {
         home,
         gender,
         phone,
-        photoURL: defaultProps.photoURL,
+        photoURL: defaultPhotoURL,
       };
-      if (photoURL !== defaultProps.photoURL) {
+      if (photoURL !== defaultPhotoURL) {
         this.uploadPhoto(info, photoURL);
       } else {
         this.uploadUser(info);

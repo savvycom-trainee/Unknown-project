@@ -37,8 +37,11 @@ class Login extends PureComponent {
   }
   getUser = async () => {
     try {
+      console.log('get1');
       const user = await AsyncStorage.getItem('user');
+      console.log('get2');
       if (user) {
+        console.log('get3');
         const tmpUser = JSON.parse(user);
         this.move(tmpUser);
       } else {
@@ -56,6 +59,9 @@ class Login extends PureComponent {
     } catch (error) {
       console.log(error);
     }
+    this.setState({
+      isLoading: false,
+    });
   };
   move = (user) => {
     this.props.setUser(user);
