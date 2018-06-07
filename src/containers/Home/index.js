@@ -57,9 +57,6 @@ class Home extends PureComponent {
       error => this.setState({ error }),
       { enableHighAccuracy: true, timeout: 20000, maximumAge: 1000 },
     );
-    // eslint-disable-next-line
-    const newUser = this.props.navigation.getParam('newUser', false);
-    console.log(newUser);
     this.props.fetchDatagetNewFeed();
   };
 
@@ -126,10 +123,7 @@ class Home extends PureComponent {
                 >
                   <View>
                     <View style={styles.imageContent}>
-                      <Image
-                        source={{ uri: item.photos[0] }}
-                        style={styles.imageContent}
-                      />
+                      <Image source={{ uri: item.photos[0] }} style={styles.imageContent} />
                     </View>
                     <View style={styles.viewPointForm}>
                       <View style={styles.viewPoint}>
@@ -208,8 +202,9 @@ class Home extends PureComponent {
       <View style={styles.container}>
         <View style={styles.body}>
           <Header
-            centerHeader={<Text style={{ fontSize: 15, fontWeight: '600' }}>NewFeeed</Text>}
-            // centerHeader={<Text style={{ fontSize: 15, fontWeight: '600' }}>Menu</Text>}
+            centerHeader={<Text style={{ fontSize: 15, fontWeight: '600' }}>NewFeed</Text>}
+            leftHeader={<Text />}
+            rightHeader={<Text />}
           />
           <Modal
             animationType="slide"
@@ -276,7 +271,4 @@ const mapStateToProps = state => ({
   user: state.user,
 });
 
-export default connect(
-  mapStateToProps,
-  { fetchDatagetNewFeed, getPositionSuccess, setUser },
-)(Home);
+export default connect(mapStateToProps, { fetchDatagetNewFeed, getPositionSuccess, setUser })(Home);

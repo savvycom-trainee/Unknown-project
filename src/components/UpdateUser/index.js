@@ -42,20 +42,18 @@ class UpdateUser extends PureComponent {
   }
 
   getUser = () => {
-    const { uid } = this.props.user;
-    if (uid) {
-      firebase
-        .database()
-        .ref('/restaurant/user')
-        .child(uid)
-        .on('value', (data) => {
-          this.setState({
-            ...data._value,
-            uid,
-          });
-        });
-    }
+    const { uid } = this.user;
+    firebase
+      .database()
+      .ref('/root/users')
+      .child(uid)
+      .on('value', data =>
+        this.setState({
+          ...data._value,
+          uid,
+        }));
   };
+
   uploadPhoto = (tmpInfo, url) => {
     const storage = firebase.storage();
     const sessionId = new Date().getTime();
@@ -89,13 +87,13 @@ class UpdateUser extends PureComponent {
     );
   };
   uploadUser = (info) => {
+    // const user = this.state;
     const userFb = this.props.navigation.getParam('user', {});
     const type = this.props.navigation.getParam('fb', false);
     const user = this.state;
-
     firebase
       .database()
-      .ref('restaurant/user')
+      .ref('root/users')
       .child(type ? userFb.id : user.uid)
       .set(info, (error) => {
         if (!error) {
@@ -118,15 +116,13 @@ class UpdateUser extends PureComponent {
       });
   };
   submit = () => {
-    console.log('submit');
-
     const user = this.props.navigation.getParam('user', {});
-    const fullName = user.name ? user.name : this.fullname._lastNativeText;
+    const fullName = user.name ? user.name : this.fullName._lastNativeText;
     const home = this.home._lastNativeText;
     const gender = this.gender._lastNativeText;
     const phone = this.phone._lastNativeText;
     if (!(fullName === '' && home === '' && gender === '' && phone === '')) {
-      // const { photoURL } = this.state;
+      const { photoURL } = this.state;
       const info = {
         email: this.user.email,
         fullName,
@@ -135,13 +131,12 @@ class UpdateUser extends PureComponent {
         phone,
         photoURL: defaultProps.photoURL,
       };
-      // if (photoURL !== defaultProps.photoURL) {
-      //   this.uploadPhoto(info, photoURL);
-      // } else {
-      console.log('uploadUser');
 
-      this.uploadUser(info);
-      // }
+      if (photoURL !== defaultProps.photoURL) {
+        this.uploadPhoto(info, photoURL);
+      } else {
+        this.uploadUser(info);
+      }
     } else {
       Alert.alert('Please enter full information');
     }

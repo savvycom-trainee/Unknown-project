@@ -2,6 +2,7 @@ import { createStackNavigator } from 'react-navigation';
 import TabHome from './tabHome';
 import Direct from '../containers/Direct';
 import HomeDetail from '../containers/HomeDetail';
+import { UpdateUser } from '../components';
 
 export default createStackNavigator(
   {
@@ -13,6 +14,9 @@ export default createStackNavigator(
     },
     Direct: {
       screen: Direct,
+    },
+    UpdateUser: {
+      screen: UpdateUser,
     },
   },
   {

@@ -21,18 +21,9 @@ export function getUserFacebookFail() {
     type: GET_USERFACEBOOK_FAIL,
   };
 }
-export function fetchDataGetUserFBAdd(userToken) {
-  return (dispatch) => {
-    console.log('hihi');
-    dispatch(getUserFacebook());
-    fetch(`https://graph.facebook.com/v2.5/me?fields=email,name,birthday,gender,address,friends&access_token=${userToken}`)
-      .then(response => response.json())
-      .then((responseJson) => {
-        dispatch(getUserFacebookSuccess(responseJson));
-        console.log(responseJson);
-      })
-      .catch((error) => {
-        dispatch(getUserFacebookFail(error));
-      });
-  };
+export async function fetchDataGetUserFBAdd(userToken) {
+  console.log(userToken);
+  const reponse = await fetch(`https://graph.facebook.com/v2.8/me?fields=email,birthday,hometown,gender,picture&access_token=${userToken}`);
+  const json = await reponse.json();
+  return json;
 }
