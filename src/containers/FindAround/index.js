@@ -14,11 +14,11 @@ import { setUserDatabase } from '../../actions';
 class FindAround extends Component {
   state = {
     data: [],
+    isLoading: false,
   };
   componentDidMount() {
     this._getUserAround();
   }
-
   _getUserAround = () => {
     const { user } = this.props.user;
     firebase
@@ -26,13 +26,14 @@ class FindAround extends Component {
       .ref('/restaurant/user/')
       .once('value')
       .then((snapshot) => {
+        this.setState({ isLoading: false });
         const data = [];
         // eslint-disable-next-line
         for (let i = 0; i < snapshot._childKeys.length; i++) {
           const uid = snapshot._childKeys[i];
           const userItem = snapshot.val()[uid];
           if (uid === user.uid) {
-            console.log(userItem);
+            userItem.uid = uid;
             this.props.setUser(userItem);
           } else if (userItem.location && userItem.location.lat && userItem.location.lng) {
             // console.log(userItem);
@@ -45,7 +46,9 @@ class FindAround extends Component {
             );
             userItem.uid = uid;
             userItem.distance = distance;
-            userItem.isFollow = userItem.follower ? userItem.follower.indexOf(uid) !== -1 : false;
+            if (userItem.follower) {
+              userItem.isFollow = userItem.follower.indexOf(user.uid) !== -1 ? true : false;
+            } else userItem.isFollow = false;
             // console.log(userItem);
             /* eslint-enable */
             if (distance < 1000) {
@@ -55,7 +58,7 @@ class FindAround extends Component {
         }
         return data;
       })
-      .then(data => this.setState({ data }))
+      .then(data => this.setState({ data, isLoading: false }))
       .catch(err => console.log('getUserAround', err));
   };
   deg2rad = deg => deg * (Math.PI / 180);
@@ -79,9 +82,7 @@ class FindAround extends Component {
   // TODO navigate to user detail
   _renderItem = ({ item, index }) => <FindCard item={item} index={index} />;
   render() {
-    const { data } = this.state;
-    console.log(data.length);
-
+    const { data, isLoading } = this.state;
     return (
       <View style={{ flex: 1 }}>
         <Header
@@ -90,16 +91,24 @@ class FindAround extends Component {
           centerHeader={<Text style={{ fontSize: 15, fontWeight: '600' }}>Find Around</Text>}
           rightHeader={<Image source={Icons.user} />}
         />
-        {data.length === 0 && (
-          <ActivityIndicator size="large" color="#000" style={{ alignSelf: 'center' }} />
+        {isLoading && (
+          <ActivityIndicator
+            size={30}
+            color="#000"
+            style={{ alignSelf: 'center', marginTop: 100 }}
+          />
         )}
-        <FlatList
-          style={{ flex: 1 }}
-          data={data}
-          extraData={this.state}
-          renderItem={this._renderItem}
-          keyExtractor={(item, index) => index.toString()}
-        />
+        {!isLoading && data.length === 0 ? (
+          <Text style={{ alignSelf: 'center', marginTop: 100 }}>Không có người dùng quanh đây</Text>
+        ) : (
+          <FlatList
+            style={{ flex: 1 }}
+            data={data}
+            extraData={this.state}
+            renderItem={this._renderItem}
+            keyExtractor={(item, index) => index.toString()}
+          />
+        )}
       </View>
     );
   }
@@ -115,4 +124,7 @@ const mapStateToProps = state => ({
 const mapDispatchToProps = dispatch => ({
   setUser: user => dispatch(setUserDatabase(user)),
 });
-export default connect(mapStateToProps, mapDispatchToProps)(FindAround);
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps,
+)(FindAround);
