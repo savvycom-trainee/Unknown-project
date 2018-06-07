@@ -30,7 +30,6 @@ export function fetchDatagetNewFeed() {
             const item = childSnapshot.val();
             item.key = childSnapshot.key;
             returnArr = [...returnArr, item];
-            console.log(returnArr);
           });
           dispatch(getNewFeedSuccess(returnArr));
         });

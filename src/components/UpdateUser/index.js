@@ -11,48 +11,37 @@ import {
 } from 'react-native';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
+import Icon from 'react-native-vector-icons/FontAwesome';
 import { NavigationActions } from 'react-navigation';
 import firebase from 'react-native-firebase';
 import styles from './style';
+import { Images } from '../../themes';
 import Gallery from '../Gallery';
 import { setUser } from '../../actions';
-
-const defaultProps = {
-  name: '',
-  photoURL: 'https://www.vccircle.com/wp-content/uploads/2017/03/default-profile.png',
-  gender: '',
-  home: '',
-};
 
 class UpdateUser extends PureComponent {
   constructor(props) {
     super(props);
-    this.state = {
-      // ...defaultProps,
-      isSubmit: false,
-    };
-    this.user = this.props.navigation.getParam('user', {});
+    this.user = this.props.navigation.getParam('newUser', false);
     if (!this.user) {
-      this.getUser();
+      this.user = this.props.user.user;
+      this.state = {
+        isSubmit: false,
+        photoURL: '',
+      };
+    } else {
+      this.state = {
+        isSubmit: false,
+        photoURL: '',
+        isNewUser: true,
+      };
     }
+    console.log(this.user);
   }
 
   componentDidMount() {
     console.log('user', this.user.uid);
   }
-
-  getUser = () => {
-    const { uid } = this.user;
-    firebase
-      .database()
-      .ref('/root/users')
-      .child(uid)
-      .on('value', data =>
-        this.setState({
-          ...data._value,
-          uid,
-        }));
-  };
 
   uploadPhoto = (tmpInfo, url) => {
     const storage = firebase.storage();
@@ -87,26 +76,18 @@ class UpdateUser extends PureComponent {
     );
   };
   uploadUser = (info) => {
-    // const user = this.state;
-    const userFb = this.props.navigation.getParam('user', {});
-    const type = this.props.navigation.getParam('fb', false);
-    const user = this.state;
     firebase
       .database()
       .ref('root/users')
-      .child(type ? userFb.id : user.uid)
+      .child(this.user.uid)
       .set(info, (error) => {
         if (!error) {
-          console.log(info);
-          // eslint-disable-next-line
           this.props.setUser(info);
+          // eslint-disable-next-line
           const navigateAction = NavigationActions.navigate({
             routeName: 'Home',
             action: NavigationActions.navigate({
               routeName: 'Home',
-              params: {
-                user: { ...info, uid: this.user.uid },
-              },
             }),
           });
           this.props.navigation.dispatch(navigateAction);
@@ -116,11 +97,10 @@ class UpdateUser extends PureComponent {
       });
   };
   submit = () => {
-    const user = this.props.navigation.getParam('user', {});
-    const fullName = user.name ? user.name : this.fullName._lastNativeText;
-    const home = this.home._lastNativeText;
-    const gender = this.gender._lastNativeText;
-    const phone = this.phone._lastNativeText;
+    const fullName = this.fullName._lastNativeText || this.user.fullName;
+    const home = this.home._lastNativeText || this.user.home;
+    const gender = this.gender._lastNativeText || this.user.gender;
+    const phone = this.phone._lastNativeText || this.user.phone;
     if (!(fullName === '' && home === '' && gender === '' && phone === '')) {
       const { photoURL } = this.state;
       const info = {
@@ -129,10 +109,10 @@ class UpdateUser extends PureComponent {
         home,
         gender,
         phone,
-        photoURL: defaultProps.photoURL,
+        photoURL: this.user.photoURL ? this.user.photoURL : '',
+        uid: this.user.uid,
       };
-
-      if (photoURL !== defaultProps.photoURL) {
+      if (photoURL !== '') {
         this.uploadPhoto(info, photoURL);
       } else {
         this.uploadUser(info);
@@ -152,7 +132,6 @@ class UpdateUser extends PureComponent {
     );
   };
   render() {
-    const user = this.props.navigation.getParam('user', {});
     return (
       <ScrollView style={styles.container}>
         <Gallery
@@ -163,8 +142,23 @@ class UpdateUser extends PureComponent {
         />
         <View style={styles.topView}>
           <Text style={styles.title}>Information</Text>
+          {!this.state.isNewUser ? (
+            <TouchableOpacity style={styles.editPassword}>
+              <Icon name="wrench" size={26} />
+            </TouchableOpacity>
+          ) : null}
+
           <TouchableOpacity style={styles.imageView} onPress={() => this.gallery.open()}>
-            <Image source={{ uri: this.state.photoURL }} style={styles.image} />
+            <Image
+              source={
+                this.state.photoURL === ''
+                  ? this.user.photoURL
+                    ? { uri: this.user.photoURL }
+                    : Images.defaultAvatar
+                  : { uri: this.state.photoURL }
+              }
+              style={styles.image}
+            />
           </TouchableOpacity>
         </View>
         <View style={styles.botView}>
@@ -172,7 +166,7 @@ class UpdateUser extends PureComponent {
             ref={(node) => {
               this.fullName = node;
             }}
-            value={user.name}
+            defaultValue={this.user.fullName ? this.user.fullName : ''}
             style={styles.input}
             placeholder="Full name"
             underlineColorAndroid="transparent"
@@ -183,6 +177,7 @@ class UpdateUser extends PureComponent {
               this.gender = node;
             }}
             style={styles.input}
+            defaultValue={this.user.gender ? this.user.gender : ''}
             placeholder="Gender: Male or Female"
             underlineColorAndroid="transparent"
             onSubmitEditing={() => this.phone.focus()}
@@ -194,6 +189,7 @@ class UpdateUser extends PureComponent {
             style={styles.input}
             keyboardType="phone-pad"
             placeholder="Phone"
+            defaultValue={this.user.phone ? this.user.phone : ''}
             underlineColorAndroid="transparent"
             onSubmitEditing={() => this.home.focus()}
           />
@@ -202,6 +198,7 @@ class UpdateUser extends PureComponent {
               this.home = node;
             }}
             style={styles.input}
+            defaultValue={this.user.home ? this.user.home : ''}
             placeholder="Home: Hanoi, Vietnam"
             underlineColorAndroid="transparent"
             returnKeyType="done"
@@ -225,6 +222,8 @@ UpdateUser.propTypes = {
     dispatch: PropTypes.func.isRequired,
     getParam: PropTypes.func.isRequired,
   }).isRequired,
+  user: PropTypes.object.isRequired,
+  setUser: PropTypes.func.isRequired,
 };
 const mapDispatchToProps = dispatch => ({
   setUser: user => dispatch(setUser(user)),
@@ -233,4 +232,7 @@ const mapStateToProps = state => ({
   user: state.user,
 });
 
-export default connect(mapStateToProps, mapDispatchToProps)(UpdateUser);
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps,
+)(UpdateUser);

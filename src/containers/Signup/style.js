@@ -89,11 +89,11 @@ const signup = StyleSheet.create({
   textContainer: {
     flexDirection: 'row',
     flex: 1,
-    alignSelf: 'center',
+    marginTop: 15,
+    justifyContent: 'center',
   },
   textSignUpContainer: {
-    top: 10 * d.ratioH,
-    left: -8 * d.ratioW,
+    paddingVertical: 10,
   },
   txtSignUp: {
     fontWeight: 'bold',
@@ -101,7 +101,7 @@ const signup = StyleSheet.create({
   },
   txtBottom: {
     textAlign: 'center',
-    padding: 10,
+    paddingVertical: 10,
   },
 });
 

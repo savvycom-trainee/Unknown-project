@@ -30,6 +30,11 @@ const styles = StyleSheet.create({
     height: 177 * d.ratioH,
     alignItems: 'center',
   },
+  editPassword: {
+    position: 'absolute',
+    right: 10,
+    padding: 5,
+  },
   botView: {
     marginTop: 24 * d.ratioH,
     height: 470 * d.ratioH,
