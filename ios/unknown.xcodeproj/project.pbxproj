@@ -46,7 +46,6 @@
 		3E24FB2320B2C352006D658D /* FBSDKPlacesKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3E24FB1B20B2C350006D658D /* FBSDKPlacesKit.framework */; };
 		3E24FB2420B2C352006D658D /* FBSDKCoreKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3E24FB1C20B2C351006D658D /* FBSDKCoreKit.framework */; };
 		3E24FB2520B2C352006D658D /* Bolts.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3E24FB1D20B2C351006D658D /* Bolts.framework */; };
-		3EB0569F20C8CF2300C38454 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 3EB0569E20C8CF2300C38454 /* GoogleService-Info.plist */; };
 		57DD83C886324112A5ED4052 /* EvilIcons.ttf in Resources */ = {isa = PBXBuildFile; fileRef = DD4674E1CE3C4000A0B665B9 /* EvilIcons.ttf */; };
 		5E9157361DD0AC6A00FF2AA8 /* libRCTAnimation.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 5E9157331DD0AC6500FF2AA8 /* libRCTAnimation.a */; };
 		6042EFD6111B4A08829ADF7E /* Ionicons.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 663B783CF3A049E7A08B1FDF /* Ionicons.ttf */; };
@@ -59,6 +58,7 @@
 		ADBDB9381DFEBF1600ED6528 /* libRCTBlob.a in Frameworks */ = {isa = PBXBuildFile; fileRef = ADBDB9271DFEBF0700ED6528 /* libRCTBlob.a */; };
 		B06B5F59E08548A2AEB387C1 /* MaterialIcons.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 787564FF26F94C0BB212303C /* MaterialIcons.ttf */; };
 		B6AF376420B2D39D004E68D7 /* libRCTCameraRoll.a in Frameworks */ = {isa = PBXBuildFile; fileRef = B6AF374220B2D374004E68D7 /* libRCTCameraRoll.a */; };
+		B6D0A4CE20C8D6C400AB9591 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = B6D0A4CD20C8D6C400AB9591 /* GoogleService-Info.plist */; };
 		B6EB7FF520BFF3520073918D /* libART.a in Frameworks */ = {isa = PBXBuildFile; fileRef = B6EB7FCA20BFF3380073918D /* libART.a */; };
 		DFA3ADB2CEF145E496F6A15C /* FontAwesome.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 0EE40E8442AA4969AAF7D6CE /* FontAwesome.ttf */; };
 		F2BC98BE3E1B4F339D91FADC /* SimpleLineIcons.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 5652C6B101534F838BA95DFB /* SimpleLineIcons.ttf */; };
@@ -412,7 +412,6 @@
 		3E24FB1B20B2C350006D658D /* FBSDKPlacesKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = FBSDKPlacesKit.framework; sourceTree = "<group>"; };
 		3E24FB1C20B2C351006D658D /* FBSDKCoreKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = FBSDKCoreKit.framework; sourceTree = "<group>"; };
 		3E24FB1D20B2C351006D658D /* Bolts.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = Bolts.framework; sourceTree = "<group>"; };
-		3EB0569E20C8CF2300C38454 /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = "GoogleService-Info.plist"; path = "../../../Downloads/GoogleService-Info.plist"; sourceTree = "<group>"; };
 		5652C6B101534F838BA95DFB /* SimpleLineIcons.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = SimpleLineIcons.ttf; path = "../node_modules/react-native-vector-icons/Fonts/SimpleLineIcons.ttf"; sourceTree = "<group>"; };
 		5E91572D1DD0AC6500FF2AA8 /* RCTAnimation.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = RCTAnimation.xcodeproj; path = "../node_modules/react-native/Libraries/NativeAnimation/RCTAnimation.xcodeproj"; sourceTree = "<group>"; };
 		6326F3A3134941198211B699 /* Octicons.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = Octicons.ttf; path = "../node_modules/react-native-vector-icons/Fonts/Octicons.ttf"; sourceTree = "<group>"; };
@@ -425,6 +424,7 @@
 		ACE225602B20683B47ACF81D /* Pods-unknown.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-unknown.debug.xcconfig"; path = "Pods/Target Support Files/Pods-unknown/Pods-unknown.debug.xcconfig"; sourceTree = "<group>"; };
 		ADBDB91F1DFEBF0600ED6528 /* RCTBlob.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = RCTBlob.xcodeproj; path = "../node_modules/react-native/Libraries/Blob/RCTBlob.xcodeproj"; sourceTree = "<group>"; };
 		B6AF373820B2D373004E68D7 /* RCTCameraRoll.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = RCTCameraRoll.xcodeproj; path = "../node_modules/react-native/Libraries/CameraRoll/RCTCameraRoll.xcodeproj"; sourceTree = "<group>"; };
+		B6D0A4CD20C8D6C400AB9591 /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = "GoogleService-Info.plist"; path = "../../../../../../../GoogleService-Info.plist"; sourceTree = "<group>"; };
 		B6EB7FC420BFF3380073918D /* ART.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = ART.xcodeproj; path = "../node_modules/react-native/Libraries/ART/ART.xcodeproj"; sourceTree = "<group>"; };
 		BE38F0E406DB41F3888D3C10 /* RNFirebase.xcodeproj */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = "wrapper.pb-project"; name = RNFirebase.xcodeproj; path = "../node_modules/react-native-firebase/ios/RNFirebase.xcodeproj"; sourceTree = "<group>"; };
 		C456C766C52C45C7B554EAB7 /* Foundation.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = Foundation.ttf; path = "../node_modules/react-native-vector-icons/Fonts/Foundation.ttf"; sourceTree = "<group>"; };
@@ -586,9 +586,9 @@
 			children = (
 				008F07F21AC5B25A0029DE68 /* main.jsbundle */,
 				13B07FAF1A68108700A75B9A /* AppDelegate.h */,
+				B6D0A4CD20C8D6C400AB9591 /* GoogleService-Info.plist */,
 				13B07FB01A68108700A75B9A /* AppDelegate.m */,
 				13B07FB51A68108700A75B9A /* Images.xcassets */,
-				3EB0569E20C8CF2300C38454 /* GoogleService-Info.plist */,
 				13B07FB61A68108700A75B9A /* Info.plist */,
 				13B07FB11A68108700A75B9A /* LaunchScreen.xib */,
 				13B07FB71A68108700A75B9A /* main.m */,
@@ -1307,7 +1307,7 @@
 				FD6CD36FF8EC44128CBDBEBF /* Octicons.ttf in Resources */,
 				F2BC98BE3E1B4F339D91FADC /* SimpleLineIcons.ttf in Resources */,
 				7BFBC22A48E34E5C8D2DE44F /* Zocial.ttf in Resources */,
-				3EB0569F20C8CF2300C38454 /* GoogleService-Info.plist in Resources */,
+				B6D0A4CE20C8D6C400AB9591 /* GoogleService-Info.plist in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

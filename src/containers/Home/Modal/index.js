@@ -85,6 +85,10 @@ class ModalView extends PureComponent {
       },
     });
   }
+  _onCloserModal() {
+    this.setState({ listadd: true });
+    this.modal.close();
+  }
   takePicture = async function (camera) {
     const options = { quality: 0.5, base64: true };
     const data = await camera.takePictureAsync(options);
@@ -114,7 +118,7 @@ class ModalView extends PureComponent {
       imageRef.putFile(file[i]).on(
         'state_changed',
         (snapshot) => {
-          const progress = snapshot.bytesTransferred / snapshot.totalBytes * 100;
+          const progress = (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
           this.setState({ progressing: progress });
           // console.log(`Upload is ${progress}% done`);
           // Current upload state
@@ -136,6 +140,7 @@ class ModalView extends PureComponent {
                 ...this.state.post,
                 created: timeadd,
                 content: {
+                  ...this.state.post.content,
                   photos: this.state.post.content.photos.concat(uploadedFile.downloadURL),
                 },
               },
@@ -512,6 +517,16 @@ class ModalView extends PureComponent {
                 />
               </View>
             </View>
+            <View>
+              <TouchableOpacity style={styles.butonCustomItem} onPress={() => this._onShowModal(2)}>
+                <Icon name="ios-navigate" color="white" size={33} />
+              </TouchableOpacity>
+            </View>
+            <View>
+              <TouchableOpacity style={styles.butonCustomItem}>
+                <Icon name="ios-list" color="white" size={33} />
+              </TouchableOpacity>
+            </View>
           </View>
         </View>
       </View>
@@ -535,9 +550,12 @@ const mapStateToProps = state => ({
   region: state.getPositionReducers,
   dataSearchAdd: state.getAddSearchReducers,
 });
-export default connect(mapStateToProps, {
-  fetchDataGetAdd,
-  fetchPostNewFeed,
-  getPositionSuccess,
-  fetchDataGetAddSearch,
-})(ModalView);
+export default connect(
+  mapStateToProps,
+  {
+    fetchDataGetAdd,
+    fetchPostNewFeed,
+    getPositionSuccess,
+    fetchDataGetAddSearch,
+  },
+)(ModalView);

@@ -121,6 +121,15 @@ class Home extends PureComponent {
                     this.props.navigation.navigate('HomeDetail', { data: item.key });
                   }}
                 >
+                  <TouchableOpacity>
+                    <View style={styles.viewUserPost}>
+                      <Image source={{ uri: item.photos[0] }} style={styles.viewImageUser} />
+                      <View>
+                        <Text style={styles.textNameUser}>{item.iduser}</Text>
+                        <Text style={styles.textPost}>{item.name}</Text>
+                      </View>
+                    </View>
+                  </TouchableOpacity>
                   <View>
                     <View style={styles.imageContent}>
                       <Image source={{ uri: item.photos[0] }} style={styles.imageContent} />
@@ -134,15 +143,10 @@ class Home extends PureComponent {
                   <View style={styles.formItemText}>
                     <View style={styles.viewNameRow1}>
                       <Text numberOfLines={1} style={styles.textName}>
-                        {item.iduser}
+                        {item.name}
                       </Text>
                     </View>
                     <View style={styles.viewNameRow2}>
-                      <View>
-                        <Text numberOfLines={1} style={styles.textNameUserRow2}>
-                          {item.name}
-                        </Text>
-                      </View>
                       <View>
                         <Text style={styles.textNameRow2}>{item.type}</Text>
                       </View>
@@ -271,4 +275,7 @@ const mapStateToProps = state => ({
   user: state.user,
 });
 
-export default connect(mapStateToProps, { fetchDatagetNewFeed, getPositionSuccess, setUser })(Home);
+export default connect(
+  mapStateToProps,
+  { fetchDatagetNewFeed, getPositionSuccess, setUser },
+)(Home);

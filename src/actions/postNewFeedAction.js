@@ -26,53 +26,50 @@ export function fetchPostNewFeed(post, restaurant) {
     dispatch(postNewFeed());
     const idRestaurant = restaurant.idRestaurant;
     console.log(idRestaurant);
-    firebase
+    const ref = firebase
       .database()
-      .ref('/root/restaurants')
-      .orderByChild('idRestaurant')
-      .equalTo(`${idRestaurant}`)
-      .on('value', (snapshot) => {
-        const newPost = snapshot.val();
-        if (newPost === null) {
-          console.log(newPost);
-          console.log('sjjddds');
-          firebase
-            .database()
-            .ref('root/posts/')
-            .push(post)
-            .then(
-              (snapshot) => {
-                console.log(snapshot);
-                firebase
-                  .database()
-                  .ref(`/root/restaurants/${idRestaurant}`)
-                  .set(restaurant);
-              },
-              (error) => {
-                // The Promise was rejected.
-                console.error(error);
-              },
-            );
-        } else {
-          console.log('hihi');
-          const a = 'sksksk';
-          firebase
-            .database()
-            .ref(`/root/restaurants/${idRestaurant}`)
-            .child('review')
-            .set(post)
-            .then(
-              (snapshot) => {
-                // The Promise was rejected.
-                console.log(snapshot);
-                console.log('ok');
-              },
-              (error) => {
-                // The Promise was rejected.
-                console.error(error);
-              },
-            );
-        }
-      });
+      .ref('root/posts/')
+      .push(post).key;
+    console.log('aaaskks', ref);
+    if (ref !== null) {
+      firebase
+        .database()
+        .ref('/root/restaurants')
+        .orderByChild('idRestaurant')
+        .equalTo(`${idRestaurant}`)
+        .on('value', (snapshot) => {
+          const newPost = snapshot.val();
+          if (newPost === null) {
+            const obj = restaurant;
+            const obj2 = { idPost: ref };
+            Object.assign(obj, obj2);
+            firebase
+              .database()
+              .ref(`/root/restaurants/${idRestaurant}`)
+              .set(obj)
+              .then(
+                (snapshot) => {
+                  // The Promise was rejected.
+                  console.log(snapshot);
+                  console.log('ok');
+                },
+                (error) => {
+                  // The Promise was rejected.
+                  console.error(error);
+                },
+              );
+          } else {
+            const newPost = snapshot.val();
+            console.log(newPost.idRestaurant);
+            console.log('hihi');
+            // const a = 'sksksk';
+            // firebase
+            //   .database()
+            //   .ref(`/root/restaurants/${idRestaurant}`)
+            //   .child('idPost')
+            //   .push(ref);
+          }
+        });
+    }
   };
 }

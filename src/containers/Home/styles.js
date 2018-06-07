@@ -39,6 +39,19 @@ export default StyleSheet.create({
     width: 95 * d.ratioW,
     backgroundColor: Colors.white,
   },
+  viewUserPost: {
+    alignItems: 'center',
+    flexDirection: 'row',
+    height: 80 * d.ratioH,
+    width: 365 * d.ratioW,
+    borderRadius: 25,
+    padding: 14,
+  },
+  viewImageUser: {
+    height: 50 * d.ratioH,
+    width: 50 * d.ratioW,
+    borderRadius: 25,
+  },
   viewPointForm: {
     backgroundColor: 'red',
     zIndex: 12,
@@ -74,7 +87,7 @@ export default StyleSheet.create({
     borderRadius: 2.5,
     backgroundColor: Colors.white,
     width: 315 * d.ratioW,
-    height: Metrics.screenHeight / 2.3,
+    height: Metrics.screenHeight / 1.9,
   },
   formItemText: {
     padding: 25.5,
@@ -87,6 +100,18 @@ export default StyleSheet.create({
   textName: {
     fontSize: 18,
     color: Colors.text,
+    fontWeight: '800',
+  },
+  textNameUser: {
+    paddingHorizontal: 10,
+    fontSize: 13,
+    color: Colors.text,
+    fontWeight: '800',
+  },
+  textPost: {
+    paddingHorizontal: 10,
+    fontSize: 9,
+    color: Colors.textOpacity,
     fontWeight: '800',
   },
   viewNameRow2: {
