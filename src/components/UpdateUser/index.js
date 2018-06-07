@@ -15,6 +15,7 @@ import { NavigationActions } from 'react-navigation';
 import firebase from 'react-native-firebase';
 import styles from './style';
 import Gallery from '../Gallery';
+import { setUser } from '../../actions';
 
 const defaultProps = {
   name: '',
@@ -27,7 +28,7 @@ class UpdateUser extends PureComponent {
   constructor(props) {
     super(props);
     this.state = {
-      ...defaultProps,
+      // ...defaultProps,
       isSubmit: false,
     };
     this.user = this.props.navigation.getParam('user', {});
@@ -41,17 +42,19 @@ class UpdateUser extends PureComponent {
   }
 
   getUser = () => {
-    const { uid } = this.user;
-    firebase
-      .database()
-      .ref('/root/users')
-      .child(uid)
-      .on('value', (data) => {
-        this.setState({
-          ...data._value,
-          uid,
+    const { uid } = this.props.user;
+    if (uid) {
+      firebase
+        .database()
+        .ref('/restaurant/user')
+        .child(uid)
+        .on('value', (data) => {
+          this.setState({
+            ...data._value,
+            uid,
+          });
         });
-      });
+    }
   };
   uploadPhoto = (tmpInfo, url) => {
     const storage = firebase.storage();
@@ -86,14 +89,19 @@ class UpdateUser extends PureComponent {
     );
   };
   uploadUser = (info) => {
-    // const user = this.state;
+    const userFb = this.props.navigation.getParam('user', {});
+    const type = this.props.navigation.getParam('fb', false);
+    const user = this.state;
+
     firebase
       .database()
-      .ref('root/users')
-      .child(this.user.uid)
+      .ref('restaurant/user')
+      .child(type ? userFb.id : user.uid)
       .set(info, (error) => {
         if (!error) {
           console.log(info);
+          // eslint-disable-next-line
+          this.props.setUser(info);
           const navigateAction = NavigationActions.navigate({
             routeName: 'Home',
             action: NavigationActions.navigate({
@@ -110,12 +118,15 @@ class UpdateUser extends PureComponent {
       });
   };
   submit = () => {
-    const fullName = this.fullName._lastNativeText;
+    console.log('submit');
+
+    const user = this.props.navigation.getParam('user', {});
+    const fullName = user.name ? user.name : this.fullname._lastNativeText;
     const home = this.home._lastNativeText;
     const gender = this.gender._lastNativeText;
     const phone = this.phone._lastNativeText;
     if (!(fullName === '' && home === '' && gender === '' && phone === '')) {
-      const { photoURL } = this.state;
+      // const { photoURL } = this.state;
       const info = {
         email: this.user.email,
         fullName,
@@ -124,11 +135,13 @@ class UpdateUser extends PureComponent {
         phone,
         photoURL: defaultProps.photoURL,
       };
-      if (photoURL !== defaultProps.photoURL) {
-        this.uploadPhoto(info, photoURL);
-      } else {
-        this.uploadUser(info);
-      }
+      // if (photoURL !== defaultProps.photoURL) {
+      //   this.uploadPhoto(info, photoURL);
+      // } else {
+      console.log('uploadUser');
+
+      this.uploadUser(info);
+      // }
     } else {
       Alert.alert('Please enter full information');
     }
@@ -144,6 +157,7 @@ class UpdateUser extends PureComponent {
     );
   };
   render() {
+    const user = this.props.navigation.getParam('user', {});
     return (
       <ScrollView style={styles.container}>
         <Gallery
@@ -163,6 +177,7 @@ class UpdateUser extends PureComponent {
             ref={(node) => {
               this.fullName = node;
             }}
+            value={user.name}
             style={styles.input}
             placeholder="Full name"
             underlineColorAndroid="transparent"
@@ -216,9 +231,11 @@ UpdateUser.propTypes = {
     getParam: PropTypes.func.isRequired,
   }).isRequired,
 };
-
+const mapDispatchToProps = dispatch => ({
+  setUser: user => dispatch(setUser(user)),
+});
 const mapStateToProps = state => ({
   user: state.user,
 });
 
-export default connect(mapStateToProps)(UpdateUser);
+export default connect(mapStateToProps, mapDispatchToProps)(UpdateUser);
