@@ -8,6 +8,8 @@ import postNewFeedReducers from './postNewFeedReducers';
 import getHomeDetailReducers from './getHomeDetailReducers';
 import getPositionReducers from './getPositionReducers';
 import getAddSearchReducers from './getAddSearchReducers';
+import getUserReducers from './getUserReducers';
+import getUserSearchReducers from './getUserSearchReducers';
 import user from './user';
 
 import getUserDetailReducers from './getUserDetailReducers';
@@ -24,6 +26,8 @@ const rootRecuder = combineReducers({
   user,
   getAddSearchReducers,
   getUserDetailReducers,
+  getUserReducers,
+  getUserSearchReducers,
 });
 
 export default rootRecuder;

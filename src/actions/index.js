@@ -5,5 +5,7 @@ export * from './getHomeDetailAction';
 export * from './getPositionAction';
 export * from './getAddbySearchAction';
 export * from './getUserFacebookAction';
+export * from './getUserAction';
+export * from './getUserSearchAction';
 export * from './user';
 export * from './getUserDetailAction';

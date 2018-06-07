@@ -286,7 +286,4 @@ Login.propTypes = {
 
 const mapDispatchToProps = dispatch => ({ setUser: user => dispatch(setUser(user)) });
 
-export default connect(
-  null,
-  mapDispatchToProps,
-)(Login);
+export default connect(null, mapDispatchToProps)(Login);

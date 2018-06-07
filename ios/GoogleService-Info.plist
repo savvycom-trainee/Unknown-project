@@ -7,21 +7,21 @@
 	<key>AD_UNIT_ID_FOR_INTERSTITIAL_TEST</key>
 	<string>ca-app-pub-3940256099942544/4411468910</string>
 	<key>CLIENT_ID</key>
-	<string>780304955855-rqgga9lj405v74gue4t7mo10lovighh6.apps.googleusercontent.com</string>
+	<string>255551392159-22b2v9a5o9s8gs5v8oa13lniidg55pgu.apps.googleusercontent.com</string>
 	<key>REVERSED_CLIENT_ID</key>
-	<string>com.googleusercontent.apps.780304955855-rqgga9lj405v74gue4t7mo10lovighh6</string>
+	<string>com.googleusercontent.apps.255551392159-22b2v9a5o9s8gs5v8oa13lniidg55pgu</string>
 	<key>API_KEY</key>
-	<string>AIzaSyDA7DnqZvWf2yf1R8Qs_4EkZTEJAkMKCvU</string>
+	<string>AIzaSyAg6CmAdP_yBAWQJv0OpbmI0Wi71IzMyzU</string>
 	<key>GCM_SENDER_ID</key>
-	<string>780304955855</string>
+	<string>255551392159</string>
 	<key>PLIST_VERSION</key>
 	<string>1</string>
 	<key>BUNDLE_ID</key>
 	<string>org.reactjs.native.example.unknown</string>
 	<key>PROJECT_ID</key>
-	<string>final-project-savvycom</string>
+	<string>findadd-a12ae</string>
 	<key>STORAGE_BUCKET</key>
-	<string>final-project-savvycom.appspot.com</string>
+	<string>findadd-a12ae.appspot.com</string>
 	<key>IS_ADS_ENABLED</key>
 	<true></true>
 	<key>IS_ANALYTICS_ENABLED</key>
@@ -33,8 +33,8 @@
 	<key>IS_SIGNIN_ENABLED</key>
 	<true></true>
 	<key>GOOGLE_APP_ID</key>
-	<string>1:780304955855:ios:ab52586bc02d347a</string>
+	<string>1:255551392159:ios:ab52586bc02d347a</string>
 	<key>DATABASE_URL</key>
-	<string>https://final-project-savvycom.firebaseio.com</string>
+	<string>https://findadd-a12ae.firebaseio.com</string>
 </dict>
 </plist>

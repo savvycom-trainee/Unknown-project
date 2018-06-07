@@ -18,7 +18,7 @@ export function getAddFail() {
   };
 }
 export function fetchDataGetAdd(latitude, longitude) {
-  console.log('hihi', latitude);
+  // console.log('hihi', latitude);
   return (dispatch) => {
     dispatch(getAdd());
     // AIzaSyB4kVqZAVut6UvbjtMjKnM_Amg5G0qCWWQ
@@ -26,7 +26,7 @@ export function fetchDataGetAdd(latitude, longitude) {
       .then(response => response.json())
       .then((responseJson) => {
         dispatch(getAddSuccess(responseJson.results));
-        console.log(responseJson.results);
+        // console.log(responseJson.results);
       })
       .catch((error) => {
         dispatch(getAddFail(error));

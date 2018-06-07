@@ -40,44 +40,27 @@ class ModalView extends PureComponent {
       photos: [],
       keyword: '',
       photosselect: [],
-      test: {
-        idrestaurant: 'idrestaurant123',
-        name: 'Hanoi Pho',
-        rating: 0,
-        type: 'Fast Food',
-        detail: '',
-        createtime: '',
-        photos: [],
-        timeopen: '7h00',
-        timeclose: '22h00',
-        menu: [
-          {
-            namemenu: 'Salads',
-            imagemenu: 'https://c1.staticflickr.com/9/8345/8233271770_70ee15d73a_b.jpg',
-            detailmenu: 'Mon nay an nhu shit',
-            pricemenu: 12.6,
-          },
-        ],
+      post: {
+        content: {
+          photos: [],
+          detail: '',
+        },
+        created: '20/5/2018',
+        idUser: 'fkFIKXHMFPSaCGerCXhirvZkF8D2',
+        idRestaurant: 'idrestaurant123',
+      },
+      restaurant: {
+        idRestaurant: 'idrestaurant123',
         geometry: {
           location: {
             lat: 21.065863,
             lng: 105.78003,
           },
         },
-        review: [
-          {
-            iduser: 'fkFIKXHMFPSaCGerCXhirvZkF8D2',
-            comment: 'Nhà hàng như shit',
-            rating: 4,
-            image: [
-              'https://c1.staticflickr.com/9/8345/8233271770_70ee15d73a_b.jpg',
-              'https://c1.staticflickr.com/9/8345/8233271770_70ee15d73a_b.jpg',
-            ],
-            timeadd: '',
-          },
-        ],
-        iduser: 'fkFIKXHMFPSaCGerCXhirvZkF8D2',
-        vicinity: '69 TDH',
+        photo: '',
+        idUser: [],
+        vicinity: '',
+        rating: 0,
       },
     };
   }
@@ -96,8 +79,8 @@ class ModalView extends PureComponent {
 
   onStarRatingPress(rating) {
     this.setState({
-      test: {
-        ...this.state.test,
+      restaurant: {
+        ...this.state.restaurant,
         rating,
       },
     });
@@ -144,20 +127,23 @@ class ModalView extends PureComponent {
           // return true;
           if (
             uploadedFile.state === 'success' &&
-            this.state.test.photos.indexOf(uploadedFile.downloadURL) === -1
+            this.state.post.content.photos.indexOf(uploadedFile.downloadURL) === -1
           ) {
-            console.log(this.state.test.photos.indexOf(uploadedFile.downloadURL) === -1);
+            console.log(this.state.post.content.photos.indexOf(uploadedFile.downloadURL) === -1);
             const timeadd = new Date().toLocaleString();
             this.setState({
-              test: {
-                ...this.state.test,
-                createtime: timeadd,
-                photos: this.state.test.photos.concat(uploadedFile.downloadURL),
+              post: {
+                ...this.state.post,
+                created: timeadd,
+                content: {
+                  photos: this.state.post.content.photos.concat(uploadedFile.downloadURL),
+                },
               },
             });
-            console.log(this.state.test.photos, `${i} ${file.length}`);
-            if (this.state.test.photos.length === file.length) {
-              this.props.fetchPostNewFeed(this.state.test);
+            console.log(this.state.post.content.photos, `${i} ${file.length}`);
+            if (this.state.post.content.photos.length === file.length) {
+              const { post, restaurant } = this.state;
+              this.props.fetchPostNewFeed(post, restaurant);
               if (this.props.dataPost.dataSuccess === true) {
                 this.props.hideModal(false);
               }
@@ -182,9 +168,9 @@ class ModalView extends PureComponent {
   }
   _onAdd(item) {
     this.setState({
-      test: {
-        ...this.state.test,
-        idrestaurant: item.id,
+      restaurant: {
+        ...this.state.restaurant,
+        idRestaurant: item.id,
         geometry: {
           location: {
             lat: item.geometry.location.lat,
@@ -193,7 +179,12 @@ class ModalView extends PureComponent {
         },
         name: item.name,
         vicinity: item.vicinity,
-        iduser: '0hJcq7PHg5bXgB414nqBXl3teAg2',
+        idUser: 'fkFIKXHMFPSaCGerCXhirvZkF8D2',
+      },
+      post: {
+        ...this.state.post,
+        idRestaurant: item.id,
+        idUser: 'fkFIKXHMFPSaCGerCXhirvZkF8D2sss',
       },
     });
   }
@@ -202,10 +193,12 @@ class ModalView extends PureComponent {
       if (!this._validateInputDetail()) {
         if (!this._validateRating()) {
           if (!this._validateImages()) {
-            if (this._onUploadPhoto()) {
-              // this._onUploadPhoto().then(res=>console.log('hihi',res));
-              // this.props.fetchPostNewFeed(this.state.test);
-            }
+            const { post, restaurant } = this.state;
+            this.props.fetchPostNewFeed(post, restaurant);
+            // if (this._onUploadPhoto()) {
+            //   // this._onUploadPhoto().then(res=>console.log('hihi',res));
+            //   // this.props.fetchPostNewFeed(this.state.test);
+            // }
           } else {
             Alert.alert('Mày chọn tối thiểu 3 ảnh hộ tao cái');
           }
@@ -226,13 +219,13 @@ class ModalView extends PureComponent {
     return false;
   }
   _validateRating() {
-    if (this.state.test.rating === 0) {
+    if (this.state.restaurant.rating === 0) {
       return true;
     }
     return false;
   }
   _validateInputDetail() {
-    if (this.state.test.detail === '') {
+    if (this.state.post.content.detail === '') {
       return true;
     }
 
@@ -246,7 +239,7 @@ class ModalView extends PureComponent {
     return false;
   }
   _validateNameLocal() {
-    if (this.state.test.name === '') {
+    if (this.state.restaurant.name === '') {
       return true;
     }
     return false;
@@ -277,7 +270,6 @@ class ModalView extends PureComponent {
                           underlineColorAndroid="transparent"
                           placeholder="Search"
                           style={styles.textInputSearch}
-                          value={this.state.test.search}
                           onChangeText={text => this.setState({ keyword: text })}
                         />
                       </View>
@@ -350,8 +342,8 @@ class ModalView extends PureComponent {
                   )}
 
                   <View style={styles.ViewButton}>
-                    <Text style={styles.textSelected}>{this.state.test.name}</Text>
-                    <Text style={styles.textSelectedAdd}>{this.state.test.vicinity}</Text>
+                    <Text style={styles.textSelected}>{this.state.restaurant.name}</Text>
+                    <Text style={styles.textSelectedAdd}>{this.state.restaurant.vicinity}</Text>
                     <TouchableOpacity
                       style={styles.viewButtonDone}
                       onPress={() => this._onCloserModal()}
@@ -393,7 +385,7 @@ class ModalView extends PureComponent {
                     <TouchableOpacity style={styles.viewFormAddSelected}>
                       <Icon name="ios-home" color={Colors.text} size={16} />
                       <Text numberOfLines={1} style={styles.textSelectedShow}>
-                        {this.state.test.name}
+                        {this.state.restaurant.name}
                       </Text>
                     </TouchableOpacity>
                   </View>
@@ -401,7 +393,7 @@ class ModalView extends PureComponent {
                     <TouchableOpacity style={styles.viewFormAddSelected}>
                       <Icon name="md-locate" color={Colors.text} size={16} />
                       <Text numberOfLines={1} style={styles.textSelectedShow}>
-                        {this.state.test.vicinity}
+                        {this.state.restaurant.vicinity}
                       </Text>
                     </TouchableOpacity>
                   </View>
@@ -421,9 +413,12 @@ class ModalView extends PureComponent {
                       style={styles.textInput}
                       onChangeText={text =>
                         this.setState({
-                          test: {
-                            ...this.state.test,
-                            detail: text,
+                          post: {
+                            ...this.state.post,
+                            content: {
+                              ...this.state.post.content,
+                              detail: text,
+                            },
                           },
                         })
                       }
@@ -511,7 +506,7 @@ class ModalView extends PureComponent {
                   halfStar="ios-star-half"
                   iconSet="Ionicons"
                   maxStars={5}
-                  rating={this.state.test.rating}
+                  rating={this.state.restaurant.rating}
                   selectedStar={rating => this.onStarRatingPress(rating)}
                   fullStarColor={Colors.white}
                 />
@@ -531,7 +526,7 @@ ModalView.propTypes = {
   dataAdd: PropTypes.object.isRequired,
   dataPost: PropTypes.object.isRequired,
   dataSearchAdd: PropTypes.object.isRequired,
-  dataSuccess: PropTypes.bool,  // eslint-disable-line
+  dataSuccess: PropTypes.bool, // eslint-disable-line
   // progress: PropTypes.string.isRequired,  // eslint-disable-line
 };
 const mapStateToProps = state => ({
@@ -540,12 +535,9 @@ const mapStateToProps = state => ({
   region: state.getPositionReducers,
   dataSearchAdd: state.getAddSearchReducers,
 });
-export default connect(
-  mapStateToProps,
-  {
-    fetchDataGetAdd,
-    fetchPostNewFeed,
-    getPositionSuccess,
-    fetchDataGetAddSearch,
-  },
-)(ModalView);
+export default connect(mapStateToProps, {
+  fetchDataGetAdd,
+  fetchPostNewFeed,
+  getPositionSuccess,
+  fetchDataGetAddSearch,
+})(ModalView);
