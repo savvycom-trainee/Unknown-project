@@ -56,7 +56,6 @@ class ModalView extends PureComponent {
           lng: 105.78003,
         },
         photo: '',
-        idUser: [],
         vicinity: '',
         rating: 0,
       },
@@ -105,55 +104,37 @@ class ModalView extends PureComponent {
   };
   _onUploadPhoto = () => {
     const file = this.state.photosselect;
-    const storage = firebase.storage();
-    const sessionId = new Date().getTime();
-    const imageRef = storage.ref('images').child(`${sessionId}`);
-    for (let i = 0; i < file.length; i++) {
-      imageRef.putFile(file[i]).on(
-        'state_changed',
-        (snapshot) => {
-          const progress = snapshot.bytesTransferred / snapshot.totalBytes * 100;
-          this.setState({ progressing: progress });
-          // console.log(`Upload is ${progress}% done`);
-          // Current upload state
-        },
-        (err) => {
-          console.log(err);
-          return false;
-        },
-        (uploadedFile) => {
-          // return true;
-          if (
-            uploadedFile.state === 'success' &&
-            this.state.post.content.photos.indexOf(uploadedFile.downloadURL) === -1
-          ) {
-            // console.log(this.state.post.content.photos.indexOf(uploadedFile.downloadURL) === -1);
-            const timeadd = new Date().toLocaleString();
-            this.setState({
-              post: {
-                ...this.state.post,
-                created: timeadd,
-                content: {
-                  ...this.state.post.content,
-                  photos: this.state.post.content.photos.concat(uploadedFile.downloadURL),
-                },
+    file.forEach((item) => {
+      console.log(item);
+      firebase
+        .storage()
+        .ref('images')
+        .child(`${new Date().getTime()}`)
+        .putFile(item)
+        .then((res) => {
+          const timeAdd = new Date().toLocaleString();
+          this.setState({
+            post: {
+              ...this.state.post,
+              created: timeAdd,
+              content: {
+                ...this.state.post.content,
+                photos: [...this.state.post.content.photos, res.downloadURL],
               },
-            });
-            // console.log(this.state.post.content.photos, `${i} ${file.length}`);
-            if (this.state.post.content.photos.length === file.length) {
-              const { post, restaurant } = this.state;
-              this.props.fetchPostNewFeed(post, restaurant);
-              console.log(post);
-              if (this.props.dataPost.dataSuccess === true) {
-                this.props.hideModal(false);
-              }
+            },
+          });
+          if (this.state.post.content.photos.length === file.length) {
+            console.log(this.state.post.content.photos);
+            const { post, restaurant } = this.state;
+            this.props.fetchPostNewFeed(post, restaurant);
+            console.log(this.props.dataPost.dataSuccess);
+            if (this.props.dataPost.dataSuccess === true) {
+              this.props.hideModal(false);
             }
-            return true;
           }
-          return false;
-        },
-      );
-    }
+        })
+        .catch(err => console.log(err));
+    });
   };
 
   _onAddImages(a) {
@@ -177,12 +158,11 @@ class ModalView extends PureComponent {
         },
         name: item.name,
         vicinity: item.vicinity,
-        idUser: 'fkFIKXHMFPSaCGerCXhirvZkF8D2',
       },
       post: {
         ...this.state.post,
         idRestaurant: item.id,
-        idUser: 'fkFIKXHMFPSaCGerCXhirvZkF8D2sss',
+        idUser: this.props.user.user.uid, // eslint-disable-line
       },
     });
   }
@@ -518,10 +498,14 @@ const mapStateToProps = state => ({
   dataPost: state.postNewFeedReducers,
   region: state.getPositionReducers,
   dataSearchAdd: state.getAddSearchReducers,
+  user: state.user,
 });
-export default connect(mapStateToProps, {
-  fetchDataGetAdd,
-  fetchPostNewFeed,
-  getPositionSuccess,
-  fetchDataGetAddSearch,
-})(ModalView);
+export default connect(
+  mapStateToProps,
+  {
+    fetchDataGetAdd,
+    fetchPostNewFeed,
+    getPositionSuccess,
+    fetchDataGetAddSearch,
+  },
+)(ModalView);

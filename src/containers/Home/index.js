@@ -71,7 +71,7 @@ class Home extends PureComponent {
     console.log(this.props.user);
 
     const updates = {};
-    updates[`/root/users/${uid}/location`] = { lat, lng };
+    updates[`/root/users/${uid}/location`] = { lat, lng }; 
     firebase
       .database()
       .ref()

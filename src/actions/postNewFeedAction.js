@@ -27,54 +27,6 @@ export function fetchPostNewFeed(post, restaurant) {
     const idRestaurant = restaurant.idRestaurant;
     console.log(idRestaurant);
     console.log(post);
-    // firebase
-    //   .database()
-    //   .ref('/root/restaurants')
-    //   .orderByChild('idRestaurant')
-    //   .equalTo(`${idRestaurant}`)
-    //   .on('value', (snapshot) => {
-    //     const newPost = snapshot.val();
-    //     if (newPost === null) {
-    //       console.log(newPost);
-    //       console.log('sjjddds');
-    //       firebase
-    //         .database()
-    //         .ref('root/posts/')
-    //         .push(post)
-    //         .then(
-    //           (snapshot) => {
-    //             console.log(snapshot);
-    //             firebase
-    //               .database()
-    //               .ref(`/root/restaurants/${idRestaurant}`)
-    //               .set(restaurant);
-    //           },
-    //           (error) => {
-    //             // The Promise was rejected.
-    //             console.error(error);
-    //           },
-    //         );
-    //     } else {
-    //       console.log('hihi');
-    //       const a = 'sksksk';
-    //       firebase
-    //         .database()
-    //         .ref(`/root/restaurants/${idRestaurant}`)
-    //         .child('review')
-    //         .set(post)
-    //         .then(
-    //           (snapshot) => {
-    //             // The Promise was rejected.
-    //             console.log(snapshot);
-    //             console.log('ok');
-    //           },
-    //           (error) => {
-    //             // The Promise was rejected.
-    //             console.error(error);
-    //           },
-    //         );
-    //     }
-    //   });
     firebase
       .database()
       .ref('root/posts/')
@@ -82,6 +34,7 @@ export function fetchPostNewFeed(post, restaurant) {
       .on('value', (postSnapshot) => {
         console.log(postSnapshot._value);
         console.log(postSnapshot.key);
+        dispatch(postNewFeedSuccess());
         firebase
           .database()
           .ref('/root/restaurants')

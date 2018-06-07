@@ -28,7 +28,7 @@ class UpdateUser extends PureComponent {
   constructor(props) {
     super(props);
     this.state = {
-      // ...defaultProps,
+      ...defaultProps,
       isSubmit: false,
     };
     this.user = this.props.navigation.getParam('user', {});
@@ -38,7 +38,7 @@ class UpdateUser extends PureComponent {
   }
 
   componentDidMount() {
-    console.log('user', this.user.uid);
+    console.log('user', this.user);
   }
 
   getUser = () => {
@@ -57,7 +57,7 @@ class UpdateUser extends PureComponent {
   uploadPhoto = (tmpInfo, url) => {
     const storage = firebase.storage();
     const sessionId = new Date().getTime();
-    const imageRef = storage.ref('images').child(`${sessionId}`);
+    const imageRef = storage.ref('images').child(sessionId);
     imageRef.putFile(url).on(
       'state_changed',
       () => {
@@ -90,25 +90,27 @@ class UpdateUser extends PureComponent {
     // const user = this.state;
     const userFb = this.props.navigation.getParam('user', {});
     const type = this.props.navigation.getParam('fb', false);
-    const user = this.state;
     firebase
       .database()
       .ref('root/users')
-      .child(type ? userFb.id : user.uid)
+      .child(type ? userFb.id : this.user.uid)
       .set(info, (error) => {
         if (!error) {
           console.log(info);
-          // eslint-disable-next-line
-          this.props.setUser(info);
+          console.log(this.user);
+          const user = {
+            ...info,
+            uid: this.user.uid,
+          };
           const navigateAction = NavigationActions.navigate({
             routeName: 'Home',
             action: NavigationActions.navigate({
               routeName: 'Home',
-              params: {
-                user: { ...info, uid: this.user.uid },
-              },
+              params: user,
             }),
           });
+          // eslint-disable-next-line
+          this.props.setUser(user);
           this.props.navigation.dispatch(navigateAction);
         } else {
           console.log(error);
@@ -233,4 +235,7 @@ const mapStateToProps = state => ({
   user: state.user,
 });
 
-export default connect(mapStateToProps, mapDispatchToProps)(UpdateUser);
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps,
+)(UpdateUser);

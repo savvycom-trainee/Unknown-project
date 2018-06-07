@@ -44,12 +44,12 @@
       "outDir": "${workspaceRoot}/.vscode/.react"
     },
     {
-      "name": "Debug iPhone 6s",
+      "name": "Debug iPhone 6",
       "program": "${workspaceRoot}/.vscode/launchReactNative.js",
       "type": "reactnative",
       "request": "launch",
       "platform": "ios",
-      "runArguments": ["--simulator", "iPhone 6s"],
+      "runArguments": ["--simulator", "iPhone 6"],
       "sourceMaps": true,
       "outDir": "${workspaceRoot}/.vscode/.react"
     },
