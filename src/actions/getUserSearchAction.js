@@ -21,8 +21,8 @@ const fetchDatagetSearchUser = queryText => (dispatch) => {
   try {
     firebase
       .database()
-      .ref('/restaurant/user')
-      .orderByChild('name')
+      .ref('/root/users')
+      .orderByChild('fullName')
       .startAt(`${queryText}`)
       .endAt(`${queryText}\uf8ff`)
       .on('value', (snapshot) => {

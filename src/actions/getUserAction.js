@@ -17,7 +17,7 @@ const fetchDatagetUser = () => (dispatch) => {
   try {
     firebase
       .database()
-      .ref('/restaurant/user')
+      .ref('/root/users')
       .on('value', (snapshot) => {
         let returnArr = [];
         snapshot.forEach((childSnapshot) => {

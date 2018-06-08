@@ -20,7 +20,7 @@ class Content extends PureComponent {
               <Text style={styles.TextName}>{this.props.data.name}</Text>
               <View style={styles.ViewAge}>
                 <Icon name="md-locate" style={styles.icon} color={Colors.default} size={16} />
-                <Text style={styles.TextTime}>{this.props.data.pin.length} </Text>
+                <Text style={styles.TextTime}>{this.props.data.fullName} </Text>
               </View>
               <View style={styles.ViewAge}>
                 <Icon name="md-ionitron" style={styles.icon} color={Colors.default} size={16} />
