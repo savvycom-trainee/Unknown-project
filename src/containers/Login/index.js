@@ -39,7 +39,6 @@ class Login extends PureComponent {
   getUser = async () => {
     try {
       const user = await AsyncStorage.getItem('user');
-      console.log(user);
       if (user) {
         const { acc, pass } = JSON.parse(user);
         this.loginFirebase(acc, pass);

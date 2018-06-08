@@ -17,7 +17,19 @@ import firebase from 'react-native-firebase';
 import styles from './style';
 import { Images } from '../../themes';
 import Gallery from '../Gallery';
+import CheckBox from '../CheckBox';
 import { setUser } from '../../actions';
+
+const data = [
+  {
+    text: 'Male',
+    value: 'Male',
+  },
+  {
+    text: 'Female',
+    value: 'Female',
+  },
+];
 
 class UpdateUser extends PureComponent {
   constructor(props) {
@@ -36,6 +48,7 @@ class UpdateUser extends PureComponent {
         isNewUser: true,
       };
     }
+    this.genderValue = 'Male';
     console.log(this.user);
   }
 
@@ -99,7 +112,7 @@ class UpdateUser extends PureComponent {
   submit = () => {
     const fullName = this.fullName._lastNativeText || this.user.fullName;
     const home = this.home._lastNativeText || this.user.home;
-    const gender = this.gender._lastNativeText || this.user.gender;
+    const gender = this.genderValue || this.user.gender;
     const phone = this.phone._lastNativeText || this.user.phone;
     if (!(fullName === '' && home === '' && gender === '' && phone === '')) {
       const { photoURL } = this.state;
@@ -172,15 +185,12 @@ class UpdateUser extends PureComponent {
             underlineColorAndroid="transparent"
             onSubmitEditing={() => this.gender.focus()}
           />
-          <TextInput
-            ref={(node) => {
-              this.gender = node;
+          <CheckBox
+            style={styles.checkBox}
+            data={data}
+            onChange={(value) => {
+              this.genderValue = value;
             }}
-            style={styles.input}
-            defaultValue={this.user.gender ? this.user.gender : ''}
-            placeholder="Gender: Male or Female"
-            underlineColorAndroid="transparent"
-            onSubmitEditing={() => this.phone.focus()}
           />
           <TextInput
             ref={(node) => {
