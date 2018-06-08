@@ -80,6 +80,7 @@ class Account extends PureComponent {
     super(props);
     const { params } = this.props.navigation;
     console.log(params);
+    this.user = this.props.user.user;
     if (params) {
       this.state = {
         ...params,
@@ -87,14 +88,15 @@ class Account extends PureComponent {
       };
     } else {
       this.state = {
-        ...props.user,
+        ...this.props.user,
         isOwner: true,
       };
     }
   }
   componentDidMount() {
     console.log(this.props.navigation);
-
+    console.log(this.props.user);
+    console.log(this.props.dataUserDetail);
     BackHandler.addEventListener('hardwareBackPress', this.handleBackPress);
   }
   componentWillUnmount() {
@@ -141,10 +143,10 @@ class Account extends PureComponent {
               }
             />
             <View style={account.info}>
-              <Image source={this.state.avatar} style={account.avatar} />
-              <Text style={account.name}>{this.state.name}</Text>
+              <Image source={{ uri: this.props.user.user.photoURL }} style={account.avatar} />
+              <Text style={account.name}>{this.props.user.user.fullName}</Text>
               <Text style={account.detail}>
-                {this.state.gender}, {this.state.location}
+                {this.props.user.user.gender}, {this.props.user.user.home}
               </Text>
             </View>
           </View>
@@ -167,8 +169,8 @@ class Account extends PureComponent {
         </View>
         <View style={account.botView}>
           <View style={account.statisticView}>
-            <Statistic number={1000} title="Follower" />
-            <Statistic number={100} title="Followings" />
+            <Statistic number={this.props.user.user.follower.length} title="Follower" />
+            <Statistic number={this.props.user.user.following.length} title="Followings" />
             <Statistic number={10} title="Share" />
           </View>
           <Text style={account.botRestaurant}>My Restaurant</Text>
