@@ -24,19 +24,6 @@ export function getPlaceDetailFail() {
     type: GET_PLACEDETAIL_FAIL,
   };
 }
-// const getDataFromAPIGoogle = (id) => {
-//   axios
-//     .get(`https://maps.googleapis.com/maps/api/place/details/json?placeid=${id}&key=AIzaSyB4kVqZAVut6UvbjtMjKnM_Amg5G0qCWWQ`)
-//     .then((response) => {
-//       // console.log(JSON.parse(response));
-//       console.log(response.data.result);
-//       return response.data.result;
-//     })
-//     .catch((error) => {
-//       console.log(error);
-//       return null;
-//     });
-// };
 
 export function fetchDatagetPlaceDetail(id) {
   return (dispatch) => {
@@ -67,27 +54,37 @@ export function fetchDatagetPlaceDetail(id) {
           axios
             .get(`https://maps.googleapis.com/maps/api/place/details/json?placeid=${id}&key=AIzaSyBftI7qlfXFzlklaejl63pyeO8J9kivXys`)
             .then((response) => {
-              console.log(response.data.result);
+              if (response.data.status == 'OK') {
+                console.log(response.data.result);
 
-              const data = {
-                idRestaurant: id,
-                location: {
-                  lat: response.data.result.geometry.location.lat,
-                  lng: response.data.result.geometry.location.lng,
-                },
-                name: response.data.result.name,
-                photos: response.data.result.photos,
-                rating: response.data.result.rating,
-                city: response.data.result.address_components[0].long_name,
-                vicinity: response.data.result.formatted_address,
-              };
-              console.log(data.vincinity);
+                const data = {
+                  idRestaurant: id,
+                  location: {
+                    lat: response.data.result.geometry.location.lat,
+                    lng: response.data.result.geometry.location.lng,
+                  },
+                  name: response.data.result.name,
+                  photos: response.data.result.photos,
+                  rating: response.data.result.rating,
+                  city: response.data.result.address_components[0].long_name,
+                  vicinity: response.data.result.formatted_address,
+                };
+                console.log(data.vincinity);
 
-              firebase
-                .database()
-                .ref(`root/restaurants/${id}`)
-                .set(data);
-              dispatch(getPlaceDetailSuccess(data));
+                firebase
+                  .database()
+                  .ref(`root/restaurants/${id}`)
+                  .set(data);
+                dispatch(getPlaceDetailSuccess(data));
+              } else {
+                firebase
+                  .database()
+                  .ref('root/restaurants/ChIJ5wFaYfKrNTERKqOASecEi3k')
+                  .on('value', (snapshot1) => {
+                    console.log(snapshot1.val());
+                    dispatch(getPlaceDetailSuccess(snapshot1.val()));
+                  });
+              }
             })
             .catch((error) => {
               console.log(error);
