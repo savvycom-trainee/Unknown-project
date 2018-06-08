@@ -8,7 +8,7 @@ import PropTypes from 'prop-types';
 import styles from './styles';
 
 import HomeOverviewRestaurant from './HomeOverviewRestaurant';
-import HomeMenuRestaurant from './HomeMenuRestaurant';
+// import HomeMenuRestaurant from './HomeMenuRestaurant';
 import HomeReviewRestaurant from './HomeReviewRestaurant';
 
 class HomeDetail extends Component {
@@ -17,7 +17,7 @@ class HomeDetail extends Component {
     this.state = {
       activeTab: 'HomeOverviewRestaurant',
       isOverviewClick: true,
-      isMenuClick: false,
+      // isMenuClick: false,
       isReviewClick: false,
       idRestaurant: this.props.navigation.getParam('data', 'ChIJu47wL4yrNTERXSmPBD0JC2M'),
       // data: this.props.navigation.getParam('data', null),
@@ -48,60 +48,45 @@ class HomeDetail extends Component {
     this.setState({
       activeTab: 'HomeOverviewRestaurant',
       isOverviewClick: true,
-      isMenuClick: false,
+      // isMenuClick: false,
       isReviewClick: false,
     });
   };
-  clickTab2 = () => {
-    this.setState({
-      activeTab: 'HomeMenuRestaurant',
-      isOverviewClick: false,
-      isMenuClick: true,
-      isReviewClick: false,
-    });
-  };
+  // clickTab2 = () => {
+  //   this.setState({
+  //     activeTab: 'HomeMenuRestaurant',
+  //     isOverviewClick: false,
+  //     isMenuClick: true,
+  //     isReviewClick: false,
+  //   });
+  // };
   clickTab3 = () => {
     this.setState({
       activeTab: 'HomeReviewRestaurant',
       isOverviewClick: false,
-      isMenuClick: false,
+      // isMenuClick: false,
       isReviewClick: true,
     });
   };
 
   render() {
-    // console.log('ren');
-
-    // console.log(this.props.dataHomeDetail.data);
-
     const Content = (activeTab) => {
       if (activeTab === 'HomeOverviewRestaurant') {
         return (
           <HomeOverviewRestaurant
             idRestaurant={this.state.idRestaurant}
-            // data={this.props.dataHomeDetail.data}
             onPressGoBack={() => this.props.navigation.goBack()}
             onPressDirect={() => this.props.navigation.navigate('Direct')}
           />
         );
       }
-      //  else if (activeTab === 'HomeMenuRestaurant') {
-      //   return (
-      //     <HomeMenuRestaurant
-      //       // idRestaurant={this.state.idRestaurant}
-      //       // data={this.props.dataHomeDetail.data}
-      //       onPressGoBack={() => this.props.navigation.goBack()}
-      //     />
-      //   );
-      // }
-      // return (
-      //   <HomeReviewRestaurant
-      //     // onPressRefesh={() => this.fetchData(this.state.idRestaurant)}
-      //     // idRestaurant={this.state.idRestaurant}
-      //     // data={this.props.dataHomeDetail.data}
-      //     onPressGoBack={() => this.props.navigation.goBack()}
-      //   />
-      // );
+
+      return (
+        <HomeReviewRestaurant
+          idRestaurant={this.state.idRestaurant}
+          onPressGoBack={() => this.props.navigation.goBack()}
+        />
+      );
     };
 
     return (
@@ -116,14 +101,14 @@ class HomeDetail extends Component {
               Overview
             </Text>
           </TouchableOpacity>
-          <TouchableOpacity
+          {/* <TouchableOpacity
             onPress={() => this.clickTab2()}
             style={this.state.isMenuClick ? styles.TabbarFocus : styles.TabbarNotFocus}
           >
             <Text style={this.state.isMenuClick ? styles.TextFocus : styles.TextNotFocus}>
               Menu
             </Text>
-          </TouchableOpacity>
+          </TouchableOpacity> */}
           <TouchableOpacity
             onPress={() => this.clickTab3()}
             style={this.state.isReviewClick ? styles.TabbarFocus : styles.TabbarNotFocus}
