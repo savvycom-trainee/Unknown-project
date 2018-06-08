@@ -2,6 +2,7 @@ import React, { PureComponent } from 'react';
 import PropTypes from 'prop-types';
 import { View, Text, ScrollView, TouchableOpacity, Image, FlatList, Modal } from 'react-native';
 import { connect } from 'react-redux';
+import Moment from 'moment';
 import firebase from 'react-native-firebase';
 import Icon from 'react-native-vector-icons/Ionicons';
 import StarRating from 'react-native-star-rating';
@@ -126,7 +127,7 @@ class Home extends PureComponent {
                       <Image source={{ uri: item.userAvatar }} style={styles.viewImageUser} />
                       <View>
                         <Text style={styles.textNameUser}>{item.userName}</Text>
-                        <Text style={styles.textPost}>{item.created}</Text>
+                        <Text style={styles.textPost}>{Moment(item.create).format('h:mm a, Do MMMM YYYY')}</Text>
                       </View>
                     </View>
                   </TouchableOpacity>
