@@ -57,7 +57,14 @@ class Gallery extends Component {
   };
   render() {
     return !this.state.isShow ? null : (
-      <ScrollView style={{ flex: 1, position: 'absolute', zIndex: 2 }}>
+      <ScrollView
+        style={{
+          flex: 1,
+          position: 'absolute',
+          zIndex: 2,
+          backgroundColor: 'white',
+        }}
+      >
         <View style={{ height: 30, alignItems: 'center', justifyContent: 'center' }}>
           <Text style={{ textAlign: 'center', fontWeight: '600', fontSize: 14 }}>
             Recent Gellary

@@ -196,7 +196,6 @@ class UpdateUser extends PureComponent {
             style={styles.input}
             placeholder="Full name"
             underlineColorAndroid="transparent"
-            onSubmitEditing={() => this.gender.focus()}
           />
           <CheckBox
             style={styles.checkBox}
@@ -214,6 +213,7 @@ class UpdateUser extends PureComponent {
             placeholder="Phone"
             defaultValue={this.user.phone ? this.user.phone : ''}
             underlineColorAndroid="transparent"
+            returnKeyType="next"
             onSubmitEditing={() => this.home.focus()}
           />
           <TextInput
