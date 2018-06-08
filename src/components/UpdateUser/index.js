@@ -102,13 +102,23 @@ class UpdateUser extends PureComponent {
             ...info,
             uid: this.user.uid,
           };
-          const navigateAction = NavigationActions.navigate({
-            routeName: 'Home',
-            action: NavigationActions.navigate({
-              routeName: 'Home',
+          const navigateAction = NavigationActions.navigate(this.user
+            ? {
+              routeName: 'Login',
               params: user,
-            }),
-          });
+              action: NavigationActions.navigate({
+                routeName: 'Login',
+                params: { user, newUser: true },
+              }),
+            }
+            : {
+              routeName: 'Account',
+              params: user,
+              action: NavigationActions.navigate({
+                routeName: 'Account',
+                params: { user, newUser: true },
+              }),
+            });
           // eslint-disable-next-line
           this.props.setUser(user);
           this.props.navigation.dispatch(navigateAction);

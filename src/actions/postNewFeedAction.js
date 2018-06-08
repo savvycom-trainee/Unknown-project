@@ -37,6 +37,13 @@ export function fetchPostNewFeed(post, restaurant) {
         dispatch(postNewFeedSuccess());
         firebase
           .database()
+          .ref(`/root/users/${post.idUser}`)
+          .child('pin')
+          .child(postSnapshot.key)
+          .set(postSnapshot.key);
+
+        firebase
+          .database()
           .ref('/root/restaurants')
           .orderByChild('idRestaurant')
           .equalTo(`${idRestaurant}`)

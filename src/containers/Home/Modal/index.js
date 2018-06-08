@@ -47,6 +47,7 @@ class ModalView extends PureComponent {
         },
         created: '20/5/2018',
         idUser: 'fkFIKXHMFPSaCGerCXhirvZkF8D2',
+        rating: 0,
         idRestaurant: 'idrestaurant123',
       },
       restaurant: {
@@ -57,7 +58,6 @@ class ModalView extends PureComponent {
         },
         photo: '',
         vicinity: '',
-        rating: 0,
       },
     };
   }
@@ -76,8 +76,8 @@ class ModalView extends PureComponent {
 
   onStarRatingPress(rating) {
     this.setState({
-      restaurant: {
-        ...this.state.restaurant,
+      post: {
+        ...this.state.post,
         rating,
       },
     });
@@ -162,7 +162,11 @@ class ModalView extends PureComponent {
       post: {
         ...this.state.post,
         idRestaurant: item.id,
+        restaurantName: item.name,
+        restaurantVicinity: item.vicinity,
         idUser: this.props.user.user.uid, // eslint-disable-line
+        userAvatar: this.props.user.user.photoURL, // eslint-disable-line
+        userName: this.props.user.user.fullName, // eslint-disable-line
       },
     });
   }
@@ -457,7 +461,7 @@ class ModalView extends PureComponent {
                   halfStar="ios-star-half"
                   iconSet="Ionicons"
                   maxStars={5}
-                  rating={this.state.restaurant.rating}
+                  rating={this.state.post.rating}
                   selectedStar={rating => this.onStarRatingPress(rating)}
                   fullStarColor={Colors.white}
                 />

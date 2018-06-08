@@ -36,7 +36,7 @@ class Home extends PureComponent {
 
   componentDidMount() {
     this.onGetCurrentPosition();
-    this.props.fetchDatagetNewFeed();
+    this.props.fetchDatagetNewFeed(this.props.user.user.uid);
     console.log(this.props.dataNewFeed.data);
   }
 
@@ -71,7 +71,7 @@ class Home extends PureComponent {
     console.log(this.props.user);
 
     const updates = {};
-    updates[`/root/users/${uid}/location`] = { lat, lng }; 
+    updates[`/root/users/${uid}/location`] = { lat, lng };
     firebase
       .database()
       .ref()
@@ -108,12 +108,12 @@ class Home extends PureComponent {
         <FlatList
           data={this.props.dataNewFeed.data.reverse()}
           renderItem={({ item }) => {
-            const distance = this._getDistanceFromLatLonInKm(
-              item.geometry.location.lat,
-              item.geometry.location.lng,
-              this.state.latitude,
-              this.state.longitude,
-            );
+            // const distance = this._getDistanceFromLatLonInKm(
+            //   item.location.lat,
+            //   item.location.lng,
+            //   this.state.latitude,
+            //   this.state.longitude,
+            // );
             return (
               <View style={styles.formItem}>
                 <TouchableOpacity
@@ -121,9 +121,21 @@ class Home extends PureComponent {
                     this.props.navigation.navigate('HomeDetail', { data: item.key });
                   }}
                 >
+                  <TouchableOpacity>
+                    <View style={styles.viewUserPost}>
+                      <Image source={{ uri: item.userAvatar }} style={styles.viewImageUser} />
+                      <View>
+                        <Text style={styles.textNameUser}>{item.userName}</Text>
+                        <Text style={styles.textPost}>{item.created}</Text>
+                      </View>
+                    </View>
+                  </TouchableOpacity>
                   <View>
+                    <View style={styles.statusContainer}>
+                      <Text style={styles.statusStyle} numberOfLines={1} ellipsizeMode="tail">{item.content.detail}</Text>
+                    </View>
                     <View style={styles.imageContent}>
-                      <Image source={{ uri: item.photos[0] }} style={styles.imageContent} />
+                      <Image source={{ uri: item.content.photos[0] }} style={styles.imageContent} />
                     </View>
                     <View style={styles.viewPointForm}>
                       <View style={styles.viewPoint}>
@@ -134,17 +146,12 @@ class Home extends PureComponent {
                   <View style={styles.formItemText}>
                     <View style={styles.viewNameRow1}>
                       <Text numberOfLines={1} style={styles.textName}>
-                        {item.iduser}
+                        {item.restaurantName}
                       </Text>
                     </View>
                     <View style={styles.viewNameRow2}>
                       <View>
-                        <Text numberOfLines={1} style={styles.textNameUserRow2}>
-                          {item.name}
-                        </Text>
-                      </View>
-                      <View>
-                        <Text style={styles.textNameRow2}>{item.type}</Text>
+                        <Text style={styles.textNameRow2} numberOfLines={1} ellipsizeMode="tail">{item.restaurantVicinity}</Text>
                       </View>
                       <View>
                         <StarRating
@@ -158,31 +165,6 @@ class Home extends PureComponent {
                           reversed
                           starSize={12}
                         />
-                      </View>
-                    </View>
-                    <View style={styles.viewNameRow3}>
-                      <View>
-                        {item.follow ? (
-                          <Text style={styles.textNameRow2Flowed}>Followed</Text>
-                        ) : (
-                          <Text style={styles.textNameRow2}>Follow</Text>
-                        )}
-                      </View>
-                      <View style={styles.viewNameRow2Item}>
-                        {Math.round(distance) < 1 ? (
-                          <Text style={styles.textNameRow2}>
-                            • {Math.round(distance)} m from you
-                          </Text>
-                        ) : (
-                          <Text style={styles.textNameRow2}>
-                            • {Math.round(distance)} km from you
-                          </Text>
-                        )}
-                      </View>
-                      <View style={styles.viewNameRow2Item}>
-                        <Text style={styles.textNameRow2} numberOfLines={1}>
-                          • {item.vicinity}
-                        </Text>
                       </View>
                     </View>
                     <View />
