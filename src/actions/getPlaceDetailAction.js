@@ -24,19 +24,19 @@ export function getPlaceDetailFail() {
     type: GET_PLACEDETAIL_FAIL,
   };
 }
-const getDataFromAPIGoogle = (id) => {
-  axios
-    .get(`https://maps.googleapis.com/maps/api/place/details/json?placeid=${id}&key=AIzaSyB4kVqZAVut6UvbjtMjKnM_Amg5G0qCWWQ`)
-    .then((response) => {
-      // console.log(JSON.parse(response));
-      console.log(response.data.result);
-      return response.data.result;
-    })
-    .catch((error) => {
-      console.log(error);
-      return null;
-    });
-};
+// const getDataFromAPIGoogle = (id) => {
+//   axios
+//     .get(`https://maps.googleapis.com/maps/api/place/details/json?placeid=${id}&key=AIzaSyB4kVqZAVut6UvbjtMjKnM_Amg5G0qCWWQ`)
+//     .then((response) => {
+//       // console.log(JSON.parse(response));
+//       console.log(response.data.result);
+//       return response.data.result;
+//     })
+//     .catch((error) => {
+//       console.log(error);
+//       return null;
+//     });
+// };
 
 export function fetchDatagetPlaceDetail(id) {
   return (dispatch) => {
@@ -47,18 +47,25 @@ export function fetchDatagetPlaceDetail(id) {
       .database()
       .ref('root/restaurants')
       .on('value', (snapshot) => {
-        const dataFromFirebase = snapshot.val();
         const checkInFirebase = snapshot.val().hasOwnProperty(id);
         console.log(checkInFirebase);
 
         // find restaurant in firebase
         if (checkInFirebase) {
-          dispatch(getPlaceDetailSuccess(dataFromFirebase));
+          // dispatch(getPlaceDetailSuccess(dataFromFirebase.id));
+          firebase
+            .database()
+            .ref(`root/restaurants/${id}`)
+            .on('value', (snapshot1) => {
+              console.log(snapshot1.val());
+
+              dispatch(getPlaceDetailSuccess(snapshot1.val()));
+            });
         }
         // if dont have
         else {
           axios
-            .get(`https://maps.googleapis.com/maps/api/place/details/json?placeid=${id}&key=AIzaSyB4kVqZAVut6UvbjtMjKnM_Amg5G0qCWWQ`)
+            .get(`https://maps.googleapis.com/maps/api/place/details/json?placeid=${id}&key=AIzaSyBftI7qlfXFzlklaejl63pyeO8J9kivXys`)
             .then((response) => {
               console.log(response.data.result);
 
@@ -75,7 +82,11 @@ export function fetchDatagetPlaceDetail(id) {
                 vicinity: response.data.result.formatted_address,
               };
               console.log(data.vincinity);
-              // firebase.database().ref('root/restaurants').set()
+
+              firebase
+                .database()
+                .ref(`root/restaurants/${id}`)
+                .set(data);
               dispatch(getPlaceDetailSuccess(data));
             })
             .catch((error) => {
