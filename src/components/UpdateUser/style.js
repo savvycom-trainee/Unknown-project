@@ -16,6 +16,7 @@ const styles = StyleSheet.create({
     height: 50 * d.ratioH,
     marginBottom: 17 * d.ratioH,
     flexDirection: 'row',
+    alignItems: 'center',
   },
   imageView: {
     marginTop: 31 * d.ratioH,

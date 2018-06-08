@@ -107,7 +107,6 @@ class Account extends PureComponent {
     this.props.navigation.dispatch(navigateAction);
   };
   render() {
-    console.log(this.props.user);
     return (
       <View style={account.container}>
         <StatusBar hidden />

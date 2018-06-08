@@ -36,7 +36,10 @@ class Home extends PureComponent {
   componentDidMount() {
     this.onGetCurrentPosition();
     this.props.fetchDatagetNewFeed(this.props.user.user.uid);
-    console.log(this.props.dataNewFeed.data);
+    const { uid } = this.props.user.user;
+    firebase.database().ref('root/users').child(uid).on('value', (data) => {
+      this.props.setUser(data._value);
+    });
   }
 
   onGetCurrentPosition = () => {
@@ -69,7 +72,6 @@ class Home extends PureComponent {
   _updateLocation = (lat, lng) => {
     const { uid } = this.props.user.user;
     console.log(this.props.user);
-
     const updates = {};
     updates[`/root/users/${uid}/location`] = { lat, lng };
     firebase
@@ -180,7 +182,6 @@ class Home extends PureComponent {
     return null;
   }
   render() {
-    console.log(this.props.user);
     return (
       <View style={styles.container}>
         <View style={styles.body}>

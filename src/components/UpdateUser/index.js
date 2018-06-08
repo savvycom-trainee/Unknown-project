@@ -134,7 +134,7 @@ class UpdateUser extends PureComponent {
         home,
         gender,
         phone,
-        location: this.location ? this.location : [],
+        location: this.location ? this.location.data : [],
         photoURL: this.user.photoURL ? this.user.photoURL : '',
         uid: this.user.uid,
       };
@@ -200,6 +200,7 @@ class UpdateUser extends PureComponent {
           <CheckBox
             style={styles.checkBox}
             data={data}
+            defaultValue={this.user.gender}
             onChange={(value) => {
               this.genderValue = value;
             }}
