@@ -15,6 +15,7 @@ import user from './user';
 import getUserDetailReducers from './getUserDetailReducers';
 import getPlaceDetailReducers from './getPlaceDetailReducers';
 import getReviewReducers from './getReviewReducers';
+import getPinReducers from './getPinReducers';
 
 const navReducer = createNavigationReducer(RootNavigator);
 
@@ -32,6 +33,7 @@ const rootRecuder = combineReducers({
   getUserSearchReducers,
   getPlaceDetailReducers,
   getReviewReducers,
+  getPinReducers,
 });
 
 export default rootRecuder;

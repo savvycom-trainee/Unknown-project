@@ -11,3 +11,4 @@ export * from './user';
 export * from './getUserDetailAction';
 export * from './getPlaceDetailAction';
 export * from './getReviewAction';
+export * from './getPinAction';

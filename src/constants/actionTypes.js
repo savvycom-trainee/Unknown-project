@@ -46,3 +46,7 @@ export const GET_PLACEDETAIL_FAIL = 'GET_PLACEDETAIL_FAIL';
 export const GET_REVIEW_ING = 'GET_REVIEW_ING';
 export const GET_REVIEW_SUCCESS = 'GET_REVIEW_SUCCESS';
 export const GET_REVIEW_FAIL = 'GET_REVIEW_FAIL';
+
+export const GET_PIN_ING = 'GET_PIN_ING';
+export const GET_PIN_SUCCESS = 'GET_PIN_SUCCESS';
+export const GET_PIN_FAIL = 'GET_PIN_FAIL';
