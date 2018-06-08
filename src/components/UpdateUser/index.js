@@ -88,26 +88,37 @@ class UpdateUser extends PureComponent {
       },
     );
   };
+
+  uploadDone = (info, error) => {
+    if (!error) {
+      this.props.setUser(info);
+      // eslint-disable-next-line
+      const navigateAction = NavigationActions.navigate({
+        routeName: 'Home',
+        action: NavigationActions.navigate({
+          routeName: 'Home',
+        }),
+      });
+      this.props.navigation.dispatch(navigateAction);
+    } else {
+      console.log(error);
+    }
+  }
+
   uploadUser = (info) => {
-    firebase
+    if(this.state.isNewUser){
+      firebase
       .database()
       .ref('root/users')
       .child(this.user.uid)
-      .set(info, (error) => {
-        if (!error) {
-          this.props.setUser(info);
-          // eslint-disable-next-line
-          const navigateAction = NavigationActions.navigate({
-            routeName: 'Home',
-            action: NavigationActions.navigate({
-              routeName: 'Home',
-            }),
-          });
-          this.props.navigation.dispatch(navigateAction);
-        } else {
-          console.log(error);
-        }
-      });
+      .set(info, (error) => this.uploadDone(info, error));
+    } else {
+      firebase.
+        database()
+        .ref('root/users')
+        .child(this.user.uid)
+        .update(info, error => this.uploadDone(info, error));
+    }
   };
   submit = () => {
     const fullName = this.fullName._lastNativeText || this.user.fullName;
