@@ -104,7 +104,7 @@ class UpdateUser extends PureComponent {
     } else {
       console.log(error);
     }
-  }
+  };
 
   uploadUser = (info) => {
     if (this.state.isNewUser) {

@@ -23,7 +23,7 @@ class FindAround extends Component {
     const { user } = this.props.user;
     firebase
       .database()
-      .ref('/restaurant/user/')
+      .ref('/root/users/')
       .once('value')
       .then((snapshot) => {
         this.setState({ isLoading: false });

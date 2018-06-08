@@ -7,6 +7,19 @@ export default StyleSheet.create({
     flex: 1,
     backgroundColor: Colors.background,
   },
+  viewUserPost: {
+    alignItems: 'center',
+    flexDirection: 'row',
+    height: 80 * d.ratioH,
+    width: 365 * d.ratioW,
+    borderRadius: 25,
+    padding: 14,
+  },
+  viewImageUser: {
+    height: 50 * d.ratioH,
+    width: 50 * d.ratioW,
+    borderRadius: 25,
+  },
   body: {
     flex: 1,
   },
@@ -22,11 +35,6 @@ export default StyleSheet.create({
     width: 315 * d.ratioW,
   },
   viewMenuItem: {
-    // elevation: 6,
-    // shadowColor: 'rgba(0,0,0,0.6)',
-    // shadowOffset: { width: 0, height: 0 },
-    // shadowOpacity: 0.4,
-    // shadowRadius: 20,
     borderRadius: 8,
     flexDirection: 'row',
     justifyContent: 'space-between',
@@ -74,7 +82,27 @@ export default StyleSheet.create({
     borderRadius: 2.5,
     backgroundColor: Colors.white,
     width: 315 * d.ratioW,
-    height: Metrics.screenHeight / 2.3,
+    // height: Metrics.screenHeight / 1.9,
+  },
+  statusContainer: {
+    marginBottom: 10 * d.ratioH,
+    marginHorizontal: 10 * d.ratioW,
+  },
+  statusStyle: {
+    fontSize: 12,
+    color: Colors.text,
+  },
+  textNameUser: {
+    paddingHorizontal: 10,
+    fontSize: 13,
+    color: Colors.text,
+    fontWeight: '800',
+  },
+  textPost: {
+    paddingHorizontal: 10,
+    fontSize: 9,
+    color: Colors.textOpacity,
+    fontWeight: '800',
   },
   formItemText: {
     padding: 25.5,

@@ -7,6 +7,7 @@ import {
   TouchableOpacity,
   FlatList,
   AsyncStorage,
+  BackHandler,
 } from 'react-native';
 import PropTypes from 'prop-types';
 import Icon from 'react-native-vector-icons/Ionicons';
@@ -84,6 +85,16 @@ class Account extends PureComponent {
       };
     }
   }
+  componentDidMount() {
+    console.log(this.props.navigation);
+
+    BackHandler.addEventListener('hardwareBackPress', this.handleBackPress);
+  }
+  componentWillUnmount() {
+    BackHandler.removeEventListener('hardwareBackPress', this.handleBackPress);
+  }
+  getUserId = () => {};
+
   logOut = () => {
     AsyncStorage.removeItem('user');
     AsyncStorage.removeItem('accessToken');

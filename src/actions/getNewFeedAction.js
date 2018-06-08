@@ -1,3 +1,4 @@
+import { AsyncStorage } from 'react-native';
 import firebase from 'react-native-firebase';
 import { GET_NEWFEED_ING, GET_NEWFEED_SUCCESS, GET_NEWFEED_FAIL } from '../constants/actionTypes';
 
@@ -17,25 +18,44 @@ export function getNewFeedFail() {
     type: GET_NEWFEED_FAIL,
   };
 }
-export function fetchDatagetNewFeed() {
+
+export function fetchDatagetNewFeed(userId) {
   return (dispatch) => {
+    const db = firebase.database();
+    const userRef = db.ref(`/root/users/${userId}/followed`);
+    const postRef = db.ref('/root/posts');
+    let returnArr = [];
     dispatch(getNewFeed());
     try {
-      firebase
-        .database()
-        .ref('/restaurant/restaurant')
+      postRef
+        .orderByChild('idUser')
+        .equalTo(`${userId}`)
         .on('value', (snapshot) => {
-          let returnArr = [];
-          snapshot.forEach((childSnapshot) => {
-            const item = childSnapshot.val();
-            item.key = childSnapshot.key;
-            returnArr = [...returnArr, item];
+          console.log(snapshot);
+          snapshot.forEach((item) => {
+            returnArr = [...returnArr, item._value];
           });
-          dispatch(getNewFeedSuccess(returnArr));
         });
+      userRef.once('value').then((snapshot) => {
+        if (snapshot._value) {
+          snapshot._value.forEach((value) => {
+            postRef
+              .orderByChild('idUser')
+              .equalTo(`${value}`)
+              .once('value')
+              .then((postSnapshot) => {
+                postSnapshot.forEach((item) => {
+                  returnArr = [...returnArr, item._value];
+                });
+                dispatch(getNewFeedSuccess(returnArr));
+              });
+          });
+        } else {
+          dispatch(getNewFeedSuccess(returnArr));
+        }
+      });
     } catch (error) {
       console.log(error);
-
       dispatch(getNewFeedFail(error));
     }
   };
