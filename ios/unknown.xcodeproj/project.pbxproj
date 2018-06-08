@@ -1564,7 +1564,7 @@
 					"-ObjC",
 					"-lc++",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = org.reactjs.native.example.unknown123;
+				PRODUCT_BUNDLE_IDENTIFIER = org.reactjs.native.example.unknown;
 				PRODUCT_NAME = unknown;
 				VERSIONING_SYSTEM = "apple-generic";
 			};
@@ -1594,7 +1594,7 @@
 					"-ObjC",
 					"-lc++",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = org.reactjs.native.example.unknown123;
+				PRODUCT_BUNDLE_IDENTIFIER = org.reactjs.native.example.unknown;
 				PRODUCT_NAME = unknown;
 				VERSIONING_SYSTEM = "apple-generic";
 			};
