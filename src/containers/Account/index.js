@@ -93,6 +93,8 @@ class Account extends PureComponent {
     }
   }
   componentDidMount() {
+    console.log(this.props.navigation);
+
     BackHandler.addEventListener('hardwareBackPress', this.handleBackPress);
   }
   componentWillUnmount() {

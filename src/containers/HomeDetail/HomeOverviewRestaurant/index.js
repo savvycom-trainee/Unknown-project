@@ -20,10 +20,12 @@ import styles from './styles';
 class HomeOverviewRestaurant extends PureComponent {
   state = {
     isBookmark: false,
+    idRestaurant: this.props.idRestaurant,
   };
   componentDidMount() {
-    //this.fetchData('ChIJQ3FKAu6rNTER74rX50MmqlA');
-    this.fetchData('ChIJ5wFaYfKrNTERKqOASecEi3k');
+    console.log(this.state.idRestaurant);
+
+    this.fetchData(this.state.idRestaurant);
   }
 
   fetchData = id => {
@@ -133,9 +135,9 @@ class HomeOverviewRestaurant extends PureComponent {
 HomeOverviewRestaurant.propTypes = {
   navigation: PropTypes.shape({
     navigate: PropTypes.func.isRequired,
-    //getParam: PropTypes.func.isRequired,
+    getParam: PropTypes.func.isRequired,
     goBack: PropTypes.func.isRequired,
-  }).isRequired,
+  }),
   fetchDatagetPlaceDetail: PropTypes.func.isRequired,
   dataPlaceDetail: PropTypes.object.isRequired,
 };

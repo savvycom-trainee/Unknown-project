@@ -19,13 +19,14 @@ class HomeDetail extends Component {
       isOverviewClick: true,
       isMenuClick: false,
       isReviewClick: false,
-      idRestaurant: this.props.navigation.getParam('data', null),
+      idRestaurant: this.props.navigation.getParam('data', 'ChIJu47wL4yrNTERXSmPBD0JC2M'),
       // data: this.props.navigation.getParam('data', null),
     };
   }
 
   componentDidMount() {
     // this.fetchData(this.state.idRestaurant);
+    console.log(this.state.idRestaurant);
     console.log('didmount');
     BackHandler.addEventListener('hardwareBackPress', this.handleBackPress);
   }
@@ -77,7 +78,7 @@ class HomeDetail extends Component {
       if (activeTab === 'HomeOverviewRestaurant') {
         return (
           <HomeOverviewRestaurant
-            // idRestaurant={this.state.idRestaurant}
+            idRestaurant={this.state.idRestaurant}
             // data={this.props.dataHomeDetail.data}
             onPressGoBack={() => this.props.navigation.goBack()}
             onPressDirect={() => this.props.navigation.navigate('Direct')}
