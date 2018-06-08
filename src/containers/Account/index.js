@@ -7,6 +7,7 @@ import {
   TouchableOpacity,
   FlatList,
   AsyncStorage,
+  BackHandler,
 } from 'react-native';
 
 import PropTypes from 'prop-types';
@@ -91,8 +92,14 @@ class Account extends PureComponent {
       };
     }
   }
-  componentDidMount() {}
+  componentDidMount() {
+    console.log(this.props.navigation);
 
+    BackHandler.addEventListener('hardwareBackPress', this.handleBackPress);
+  }
+  componentWillUnmount() {
+    BackHandler.removeEventListener('hardwareBackPress', this.handleBackPress);
+  }
   getUserId = () => {};
 
   logOut = () => {
@@ -204,4 +211,7 @@ const mapDispatchToProps = dispatch => ({
   fetchDatagetUserDetail: id => dispatch(fetchDatagetUserDetail(id)),
 });
 
-export default connect(mapStateToProps, mapDispatchToProps)(Account);
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps,
+)(Account);

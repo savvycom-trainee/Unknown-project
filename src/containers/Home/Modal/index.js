@@ -164,6 +164,7 @@ class ModalView extends PureComponent {
         idRestaurant: item.id,
         restaurantName: item.name,
         restaurantVicinity: item.vicinity,
+        restaurantPlaceId: item.place_id,
         idUser: this.props.user.user.uid, // eslint-disable-line
         userAvatar: this.props.user.user.photoURL, // eslint-disable-line
         userName: this.props.user.user.fullName, // eslint-disable-line

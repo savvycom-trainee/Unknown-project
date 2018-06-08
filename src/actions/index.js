@@ -9,3 +9,4 @@ export * from './getUserAction';
 export * from './getUserSearchAction';
 export * from './user';
 export * from './getUserDetailAction';
+export * from './getPlaceDetailAction';

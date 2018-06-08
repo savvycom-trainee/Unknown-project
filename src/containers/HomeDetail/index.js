@@ -2,8 +2,8 @@ import React, { Component } from 'react';
 import { View, Text, TouchableOpacity, BackHandler } from 'react-native';
 // import firebase from 'react-native-firebase';
 import PropTypes from 'prop-types';
-import { connect } from 'react-redux';
-import { fetchDatagetHomeDetail } from '../../actions/getHomeDetailAction';
+// import { connect } from 'react-redux';
+// import { fetchDatagetHomeDetail } from '../../actions/getHomeDetailAction';
 
 import styles from './styles';
 
@@ -19,13 +19,14 @@ class HomeDetail extends Component {
       isOverviewClick: true,
       isMenuClick: false,
       isReviewClick: false,
-      idRestaurant: this.props.navigation.getParam('data', null),
+      idRestaurant: this.props.navigation.getParam('data', 'ChIJu47wL4yrNTERXSmPBD0JC2M'),
       // data: this.props.navigation.getParam('data', null),
     };
   }
 
   componentDidMount() {
-    this.fetchData(this.state.idRestaurant);
+    // this.fetchData(this.state.idRestaurant);
+    console.log(this.state.idRestaurant);
     console.log('didmount');
     BackHandler.addEventListener('hardwareBackPress', this.handleBackPress);
   }
@@ -39,9 +40,9 @@ class HomeDetail extends Component {
     return true;
   };
 
-  fetchData = (id) => {
-    this.props.fetchDatagetHomeDetail(id);
-  };
+  // fetchData = (id) => {
+  //   this.props.fetchDatagetHomeDetail(id);
+  // };
 
   clickTab1 = () => {
     this.setState({
@@ -69,37 +70,38 @@ class HomeDetail extends Component {
   };
 
   render() {
-    console.log('ren');
+    // console.log('ren');
 
-    console.log(this.props.dataHomeDetail.data);
+    // console.log(this.props.dataHomeDetail.data);
 
     const Content = (activeTab) => {
       if (activeTab === 'HomeOverviewRestaurant') {
         return (
           <HomeOverviewRestaurant
             idRestaurant={this.state.idRestaurant}
-            data={this.props.dataHomeDetail.data}
+            // data={this.props.dataHomeDetail.data}
             onPressGoBack={() => this.props.navigation.goBack()}
             onPressDirect={() => this.props.navigation.navigate('Direct')}
           />
         );
-      } else if (activeTab === 'HomeMenuRestaurant') {
-        return (
-          <HomeMenuRestaurant
-            idRestaurant={this.state.idRestaurant}
-            data={this.props.dataHomeDetail.data}
-            onPressGoBack={() => this.props.navigation.goBack()}
-          />
-        );
       }
-      return (
-        <HomeReviewRestaurant
-          // onPressRefesh={() => this.fetchData(this.state.idRestaurant)}
-          idRestaurant={this.state.idRestaurant}
-          data={this.props.dataHomeDetail.data}
-          onPressGoBack={() => this.props.navigation.goBack()}
-        />
-      );
+      //  else if (activeTab === 'HomeMenuRestaurant') {
+      //   return (
+      //     <HomeMenuRestaurant
+      //       // idRestaurant={this.state.idRestaurant}
+      //       // data={this.props.dataHomeDetail.data}
+      //       onPressGoBack={() => this.props.navigation.goBack()}
+      //     />
+      //   );
+      // }
+      // return (
+      //   <HomeReviewRestaurant
+      //     // onPressRefesh={() => this.fetchData(this.state.idRestaurant)}
+      //     // idRestaurant={this.state.idRestaurant}
+      //     // data={this.props.dataHomeDetail.data}
+      //     onPressGoBack={() => this.props.navigation.goBack()}
+      //   />
+      // );
     };
 
     return (
@@ -142,18 +144,17 @@ HomeDetail.propTypes = {
     getParam: PropTypes.func.isRequired,
     goBack: PropTypes.func.isRequired,
   }).isRequired,
-  fetchDatagetHomeDetail: PropTypes.func.isRequired,
-  dataHomeDetail: PropTypes.object.isRequired,
+  // fetchDatagetHomeDetail: PropTypes.func.isRequired,
+  // dataHomeDetail: PropTypes.object.isRequired,
 };
 
-const mapStateToProps = state => ({
-  dataHomeDetail: state.getHomeDetailReducers,
-});
+// const mapStateToProps = state => ({
+//   dataHomeDetail: state.getHomeDetailReducers,
+// });
 
-const mapDispatchToProps = dispatch => ({
-  fetchDatagetHomeDetail: id => dispatch(fetchDatagetHomeDetail(id)),
-});
+// const mapDispatchToProps = dispatch => ({
+//   fetchDatagetHomeDetail: id => dispatch(fetchDatagetHomeDetail(id)),
+// });
 
-export default connect(mapStateToProps, mapDispatchToProps)(HomeDetail);
-
-// export default HomeDetail;
+// export default connect(mapStateToProps, mapDispatchToProps)(HomeDetail);
+export default HomeDetail;

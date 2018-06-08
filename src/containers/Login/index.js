@@ -40,6 +40,8 @@ class Login extends PureComponent {
     try {
       console.log('get1');
       const user = await AsyncStorage.getItem('user');
+      console.log(user);
+      
       console.log('get2');
       if (user) {
         console.log('get3');

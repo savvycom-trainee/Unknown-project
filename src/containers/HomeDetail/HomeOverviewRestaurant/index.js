@@ -1,9 +1,10 @@
 import React, { PureComponent } from 'react';
-// import Ionicons from 'react-native-vector-icons/Ionicons';
-import firebase from 'react-native-firebase';
-
-import StarRating from 'react-native-star-rating';
 import { View, Text, Image, FlatList } from 'react-native';
+import PropTypes from 'prop-types';
+import { connect } from 'react-redux';
+import StarRating from 'react-native-star-rating';
+import { fetchDatagetPlaceDetail } from '../../../actions/getPlaceDetailAction';
+import Loading from '../../../components/LoadingContainer';
 import { Icons, Colors } from '../../../themes';
 import Header from '../../../components/Header';
 import ButtonCustom from './ButtonCustom';
@@ -14,122 +15,137 @@ import styles from './styles';
 class HomeOverviewRestaurant extends PureComponent {
   state = {
     isBookmark: false,
+    idRestaurant: this.props.idRestaurant,
   };
   componentDidMount() {
-    console.log(this.props.data);
-    // var d = new Date();
-    // var n = d.getHours();
-    // console.log(n);
-
-    //console.log(Date().getHours().toLocaleString();
+    console.log(this.state.idRestaurant);
+    this.fetchData(this.state.idRestaurant);
   }
 
-  checkOpenRestaurant = timeNow => {
-    var date = new Date();
-    var hoursNow = d.getHours();
-    var open = this.props.data.timeopen.split('h');
-    var close = this.props.data.timeclose.split('h');
+  fetchData = id => {
+    this.props.fetchDatagetPlaceDetail(id);
+    console.log(this.props.dataPlaceDetail.data);
   };
 
-  onPressBookmark = () => {
-    this.setState({
-      isBookmark: !this.state.isBookmark,
-    });
-    try {
-      firebase
-        .database()
-        .ref('/restaurant/user/0/pin')
-        .push({
-          id: this.props.data.idrestaurant,
-        });
-    } catch (error) {
-      console.log(error);
-    }
-  };
   render() {
-    return (
-      <View style={styles.ViewMain}>
-        <Header
-          leftHeader={<Image source={Icons.back} style={{ marginTop: 2 * d.ratioH }} />}
-          onPressLeftHeader={this.props.onPressGoBack}
-          centerHeader
-          rightHeader
-        />
-        <View style={styles.ScrollViewImages}>
-          <FlatList
-            horizontal={true}
-            data={this.props.data.photos}
-            showsHorizontalScrollIndicator={false}
-            renderItem={({ item }) => (
-              <Image source={{ uri: item }} style={styles.ImagesOverView} />
-            )}
-            keyExtractor={(item, index) => index.toString()}
+    if (this.props.dataPlaceDetail.isFetching === true) {
+      return <Loading />;
+    } else {
+      const data = this.props.dataPlaceDetail.data;
+      return (
+        // <Loading />
+        <View style={styles.ViewMain}>
+          <Header
+            leftHeader={<Image source={Icons.back} style={{ marginTop: 2 * d.ratioH }} />}
+            onPressLeftHeader={this.props.onPressGoBack}
+            centerHeader
+            rightHeader
           />
-        </View>
-
-        <View style={styles.ViewContent}>
-          <View style={styles.ViewPointWrap}>
-            <View style={styles.ViewPoint}>
-              <Text style={styles.Point}>{this.props.data.rating}</Text>
-            </View>
+          <View style={styles.ScrollViewImages}>
+            <FlatList
+              horizontal={true}
+              data={data.photos}
+              showsHorizontalScrollIndicator={false}
+              renderItem={({ item }) => (
+                <Image
+                  source={{
+                    uri:
+                      'https://maps.googleapis.com/maps/api/place/photo?photoreference=' +
+                      item.photo_reference +
+                      '&sensor=false&maxheight=250&maxwidth=250&key=AIzaSyCthR5BEn21xBOMCGo-qqui8a9jDRNLDOk',
+                  }}
+                  style={styles.ImagesOverView}
+                />
+              )}
+              keyExtractor={(item, index) => index.toString()}
+            />
           </View>
 
-          <View style={styles.ViewNameRestaurant}>
-            <Text style={styles.TextNameRestaurant}>{this.props.data.name}</Text>
-          </View>
-
-          <View style={styles.ViewTypeRestaurantCost}>
-            <View style={styles.ViewTypeRestaurant}>
-              <Text style={styles.TextTypeRestaurant}>RESTAURANT</Text>
+          <View style={styles.ViewContent}>
+            <View style={styles.ViewPointWrap}>
+              <View style={styles.ViewPoint}>
+                <Text style={styles.Point}>{data.rating}</Text>
+              </View>
             </View>
-            <View style={styles.ViewCost}>
-              <StarRating
-                disabled={false}
-                emptyStar="ios-star-outline"
-                fullStar="ios-star"
-                iconSet="Ionicons"
-                maxStars={5}
-                rating={this.props.data.rating}
-                fullStarColor="#4CB33E"
-                reversed
-                starSize={12}
+
+            <View style={styles.ViewNameRestaurant}>
+              <Text style={styles.TextNameRestaurant}>{data.name}</Text>
+            </View>
+
+            <View style={styles.ViewTypeRestaurantCost}>
+              <View style={styles.ViewTypeRestaurant}>
+                <Text style={styles.TextTypeRestaurant}>{data.city}</Text>
+              </View>
+              <View style={styles.ViewCost}>
+                <StarRating
+                  disabled={false}
+                  emptyStar="ios-star-outline"
+                  fullStar="ios-star"
+                  iconSet="Ionicons"
+                  maxStars={5}
+                  rating={Math.floor(data.rating)}
+                  fullStarColor="#4CB33E"
+                  reversed
+                  starSize={12}
+                />
+              </View>
+            </View>
+
+            <View style={styles.ViewLocation}>
+              <Text style={styles.TextStatus}>Open Now</Text>
+            </View>
+
+            <View style={styles.ViewLocation}>
+              <Text style={styles.TextLocation}>{data.vicinity}</Text>
+            </View>
+
+            <View style={styles.ViewBtnBottom}>
+              <ButtonCustom
+                title="8h00 - 22h00"
+                iconName={Icons.clockTime}
+                iconColor={Colors.default}
+              />
+              <ButtonCustom
+                title="Direct"
+                iconName={Icons.directOutLine}
+                iconColor={Colors.text}
+                onPressButton={this.props.onPressDirect}
+              />
+              <ButtonCustom title="Call Now" iconName={Icons.phoneCall} iconColor={Colors.text} />
+              <ButtonCustom
+                title="Bookmarks"
+                iconName={this.state.isBookmark ? Icons.pinFocused : Icons.pin}
+                iconColor={this.state.isBookmark ? Colors.default : Colors.text}
+                onPressButton={this.onPressBookmark}
               />
             </View>
           </View>
-
-          <View style={styles.ViewLocation}>
-            <Text style={styles.TextStatus}>Open Now</Text>
-            <Text style={styles.TextLocation}> • {this.props.data.vicinity}</Text>
-          </View>
-
-          <View style={styles.ViewLocation}>
-            <Text style={styles.TextLocation}>{this.props.data.detail}</Text>
-          </View>
-
-          <View style={styles.ViewBtnBottom}>
-            <ButtonCustom
-              title={this.props.data.timeopen + '-' + this.props.data.timeclose}
-              iconName={Icons.clockTime}
-              iconColor={Colors.default}
-            />
-            <ButtonCustom
-              title="Direct"
-              iconName={Icons.directOutLine}
-              iconColor={Colors.text}
-              onPressButton={this.props.onPressDirect}
-            />
-            <ButtonCustom title="Call Now" iconName={Icons.phoneCall} iconColor={Colors.text} />
-            <ButtonCustom
-              title="Bookmarks"
-              iconName={this.state.isBookmark ? Icons.pinFocused : Icons.pin}
-              iconColor={this.state.isBookmark ? Colors.default : Colors.text}
-              onPressButton={this.onPressBookmark}
-            />
-          </View>
         </View>
-      </View>
-    );
+      );
+    }
   }
 }
 
-export default HomeOverviewRestaurant;
+HomeOverviewRestaurant.propTypes = {
+  navigation: PropTypes.shape({
+    navigate: PropTypes.func.isRequired,
+    getParam: PropTypes.func.isRequired,
+    goBack: PropTypes.func.isRequired,
+  }),
+  fetchDatagetPlaceDetail: PropTypes.func.isRequired,
+  dataPlaceDetail: PropTypes.object.isRequired,
+};
+
+const mapStateToProps = state => ({
+  dataPlaceDetail: state.getPlaceDetailReducers,
+});
+
+const mapDispatchToProps = dispatch => ({
+  fetchDatagetPlaceDetail: id => dispatch(fetchDatagetPlaceDetail(id)),
+});
+
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps,
+)(HomeOverviewRestaurant);
+//export default HomeOverviewRestaurant;
