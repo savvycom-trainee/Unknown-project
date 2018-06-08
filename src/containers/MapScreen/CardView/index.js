@@ -35,19 +35,19 @@ export default class CardView extends Component {
     }&key=AIzaSyCthR5BEn21xBOMCGo-qqui8a9jDRNLDOk`)
       .then(res => res.json())
       .then((resJson) => {
-        console.log(resJson.rows[0].elements[0].distance.text);
         this.setState({ distance: resJson.rows[0].elements[0].distance.text });
       })
       .catch(err => console.log('get distance error ', err));
   };
 
   render() {
+    // console.warn(this.props);
     return (
       <Card direction="row" style={styles.cardStyle} onPress={this.props.onPress}>
         <View style={styles.blankView} />
         <GreenCircle
           onPress={() => {
-            this.props.navigation.navigate('Direct');
+            this.props.navigation.navigate('HomeDetail', { data: this.props.item.place_id });
           }}
           style={styles.greenCircleStyle}
         >
