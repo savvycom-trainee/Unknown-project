@@ -18,7 +18,7 @@ import styles from './style';
 import { Images } from '../../themes';
 import Gallery from '../Gallery';
 import CheckBox from '../CheckBox';
-import { setUser } from '../../actions';
+import { setUser, getPositionUser } from '../../actions';
 
 const data = [
   {
@@ -49,7 +49,8 @@ class UpdateUser extends PureComponent {
       };
     }
     this.genderValue = 'Male';
-    console.log(this.user);
+    this.location = getPositionUser();
+    console.log('position', this.location);
   }
 
   componentDidMount() {
@@ -106,15 +107,15 @@ class UpdateUser extends PureComponent {
   }
 
   uploadUser = (info) => {
-    if(this.state.isNewUser){
+    if (this.state.isNewUser) {
       firebase
-      .database()
-      .ref('root/users')
-      .child(this.user.uid)
-      .set(info, (error) => this.uploadDone(info, error));
+        .database()
+        .ref('root/users')
+        .child(this.user.uid)
+        .set(info, error => this.uploadDone(info, error));
     } else {
-      firebase.
-        database()
+      firebase
+        .database()
         .ref('root/users')
         .child(this.user.uid)
         .update(info, error => this.uploadDone(info, error));
@@ -133,6 +134,7 @@ class UpdateUser extends PureComponent {
         home,
         gender,
         phone,
+        location: this.location ? this.location : [],
         photoURL: this.user.photoURL ? this.user.photoURL : '',
         uid: this.user.uid,
       };
