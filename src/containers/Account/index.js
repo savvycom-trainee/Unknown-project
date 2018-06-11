@@ -9,24 +9,17 @@ import {
   AsyncStorage,
   BackHandler,
 } from 'react-native';
-
 import PropTypes from 'prop-types';
 import Icon from 'react-native-vector-icons/Ionicons';
 import { NavigationActions } from 'react-navigation';
+import firebase from 'react-native-firebase';
 import { connect } from 'react-redux';
-import { fetchDatagetUserDetail } from '../../actions/getUserDetailAction';
 import { Header } from '../../components';
 import icon from '../../themes/Icons';
 import account from './style';
 import { Card, Statistic } from './component';
 import images from '../../themes/Images';
 
-// const defaultParam = {
-//   name: 'Chiến Mạnh Vũ',
-//   gender: 'Male',
-//   location: 'Hanoi',
-//   avatar: require('../../../assets/images/avata.png'), // eslint-disable-line
-// };
 const data = [
   {
     id: 'abcd',
@@ -87,10 +80,11 @@ class Account extends PureComponent {
       };
     } else {
       this.state = {
-        ...props.user,
+        ...props.user.user,
         isOwner: true,
       };
     }
+    console.log(this.state);
   }
   componentDidMount() {
     console.log(this.props.navigation);
@@ -103,16 +97,17 @@ class Account extends PureComponent {
   getUserId = () => {};
 
   logOut = () => {
-    console.log('logout');
     AsyncStorage.removeItem('user');
+    AsyncStorage.removeItem('accessToken');
+    firebase.auth().signOut();
     const navigateAction = NavigationActions.navigate({
       routeName: 'Auth',
       action: NavigationActions.navigate({ routeName: 'Login' }),
     });
+    console.log('logout');
     this.props.navigation.dispatch(navigateAction);
   };
   render() {
-    console.log(this.state);
     return (
       <View style={account.container}>
         <StatusBar hidden />
@@ -141,10 +136,13 @@ class Account extends PureComponent {
               }
             />
             <View style={account.info}>
-              <Image source={this.state.avatar} style={account.avatar} />
-              <Text style={account.name}>{this.state.name}</Text>
+              <Image
+                source={this.state.photoURL ? { uri: this.state.photoURL } : images.defaultAvatar}
+                style={account.avatar}
+              />
+              <Text style={account.name}>{this.state.fullName}</Text>
               <Text style={account.detail}>
-                {this.state.gender}, {this.state.location}
+                {this.state.gender}, {this.state.home}
               </Text>
             </View>
           </View>
@@ -202,16 +200,8 @@ Account.propTypes = {
   user: PropTypes.object.isRequired,
 };
 
-const mapStateToProps = state => ({
-  dataUserDetail: state.getUserDetailReducers,
+const mapStateToProp = state => ({
   user: state.user,
 });
 
-const mapDispatchToProps = dispatch => ({
-  fetchDatagetUserDetail: id => dispatch(fetchDatagetUserDetail(id)),
-});
-
-export default connect(
-  mapStateToProps,
-  mapDispatchToProps,
-)(Account);
+export default connect(mapStateToProp)(Account);

@@ -13,7 +13,6 @@ import { fetchDatagetNewFeed } from '../../actions/getNewFeedAction';
 import { getPositionSuccess, setUser } from '../../actions';
 import ModalView from './Modal';
 import Loading from '../../components/LoadingContainer';
-import ProgressiveImage from '../../components/progressiveImage';
 
 const shadow = {
   // elevation: 6,
@@ -37,7 +36,10 @@ class Home extends PureComponent {
   componentDidMount() {
     this.onGetCurrentPosition();
     this.props.fetchDatagetNewFeed(this.props.user.user.uid);
-    console.log(this.props.dataNewFeed.data);
+    const { uid } = this.props.user.user;
+    firebase.database().ref('root/users').child(uid).on('value', (data) => {
+      this.props.setUser(data._value);
+    });
   }
 
   onGetCurrentPosition = () => {
@@ -50,7 +52,6 @@ class Home extends PureComponent {
           error: null,
         });
         console.log(position);
-        
         this.props.getPositionSuccess(position);
         this._updateLocation(position.coords.latitude, position.coords.longitude);
         console.log(`position ${JSON.stringify(this.props.getPositionSuccess(position))}`);
@@ -71,7 +72,6 @@ class Home extends PureComponent {
   _updateLocation = (lat, lng) => {
     const { uid } = this.props.user.user;
     console.log(this.props.user);
-
     const updates = {};
     updates[`/root/users/${uid}/location`] = { lat, lng };
     firebase
@@ -255,4 +255,7 @@ const mapStateToProps = state => ({
   user: state.user,
 });
 
-export default connect(mapStateToProps, { fetchDatagetNewFeed, getPositionSuccess, setUser })(Home);
+export default connect(
+  mapStateToProps,
+  { fetchDatagetNewFeed, getPositionSuccess, setUser },
+)(Home);

@@ -11,6 +11,13 @@ const styles = StyleSheet.create({
     lineHeight: 30,
     textAlign: 'center',
   },
+  checkBox: {
+    width: '100%',
+    height: 50 * d.ratioH,
+    marginBottom: 17 * d.ratioH,
+    flexDirection: 'row',
+    alignItems: 'center',
+  },
   imageView: {
     marginTop: 31 * d.ratioH,
     width: 120 * d.ratioW,
@@ -29,6 +36,11 @@ const styles = StyleSheet.create({
     marginTop: 20,
     height: 177 * d.ratioH,
     alignItems: 'center',
+  },
+  editPassword: {
+    position: 'absolute',
+    right: 10,
+    padding: 5,
   },
   botView: {
     marginTop: 24 * d.ratioH,

@@ -10,6 +10,7 @@ import {
   Text,
   Alert,
   ActivityIndicator,
+  AsyncStorage,
 } from 'react-native';
 import { connect } from 'react-redux';
 import signup from './style';
@@ -61,7 +62,8 @@ class Signup extends PureComponent {
             .auth()
             .createUserAndRetrieveDataWithEmailAndPassword(acc, pass)
             .then(({ user }) => {
-              this.props.navigation.navigate('UpdateUser', { user: user._user });
+              AsyncStorage.setItem('user', JSON.stringify({ acc, pass }));
+              this.props.navigation.navigate('UpdateUser', { newUser: user._user });
             })
             .catch((error) => {
               this.setState(
@@ -163,12 +165,12 @@ class Signup extends PureComponent {
             </TouchableOpacity>
           </View>
           <View style={signup.textContainer}>
-            <Text style={signup.txtBottom}>Not account? Go to </Text>
+            <Text style={signup.txtBottom}>Have a account? </Text>
             <TouchableOpacity
               style={signup.textSignUpContainer}
               onPress={() => this.props.navigation.goBack()}
             >
-              <Text style={signup.txtSignUp}>Sign up</Text>
+              <Text style={signup.txtSignUp}>Sign In</Text>
             </TouchableOpacity>
           </View>
         </View>

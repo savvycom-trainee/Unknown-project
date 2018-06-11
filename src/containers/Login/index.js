@@ -38,33 +38,30 @@ class Login extends PureComponent {
   }
   getUser = async () => {
     try {
-      console.log('get1');
       const user = await AsyncStorage.getItem('user');
-      console.log(user);
-      
-      console.log('get2');
       if (user) {
-        console.log('get3');
-        const tmpUser = JSON.parse(user);
-        this.move(tmpUser);
+        const { acc, pass } = JSON.parse(user);
+        this.loginFirebase(acc, pass);
       } else {
         const accessToken = await AsyncStorage.getItem('accessToken');
+        this.setState({
+          isLoading: false,
+        });
         if (accessToken) {
-          const data = await fetchDataGetUserFBAdd(accessToken);
-          console.log(data);
-          this.setState({
-            ...data,
-            accessToken,
-            isLoading: false,
-          });
+          this.setState(
+            {
+              isLoading: false,
+              accessToken,
+            },
+            () => {
+              this.loginFacebook();
+            },
+          );
         }
       }
     } catch (error) {
       console.log(error);
     }
-    this.setState({
-      isLoading: false,
-    });
   };
   move = (user) => {
     this.props.setUser(user);
@@ -96,81 +93,65 @@ class Login extends PureComponent {
     this.passwordField.focus();
   };
   loginAccount = () => {
+    this.accountField.blur();
+    this.passwordField.blur();
     const acc = this.state.account;
     const pass = this.state.password;
     this.setState(
       {
         isLoading: true,
       },
-      () => {
-        console.log(acc, pass);
-        firebase
-          .auth()
-          .signInAndRetrieveDataWithEmailAndPassword(acc, pass)
-          .then((loginUser) => {
-            console.log(loginUser);
-            firebase
-              .database()
-              .ref('/root/users')
-              .child(loginUser.user.uid)
-              .on('value', (data) => {
-                this.setState(
-                  {
-                    isLoading: false,
-                  },
-                  () => {
-                    try {
-                      const user = {
-                        ...data._value,
-                        uid: data.key,
-                      };
-                      AsyncStorage.setItem('user', JSON.stringify(user));
-                      this.move(user);
-                    } catch (error) {
-                      console.log(error);
-                    }
-                  },
-                );
-              });
-          })
-          .catch((error) => {
-            this.setState(
-              {
-                isLoading: false,
-              },
-              () => {
-                const { code } = error;
-                let message = '';
-                switch (code) {
-                  case 'auth/invalid-email':
-                    message = 'Email invalidate';
-                    break;
-                  case 'auth/user-disabled':
-                    message = 'user disabled';
-                    break;
-                  case 'auth/user-not-found':
-                    message = 'Email not exist';
-                    break;
-                  case 'auth/wrong-password':
-                    message = 'Password incorrect';
-                    break;
-                  default:
-                    message = 'Email or password incorrect';
-                    break;
-                }
-                Alert.alert('Notice', message, [
-                  {
-                    text: 'OK',
-                  },
-                ]);
-              },
-            );
-          });
-      },
+      () => this.loginFirebase(acc, pass),
     );
   };
-  loginFacebook = () => {
+  loginFirebase = (acc, pass) => {
+    console.log(acc, pass);
+    firebase
+      .auth()
+      .signInAndRetrieveDataWithEmailAndPassword(acc, pass)
+      .then((loginUser) => {
+        console.log(loginUser);
+        const { user } = loginUser;
+        AsyncStorage.setItem('user', JSON.stringify({ acc, pass }));
+        this.move(user);
+      })
+      .catch((error) => {
+        this.setState(
+          {
+            isLoading: false,
+          },
+          () => {
+            const { code } = error;
+            let message = '';
+            switch (code) {
+              case 'auth/invalid-email':
+                message = 'Email invalidate';
+                break;
+              case 'auth/user-disabled':
+                message = 'user disabled';
+                break;
+              case 'auth/user-not-found':
+                message = 'Email not exist';
+                break;
+              case 'auth/wrong-password':
+                message = 'Password incorrect';
+                break;
+              default:
+                message = 'Email or password incorrect';
+                break;
+            }
+            Alert.alert('Notice', message, [
+              {
+                text: 'OK',
+              },
+            ]);
+          },
+        );
+      });
+  };
+  loginFacebook = async () => {
     if (!this.state.accessToken) {
+      console.log('load1');
       LoginManager.logInWithReadPermissions([
         'public_profile',
         'user_gender',
@@ -178,10 +159,13 @@ class Login extends PureComponent {
         'email',
       ]).then(
         (result) => {
+          console.log('load2');
           if (result.isCancelled) {
             Alert.alert('Whoops!', 'You cancelled the sign in.');
           } else {
+            console.log('load3');
             AccessToken.getCurrentAccessToken().then(async (data) => {
+              console.log('load4');
               const credential = firebase.auth.FacebookAuthProvider.credential(data.accessToken);
               console.log(credential);
               AsyncStorage.setItem('accessToken', data.accessToken);
@@ -206,12 +190,25 @@ class Login extends PureComponent {
         },
       );
     } else {
-      LoginManager.logOut();
-      AsyncStorage.removeItem('accessToken');
-      console.log('logout');
-      this.setState({
-        accessToken: null,
-      });
+      console.log('load4');
+      // const credential = firebase.auth.FacebookAuthProvider.credential(this.state.accessToken);
+      // console.log(credential);
+      // const data1 = await fetchDataGetUserFBAdd(this.state.accessToken);
+      // this.setState({
+      //   ...data1,
+      // });
+      // console.log(data1);
+      // firebase
+      //   .auth()
+      //   .signInAndRetrieveDataWithCredential(credential)
+      //   .then(() => {
+      //     console.log(loginUser);
+      //     this.props.setUser(loginUser.user);
+      //     this.props.navigation.navigate('Home')
+      //   })
+      //   .catch((error) => {
+      //     console.log(error);
+      //   });
     }
   };
   _getInfoFb = (credential) => {
@@ -222,15 +219,12 @@ class Login extends PureComponent {
         if (err) {
           Alert.alert('Error', 'Cant get info');
         } else {
-          // const user = {};
-          // this.props.setUser(user);
           firebase
             .database()
             .ref(`restaurant/user/${res.id}`)
             .once('value')
             .then((snapshot) => {
               console.log(snapshot.val());
-
               if (snapshot.val() === null) {
                 firebase
                   .auth()
@@ -244,13 +238,6 @@ class Login extends PureComponent {
                 this.props.navigation.navigate('Home', { user: snapshot.val() });
               }
             });
-          // firebase
-          //   .auth()
-          //   .signInAndRetrieveDataWithCredential(credential)
-          //   .then(this.props.navigation.navigate('UpdateUser', { user: res, fb: true }))
-          //   .catch((error) => {
-          //     console.log(error);
-          //   });
         }
       },
     );
@@ -280,6 +267,13 @@ class Login extends PureComponent {
                   onSubmitEditing={this.accNext}
                   returnKeyType="next"
                   autoCapitalize="none"
+                  onFocus={() => {
+                    this.accountField.focus();
+                  }}
+                  onBlur={() => this.accountField.blur()}
+                  ref={(ref) => {
+                    this.accountField = ref;
+                  }}
                 />
                 <TextInput
                   ref={(ref) => {
@@ -292,6 +286,10 @@ class Login extends PureComponent {
                   onChangeText={this.changePassword}
                   onSubmitEditing={this.loginAccount}
                   autoCapitalize="none"
+                  onFocus={() => {
+                    this.passwordField.focus();
+                  }}
+                  onBlur={() => this.passwordField.blur()}
                 />
               </View>
               <View style={login.vButton}>
@@ -306,32 +304,6 @@ class Login extends PureComponent {
                   <Image source={images.logofb} style={login.logofb} />
                   <Text style={login.txtfb}> Continue With Facebook </Text>
                 </TouchableOpacity>
-                {/* <LoginButton
-                  publishPermissions={['publish_actions']}
-                  onLoginFinished={(error, result) => {
-                    if (error) {
-                      console.log(`login has error: ${result.error}`);
-                      Alert.alert(`login has error: ${result.error}`);
-                    } else if (result.isCancelled) {
-                      console.log('login is cancelled.');
-                      Alert.alert('login is cancelled.');
-                    } else {
-                      AccessToken.getCurrentAccessToken().then((data) => {
-                        console.log(data);
-                        const { accessToken } = data;
-                        try {
-                          AsyncStorage.setItem('Token', JSON.stringify(accessToken));
-                        } catch (error1) {
-                          console.log(error1);
-                        }
-                      });
-                    }
-                  }}
-                  onLogoutFinished={() => {
-                    console.log('logout.');
-                    AsyncStorage.removeItem('Token');
-                  }}
-                /> */}
               </View>
               <View style={login.textContainer}>
                 <Text style={login.txtBottom}>Not account? Go to </Text>
@@ -359,4 +331,7 @@ Login.propTypes = {
 
 const mapDispatchToProps = dispatch => ({ setUser: user => dispatch(setUser(user)) });
 
-export default connect(null, mapDispatchToProps)(Login);
+export default connect(
+  null,
+  mapDispatchToProps,
+)(Login);
