@@ -30,16 +30,8 @@ class FindCard extends React.PureComponent {
       item.follower = item.follower || [];
       user.followed = user.followed || [];
       updates[`/root/users/${item.uid}/follower`] = [...item.follower, user.uid];
-      //  {
-      //   ...item,
-      //   follower: [...item.follower, user.uid],
-      // };
       this.item.follower = [...item.follower, user.uid];
       updates[`/root/users/${user.uid}/following`] = [...user.followed, item.uid];
-      // {
-      //   ...user,
-      //   followed: [...user.followed, item.uid],
-      // };
       this.user.followed = [...user.followed, item.uid];
       firebase
         .database()
@@ -71,7 +63,7 @@ class FindCard extends React.PureComponent {
             style={styles.avatar}
           />
           <View style={{ marginLeft: 10, flex: 1 }}>
-            <Text style={styles.name}>{item.name}</Text>
+            <Text style={styles.name}>{item.fullName}</Text>
             <View style={styles.item_layout}>
               <Icon
                 name={item.gender === 'Male' ? 'md-male' : 'md-female'}

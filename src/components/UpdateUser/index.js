@@ -8,6 +8,7 @@ import {
   TextInput,
   Alert,
   ActivityIndicator,
+  AsyncStorage,
 } from 'react-native';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
@@ -120,8 +121,11 @@ class UpdateUser extends PureComponent {
               }),
             });
           // eslint-disable-next-line
-          this.props.setUser(user);
-          this.props.navigation.dispatch(navigateAction);
+          this.props.setUser(info);
+          AsyncStorage.setItem('user', JSON.stringify(info));
+          if (type) {
+            this.props.navigation.navigate('MainStack');
+          } else this.props.navigation.dispatch(navigateAction);
         } else {
           console.log(error);
         }
@@ -142,8 +146,8 @@ class UpdateUser extends PureComponent {
         gender,
         phone,
         photoURL: defaultProps.photoURL,
+        uid: user.id ? user.id : user.uid,
       };
-
       if (photoURL !== defaultProps.photoURL) {
         this.uploadPhoto(info, photoURL);
       } else {
