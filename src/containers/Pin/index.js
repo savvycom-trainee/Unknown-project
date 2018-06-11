@@ -5,7 +5,7 @@ import { Icons } from '../../themes';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 
-import { fetchDatagetPin } from '../../actions/getPinAction';
+// import { fetchDatagetPin } from '../../actions/getPinAction';
 import restaurantData from './PinView/data/restaurantData';
 import PinView from './PinView';
 import styles from './styles';
@@ -46,24 +46,24 @@ Pin.propTypes = {
   // onPressGoBack: PropTypes.func.isRequired,
   // data: PropTypes.object.isRequired,
   // idRestaurant: PropTypes.string,
-  fetchDatagetReview: PropTypes.func.isRequired,
-  dataReview: PropTypes.object.isRequired,
+  // fetchDatagetReview: PropTypes.func.isRequired,
+  // dataReview: PropTypes.object.isRequired,
 };
 
 // Pin.defaultProps = {
 //   onPressGoBack: () => {},
 //   // idRestaurant: 'ChIJLYWpJUyrNTERuJo57taGljo',
 // };
-// export default Pin;
-const mapStateToProps = state => ({
-  dataPin: state.getPinReducers,
-});
+export default Pin;
+// const mapStateToProps = state => ({
+//   dataPin: state.getPinReducers,
+// });
 
-const mapDispatchToProps = dispatch => ({
-  fetchDatagetPin: id => dispatch(fetchDatagetPin(id)),
-});
+// const mapDispatchToProps = dispatch => ({
+//   fetchDatagetPin: id => dispatch(fetchDatagetPin(id)),
+// });
 
-export default connect(
-  mapStateToProps,
-  mapDispatchToProps,
-)(Pin);
+// export default connect(
+//   mapStateToProps,
+//   mapDispatchToProps,
+// )(Pin);

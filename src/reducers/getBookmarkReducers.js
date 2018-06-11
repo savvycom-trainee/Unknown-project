@@ -1,4 +1,8 @@
-import { GET_PIN_ING, GET_PIN_SUCCESS, GET_PIN_FAIL } from '../constants/actionTypes';
+import {
+  GET_BOOKMARK_ING,
+  GET_BOOKMARK_SUCCESS,
+  GET_BOOKMARK_FAIL,
+} from '../constants/actionTypes';
 
 const INIT_STATE = {
   isFetching: false,
@@ -9,12 +13,12 @@ const INIT_STATE = {
 
 export default (state = INIT_STATE, action) => {
   switch (action.type) {
-    case GET_PIN_ING:
+    case GET_BOOKMARK_ING:
       return {
         ...state,
         isFetching: true,
       };
-    case GET_PIN_SUCCESS:
+    case GET_BOOKMARK_SUCCESS:
       console.log(action.payload);
       return {
         ...state,
@@ -22,7 +26,7 @@ export default (state = INIT_STATE, action) => {
         dataSuccess: true,
         data: action.payload,
       };
-    case GET_PIN_FAIL:
+    case GET_BOOKMARK_FAIL:
       return {
         ...state,
         isFetching: false,
