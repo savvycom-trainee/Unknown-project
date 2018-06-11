@@ -63,7 +63,7 @@ class FindCard extends React.PureComponent {
             style={styles.avatar}
           />
           <View style={{ marginLeft: 10, flex: 1 }}>
-            <Text style={styles.name}>{item.name}</Text>
+            <Text style={styles.name}>{item.fullName}</Text>
             <View style={styles.item_layout}>
               <Icon
                 name={item.gender === 'Male' ? 'md-male' : 'md-female'}

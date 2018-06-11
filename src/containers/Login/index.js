@@ -179,9 +179,10 @@ class Login extends PureComponent {
         if (err) {
           Alert.alert('Error', 'Cant get info');
         } else {
+          console.log(res);
           firebase
             .database()
-            .ref(`restaurant/user/${res.id}`)
+            .ref(`root/users/${res.id}`)
             .once('value')
             .then((snapshot) => {
               console.log('snapshot', snapshot.val());
@@ -197,6 +198,8 @@ class Login extends PureComponent {
                   });
               } else {
                 this.props.setUser(snapshot.val());
+                AsyncStorage.setItem('user', JSON.stringify(snapshot.val()), error =>
+                  console.log(error));
                 this.props.navigation.navigate('Home', { user: snapshot.val() });
               }
             });
