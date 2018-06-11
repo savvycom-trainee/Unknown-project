@@ -30,14 +30,15 @@ export function fetchDatagetPin(id) {
       .on('value', (snapshot) => {
         console.log(snapshot.val());
         snapshot.forEach((item) => {
-        //   // console.log(item._value.restaurantPlaceId);
-        //   if (item._value.restaurantPlaceId === id) {
-        //     returnArr = [...returnArr, item._value];
-        //   }
-        // });
-        // // console.log(returnArr);
+          //   // console.log(item._value.restaurantPlaceId);
+          //   if (item._value.restaurantPlaceId === id) {
+          //     returnArr = [...returnArr, item._value];
+          //   }
+          // });
+          // // console.log(returnArr);
 
-        dispatch(getReviewSuccess(returnArr));
+          dispatch(getPinSuccess());
+        });
       });
   };
 }
