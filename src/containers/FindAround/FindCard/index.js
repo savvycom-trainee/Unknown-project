@@ -30,16 +30,8 @@ class FindCard extends React.PureComponent {
       item.follower = item.follower || [];
       user.followed = user.followed || [];
       updates[`/root/users/${item.uid}/follower`] = [...item.follower, user.uid];
-      //  {
-      //   ...item,
-      //   follower: [...item.follower, user.uid],
-      // };
       this.item.follower = [...item.follower, user.uid];
       updates[`/root/users/${user.uid}/following`] = [...user.followed, item.uid];
-      // {
-      //   ...user,
-      //   followed: [...user.followed, item.uid],
-      // };
       this.user.followed = [...user.followed, item.uid];
       firebase
         .database()

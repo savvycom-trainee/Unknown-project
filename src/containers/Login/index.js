@@ -19,7 +19,7 @@ import { connect } from 'react-redux';
 import { NavigationActions } from 'react-navigation';
 import login from './style/login';
 import images from '../../themes/Icons';
-import { setUser, fetchDataGetUserFBAdd } from '../../actions';
+import { setUser } from '../../actions';
 import LoadingContainer from '../../components/LoadingContainer';
 
 class Login extends PureComponent {
@@ -38,33 +38,18 @@ class Login extends PureComponent {
   }
   getUser = async () => {
     try {
-      console.log('get1');
       const user = await AsyncStorage.getItem('user');
-      console.log(user);
-      
-      console.log('get2');
-      if (user) {
-        console.log('get3');
+      console.log('user', user);
+
+      if (user !== null) {
         const tmpUser = JSON.parse(user);
         this.move(tmpUser);
       } else {
-        const accessToken = await AsyncStorage.getItem('accessToken');
-        if (accessToken) {
-          const data = await fetchDataGetUserFBAdd(accessToken);
-          console.log(data);
-          this.setState({
-            ...data,
-            accessToken,
-            isLoading: false,
-          });
-        }
+        this.setState({ isLoading: false });
       }
     } catch (error) {
       console.log(error);
     }
-    this.setState({
-      isLoading: false,
-    });
   };
   move = (user) => {
     this.props.setUser(user);
@@ -170,49 +155,21 @@ class Login extends PureComponent {
     );
   };
   loginFacebook = () => {
-    if (!this.state.accessToken) {
-      LoginManager.logInWithReadPermissions([
-        'public_profile',
-        'user_gender',
-        'user_hometown',
-        'email',
-      ]).then(
-        (result) => {
-          if (result.isCancelled) {
-            Alert.alert('Whoops!', 'You cancelled the sign in.');
-          } else {
-            AccessToken.getCurrentAccessToken().then(async (data) => {
-              const credential = firebase.auth.FacebookAuthProvider.credential(data.accessToken);
-              console.log(credential);
-              AsyncStorage.setItem('accessToken', data.accessToken);
-              const data1 = await fetchDataGetUserFBAdd(data.accessToken);
-              this.setState({
-                accessToken: data.accessToken,
-                ...data1,
-              });
-              console.log(data1);
-              firebase
-                .auth()
-                .signInWithCredential(credential)
-                .then(this.props.navigation.navigate('Home'))
-                .catch((error) => {
-                  console.log(error);
-                });
-            });
-          }
-        },
-        (error) => {
-          Alert.alert('Sign in error', error);
-        },
-      );
-    } else {
-      LoginManager.logOut();
-      AsyncStorage.removeItem('accessToken');
-      console.log('logout');
-      this.setState({
-        accessToken: null,
-      });
-    }
+    LoginManager.logInWithReadPermissions(['public_profile', 'user_friends', 'email']).then(
+      (result) => {
+        if (result.isCancelled) {
+          Alert.alert('Whoops!', 'You cancelled the sign in.');
+        } else {
+          AccessToken.getCurrentAccessToken().then(async (data) => {
+            const credential = firebase.auth.FacebookAuthProvider.credential(data.accessToken);
+            this._getInfoFb(credential);
+          });
+        }
+      },
+      (error) => {
+        Alert.alert('Sign in error', error);
+      },
+    );
   };
   _getInfoFb = (credential) => {
     const infoRequest = new GraphRequest(
@@ -222,20 +179,19 @@ class Login extends PureComponent {
         if (err) {
           Alert.alert('Error', 'Cant get info');
         } else {
-          // const user = {};
-          // this.props.setUser(user);
           firebase
             .database()
             .ref(`restaurant/user/${res.id}`)
             .once('value')
             .then((snapshot) => {
-              console.log(snapshot.val());
-
+              console.log('snapshot', snapshot.val());
               if (snapshot.val() === null) {
                 firebase
                   .auth()
                   .signInAndRetrieveDataWithCredential(credential)
-                  .then(() => this.props.navigation.navigate('UpdateUser', { user: res, fb: true }))
+                  .then(() => {
+                    this.props.navigation.navigate('UpdateUser', { user: res, fb: true });
+                  })
                   .catch((error) => {
                     console.log(error);
                   });
@@ -359,4 +315,7 @@ Login.propTypes = {
 
 const mapDispatchToProps = dispatch => ({ setUser: user => dispatch(setUser(user)) });
 
-export default connect(null, mapDispatchToProps)(Login);
+export default connect(
+  null,
+  mapDispatchToProps,
+)(Login);
