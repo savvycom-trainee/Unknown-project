@@ -57,7 +57,7 @@ class Home extends PureComponent {
         console.log(`state: ${JSON.stringify(this.state)}`);
       },
       error => this.setState({ error }),
-      { enableHighAccuracy: true, timeout: 20000, maximumAge: 1000 },
+      { enableHighAccuracy: false, timeout: 20000, maximumAge: 1000 },
     );
     this.props.fetchDatagetNewFeed();
   };

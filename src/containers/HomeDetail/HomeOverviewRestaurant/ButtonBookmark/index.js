@@ -1,5 +1,6 @@
 import React, { PureComponent } from 'react';
 import { connect } from 'react-redux';
+import firebase from 'react-native-firebase';
 
 import { View, Text, Image, TouchableOpacity, AsyncStorage } from 'react-native';
 import PropTypes from 'prop-types';
@@ -10,9 +11,7 @@ import { fetchDatagetBookmark } from '../../../../actions/getBookmarkAction';
 // import { O_DIRECTORY } from 'constants';
 
 class ButtonBookmark extends PureComponent {
-  state = {
-    isBookmark: false,
-  };
+  state = {};
   componentDidMount() {
     this.getUser();
   }
@@ -21,15 +20,22 @@ class ButtonBookmark extends PureComponent {
     const user = await AsyncStorage.getItem('user');
     const userId = JSON.parse(user).uid;
     console.log(userId);
-    console.log(this.props.idRestaurant);
-
     this.props.fetchDatagetBookmark(userId, this.props.idRestaurant);
+  };
+  pressBookmark = async () => {
+    const user = await AsyncStorage.getItem('user');
+    const userId = JSON.parse(user).uid;
+    const restaurantId = this.props.idRestaurant;
+    firebase
+      .database()
+      .ref(`/root/users/${userId}/bookmark/${restaurantId}`)
+      .update({ status: !this.props.dataBookmark.data });
   };
 
   renderButtonIcon = () => {
     console.log(this.props.dataBookmark.data);
 
-    if (this.state.isBookmark) {
+    if (this.props.dataBookmark.data) {
       return (
         <View style={styles.ViewMain}>
           <Image source={Icons.pinFocused} style={styles.iconStyle} />
@@ -65,13 +71,18 @@ class ButtonBookmark extends PureComponent {
     if (this.props.dataBookmark.isFetching === true) {
       return <Loading />;
     }
-    return <TouchableOpacity style={styles.ViewMain}>{this.renderButtonIcon()}</TouchableOpacity>;
+    return (
+      <TouchableOpacity style={styles.ViewMain} onPress={this.pressBookmark}>
+        {this.renderButtonIcon()}
+      </TouchableOpacity>
+    );
   }
 }
 
 ButtonBookmark.propTypes = {
   // onPressButton: PropTypes.func,
   dataBookmark: PropTypes.object.isRequired,
+  dataPlaceDetail: PropTypes.object.isRequired,
   fetchDatagetBookmark: PropTypes.func.isRequired,
   idRestaurant: PropTypes.string.isRequired,
 };
@@ -85,7 +96,8 @@ const mapStateToProps = state => ({
 });
 
 const mapDispatchToProps = dispatch => ({
-  fetchDatagetBookmark: id => dispatch(fetchDatagetBookmark(id)),
+  fetchDatagetBookmark: (userId, restaurantId) =>
+    dispatch(fetchDatagetBookmark(userId, restaurantId)),
 });
 
 export default connect(

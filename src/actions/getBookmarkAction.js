@@ -28,27 +28,45 @@ export function getBookmarkFail() {
 export function fetchDatagetBookmark(userId, restaurantId) {
   return (dispatch) => {
     dispatch(getBookmark());
-    console.log('firebase');
-
     try {
       firebase
         .database()
         .ref(`/root/users/${userId}`)
         .on('value', (snapshot) => {
           console.log(snapshot.val());
-          const dataReturn = {};
+
           if (snapshot.val().hasOwnProperty('bookmark')) {
             console.log('co bookmark');
+            if (snapshot.val().bookmark.hasOwnProperty(restaurantId)) {
+              console.log('co id res');
+              firebase
+                .database()
+                .ref(`/root/users/${userId}/bookmark/${restaurantId}/status`)
+                .on('value', (snapshot1) => {
+                  console.log(snapshot1.val());
+                  dispatch(getBookmarkSuccess(snapshot1.val()));
+                });
+            } else {
+              console.log('k co id res');
+              firebase
+                .database()
+                .ref(`/root/users/${userId}/bookmark/${restaurantId}`)
+                .update({ status: false });
+
+              const data = 'false';
+              dispatch(getBookmarkSuccess(data));
+            }
           } else {
             console.log('chua co bookmark');
-            const updates = [];
-            updates[`/root/users/${userId}/bookmark/${restaurantId}`] = { status: false };
+
             firebase
               .database()
-              .ref()
-              .update(updates);
+              .ref(`/root/users/${userId}/bookmark/${restaurantId}`)
+              .update({ status: false });
+
+            const data = 'false';
+            dispatch(getBookmarkSuccess(data));
           }
-          dispatch(getBookmarkSuccess(dataReturn));
         });
     } catch (error) {
       console.log(error);
