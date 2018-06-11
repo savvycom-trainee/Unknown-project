@@ -84,6 +84,7 @@ class Account extends PureComponent {
         isOwner: true,
       };
     }
+    console.log(this.state);
   }
   componentDidMount() {
     console.log(this.props.navigation);

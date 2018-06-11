@@ -93,6 +93,8 @@ class Login extends PureComponent {
     this.passwordField.focus();
   };
   loginAccount = () => {
+    this.accountField.blur();
+    this.passwordField.blur();
     const acc = this.state.account;
     const pass = this.state.password;
     this.setState(
@@ -108,6 +110,7 @@ class Login extends PureComponent {
       .auth()
       .signInAndRetrieveDataWithEmailAndPassword(acc, pass)
       .then((loginUser) => {
+        console.log(loginUser);
         const { user } = loginUser;
         AsyncStorage.setItem('user', JSON.stringify({ acc, pass }));
         this.move(user);
@@ -264,6 +267,13 @@ class Login extends PureComponent {
                   onSubmitEditing={this.accNext}
                   returnKeyType="next"
                   autoCapitalize="none"
+                  onFocus={() => {
+                    this.accountField.focus();
+                  }}
+                  onBlur={() => this.accountField.blur()}
+                  ref={(ref) => {
+                    this.accountField = ref;
+                  }}
                 />
                 <TextInput
                   ref={(ref) => {
@@ -276,6 +286,10 @@ class Login extends PureComponent {
                   onChangeText={this.changePassword}
                   onSubmitEditing={this.loginAccount}
                   autoCapitalize="none"
+                  onFocus={() => {
+                    this.passwordField.focus();
+                  }}
+                  onBlur={() => this.passwordField.blur()}
                 />
               </View>
               <View style={login.vButton}>

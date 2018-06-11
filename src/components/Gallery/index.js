@@ -2,6 +2,9 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { View, Text, ScrollView, CameraRoll, TouchableOpacity, Image } from 'react-native';
 import * as d from '../../utilities/Tranform.js';
+import { Icons } from '../../themes';
+import styles from './style';
+import Header from '../Header';
 
 class Gallery extends Component {
   constructor(props) {
@@ -57,32 +60,17 @@ class Gallery extends Component {
   };
   render() {
     return !this.state.isShow ? null : (
-      <ScrollView
-        style={{
-          flex: 1,
-          position: 'absolute',
-          zIndex: 2,
-          backgroundColor: 'white',
-        }}
-      >
-        <View style={{ height: 30, alignItems: 'center', justifyContent: 'center' }}>
-          <Text style={{ textAlign: 'center', fontWeight: '600', fontSize: 14 }}>
-            Recent Gellary
-          </Text>
-        </View>
-        <View
-          style={{
-            width: '100%',
-            justifyContent: 'space-between',
-            flexDirection: 'row',
-            flexWrap: 'wrap',
-          }}
-        >
-          {this.state.photos.map(({ node }) => {
-            const key = this.randomKey();
-            return (
+      <View style={styles.container}>
+        <Header
+          leftHeader={<Image source={Icons.back} />}
+          onPressLeftHeader={this.close}
+          centerHeader={<Text style={styles.title}>Recent Gellary</Text>}
+        />
+        {this.state.photos.length > 0 ? (
+          <ScrollView style={styles.scrollView}>
+            {this.state.photos.map(({ node }) => (
               <TouchableOpacity
-                key={key}
+                key={node.image.uri}
                 style={{ margin: 2 }}
                 onPress={() => this.props.select(node.image.uri)}
               >
@@ -94,10 +82,14 @@ class Gallery extends Component {
                   source={{ uri: node.image.uri }}
                 />
               </TouchableOpacity>
-            );
-          })}
-        </View>
-      </ScrollView>
+            ))}
+          </ScrollView>
+        ) : (
+          <View style={styles.vEmpty}>
+            <Text style={styles.title}>No picture available</Text>
+          </View>
+        )}
+      </View>
     );
   }
 }

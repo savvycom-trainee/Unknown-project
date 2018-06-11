@@ -48,6 +48,7 @@ class UpdateUser extends PureComponent {
         isNewUser: true,
       };
     }
+    console.log(this.user);
     this.genderValue = 'Male';
     this.location = getPositionUser();
     console.log('position', this.location);
@@ -159,83 +160,85 @@ class UpdateUser extends PureComponent {
   };
   render() {
     return (
-      <ScrollView style={styles.container}>
+      <View style={styles.container}>
         <Gallery
           select={this.selectAvatar}
           onRef={(node) => {
             this.gallery = node;
           }}
         />
-        <View style={styles.topView}>
-          <Text style={styles.title}>Information</Text>
-          {!this.state.isNewUser ? (
-            <TouchableOpacity style={styles.editPassword}>
-              <Icon name="wrench" size={26} />
-            </TouchableOpacity>
-          ) : null}
+        <ScrollView style={{ flex: 1 }}>
+          <View style={styles.topView}>
+            <Text style={styles.title}>Information</Text>
+            {!this.state.isNewUser ? (
+              <TouchableOpacity style={styles.editPassword}>
+                <Icon name="wrench" size={26} />
+              </TouchableOpacity>
+            ) : null}
 
-          <TouchableOpacity style={styles.imageView} onPress={() => this.gallery.open()}>
-            <Image
-              source={
-                this.state.photoURL === ''
-                  ? this.user.photoURL
-                    ? { uri: this.user.photoURL }
-                    : Images.defaultAvatar
-                  : { uri: this.state.photoURL }
-              }
-              style={styles.image}
+            <TouchableOpacity style={styles.imageView} onPress={() => this.gallery.open()}>
+              <Image
+                source={
+                  this.state.photoURL === ''
+                    ? this.user.photoURL
+                      ? { uri: this.user.photoURL }
+                      : Images.defaultAvatar
+                    : { uri: this.state.photoURL }
+                }
+                style={styles.image}
+              />
+            </TouchableOpacity>
+          </View>
+          <View style={styles.botView}>
+            <TextInput
+              ref={(node) => {
+                this.fullName = node;
+              }}
+              defaultValue={this.user.fullName ? this.user.fullName : ''}
+              style={styles.input}
+              placeholder="Full name"
+              underlineColorAndroid="transparent"
             />
-          </TouchableOpacity>
-        </View>
-        <View style={styles.botView}>
-          <TextInput
-            ref={(node) => {
-              this.fullName = node;
-            }}
-            defaultValue={this.user.fullName ? this.user.fullName : ''}
-            style={styles.input}
-            placeholder="Full name"
-            underlineColorAndroid="transparent"
-          />
-          <CheckBox
-            style={styles.checkBox}
-            data={data}
-            defaultValue={this.user.gender}
-            onChange={(value) => {
-              this.genderValue = value;
-            }}
-          />
-          <TextInput
-            ref={(node) => {
-              this.phone = node;
-            }}
-            style={styles.input}
-            keyboardType="phone-pad"
-            placeholder="Phone"
-            defaultValue={this.user.phone ? this.user.phone : ''}
-            underlineColorAndroid="transparent"
-            returnKeyType="next"
-            onSubmitEditing={() => this.home.focus()}
-          />
-          <TextInput
-            ref={(node) => {
-              this.home = node;
-            }}
-            style={styles.input}
-            defaultValue={this.user.home ? this.user.home : ''}
-            placeholder="Home: Hanoi, Vietnam"
-            underlineColorAndroid="transparent"
-            returnKeyType="done"
-          />
-          <TouchableOpacity onPress={this.submit} style={styles.btnSubmit}>
-            {!this.state.isSubmit ? (
-              <Text style={styles.txtSubmit}>SUBMIT</Text>
-            ) : (
-              <ActivityIndicator size="small" color="white" />
-            )}
-          </TouchableOpacity>
-        </View>
-      </ScrollView>
+            <CheckBox
+              style={styles.checkBox}
+              data={data}
+              defaultValue={this.user.gender}
+              onChange={(value) => {
+                this.genderValue = value;
+              }}
+            />
+            <TextInput
+              ref={(node) => {
+                this.phone = node;
+              }}
+              style={styles.input}
+              keyboardType="phone-pad"
+              placeholder="Phone"
+              defaultValue={this.user.phone ? this.user.phone : ''}
+              underlineColorAndroid="transparent"
+              returnKeyType="next"
+              onSubmitEditing={() => this.home.focus()}
+            />
+            <TextInput
+              ref={(node) => {
+                this.home = node;
+              }}
+              style={styles.input}
+              defaultValue={this.user.home ? this.user.home : ''}
+              placeholder="Home: Hanoi, Vietnam"
+              underlineColorAndroid="transparent"
+              returnKeyType="done"
+            />
+            <TouchableOpacity onPress={this.submit} style={styles.btnSubmit}>
+              {!this.state.isSubmit ? (
+                <Text style={styles.txtSubmit}>SUBMIT</Text>
+              ) : (
+                <ActivityIndicator size="small" color="white" />
+              )}
+            </TouchableOpacity>
+          </View>
+        </ScrollView>
+      </View>
     );
   }
 }
