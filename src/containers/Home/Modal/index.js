@@ -90,7 +90,7 @@ class ModalView extends PureComponent {
   };
   _getPhoto = () => {
     CameraRoll.getPhotos({
-      first: 1000,
+      first: 100,
       assetType: 'Photos',
     })
       .then((r) => {

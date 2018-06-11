@@ -1,6 +1,15 @@
 import React, { PureComponent } from 'react';
 import PropTypes from 'prop-types';
-import { View, Text, ScrollView, TouchableOpacity, Image, FlatList, Modal } from 'react-native';
+import {
+  View,
+  Text,
+  ScrollView,
+  TouchableOpacity,
+  PermissionsAndroid,
+  Image,
+  FlatList,
+  Modal,
+} from 'react-native';
 import { connect } from 'react-redux';
 import Moment from 'moment';
 import firebase from 'react-native-firebase';
@@ -36,12 +45,13 @@ class Home extends PureComponent {
   }
 
   componentDidMount() {
-    this.onGetCurrentPosition();
     this.props.fetchDatagetNewFeed(this.props.user.user.uid);
     console.log(this.props.dataNewFeed.data);
+    this.onGetCurrentPosition();
   }
 
-  onGetCurrentPosition = () => {
+  onGetCurrentPosition() {
+    console.log('ahihi');
     // eslint-disable-next-line
     navigator.geolocation.getCurrentPosition(
       (position) => {
@@ -57,9 +67,9 @@ class Home extends PureComponent {
         console.log(`state: ${JSON.stringify(this.state)}`);
       },
       error => this.setState({ error }),
-      { enableHighAccuracy: true, timeout: 20000, maximumAge: 1000 },
+      { maximumAge: 100, timeout: 2000 },
     );
-  };
+  }
 
   setModalVisible(visible) {
     this.setState({ modalVisible: visible });
@@ -108,72 +118,70 @@ class Home extends PureComponent {
       return (
         <FlatList
           data={this.props.dataNewFeed.data.reverse()}
-          renderItem={({ item }) => {
-            // const distance = this._getDistanceFromLatLonInKm(
-            //   item.location.lat,
-            //   item.location.lng,
-            //   this.state.latitude,
-            //   this.state.longitude,
-            // );
-            return (
-              <View style={styles.formItem}>
-                <TouchableOpacity
-                  onPress={() => {
+          renderItem={({ item }) => (
+            <View style={styles.formItem}>
+              <TouchableOpacity
+                onPress={() => {
                     this.props.navigation.navigate('HomeDetail', { data: item.restaurantPlaceId });
                   }}
-                >
-                  <TouchableOpacity>
-                    <View style={styles.viewUserPost}>
-                      <Image source={{ uri: item.userAvatar }} style={styles.viewImageUser} />
-                      <View>
-                        <Text style={styles.textNameUser}>{item.userName}</Text>
-                        <Text style={styles.textPost}>{Moment(item.create).format('h:mm a, Do MMMM YYYY')}</Text>
-                      </View>
-                    </View>
-                  </TouchableOpacity>
-                  <View>
-                    <View style={styles.statusContainer}>
-                      <Text style={styles.statusStyle} numberOfLines={1} ellipsizeMode="tail">{item.content.detail}</Text>
-                    </View>
-                    <View style={styles.imageContent}>
-                      <Image source={{ uri: item.content.photos[0] }} style={styles.imageContent} />
-                    </View>
-                    <View style={styles.viewPointForm}>
-                      <View style={styles.viewPoint}>
-                        <Text style={styles.textPoint}>{item.rating}</Text>
-                      </View>
-                    </View>
-                  </View>
-                  <View style={styles.formItemText}>
-                    <View style={styles.viewNameRow1}>
-                      <Text numberOfLines={1} style={styles.textName}>
-                        {item.restaurantName}
+              >
+                <TouchableOpacity>
+                  <View style={styles.viewUserPost}>
+                    <Image source={{ uri: item.userAvatar }} style={styles.viewImageUser} />
+                    <View>
+                      <Text style={styles.textNameUser}>{item.userName}</Text>
+                      <Text style={styles.textPost}>
+                        {Moment(item.create).format('h:mm a, Do MMMM YYYY')}
                       </Text>
                     </View>
-                    <View style={styles.viewNameRow2}>
-                      <View>
-                        <Text style={styles.textNameRow2} numberOfLines={1} ellipsizeMode="tail">{item.restaurantVicinity}</Text>
-                      </View>
-                      <View>
-                        <StarRating
-                          disabled={false}
-                          emptyStar="ios-star-outline"
-                          fullStar="ios-star"
-                          iconSet="Ionicons"
-                          maxStars={5}
-                          rating={item.rating}
-                          fullStarColor="#4CB33E"
-                          reversed
-                          starSize={12}
-                        />
-                      </View>
-                    </View>
-                    <View />
                   </View>
                 </TouchableOpacity>
-              </View>
-            );
-          }}
+                <View>
+                  <View style={styles.statusContainer}>
+                    <Text style={styles.statusStyle} numberOfLines={1} ellipsizeMode="tail">
+                      {item.content.detail}
+                    </Text>
+                  </View>
+                  <View style={styles.imageContent}>
+                    <Image source={{ uri: item.content.photos[0] }} style={styles.imageContent} />
+                  </View>
+                  <View style={styles.viewPointForm}>
+                    <View style={styles.viewPoint}>
+                      <Text style={styles.textPoint}>{item.rating}</Text>
+                    </View>
+                  </View>
+                </View>
+                <View style={styles.formItemText}>
+                  <View style={styles.viewNameRow1}>
+                    <Text numberOfLines={1} style={styles.textName}>
+                      {item.restaurantName}
+                    </Text>
+                  </View>
+                  <View style={styles.viewNameRow2}>
+                    <View>
+                      <Text style={styles.textNameRow2} numberOfLines={1} ellipsizeMode="tail">
+                        {item.restaurantVicinity}
+                      </Text>
+                    </View>
+                    <View>
+                      <StarRating
+                        disabled={false}
+                        emptyStar="ios-star-outline"
+                        fullStar="ios-star"
+                        iconSet="Ionicons"
+                        maxStars={5}
+                        rating={item.rating}
+                        fullStarColor="#4CB33E"
+                        reversed
+                        starSize={12}
+                      />
+                    </View>
+                  </View>
+                  <View />
+                </View>
+              </TouchableOpacity>
+            </View>
+            )}
           keyExtractor={(item, index) => index.toString()}
         />
       );
@@ -254,4 +262,7 @@ const mapStateToProps = state => ({
   user: state.user,
 });
 
-export default connect(mapStateToProps, { fetchDatagetNewFeed, getPositionSuccess, setUser })(Home);
+export default connect(
+  mapStateToProps,
+  { fetchDatagetNewFeed, getPositionSuccess, setUser },
+)(Home);

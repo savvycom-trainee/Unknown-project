@@ -169,8 +169,14 @@ class Account extends PureComponent {
         </View>
         <View style={account.botView}>
           <View style={account.statisticView}>
-            <Statistic number={this.props.user.user.follower.length} title="Follower" />
-            <Statistic number={this.props.user.user.following.length} title="Followings" />
+            <Statistic
+              number={this.props.user.user.follower ? this.props.user.user.follower.length : 0}
+              title="Follower"
+            />
+            <Statistic
+              number={this.props.user.user.following ? this.props.user.user.following.length : 0}
+              title="Followings"
+            />
             <Statistic number={10} title="Share" />
           </View>
           <Text style={account.botRestaurant}>My Restaurant</Text>
