@@ -12,7 +12,6 @@ export default (state = defaultState, action) => {
         ...state,
         user: action.user,
       };
-
     case types.SET_USER_DATABASE:
       return {
         ...state,

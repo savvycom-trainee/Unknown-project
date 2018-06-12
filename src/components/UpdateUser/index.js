@@ -37,6 +37,7 @@ class UpdateUser extends PureComponent {
   constructor(props) {
     super(props);
     this.user = this.props.navigation.getParam('user', null);
+    this.type = this.props.navigation.getParam('fb', false);
     if (!this.user) {
       this.user = this.props.user.user;
       this.state = {
@@ -94,6 +95,8 @@ class UpdateUser extends PureComponent {
   };
 
   uploadDone = (info, error) => {
+    if (this.type) this.props.setUser({ ...info, uid: this.user.id });
+
     if (!error) {
       this.props.setUser(info);
       // eslint-disable-next-line
@@ -114,13 +117,13 @@ class UpdateUser extends PureComponent {
       firebase
         .database()
         .ref('root/users')
-        .child(this.user.uid)
+        .child(this.user.uid ? this.user.uid : this.user.id)
         .set(info, error => this.uploadDone(info, error));
     } else {
       firebase
         .database()
         .ref('root/users')
-        .child(this.user.uid)
+        .child(this.user.uid ? this.user.uid : this.user.id)
         .update(info, error => this.uploadDone(info, error));
     }
   };
@@ -139,7 +142,7 @@ class UpdateUser extends PureComponent {
         phone,
         location: this.location ? this.location.data : [],
         photoURL: this.user.photoURL ? this.user.photoURL : '',
-        uid: this.user.uid,
+        uid: this.user.uid ? this.user.uid : this.user.id,
       };
       if (photoURL !== '') {
         this.uploadPhoto(info, photoURL);

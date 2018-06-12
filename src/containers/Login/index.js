@@ -195,22 +195,12 @@ class Login extends PureComponent {
                     console.log(error);
                   });
               } else {
-                this.props.setUser({ ...snapshot.val(), uid: res.id });
-                AsyncStorage.setItem(
-                  'user',
-                  JSON.stringify({ ...snapshot.val(), uid: res.id }),
-                  error => console.log(error),
-                );
-                this.props.navigation.navigate('Home', { user: snapshot.val() });
+                const user = { ...snapshot.val(), uid: res.id };
+                this.props.setUser(user);
+                AsyncStorage.setItem('user', JSON.stringify(user), error => console.log(error));
+                this.props.navigation.navigate('Home');
               }
             });
-          // firebase
-          //   .auth()
-          //   .signInAndRetrieveDataWithCredential(credential)
-          //   .then(this.props.navigation.navigate('UpdateUser', { user: res, fb: true }))
-          //   .catch((error) => {
-          //     console.log(error);
-          //   });
         }
       },
     );
