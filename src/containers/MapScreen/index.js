@@ -82,7 +82,7 @@ class MapScreen extends PureComponent {
         this.setState({ error }); // eslint-disable-line
       },
       {
-        enableHighAccuracy: false,
+        enableHighAccuracy: true,
         timeout: 20000,
         maximumAge: 1000,
         distanceFilter: 10,

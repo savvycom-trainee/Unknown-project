@@ -1,4 +1,4 @@
-// import axios from 'axios';
+import axios from 'axios';
 import firebase from 'react-native-firebase';
 
 import { GET_REVIEW_ING, GET_REVIEW_SUCCESS, GET_REVIEW_FAIL } from '../constants/actionTypes';
@@ -33,7 +33,7 @@ export function fetchDatagetReview(id) {
         console.log(snapshot.val());
         snapshot.forEach((item) => {
           // console.log(item._value.restaurantPlaceId);
-          if (item._value.restaurantPlaceId === id) {
+          if (item._value.restaurantPlaceId == id) {
             returnArr = [...returnArr, item._value];
           }
         });
