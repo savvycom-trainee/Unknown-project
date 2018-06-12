@@ -20,7 +20,7 @@ class Home extends PureComponent {
     this.state = {
       latitude: null,
       longitude: null,
-      modalVisible: true,
+      modalVisible: false,
       error: null,
       // starCount: 2.5,
     };
