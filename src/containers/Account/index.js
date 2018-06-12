@@ -14,60 +14,13 @@ import PropTypes from 'prop-types';
 import Icon from 'react-native-vector-icons/Ionicons';
 import { NavigationActions } from 'react-navigation';
 import { connect } from 'react-redux';
-import { fetchDatagetUserDetail } from '../../actions/getUserDetailAction';
+import { fetchDatagetUserDetail, fetchDataGetUserPin } from '../../actions/';
 import { Header } from '../../components';
 import icon from '../../themes/Icons';
+import Loading from '../../components/LoadingContainer';
 import account from './style';
 import { Card, Statistic } from './component';
 import images from '../../themes/Images';
-
-const data = [
-  {
-    id: 'abcd',
-    image: images.restaurantPhoto,
-    number: 9.2,
-    name: 'Sublimotion',
-    type: 'RESTAURANT',
-    status: 1,
-    distance: 0.4,
-  },
-  {
-    id: 'abcdbcdefdsfdsaf',
-    image: images.restaurantPhoto,
-    number: 9.0,
-    name: 'HestonBlumenthal',
-    type: 'RESTAURANT',
-    status: 0,
-    distance: 1,
-  },
-  {
-    id: 'abcdbcdeffsdfsdf',
-    image: images.restaurantPhoto,
-    number: 9.0,
-    name: 'Le Meurice',
-    type: 'RESTAURANT',
-    status: 1,
-    distance: 0.8,
-  },
-  {
-    id: 'abcdbcdeffsdf',
-    image: images.restaurantPhoto,
-    number: 9.0,
-    name: 'Chien Manh Vu',
-    type: 'RESTAURANT',
-    status: 1,
-    distance: 0.5,
-  },
-  {
-    id: 'abcdbcdef123213',
-    image: images.restaurantPhoto,
-    number: 9.0,
-    name: 'Vu Manh Chien',
-    type: 'RESTAURANT',
-    status: 0,
-    distance: 10,
-  },
-];
 
 class Account extends PureComponent {
   constructor(props) {
@@ -88,8 +41,9 @@ class Account extends PureComponent {
     }
   }
   componentDidMount() {
+    this.props.fetchDataGetUserPin(this.props.user.user.uid);
     console.log(this.props.navigation);
-    console.log(this.props.user);
+
     BackHandler.addEventListener('hardwareBackPress', this.handleBackPress);
   }
   componentWillUnmount() {
@@ -175,20 +129,24 @@ class Account extends PureComponent {
               number={this.state.following ? this.state.following.length : 0}
               title="Followings"
             />
-            <Statistic number={10} title="Share" />
+            <Statistic
+              number={this.props.dataUserPin.data.length ? this.props.dataUserPin.data.length : 0}
+              title="Pin"
+            />
           </View>
-          <Text style={account.botRestaurant}>My Restaurant</Text>
+          <Text style={account.botRestaurant}>My Pin</Text>
           <FlatList
             horizontal
-            data={data}
-            keyExtractor={(item, index) => `${item.id}${index}`}
+            data={this.props.dataUserPin.data}
+            keyExtractor={(item, index) => index.toString()}
             renderItem={({ item }) => (
               <Card
-                name={item.name}
-                image={item.image}
-                status={item.status}
-                distance={item.distance}
-                review={item.number}
+                name={item.restaurantName}
+                image={item.content.photos[0]}
+                status={item.content.detail}
+                restaurantVicinity={item.restaurantVicinity}
+                review={item.rating}
+                restaurantPlaceId={item.restaurantPlaceId}
               />
             )}
           />
@@ -205,16 +163,20 @@ Account.propTypes = {
     params: PropTypes.object,
     dispatch: PropTypes.func.isRequired,
   }).isRequired,
+  fetchDataGetUserPin: PropTypes.func.isRequired,
   user: PropTypes.object.isRequired,
+  dataUserPin: PropTypes.object.isRequired,
 };
 
 const mapStateToProps = state => ({
   dataUserDetail: state.getUserDetailReducers,
   user: state.user,
+  dataUserPin: state.getUserPinReducers,
 });
 
 const mapDispatchToProps = dispatch => ({
   fetchDatagetUserDetail: id => dispatch(fetchDatagetUserDetail(id)),
+  fetchDataGetUserPin: id => dispatch(fetchDataGetUserPin(id)),
 });
 
 export default connect(

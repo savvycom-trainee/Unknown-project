@@ -33,5 +33,6 @@ const fetchDatagetUser = () => (dispatch) => {
     dispatch(getUserFail(error));
   }
 };
+
 // eslint-disable-next-line
 export { fetchDatagetUser };
