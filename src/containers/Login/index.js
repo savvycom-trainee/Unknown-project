@@ -39,8 +39,6 @@ class Login extends PureComponent {
   getUser = async () => {
     try {
       const user = await AsyncStorage.getItem('user');
-      console.log('user', user);
-
       if (user !== null) {
         const tmpUser = JSON.parse(user);
         this.move(tmpUser);

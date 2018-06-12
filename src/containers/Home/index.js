@@ -30,6 +30,10 @@ class Home extends PureComponent {
     this.onGetCurrentPosition();
     this.props.fetchDatagetNewFeed(this.props.user.user.uid);
     console.log(this.props.dataNewFeed.data);
+    const { uid } = this.props.user.user;
+    firebase.database().ref('root/users').child(uid).on('value', (data) => {
+      this.props.setUser(data._value);
+    });
   }
 
   onGetCurrentPosition = () => {

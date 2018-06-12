@@ -8,57 +8,62 @@ import {
   TextInput,
   Alert,
   ActivityIndicator,
-  AsyncStorage,
+  StatusBar,
 } from 'react-native';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
+import Icon from 'react-native-vector-icons/FontAwesome';
 import { NavigationActions } from 'react-navigation';
 import firebase from 'react-native-firebase';
 import styles from './style';
+import { Images } from '../../themes';
 import Gallery from '../Gallery';
-import { setUser } from '../../actions';
+import CheckBox from '../CheckBox';
+import Header from '../Header';
+import { setUser, getPositionUser } from '../../actions';
 
-const defaultProps = {
-  name: '',
-  photoURL: 'https://www.vccircle.com/wp-content/uploads/2017/03/default-profile.png',
-  gender: '',
-  home: '',
-};
+const data = [
+  {
+    text: 'Male',
+    value: 'Male',
+  },
+  {
+    text: 'Female',
+    value: 'Female',
+  },
+];
 
 class UpdateUser extends PureComponent {
   constructor(props) {
     super(props);
-    this.state = {
-      ...defaultProps,
-      isSubmit: false,
-    };
-    this.user = this.props.navigation.getParam('user', {});
+    this.user = this.props.navigation.getParam('newUser', false);
     if (!this.user) {
-      this.getUser();
+      this.user = this.props.user.user;
+      this.state = {
+        isSubmit: false,
+        photoURL: '',
+      };
+    } else {
+      this.state = {
+        isSubmit: false,
+        photoURL: '',
+        isNewUser: true,
+      };
     }
+    console.log(this.user);
+    this.genderValue = 'Male';
+    this.location = getPositionUser();
+    console.log('position', this.location);
   }
 
   componentDidMount() {
-    console.log('user', this.user);
+    console.log('user', this.user.uid);
   }
-
-  getUser = () => {
-    const { uid } = this.user;
-    firebase
-      .database()
-      .ref('/root/users')
-      .child(uid)
-      .on('value', data =>
-        this.setState({
-          ...data._value,
-          uid,
-        }));
-  };
 
   uploadPhoto = (tmpInfo, url) => {
     const storage = firebase.storage();
     const sessionId = new Date().getTime();
-    const imageRef = storage.ref('images').child(sessionId);
+    const imageRef = storage.ref('images').child(`${sessionId}`);
     imageRef.putFile(url).on(
       'state_changed',
       () => {
@@ -87,56 +92,43 @@ class UpdateUser extends PureComponent {
       },
     );
   };
-  uploadUser = (info) => {
-    // const user = this.state;
-    const userFb = this.props.navigation.getParam('user', {});
-    const type = this.props.navigation.getParam('fb', false);
-    firebase
-      .database()
-      .ref('root/users')
-      .child(type ? userFb.id : this.user.uid)
-      .set(info, (error) => {
-        if (!error) {
-          console.log(info);
-          console.log(this.user);
-          const user = {
-            ...info,
-            uid: this.user.uid,
-          };
-          const navigateAction = NavigationActions.navigate(this.user
-            ? {
-              routeName: 'Login',
-              params: user,
-              action: NavigationActions.navigate({
-                routeName: 'Login',
-                params: { user, newUser: true },
-              }),
-            }
-            : {
-              routeName: 'Account',
-              params: user,
-              action: NavigationActions.navigate({
-                routeName: 'Account',
-                params: { user, newUser: true },
-              }),
-            });
-          // eslint-disable-next-line
-          this.props.setUser(info);
-          AsyncStorage.setItem('user', JSON.stringify(info));
-          if (type) {
-            this.props.navigation.navigate('MainStack');
-          } else this.props.navigation.dispatch(navigateAction);
-        } else {
-          console.log(error);
-        }
+
+  uploadDone = (info, error) => {
+    if (!error) {
+      this.props.setUser(info);
+      // eslint-disable-next-line
+      const navigateAction = NavigationActions.navigate({
+        routeName: 'Home',
+        action: NavigationActions.navigate({
+          routeName: 'Home',
+        }),
       });
+      this.props.navigation.dispatch(navigateAction);
+    } else {
+      console.log(error);
+    }
+  };
+
+  uploadUser = (info) => {
+    if (this.state.isNewUser) {
+      firebase
+        .database()
+        .ref('root/users')
+        .child(this.user.uid)
+        .set(info, error => this.uploadDone(info, error));
+    } else {
+      firebase
+        .database()
+        .ref('root/users')
+        .child(this.user.uid)
+        .update(info, error => this.uploadDone(info, error));
+    }
   };
   submit = () => {
-    const user = this.props.navigation.getParam('user', {});
-    const fullName = user.name ? user.name : this.fullName._lastNativeText;
-    const home = this.home._lastNativeText;
-    const gender = this.gender._lastNativeText;
-    const phone = this.phone._lastNativeText;
+    const fullName = this.fullName._lastNativeText || this.user.fullName;
+    const home = this.home._lastNativeText || this.user.home;
+    const gender = this.genderValue || this.user.gender;
+    const phone = this.phone._lastNativeText || this.user.phone;
     if (!(fullName === '' && home === '' && gender === '' && phone === '')) {
       const { photoURL } = this.state;
       const info = {
@@ -145,10 +137,11 @@ class UpdateUser extends PureComponent {
         home,
         gender,
         phone,
-        photoURL: defaultProps.photoURL,
-        uid: user.id ? user.id : user.uid,
+        location: this.location ? this.location.data : [],
+        photoURL: this.user.photoURL ? this.user.photoURL : '',
+        uid: this.user.uid,
       };
-      if (photoURL !== defaultProps.photoURL) {
+      if (photoURL !== '') {
         this.uploadPhoto(info, photoURL);
       } else {
         this.uploadUser(info);
@@ -168,69 +161,90 @@ class UpdateUser extends PureComponent {
     );
   };
   render() {
-    const user = this.props.navigation.getParam('user', {});
     return (
-      <ScrollView style={styles.container}>
+      <View style={styles.container}>
+        <StatusBar barStyle="dark-content" />
+        <ScrollView style={{ flex: 1 }}>
+          <Header
+            centerHeader={<Text style={styles.title}>Information</Text>}
+            rightHeader={
+              !this.state.isNewUser ? (
+                <TouchableOpacity style={styles.editPassword}>
+                  <Icon name="wrench" size={26} />
+                </TouchableOpacity>
+              ) : null
+            }
+          />
+          <View style={styles.topView}>
+            <TouchableOpacity style={styles.imageView} onPress={() => this.gallery.open()}>
+              <Image
+                source={
+                  this.state.photoURL === ''
+                    ? this.user.photoURL
+                      ? { uri: this.user.photoURL }
+                      : Images.defaultAvatar
+                    : { uri: this.state.photoURL }
+                }
+                style={styles.image}
+              />
+            </TouchableOpacity>
+          </View>
+          <View style={styles.botView}>
+            <TextInput
+              ref={(node) => {
+                this.fullName = node;
+              }}
+              defaultValue={this.user.fullName ? this.user.fullName : ''}
+              style={styles.input}
+              placeholder="Full name"
+              underlineColorAndroid="transparent"
+            />
+            <CheckBox
+              style={styles.checkBox}
+              data={data}
+              defaultValue={this.user.gender}
+              onChange={(value) => {
+                this.genderValue = value;
+              }}
+            />
+            <TextInput
+              ref={(node) => {
+                this.phone = node;
+              }}
+              style={styles.input}
+              keyboardType="phone-pad"
+              placeholder="Phone"
+              defaultValue={this.user.phone ? this.user.phone : ''}
+              underlineColorAndroid="transparent"
+              returnKeyType="next"
+              onSubmitEditing={() => this.home.focus()}
+            />
+            <TextInput
+              ref={(node) => {
+                this.home = node;
+              }}
+              style={styles.input}
+              defaultValue={this.user.home ? this.user.home : ''}
+              placeholder="Home: Hanoi, Vietnam"
+              underlineColorAndroid="transparent"
+              returnKeyType="done"
+            />
+            <TouchableOpacity onPress={this.submit} style={styles.btnSubmit}>
+              {!this.state.isSubmit ? (
+                <Text style={styles.txtSubmit}>SUBMIT</Text>
+              ) : (
+                <ActivityIndicator size="small" color="white" />
+              )}
+            </TouchableOpacity>
+          </View>
+        </ScrollView>
         <Gallery
           select={this.selectAvatar}
           onRef={(node) => {
             this.gallery = node;
           }}
         />
-        <View style={styles.topView}>
-          <Text style={styles.title}>Information</Text>
-          <TouchableOpacity style={styles.imageView} onPress={() => this.gallery.open()}>
-            <Image source={{ uri: this.state.photoURL }} style={styles.image} />
-          </TouchableOpacity>
-        </View>
-        <View style={styles.botView}>
-          <TextInput
-            ref={(node) => {
-              this.fullName = node;
-            }}
-            value={user.name}
-            style={styles.input}
-            placeholder="Full name"
-            underlineColorAndroid="transparent"
-            onSubmitEditing={() => this.gender.focus()}
-          />
-          <TextInput
-            ref={(node) => {
-              this.gender = node;
-            }}
-            style={styles.input}
-            placeholder="Gender: Male or Female"
-            underlineColorAndroid="transparent"
-            onSubmitEditing={() => this.phone.focus()}
-          />
-          <TextInput
-            ref={(node) => {
-              this.phone = node;
-            }}
-            style={styles.input}
-            keyboardType="phone-pad"
-            placeholder="Phone"
-            underlineColorAndroid="transparent"
-            onSubmitEditing={() => this.home.focus()}
-          />
-          <TextInput
-            ref={(node) => {
-              this.home = node;
-            }}
-            style={styles.input}
-            placeholder="Home: Hanoi, Vietnam"
-            underlineColorAndroid="transparent"
-            returnKeyType="done"
-          />
-          <TouchableOpacity onPress={this.submit} style={styles.btnSubmit}>
-            {!this.state.isSubmit ? (
-              <Text style={styles.txtSubmit}>SUBMIT</Text>
-            ) : (
-              <ActivityIndicator size="small" color="white" />
-            )}
-          </TouchableOpacity>
-        </View>
-      </ScrollView>
+      </View>
     );
   }
 }
@@ -241,6 +255,8 @@ UpdateUser.propTypes = {
     dispatch: PropTypes.func.isRequired,
     getParam: PropTypes.func.isRequired,
   }).isRequired,
+  user: PropTypes.object.isRequired,
+  setUser: PropTypes.func.isRequired,
 };
 const mapDispatchToProps = dispatch => ({
   setUser: user => dispatch(setUser(user)),

@@ -21,12 +21,6 @@ import account from './style';
 import { Card, Statistic } from './component';
 import images from '../../themes/Images';
 
-// const defaultParam = {
-//   name: 'Chiến Mạnh Vũ',
-//   gender: 'Male',
-//   location: 'Hanoi',
-//   avatar: require('../../../assets/images/avata.png'), // eslint-disable-line
-// };
 const data = [
   {
     id: 'abcd',
@@ -88,7 +82,7 @@ class Account extends PureComponent {
       };
     } else {
       this.state = {
-        ...this.props.user,
+        ...this.user,
         isOwner: true,
       };
     }
@@ -96,7 +90,6 @@ class Account extends PureComponent {
   componentDidMount() {
     console.log(this.props.navigation);
     console.log(this.props.user);
-    console.log(this.props.dataUserDetail);
     BackHandler.addEventListener('hardwareBackPress', this.handleBackPress);
   }
   componentWillUnmount() {
@@ -124,7 +117,7 @@ class Account extends PureComponent {
               leftHeader={
                 this.state.isOwner ? (
                   <TouchableOpacity onPress={() => this.props.navigation.goBack()}>
-                    <Image source={icon.back} style={account.back} />
+                    <Image source={icon.back} />
                   </TouchableOpacity>
                 ) : null
               }
@@ -143,10 +136,15 @@ class Account extends PureComponent {
               }
             />
             <View style={account.info}>
-              <Image source={{ uri: this.props.user.user.photoURL }} style={account.avatar} />
-              <Text style={account.name}>{this.props.user.user.fullName}</Text>
+              <Image
+                source={
+                  this.state.photoURL === '' ? images.defaultAvatar : { uri: this.state.photoURL }
+                }
+                style={account.avatar}
+              />
+              <Text style={account.name}>{this.state.fullName}</Text>
               <Text style={account.detail}>
-                {this.props.user.user.gender}, {this.props.user.user.home}
+                {this.state.gender}, {this.state.home}
               </Text>
             </View>
           </View>
@@ -170,11 +168,11 @@ class Account extends PureComponent {
         <View style={account.botView}>
           <View style={account.statisticView}>
             <Statistic
-              number={this.props.user.user.follower ? this.props.user.user.follower.length : 0}
+              number={this.state.follower ? this.state.follower.length : 0}
               title="Follower"
             />
             <Statistic
-              number={this.props.user.user.following ? this.props.user.user.following.length : 0}
+              number={this.state.following ? this.state.following.length : 0}
               title="Followings"
             />
             <Statistic number={10} title="Share" />

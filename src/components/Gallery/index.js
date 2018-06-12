@@ -2,6 +2,9 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { View, Text, ScrollView, CameraRoll, TouchableOpacity, Image } from 'react-native';
 import * as d from '../../utilities/Tranform.js';
+import { Icons } from '../../themes';
+import styles from './style';
+import Header from '../Header';
 
 class Gallery extends Component {
   constructor(props) {
@@ -37,14 +40,6 @@ class Gallery extends Component {
       this.loadPhoto();
     }
   };
-  randomKey = () => {
-    let text = '';
-    const possible = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
-    for (let i = 0; i < 20; i += 1) {
-      text += possible.charAt(Math.floor(Math.random() * possible.length));
-    }
-    return text;
-  };
   close = () => {
     this.setState({
       isShow: false,
@@ -57,40 +52,30 @@ class Gallery extends Component {
   };
   render() {
     return !this.state.isShow ? null : (
-      <ScrollView style={{ flex: 1, position: 'absolute', zIndex: 2 }}>
-        <View style={{ height: 30, alignItems: 'center', justifyContent: 'center' }}>
-          <Text style={{ textAlign: 'center', fontWeight: '600', fontSize: 14 }}>
-            Recent Gellary
-          </Text>
-        </View>
-        <View
-          style={{
-            width: '100%',
-            justifyContent: 'space-between',
-            flexDirection: 'row',
-            flexWrap: 'wrap',
-          }}
-        >
-          {this.state.photos.map(({ node }) => {
-            const key = this.randomKey();
-            return (
-              <TouchableOpacity
-                key={key}
-                style={{ margin: 2 }}
-                onPress={() => this.props.select(node.image.uri)}
-              >
-                <Image
-                  style={{
-                    width: 120 * d.ratioW,
-                    height: 100,
-                  }}
-                  source={{ uri: node.image.uri }}
-                />
-              </TouchableOpacity>
-            );
-          })}
-        </View>
-      </ScrollView>
+      <View style={styles.container}>
+        <Header
+          leftHeader={<Image source={Icons.back} />}
+          onPressLeftHeader={this.close}
+          centerHeader={<Text style={styles.title}>Recent Gellary</Text>}
+        />
+        <ScrollView style={styles.scrollView} horizontal>
+          {this.state.photos.map(({ node }) => (
+            <TouchableOpacity
+              key={node.image.uri}
+              style={{ margin: 2 }}
+              onPress={() => this.props.select(node.image.uri)}
+            >
+              <Image
+                style={{
+                  width: 120 * d.ratioW,
+                  height: 100,
+                }}
+                source={{ uri: node.image.uri }}
+              />
+            </TouchableOpacity>
+          ))}
+        </ScrollView>
+      </View>
     );
   }
 }

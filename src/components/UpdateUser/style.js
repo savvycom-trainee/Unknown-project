@@ -11,6 +11,14 @@ const styles = StyleSheet.create({
     lineHeight: 30,
     textAlign: 'center',
   },
+  checkBox: {
+    width: '100%',
+    height: 40 * d.ratioH,
+    marginBottom: 10 * d.ratioH,
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
   imageView: {
     marginTop: 31 * d.ratioH,
     width: 120 * d.ratioW,
@@ -44,6 +52,11 @@ const styles = StyleSheet.create({
     backgroundColor: 'white',
     paddingLeft: 20,
     borderRadius: 2.5,
+    elevation: 5,
+    shadowColor: 'grey',
+    shadowOffset: { width: 0, height: 5 },
+    shadowOpacity: 0.9,
+    shadowRadius: 5,
   },
   btnSubmit: {
     height: 50 * d.ratioH,
