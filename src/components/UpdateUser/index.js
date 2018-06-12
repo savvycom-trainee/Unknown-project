@@ -36,7 +36,7 @@ const data = [
 class UpdateUser extends PureComponent {
   constructor(props) {
     super(props);
-    this.user = this.props.navigation.getParam('newUser', false);
+    this.user = this.props.navigation.getParam('user', null);
     if (!this.user) {
       this.user = this.props.user.user;
       this.state = {
@@ -57,7 +57,7 @@ class UpdateUser extends PureComponent {
   }
 
   componentDidMount() {
-    console.log('user', this.user.uid);
+    console.log('user', this.user);
   }
 
   uploadPhoto = (tmpInfo, url) => {
