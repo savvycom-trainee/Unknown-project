@@ -1,0 +1,66 @@
+{
+  "project_info": {
+    "project_number": "255551392159",
+    "firebase_url": "https://findadd-a12ae.firebaseio.com",
+    "project_id": "findadd-a12ae",
+    "storage_bucket": "findadd-a12ae.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:255551392159:android:7504eb96f0bfb0d4",
+        "android_client_info": {
+          "package_name": "com.unknown"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "255551392159-fsrivfeef5em83rlssiikve4mkn6pt38.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.unknown",
+            "certificate_hash": "1eadf919b86b83d6933e7cc156e92b27ece9b76b"
+          }
+        },
+        {
+          "client_id": "255551392159-56paplhltr3vddpqvi8lpcvsgmrg1hvm.apps.googleusercontent.com",
+          "client_type": 3
+        },
+        {
+          "client_id": "255551392159-56paplhltr3vddpqvi8lpcvsgmrg1hvm.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCzOFsu2vKYJeEntbuCAumGFaqPOe_sVts"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 2,
+          "other_platform_oauth_client": [
+            {
+              "client_id": "255551392159-56paplhltr3vddpqvi8lpcvsgmrg1hvm.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "255551392159-22b2v9a5o9s8gs5v8oa13lniidg55pgu.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "org.reactjs.native.example.unknown"
+              }
+            }
+          ]
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
