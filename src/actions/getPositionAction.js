@@ -5,7 +5,6 @@ export const getPositionSuccess = coords => ({
   payload: coords,
 });
 
-export const getPositionFail = coords => ({
+export const getPositionFail = () => ({
   type: GET_POSITION_FAIL,
-  payload: coords,
 });

@@ -12,6 +12,7 @@ import {
 
 import PropTypes from 'prop-types';
 import Icon from 'react-native-vector-icons/Ionicons';
+import firebase from 'react-native-firebase';
 import { NavigationActions } from 'react-navigation';
 import { connect } from 'react-redux';
 import { fetchDatagetUserDetail, fetchDataGetUserPin } from '../../actions/';
@@ -25,31 +26,44 @@ import images from '../../themes/Images';
 class Account extends PureComponent {
   constructor(props) {
     super(props);
-    const { params } = this.props.navigation;
-    console.log(params);
+    this.otherUserId = this.props.navigation.getParam('idUser', null);
     this.user = this.props.user.user;
-    if (params) {
-      this.state = {
-        ...params,
-        isOwner: false,
-      };
-    } else {
-      this.state = {
-        ...this.user,
-        isOwner: true,
-      };
-    }
+    this.state = {
+      isOwner: true,
+    };
   }
   componentDidMount() {
-    this.props.fetchDataGetUserPin(this.props.user.user.uid);
-    console.log(this.props.navigation);
+    this.onGetOtherUser();
+    console.log(this.state);
 
     BackHandler.addEventListener('hardwareBackPress', this.handleBackPress);
   }
   componentWillUnmount() {
     BackHandler.removeEventListener('hardwareBackPress', this.handleBackPress);
   }
-  getUserId = () => {};
+
+  onGetOtherUser = () => {
+    firebase
+      .database()
+      .ref(`root/users/${this.otherUserId}`)
+      .on('value', (snapshot) => {
+        this.otherUser = snapshot.val();
+        console.log(snapshot.val());
+        if (this.otherUserId && this.otherUserId !== this.user.uid) {
+          this.setState({
+            ...this.otherUser,
+            isOwner: false,
+          });
+          this.props.fetchDataGetUserPin(this.otherUser.uid);
+        } else {
+          this.setState({
+            ...this.user,
+            isOwner: true,
+          });
+          this.props.fetchDataGetUserPin(this.user.uid);
+        }
+      });
+  };
 
   logOut = () => {
     console.log('logout');
@@ -61,19 +75,16 @@ class Account extends PureComponent {
     this.props.navigation.dispatch(navigateAction);
   };
   render() {
-    console.log(this.state);
     return (
       <View style={account.container}>
-        <StatusBar hidden />
+        {/* <StatusBar hidden /> */}
         <View style={account.topView}>
           <View style={{ flex: 1, backgroundColor: 'white' }}>
             <Header
               leftHeader={
-                this.state.isOwner ? (
-                  <TouchableOpacity onPress={() => this.props.navigation.goBack()}>
-                    <Image source={icon.back} />
-                  </TouchableOpacity>
-                ) : null
+                <TouchableOpacity onPress={() => this.props.navigation.goBack()}>
+                  <Image source={icon.back} />
+                </TouchableOpacity>
               }
               centerHeader={<Text style={account.title}>Account</Text>}
               rightHeader={

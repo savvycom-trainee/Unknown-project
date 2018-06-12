@@ -10,7 +10,7 @@ import { Header } from '../../components';
 import styles from './styles';
 import { Icons } from '../../themes';
 import { fetchDatagetNewFeed } from '../../actions/getNewFeedAction';
-import { getPositionSuccess, setUser } from '../../actions';
+import { getPositionSuccess, getPositionFail, setUser } from '../../actions';
 import ModalView from './Modal';
 import Loading from '../../components/LoadingContainer';
 
@@ -28,6 +28,7 @@ class Home extends PureComponent {
 
   componentDidMount() {
     this.onGetCurrentPosition();
+    console.log(this.props.region);
     this.props.fetchDatagetNewFeed(this.props.user.user.uid);
     console.log(this.props.dataNewFeed.data);
     const { uid } = this.props.user.user;
@@ -51,7 +52,10 @@ class Home extends PureComponent {
         console.log(`position ${JSON.stringify(this.props.getPositionSuccess(position))}`);
         console.log(`state: ${JSON.stringify(this.state)}`);
       },
-      error => this.setState({ error }),
+      error => {
+        this.setState({ error });
+        this.props.getPositionFail();
+      },
       { enableHighAccuracy: false, timeout: 20000, maximumAge: 1000 },
     );
   };
@@ -116,7 +120,7 @@ class Home extends PureComponent {
                   this.props.navigation.navigate('HomeDetail', { data: item.restaurantPlaceId });
                 }}
               >
-                <TouchableOpacity>
+                <TouchableOpacity onPress={() => this.props.navigation.navigate('Account', { idUser: item.idUser })}>
                   <View style={styles.viewUserPost}>
                     <Image source={{ uri: item.userAvatar }} style={styles.viewImageUser} />
                     <View>
@@ -246,6 +250,7 @@ Home.propTypes = {
   user: PropTypes.object, //eslint-disable-line
   setUser: PropTypes.func, //eslint-disable-line
   getPositionSuccess: PropTypes.func, //eslint-disable-line
+  getPositionFail: PropTypes.func, //eslint-disable-line
 };
 const mapStateToProps = state => ({
   dataNewFeed: state.getNewFeedReducers,
@@ -255,5 +260,5 @@ const mapStateToProps = state => ({
 
 export default connect(
   mapStateToProps,
-  { fetchDatagetNewFeed, getPositionSuccess, setUser },
+  { fetchDatagetNewFeed, getPositionSuccess, getPositionFail, setUser },
 )(Home);
