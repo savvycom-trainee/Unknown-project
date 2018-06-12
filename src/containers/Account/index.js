@@ -14,7 +14,6 @@ import PropTypes from 'prop-types';
 import Icon from 'react-native-vector-icons/Ionicons';
 import { NavigationActions } from 'react-navigation';
 import { connect } from 'react-redux';
-import { fetchDatagetUserDetail } from '../../actions/getUserDetailAction';
 import { Header } from '../../components';
 import icon from '../../themes/Icons';
 import account from './style';
@@ -92,11 +91,12 @@ class Account extends PureComponent {
         isOwner: true,
       };
     }
+    console.log(this.state);
   }
   componentDidMount() {
     console.log(this.props.navigation);
     console.log(this.props.user);
-    console.log(this.props.dataUserDetail);
+    // console.log(this.props.dataUserDetail);
     BackHandler.addEventListener('hardwareBackPress', this.handleBackPress);
   }
   componentWillUnmount() {
@@ -114,7 +114,6 @@ class Account extends PureComponent {
     this.props.navigation.dispatch(navigateAction);
   };
   render() {
-    console.log(this.state);
     return (
       <View style={account.container}>
         <StatusBar hidden />
@@ -215,11 +214,4 @@ const mapStateToProps = state => ({
   user: state.user,
 });
 
-const mapDispatchToProps = dispatch => ({
-  fetchDatagetUserDetail: id => dispatch(fetchDatagetUserDetail(id)),
-});
-
-export default connect(
-  mapStateToProps,
-  mapDispatchToProps,
-)(Account);
+export default connect(mapStateToProps)(Account);

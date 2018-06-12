@@ -39,11 +39,9 @@ class Login extends PureComponent {
   getUser = async () => {
     try {
       const user = await AsyncStorage.getItem('user');
-      console.log('user', user);
-
-      if (user !== null) {
-        const tmpUser = JSON.parse(user);
-        this.move(tmpUser);
+      if (user) {
+        const { acc, pass } = JSON.parse(user);
+        this.loginFirebase(acc, pass);
       } else {
         this.setState({ isLoading: false });
       }
@@ -81,78 +79,61 @@ class Login extends PureComponent {
     this.passwordField.focus();
   };
   loginAccount = () => {
+    this.accountField.blur();
+    this.passwordField.blur();
     const acc = this.state.account;
     const pass = this.state.password;
     this.setState(
       {
         isLoading: true,
       },
-      () => {
-        console.log(acc, pass);
-        firebase
-          .auth()
-          .signInAndRetrieveDataWithEmailAndPassword(acc, pass)
-          .then((loginUser) => {
-            console.log(loginUser);
-            firebase
-              .database()
-              .ref('/root/users')
-              .child(loginUser.user.uid)
-              .on('value', (data) => {
-                this.setState(
-                  {
-                    isLoading: false,
-                  },
-                  () => {
-                    try {
-                      const user = {
-                        ...data._value,
-                        uid: data.key,
-                      };
-                      AsyncStorage.setItem('user', JSON.stringify(user));
-                      this.move(user);
-                    } catch (error) {
-                      console.log(error);
-                    }
-                  },
-                );
-              });
-          })
-          .catch((error) => {
-            this.setState(
-              {
-                isLoading: false,
-              },
-              () => {
-                const { code } = error;
-                let message = '';
-                switch (code) {
-                  case 'auth/invalid-email':
-                    message = 'Email invalidate';
-                    break;
-                  case 'auth/user-disabled':
-                    message = 'user disabled';
-                    break;
-                  case 'auth/user-not-found':
-                    message = 'Email not exist';
-                    break;
-                  case 'auth/wrong-password':
-                    message = 'Password incorrect';
-                    break;
-                  default:
-                    message = 'Email or password incorrect';
-                    break;
-                }
-                Alert.alert('Notice', message, [
-                  {
-                    text: 'OK',
-                  },
-                ]);
-              },
-            );
-          });
-      },
+      () => this.loginFirebase(acc, pass),
     );
+  };
+  loginFirebase = (acc, pass) => {
+    console.log(acc, pass);
+    firebase
+      .auth()
+      .signInAndRetrieveDataWithEmailAndPassword(acc, pass)
+      .then((loginUser) => {
+        console.log(loginUser);
+        const { user } = loginUser;
+        AsyncStorage.setItem('user', JSON.stringify({ acc, pass }));
+        this.move(user);
+      })
+      .catch((error) => {
+        this.setState(
+          {
+            isLoading: false,
+          },
+          () => {
+            const { code } = error;
+            let message = '';
+            switch (code) {
+              case 'auth/invalid-email':
+                message = 'Email invalidate';
+                break;
+              case 'auth/user-disabled':
+                message = 'user disabled';
+                break;
+              case 'auth/user-not-found':
+                message = 'Email not exist';
+                break;
+              case 'auth/wrong-password':
+                message = 'Password incorrect';
+                break;
+              default:
+                message = 'Email or password incorrect';
+                break;
+            }
+            Alert.alert('Notice', message, [
+              {
+                text: 'OK',
+              },
+            ]);
+          },
+        );
+      });
   };
   loginFacebook = () => {
     LoginManager.logInWithReadPermissions(['public_profile', 'user_friends', 'email']).then(
@@ -206,13 +187,6 @@ class Login extends PureComponent {
                 this.props.navigation.navigate('Home', { user: snapshot.val() });
               }
             });
-          // firebase
-          //   .auth()
-          //   .signInAndRetrieveDataWithCredential(credential)
-          //   .then(this.props.navigation.navigate('UpdateUser', { user: res, fb: true }))
-          //   .catch((error) => {
-          //     console.log(error);
-          //   });
         }
       },
     );
@@ -242,6 +216,13 @@ class Login extends PureComponent {
                   onSubmitEditing={this.accNext}
                   returnKeyType="next"
                   autoCapitalize="none"
+                  onFocus={() => {
+                    this.accountField.focus();
+                  }}
+                  onBlur={() => this.accountField.blur()}
+                  ref={(ref) => {
+                    this.accountField = ref;
+                  }}
                 />
                 <TextInput
                   ref={(ref) => {
@@ -254,6 +235,10 @@ class Login extends PureComponent {
                   onChangeText={this.changePassword}
                   onSubmitEditing={this.loginAccount}
                   autoCapitalize="none"
+                  onFocus={() => {
+                    this.passwordField.focus();
+                  }}
+                  onBlur={() => this.passwordField.blur()}
                 />
               </View>
               <View style={login.vButton}>
@@ -268,32 +253,6 @@ class Login extends PureComponent {
                   <Image source={images.logofb} style={login.logofb} />
                   <Text style={login.txtfb}> Continue With Facebook </Text>
                 </TouchableOpacity>
-                {/* <LoginButton
-                  publishPermissions={['publish_actions']}
-                  onLoginFinished={(error, result) => {
-                    if (error) {
-                      console.log(`login has error: ${result.error}`);
-                      Alert.alert(`login has error: ${result.error}`);
-                    } else if (result.isCancelled) {
-                      console.log('login is cancelled.');
-                      Alert.alert('login is cancelled.');
-                    } else {
-                      AccessToken.getCurrentAccessToken().then((data) => {
-                        console.log(data);
-                        const { accessToken } = data;
-                        try {
-                          AsyncStorage.setItem('Token', JSON.stringify(accessToken));
-                        } catch (error1) {
-                          console.log(error1);
-                        }
-                      });
-                    }
-                  }}
-                  onLogoutFinished={() => {
-                    console.log('logout.');
-                    AsyncStorage.removeItem('Token');
-                  }}
-                /> */}
               </View>
               <View style={login.textContainer}>
                 <Text style={login.txtBottom}>Not account? Go to </Text>
