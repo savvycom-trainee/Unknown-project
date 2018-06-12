@@ -57,7 +57,7 @@
 		8E6B92AE13584FA580851B9E /* Feather.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 36C09CD1F7414572B7ECCB27 /* Feather.ttf */; };
 		ADBDB9381DFEBF1600ED6528 /* libRCTBlob.a in Frameworks */ = {isa = PBXBuildFile; fileRef = ADBDB9271DFEBF0700ED6528 /* libRCTBlob.a */; };
 		B06B5F59E08548A2AEB387C1 /* MaterialIcons.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 787564FF26F94C0BB212303C /* MaterialIcons.ttf */; };
-		B669A30A20CA7C4400D028C4 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = B669A30920CA7C4400D028C4 /* GoogleService-Info.plist */; };
+		B6A15DDE20CFB3A6002FA519 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = B6A15DDD20CFB3A6002FA519 /* GoogleService-Info.plist */; };
 		B6AF376420B2D39D004E68D7 /* libRCTCameraRoll.a in Frameworks */ = {isa = PBXBuildFile; fileRef = B6AF374220B2D374004E68D7 /* libRCTCameraRoll.a */; };
 		B6EB7FF520BFF3520073918D /* libART.a in Frameworks */ = {isa = PBXBuildFile; fileRef = B6EB7FCA20BFF3380073918D /* libART.a */; };
 		DFA3ADB2CEF145E496F6A15C /* FontAwesome.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 0EE40E8442AA4969AAF7D6CE /* FontAwesome.ttf */; };
@@ -423,7 +423,7 @@
 		9C4B92622CF549FBBB7D6879 /* Entypo.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = Entypo.ttf; path = "../node_modules/react-native-vector-icons/Fonts/Entypo.ttf"; sourceTree = "<group>"; };
 		ACE225602B20683B47ACF81D /* Pods-unknown.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-unknown.debug.xcconfig"; path = "Pods/Target Support Files/Pods-unknown/Pods-unknown.debug.xcconfig"; sourceTree = "<group>"; };
 		ADBDB91F1DFEBF0600ED6528 /* RCTBlob.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = RCTBlob.xcodeproj; path = "../node_modules/react-native/Libraries/Blob/RCTBlob.xcodeproj"; sourceTree = "<group>"; };
-		B669A30920CA7C4400D028C4 /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = "GoogleService-Info.plist"; path = "../../../../../../../GoogleService-Info.plist"; sourceTree = "<group>"; };
+		B6A15DDD20CFB3A6002FA519 /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = "GoogleService-Info.plist"; path = "../../../../../../../GoogleService-Info.plist"; sourceTree = "<group>"; };
 		B6AF373820B2D373004E68D7 /* RCTCameraRoll.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = RCTCameraRoll.xcodeproj; path = "../node_modules/react-native/Libraries/CameraRoll/RCTCameraRoll.xcodeproj"; sourceTree = "<group>"; };
 		B6EB7FC420BFF3380073918D /* ART.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = ART.xcodeproj; path = "../node_modules/react-native/Libraries/ART/ART.xcodeproj"; sourceTree = "<group>"; };
 		BE38F0E406DB41F3888D3C10 /* RNFirebase.xcodeproj */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = "wrapper.pb-project"; name = RNFirebase.xcodeproj; path = "../node_modules/react-native-firebase/ios/RNFirebase.xcodeproj"; sourceTree = "<group>"; };
@@ -584,12 +584,12 @@
 		13B07FAE1A68108700A75B9A /* unknown */ = {
 			isa = PBXGroup;
 			children = (
-				B669A30920CA7C4400D028C4 /* GoogleService-Info.plist */,
 				008F07F21AC5B25A0029DE68 /* main.jsbundle */,
 				13B07FAF1A68108700A75B9A /* AppDelegate.h */,
 				13B07FB01A68108700A75B9A /* AppDelegate.m */,
 				13B07FB51A68108700A75B9A /* Images.xcassets */,
 				13B07FB61A68108700A75B9A /* Info.plist */,
+				B6A15DDD20CFB3A6002FA519 /* GoogleService-Info.plist */,
 				13B07FB11A68108700A75B9A /* LaunchScreen.xib */,
 				13B07FB71A68108700A75B9A /* main.m */,
 			);
@@ -1307,7 +1307,7 @@
 				FD6CD36FF8EC44128CBDBEBF /* Octicons.ttf in Resources */,
 				F2BC98BE3E1B4F339D91FADC /* SimpleLineIcons.ttf in Resources */,
 				7BFBC22A48E34E5C8D2DE44F /* Zocial.ttf in Resources */,
-				B669A30A20CA7C4400D028C4 /* GoogleService-Info.plist in Resources */,
+				B6A15DDE20CFB3A6002FA519 /* GoogleService-Info.plist in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1557,7 +1557,7 @@
 					"$(SRCROOT)/../node_modules/react-native-fbsdk/ios/RCTFBSDK/**",
 				);
 				INFOPLIST_FILE = unknown/Info.plist;
-				IPHONEOS_DEPLOYMENT_TARGET = 11.4;
+				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				OTHER_LDFLAGS = (
 					"$(inherited)",
@@ -1587,7 +1587,7 @@
 					"$(SRCROOT)/../node_modules/react-native-fbsdk/ios/RCTFBSDK/**",
 				);
 				INFOPLIST_FILE = unknown/Info.plist;
-				IPHONEOS_DEPLOYMENT_TARGET = 11.4;
+				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				OTHER_LDFLAGS = (
 					"$(inherited)",

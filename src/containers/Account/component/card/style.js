@@ -4,7 +4,7 @@ import * as d from '../../../../utilities/Tranform';
 const card = StyleSheet.create({
   container: {
     width: 183.5 * d.ratioW,
-    height: 140 * d.ratioH,
+
     marginLeft: 7.5 * d.ratioW,
     paddingLeft: 17.5 * d.ratioW,
   },
@@ -17,9 +17,9 @@ const card = StyleSheet.create({
     height: '100%',
   },
   infoView: {
+    padding: 10,
     backgroundColor: 'white',
     width: 166 * d.ratioW,
-    height: 43.5 * d.ratioH,
     paddingTop: 14.5 * d.ratioH,
     paddingLeft: 15 * d.ratioW,
   },
@@ -46,6 +46,7 @@ const card = StyleSheet.create({
     lineHeight: 9,
   },
   statusView: {
+    width: 80.5 * d.ratioW,
     flexDirection: 'row',
     marginTop: 8.5 * d.ratioH,
   },

@@ -10,6 +10,7 @@ import getPositionReducers from './getPositionReducers';
 import getAddSearchReducers from './getAddSearchReducers';
 import getUserReducers from './getUserReducers';
 import getUserSearchReducers from './getUserSearchReducers';
+import getUserPinReducers from './getUserPinReducers';
 import user from './user';
 
 import getUserDetailReducers from './getUserDetailReducers';
@@ -32,6 +33,7 @@ const rootRecuder = combineReducers({
   getUserSearchReducers,
   getPlaceDetailReducers,
   getReviewReducers,
+  getUserPinReducers,
 });
 
 export default rootRecuder;
