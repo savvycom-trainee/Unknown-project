@@ -1,6 +1,7 @@
 import { createSwitchNavigator } from 'react-navigation';
 import MainStack from './mainStack';
 import Auth from './authStack';
+import { UpdateUser } from '../components';
 
 export default createSwitchNavigator(
   {
@@ -9,6 +10,9 @@ export default createSwitchNavigator(
     },
     Auth: {
       screen: Auth,
+    },
+    UpdateUser: {
+      screen: UpdateUser,
     },
   },
   {

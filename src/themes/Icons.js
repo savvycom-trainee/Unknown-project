@@ -28,8 +28,6 @@ const icons = {
   greenMarker: require('../../assets/icons/greenMarker.png'),
   grayMarker: require('../../assets/icons/grayMarker.png'),
   follow: require('../../assets/icons/follow.png'),
-  checkBox: require('../../assets/icons/check.png'),
-  notCheckBox: require('../../assets/icons/not-check.png'),
 };
 
 export default icons;

@@ -9,14 +9,14 @@ class Content extends PureComponent {
 
   gallery() {
     //console.log();
-    if (this.props.data.hasOwnProperty('image')) {
-      if (this.props.data.image.length <= 0) {
+    if (this.props.data.content.hasOwnProperty('photos')) {
+      if (this.props.data.content.photos <= 0) {
         return null;
       } else {
         return (
           <FlatList
             style={styles.ViewGallery}
-            data={this.props.data.image}
+            data={this.props.data.content.photos}
             renderItem={({ item }) => <Image source={{ uri: item }} style={styles.gallery} />}
             keyExtractor={(item, index) => index.toString()}
           />
@@ -33,20 +33,23 @@ class Content extends PureComponent {
         <View style={styles.ViewMainChild}>
           <View style={styles.ViewMainChildTop}>
             <View style={styles.ViewAvatar}>
-              <Image source={require('../Data/images/1.png')} style={styles.avatar} />
+              <Image source={{ uri: this.props.data.userAvatar }} style={styles.avatar} />
             </View>
             <View style={styles.ViewNameHours}>
-              <Text style={styles.TextName}>{this.props.data.name}</Text>
-              <Text style={styles.TextHoursComment}>12 hour</Text>
+              <Text style={styles.TextName}>{this.props.data.userName}</Text>
+              <Text style={styles.TextHoursComment}>{this.props.data.created}</Text>
             </View>
             <View style={styles.ViewScore}>
-              <Text style={styles.TextScore}>{this.props.data.rating}/4</Text>
+              <Text style={styles.TextScore}>{this.props.data.rating}/5</Text>
             </View>
           </View>
           <View style={styles.ViewMainChildBottom}>
-            <Text style={styles.TextHoursComment}>{this.props.data.comment}</Text>
+            <Text style={styles.TextHoursComment}>{this.props.data.content.detail}</Text>
           </View>
           {this.gallery()}
+          <View style={styles.ViewMainChildBottom}>
+            <Text style={styles.TextHoursComment}>{this.props.data.restaurantName}</Text>
+          </View>
         </View>
       </View>
     );

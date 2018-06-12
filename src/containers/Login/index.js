@@ -19,7 +19,7 @@ import { connect } from 'react-redux';
 import { NavigationActions } from 'react-navigation';
 import login from './style/login';
 import images from '../../themes/Icons';
-import { setUser, fetchDataGetUserFBAdd } from '../../actions';
+import { setUser } from '../../actions';
 import LoadingContainer from '../../components/LoadingContainer';
 
 class Login extends PureComponent {
@@ -40,24 +40,10 @@ class Login extends PureComponent {
     try {
       const user = await AsyncStorage.getItem('user');
       if (user) {
-        const { acc, pass } = JSON.parse(user);
-        this.loginFirebase(acc, pass);
+        const tmpUser = JSON.parse(user);
+        this.move(tmpUser);
       } else {
-        const accessToken = await AsyncStorage.getItem('accessToken');
-        this.setState({
-          isLoading: false,
-        });
-        if (accessToken) {
-          this.setState(
-            {
-              isLoading: false,
-              accessToken,
-            },
-            () => {
-              this.loginFacebook();
-            },
-          );
-        }
+        this.setState({ isLoading: false });
       }
     } catch (error) {
       console.log(error);
@@ -101,115 +87,89 @@ class Login extends PureComponent {
       {
         isLoading: true,
       },
-      () => this.loginFirebase(acc, pass),
+      () => {
+        console.log(acc, pass);
+        firebase
+          .auth()
+          .signInAndRetrieveDataWithEmailAndPassword(acc, pass)
+          .then((loginUser) => {
+            console.log(loginUser);
+            firebase
+              .database()
+              .ref('/root/users')
+              .child(loginUser.user.uid)
+              .on('value', (data) => {
+                this.setState(
+                  {
+                    isLoading: false,
+                  },
+                  () => {
+                    try {
+                      const user = {
+                        ...data._value,
+                        uid: data.key,
+                      };
+                      AsyncStorage.setItem('user', JSON.stringify(user));
+                      this.move(user);
+                    } catch (error) {
+                      console.log(error);
+                    }
+                  },
+                );
+              });
+          })
+          .catch((error) => {
+            this.setState(
+              {
+                isLoading: false,
+              },
+              () => {
+                const { code } = error;
+                let message = '';
+                switch (code) {
+                  case 'auth/invalid-email':
+                    message = 'Email invalidate';
+                    break;
+                  case 'auth/user-disabled':
+                    message = 'user disabled';
+                    break;
+                  case 'auth/user-not-found':
+                    message = 'Email not exist';
+                    break;
+                  case 'auth/wrong-password':
+                    message = 'Password incorrect';
+                    break;
+                  default:
+                    message = 'Email or password incorrect';
+                    break;
+                }
+                Alert.alert('Notice', message, [
+                  {
+                    text: 'OK',
+                  },
+                ]);
+              },
+            );
+          });
+      },
     );
   };
-  loginFirebase = (acc, pass) => {
-    console.log(acc, pass);
-    firebase
-      .auth()
-      .signInAndRetrieveDataWithEmailAndPassword(acc, pass)
-      .then((loginUser) => {
-        console.log(loginUser);
-        const { user } = loginUser;
-        AsyncStorage.setItem('user', JSON.stringify({ acc, pass }));
-        this.move(user);
-      })
-      .catch((error) => {
-        this.setState(
-          {
-            isLoading: false,
-          },
-          () => {
-            const { code } = error;
-            let message = '';
-            switch (code) {
-              case 'auth/invalid-email':
-                message = 'Email invalidate';
-                break;
-              case 'auth/user-disabled':
-                message = 'user disabled';
-                break;
-              case 'auth/user-not-found':
-                message = 'Email not exist';
-                break;
-              case 'auth/wrong-password':
-                message = 'Password incorrect';
-                break;
-              default:
-                message = 'Email or password incorrect';
-                break;
-            }
-            Alert.alert('Notice', message, [
-              {
-                text: 'OK',
-              },
-            ]);
-          },
-        );
-      });
-  };
-  loginFacebook = async () => {
-    if (!this.state.accessToken) {
-      console.log('load1');
-      LoginManager.logInWithReadPermissions([
-        'public_profile',
-        'user_gender',
-        'user_hometown',
-        'email',
-      ]).then(
-        (result) => {
-          console.log('load2');
-          if (result.isCancelled) {
-            Alert.alert('Whoops!', 'You cancelled the sign in.');
-          } else {
-            console.log('load3');
-            AccessToken.getCurrentAccessToken().then(async (data) => {
-              console.log('load4');
-              const credential = firebase.auth.FacebookAuthProvider.credential(data.accessToken);
-              console.log(credential);
-              AsyncStorage.setItem('accessToken', data.accessToken);
-              const data1 = await fetchDataGetUserFBAdd(data.accessToken);
-              this.setState({
-                accessToken: data.accessToken,
-                ...data1,
-              });
-              console.log(data1);
-              firebase
-                .auth()
-                .signInWithCredential(credential)
-                .then(this.props.navigation.navigate('Home'))
-                .catch((error) => {
-                  console.log(error);
-                });
-            });
-          }
-        },
-        (error) => {
-          Alert.alert('Sign in error', error);
-        },
-      );
-    } else {
-      console.log('load4');
-      // const credential = firebase.auth.FacebookAuthProvider.credential(this.state.accessToken);
-      // console.log(credential);
-      // const data1 = await fetchDataGetUserFBAdd(this.state.accessToken);
-      // this.setState({
-      //   ...data1,
-      // });
-      // console.log(data1);
-      // firebase
-      //   .auth()
-      //   .signInAndRetrieveDataWithCredential(credential)
-      //   .then(() => {
-      //     console.log(loginUser);
-      //     this.props.setUser(loginUser.user);
-      //     this.props.navigation.navigate('Home')
-      //   })
-      //   .catch((error) => {
-      //     console.log(error);
-      //   });
-    }
+  loginFacebook = () => {
+    LoginManager.logInWithReadPermissions(['public_profile', 'user_friends', 'email']).then(
+      (result) => {
+        if (result.isCancelled) {
+          Alert.alert('Whoops!', 'You cancelled the sign in.');
+        } else {
+          AccessToken.getCurrentAccessToken().then(async (data) => {
+            const credential = firebase.auth.FacebookAuthProvider.credential(data.accessToken);
+            this._getInfoFb(credential);
+          });
+        }
+      },
+      (error) => {
+        Alert.alert('Sign in error', error);
+      },
+    );
   };
   _getInfoFb = (credential) => {
     const infoRequest = new GraphRequest(
@@ -219,25 +179,40 @@ class Login extends PureComponent {
         if (err) {
           Alert.alert('Error', 'Cant get info');
         } else {
+          console.log(res);
           firebase
             .database()
-            .ref(`restaurant/user/${res.id}`)
+            .ref(`root/users/${res.id}`)
             .once('value')
             .then((snapshot) => {
-              console.log(snapshot.val());
+              console.log('snapshot', snapshot.val());
               if (snapshot.val() === null) {
                 firebase
                   .auth()
                   .signInAndRetrieveDataWithCredential(credential)
-                  .then(() => this.props.navigation.navigate('UpdateUser', { user: res, fb: true }))
+                  .then(() => {
+                    this.props.navigation.navigate('UpdateUser', { user: res, fb: true });
+                  })
                   .catch((error) => {
                     console.log(error);
                   });
               } else {
-                this.props.setUser(snapshot.val());
+                this.props.setUser({ ...snapshot.val(), uid: res.id });
+                AsyncStorage.setItem(
+                  'user',
+                  JSON.stringify({ ...snapshot.val(), uid: res.id }),
+                  error => console.log(error),
+                );
                 this.props.navigation.navigate('Home', { user: snapshot.val() });
               }
             });
+          // firebase
+          //   .auth()
+          //   .signInAndRetrieveDataWithCredential(credential)
+          //   .then(this.props.navigation.navigate('UpdateUser', { user: res, fb: true }))
+          //   .catch((error) => {
+          //     console.log(error);
+          //   });
         }
       },
     );
@@ -304,6 +279,32 @@ class Login extends PureComponent {
                   <Image source={images.logofb} style={login.logofb} />
                   <Text style={login.txtfb}> Continue With Facebook </Text>
                 </TouchableOpacity>
+                {/* <LoginButton
+                  publishPermissions={['publish_actions']}
+                  onLoginFinished={(error, result) => {
+                    if (error) {
+                      console.log(`login has error: ${result.error}`);
+                      Alert.alert(`login has error: ${result.error}`);
+                    } else if (result.isCancelled) {
+                      console.log('login is cancelled.');
+                      Alert.alert('login is cancelled.');
+                    } else {
+                      AccessToken.getCurrentAccessToken().then((data) => {
+                        console.log(data);
+                        const { accessToken } = data;
+                        try {
+                          AsyncStorage.setItem('Token', JSON.stringify(accessToken));
+                        } catch (error1) {
+                          console.log(error1);
+                        }
+                      });
+                    }
+                  }}
+                  onLogoutFinished={() => {
+                    console.log('logout.');
+                    AsyncStorage.removeItem('Token');
+                  }}
+                /> */}
               </View>
               <View style={login.textContainer}>
                 <Text style={login.txtBottom}>Not account? Go to </Text>

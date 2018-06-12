@@ -7,7 +7,6 @@ import mapStyles from './mapStyles';
 import styles from './styles';
 import { fetchDataGetAdd } from '../../actions';
 import { Header, Card } from '../../components';
-import ModalView from '../Home/Modal';
 import { Icons, Images } from '../../themes';
 import * as d from '../../utilities/Tranform';
 
@@ -129,14 +128,6 @@ class Direct extends PureComponent {
         distanceFilter: 10,
       },
     );
-  };
-
-  setModalVisible = (visible) => {
-    this.setState({ modalVisible: visible });
-  };
-
-  hideModal = (message) => {
-    this.setModalVisible(message);
   };
 
   animationMarker = () => {
@@ -266,7 +257,7 @@ class Direct extends PureComponent {
             strokeWidth={3}
           />
         </MapView>
-        <Card style={styles.cardStyle} direction="row" onPress={() => this.setModalVisible(true)}>
+        <Card style={styles.cardStyle} direction="row">
           <View style={styles.firstViewStyle}>
             <Image source={Icons.direct} style={styles.directStyle} />
           </View>
@@ -278,14 +269,6 @@ class Direct extends PureComponent {
             <Text style={styles.textStyle}>Fastest route</Text>
           </View>
         </Card>
-        <Modal
-          animationType="slide"
-          transparent={false}
-          onRequestClose={() => {}}
-          visible={this.state.modalVisible}
-        >
-          <ModalView hideModal={this.hideModal} />
-        </Modal>
       </View>
     );
   }

@@ -34,7 +34,7 @@ class ModalView extends PureComponent {
       latitude: null,
       longitude: null,
       progressing: null,
-      postdone: false,
+      postDone: false,
       error: null,
       listadd: true,
       photos: [],
@@ -125,6 +125,7 @@ class ModalView extends PureComponent {
           });
           if (this.state.post.content.photos.length === file.length) {
             console.log(this.state.post.content.photos);
+            this.setState({ postDone: true });
             const { post, restaurant } = this.state;
             this.props.fetchPostNewFeed(post, restaurant);
             console.log(this.props.dataPost.dataSuccess);
@@ -354,7 +355,7 @@ class ModalView extends PureComponent {
             </View>
             <View>
               <TouchableOpacity onPress={() => this._onPost()}>
-                <Text style={this.state.postdone ? styles.textPosted : styles.textPost}>Post</Text>
+                <Text style={this.state.postDone ? styles.textPosted : styles.textPost}>Post</Text>
               </TouchableOpacity>
             </View>
           </View>
@@ -382,11 +383,7 @@ class ModalView extends PureComponent {
                     </TouchableOpacity>
                   </View>
                   <View style={{ paddingLeft: 10 }}>
-                    <Progress.Pie
-                      progress={this.state.progressing}
-                      size={25}
-                      color={Colors.default}
-                    />
+                        {/* {this.state.postDone ? <Loading /> : null} */}
                   </View>
                 </View>
                 <View style={styles.viewFormInput}>

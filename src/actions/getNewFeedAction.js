@@ -22,7 +22,7 @@ export function getNewFeedFail() {
 export function fetchDatagetNewFeed(userId) {
   return (dispatch) => {
     const db = firebase.database();
-    const userRef = db.ref(`/root/users/${userId}/followed`);
+    const userRef = db.ref(`/root/users/${userId}/following`);
     const postRef = db.ref('/root/posts');
     let returnArr = [];
     dispatch(getNewFeed());

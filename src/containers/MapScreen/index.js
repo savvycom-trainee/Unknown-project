@@ -50,11 +50,6 @@ class MapScreen extends PureComponent {
     // this.onGetCurrentLocation();
     this.watchID = this.onWatchPosition();
     this.onGetRestaurantAround();
-    // console.log(`region ${JSON.stringify(this.props.region.coords.longitude)}`);
-  }
-
-  componentDidUpdate() {
-    console.log(`destination state: ${JSON.stringify(this.state.destination)}`);
   }
 
   componentWillUnmount() {
@@ -66,8 +61,6 @@ class MapScreen extends PureComponent {
     this.setState({
       region: {
         ...this.state.region,
-        // latitude: this.props.region.coords.latitude, // eslint-disable-line
-        // longitude: this.props.region.coords.longitude, // eslint-disable-line
       },
     });
   };
@@ -89,7 +82,7 @@ class MapScreen extends PureComponent {
         this.setState({ error }); // eslint-disable-line
       },
       {
-        enableHighAccuracy: true,
+        enableHighAccuracy: false,
         timeout: 20000,
         maximumAge: 1000,
         distanceFilter: 10,
@@ -106,14 +99,12 @@ class MapScreen extends PureComponent {
       .then(res => res.json())
       .then((resJson) => {
         this.setState({ dataRestaurantAround: resJson.results });
-        console.log('restaurant around: ', resJson.results);
         resJson.results.forEach((markerRegion) => {
           this.markers.push({
             latitude: markerRegion.geometry.location.lat,
             longitude: markerRegion.geometry.location.lng,
           });
         });
-        console.log(this.markers);
       })
       .catch(err => console.log(`Get restaurant around error: ${err}`));
   };

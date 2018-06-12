@@ -9,17 +9,24 @@ import {
   AsyncStorage,
   BackHandler,
 } from 'react-native';
+
 import PropTypes from 'prop-types';
 import Icon from 'react-native-vector-icons/Ionicons';
 import { NavigationActions } from 'react-navigation';
-import firebase from 'react-native-firebase';
 import { connect } from 'react-redux';
+import { fetchDatagetUserDetail } from '../../actions/getUserDetailAction';
 import { Header } from '../../components';
 import icon from '../../themes/Icons';
 import account from './style';
 import { Card, Statistic } from './component';
 import images from '../../themes/Images';
 
+// const defaultParam = {
+//   name: 'Chiến Mạnh Vũ',
+//   gender: 'Male',
+//   location: 'Hanoi',
+//   avatar: require('../../../assets/images/avata.png'), // eslint-disable-line
+// };
 const data = [
   {
     id: 'abcd',
@@ -73,6 +80,7 @@ class Account extends PureComponent {
     super(props);
     const { params } = this.props.navigation;
     console.log(params);
+    this.user = this.props.user.user;
     if (params) {
       this.state = {
         ...params,
@@ -80,7 +88,7 @@ class Account extends PureComponent {
       };
     } else {
       this.state = {
-        ...props.user.user,
+        ...this.props.user,
         isOwner: true,
       };
     }
@@ -88,7 +96,8 @@ class Account extends PureComponent {
   }
   componentDidMount() {
     console.log(this.props.navigation);
-
+    console.log(this.props.user);
+    console.log(this.props.dataUserDetail);
     BackHandler.addEventListener('hardwareBackPress', this.handleBackPress);
   }
   componentWillUnmount() {
@@ -97,17 +106,16 @@ class Account extends PureComponent {
   getUserId = () => {};
 
   logOut = () => {
+    console.log('logout');
     AsyncStorage.removeItem('user');
-    AsyncStorage.removeItem('accessToken');
-    firebase.auth().signOut();
     const navigateAction = NavigationActions.navigate({
       routeName: 'Auth',
       action: NavigationActions.navigate({ routeName: 'Login' }),
     });
-    console.log('logout');
     this.props.navigation.dispatch(navigateAction);
   };
   render() {
+    console.log(this.state);
     return (
       <View style={account.container}>
         <StatusBar hidden />
@@ -136,13 +144,10 @@ class Account extends PureComponent {
               }
             />
             <View style={account.info}>
-              <Image
-                source={this.state.photoURL ? { uri: this.state.photoURL } : images.defaultAvatar}
-                style={account.avatar}
-              />
-              <Text style={account.name}>{this.state.fullName}</Text>
+              <Image source={{ uri: this.props.user.user.photoURL }} style={account.avatar} />
+              <Text style={account.name}>{this.props.user.user.fullName}</Text>
               <Text style={account.detail}>
-                {this.state.gender}, {this.state.home}
+                {this.props.user.user.gender}, {this.props.user.user.home}
               </Text>
             </View>
           </View>
@@ -165,8 +170,14 @@ class Account extends PureComponent {
         </View>
         <View style={account.botView}>
           <View style={account.statisticView}>
-            <Statistic number={1000} title="Follower" />
-            <Statistic number={100} title="Followings" />
+            <Statistic
+              number={this.props.user.user.follower ? this.props.user.user.follower.length : 0}
+              title="Follower"
+            />
+            <Statistic
+              number={this.props.user.user.following ? this.props.user.user.following.length : 0}
+              title="Followings"
+            />
             <Statistic number={10} title="Share" />
           </View>
           <Text style={account.botRestaurant}>My Restaurant</Text>
@@ -198,10 +209,19 @@ Account.propTypes = {
     dispatch: PropTypes.func.isRequired,
   }).isRequired,
   user: PropTypes.object.isRequired,
+  dataUserDetail: PropTypes.object.isRequired,
 };
 
-const mapStateToProp = state => ({
+const mapStateToProps = state => ({
+  dataUserDetail: state.getUserDetailReducers,
   user: state.user,
 });
 
-export default connect(mapStateToProp)(Account);
+const mapDispatchToProps = dispatch => ({
+  fetchDatagetUserDetail: id => dispatch(fetchDatagetUserDetail(id)),
+});
+
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps,
+)(Account);
