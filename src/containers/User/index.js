@@ -46,7 +46,7 @@ class User extends PureComponent {
         <Header
           leftHeader={
             <TouchableOpacity onPress={() => this.props.navigation.goBack()}>
-              <Image source={Icons.back} style={styles.back} />
+              <Image source={Icons.back} />
             </TouchableOpacity>
           }
           centerHeader={<Text style={{ fontSize: 15, fontWeight: '600' }}>User</Text>}

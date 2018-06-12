@@ -65,6 +65,7 @@ class ModalView extends PureComponent {
   componentDidMount() {
     this.onGetCurrentLocation();
     this._getPhoto();
+
   }
 
   onGetCurrentLocation = () => {
@@ -241,14 +242,11 @@ class ModalView extends PureComponent {
           <ModalCustom onRef={ref => (this.modal = ref)}>
             <View style={{ flex: 1, width: null, backgroundColor: '#fff' }}>
               <View style={styles.viewHeadModal}>
-                <Text style={styles.textHeadModal}>List Add</Text>
+                <Text style={styles.textHeadModal}>Near Add You</Text>
               </View>
               <View style={styles.bodyModal}>
-                <View>
+                <View style={styles.bodyModal}>
                   <View style={styles.ViewHeadFlatList}>
-                    <View style={styles.viewTextHead}>
-                      <Text style={styles.textHeadNear}> Near Add You </Text>
-                    </View>
                     <View style={styles.viewFromSearch}>
                       <View style={styles.viewTextInputSearch}>
                         <TextInput
@@ -364,26 +362,34 @@ class ModalView extends PureComponent {
               <View style={styles.viewform}>
                 <View style={styles.viewInfoDetail}>
                   <View style={styles.viewFormImageUser}>
-                    <Image source={Images.restaurantPhoto} style={styles.ImageAvatar} />
+                    <Image source={{ uri: this.props.user.user.photoURL }} style={styles.ImageAvatar} />
                   </View>
                   <View>
-                    <TouchableOpacity style={styles.viewFormAddSelected}>
-                      <Icon name="ios-home" color={Colors.text} size={16} />
-                      <Text numberOfLines={1} style={styles.textSelectedShow}>
-                        {this.state.restaurant.name}
-                      </Text>
-                    </TouchableOpacity>
+                    <View style={styles.viewFormUserName}>
+                      <Text style={styles.textUserName}>{this.props.user.user.fullName}</Text>
+                    </View>
+                    <View style={styles.viewNameAndRes}>
+                      <View>
+                        <TouchableOpacity style={styles.viewFormAddSelected}>
+                          <Icon name="ios-home" color={Colors.text} size={16} />
+                          <Text numberOfLines={1} style={styles.textSelectedShow}>
+                            {this.state.restaurant.name}
+                          </Text>
+                        </TouchableOpacity>
+                      </View>
+                      <View>
+                        <TouchableOpacity style={styles.viewFormAddSelected}>
+                          <Icon name="md-locate" color={Colors.text} size={16} />
+                          <Text numberOfLines={1} style={styles.textSelectedShow}>
+                            {this.state.restaurant.vicinity}
+                          </Text>
+                        </TouchableOpacity>
+                      </View>
+                    </View>
                   </View>
-                  <View>
-                    <TouchableOpacity style={styles.viewFormAddSelected}>
-                      <Icon name="md-locate" color={Colors.text} size={16} />
-                      <Text numberOfLines={1} style={styles.textSelectedShow}>
-                        {this.state.restaurant.vicinity}
-                      </Text>
-                    </TouchableOpacity>
-                  </View>
+
                   <View style={{ paddingLeft: 10 }}>
-                        {/* {this.state.postDone ? <Loading /> : null} */}
+                    {/* {this.state.postDone ? <Loading /> : null} */}
                   </View>
                 </View>
                 <View style={styles.viewFormInput}>
@@ -447,7 +453,7 @@ class ModalView extends PureComponent {
           </View>
           <View style={styles.viewCustom}>
             <View>
-              <Text style={styles.textAddPost}>Add post</Text>
+              <Text style={styles.textAddPost}>Add your post</Text>
             </View>
             <View style={styles.viewCustomItem}>
               <View style={styles.viewStarRating}>
@@ -472,11 +478,7 @@ class ModalView extends PureComponent {
                   <Icon name="ios-navigate" color="white" size={33} />
                 </TouchableOpacity>
               </View>
-              <View>
-                <TouchableOpacity style={styles.butonCustomItem}>
-                  <Icon name="ios-list" color="white" size={33} />
-                </TouchableOpacity>
-              </View>
+              <View />
             </View>
           </View>
         </View>

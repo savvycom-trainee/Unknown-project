@@ -18,6 +18,9 @@ export default StyleSheet.create({
   viewTextHead: {
     alignContent: 'center',
   },
+  viewNameAndRes: {
+    flexDirection: 'row',
+  },
   body: {
     flexDirection: 'column',
     flex: 1,
@@ -52,6 +55,12 @@ export default StyleSheet.create({
     borderColor: Colors.text,
     borderRadius: 6,
   },
+  viewFormUserName: {
+    padding: 0,
+    marginLeft: 14 * d.ratioW,
+    height: 25 * d.ratioH,
+    width: 110 * d.ratioW,
+  },
   ViewButtonSearch: {
     padding: 3,
   },
@@ -63,7 +72,7 @@ export default StyleSheet.create({
   textPost: {
     fontSize: 17,
     fontWeight: '700',
-    color: Colors.textOpacity,
+    color: '#000',
   },
   textCreatePost: {
     fontSize: 14,
@@ -78,14 +87,16 @@ export default StyleSheet.create({
   textAddPost: {
     fontSize: 16,
     fontWeight: '600',
-    color: Colors.text,
+    color: Colors.white,
   },
   viewTextInputSearch: {
     paddingBottom: 10 * d.ratioH,
   },
   ViewContentFlatList: {
-    height: 350 * d.ratioH,
-    padding: 34,
+    marginTop: 10 * d.ratioH,
+    height: 400 * d.ratioH,
+    width: 250 * d.ratioW,
+    padding: 1,
   },
   ViewItemFlatList: {
     padding: 10,
@@ -106,6 +117,8 @@ export default StyleSheet.create({
     fontWeight: '600',
   },
   ViewHeadFlatList: {
+    paddingTop: 30 * d.ratioH,
+    width: 250 * d.ratioW,
     justifyContent: 'center',
     alignItems: 'center',
     height: 60 * d.ratioH,
@@ -136,6 +149,7 @@ export default StyleSheet.create({
     paddingBottom: 10 * d.ratioH,
   },
   ViewButton: {
+    paddingTop: 10 * d.ratioH,
     justifyContent: 'center',
     alignItems: 'center',
   },
@@ -155,8 +169,8 @@ export default StyleSheet.create({
     padding: 0,
     paddingLeft: 10,
     borderRadius: 2.5,
-    width: 265 * d.ratioW,
-    height: 30 * d.ratioH,
+    width: 222 * d.ratioW,
+    height: 50 * d.ratioH,
     borderBottomColor: Colors.textOpacity,
     borderBottomWidth: 0.3,
   },
@@ -166,12 +180,9 @@ export default StyleSheet.create({
     flexDirection: 'row',
   },
   viewFormImageUser: {
-    alignItems: 'center',
     justifyContent: 'center',
-    // backgroundColor: '#444',
     height: 50 * d.ratioH,
     width: 50 * d.ratioW,
-    borderRadius: 25,
   },
   viewInfoDetail: {
     alignItems: 'center',
@@ -296,7 +307,6 @@ export default StyleSheet.create({
     fontWeight: '700',
   },
   viewButtonDone: {
-    borderRadius: 30,
     backgroundColor: Colors.default,
     alignItems: 'center',
     justifyContent: 'center',
@@ -305,7 +315,12 @@ export default StyleSheet.create({
   },
   textHeadModal: {
     color: Colors.white,
-    fontSize: 18,
+    fontSize: 15,
+    fontWeight: '700',
+  },
+  textUserName: {
+    color: Colors.text,
+    fontSize: 14,
     fontWeight: '700',
   },
   bodyModal: {

@@ -51,7 +51,7 @@ export default createBottomTabNavigator(
         return (
           <View style={styles.viewBGTabar}>
             {iconBG || null}
-            <Image source={iconImage} style={{ height: 23, width: 21.5 }} />
+            <Image source={iconImage} />
           </View>
         );
       },
