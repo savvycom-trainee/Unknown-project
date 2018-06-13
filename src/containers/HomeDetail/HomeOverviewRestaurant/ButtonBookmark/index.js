@@ -28,8 +28,8 @@ class ButtonBookmark extends PureComponent {
     const restaurantId = this.props.idRestaurant;
     firebase
       .database()
-      .ref(`/root/users/${userId}/bookmark/${restaurantId}`)
-      .set({ status: !this.props.dataBookmark.data });
+      .ref(`/root/users/${userId}/bookmark/${restaurantId}/status`)
+      .set(!this.props.dataBookmark.data);
   };
 
   renderButtonIcon = () => {

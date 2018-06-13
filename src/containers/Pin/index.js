@@ -5,6 +5,7 @@ import PropTypes from 'prop-types';
 import { View, Text, FlatList, AsyncStorage } from 'react-native';
 import { fetchDatagetListBookmark } from '../../actions/getListBookmarkAction';
 import Loading from '../../components/LoadingContainer';
+import EmptyContent from '../../components/EmptyContent';
 import { Header } from '../../components';
 // import { Icons } from '../../themes';
 // import restaurantData from './PinView/data/restaurantData';
@@ -26,7 +27,7 @@ class Pin extends PureComponent {
 
   renderCatchNothing = (data) => {
     if (data == null) {
-      return <Text>You dont have Bookmark</Text>;
+      return <EmptyContent />;
     }
     return (
       <FlatList
@@ -49,15 +50,12 @@ class Pin extends PureComponent {
     if (this.props.dataListBookmark.isFetching === true) {
       return <Loading />;
     }
-    // eslint-disable-next-line
-    const data = this.props.dataListBookmark.data;
-    console.log(this.props.dataListBookmark);
 
     return (
       <View style={{ flex: 1 }}>
         <Header centerHeader={<Text style={styles.centerHeaderStyle}>Bookmark</Text>} />
 
-        {this.renderCatchNothing(data)}
+        {this.renderCatchNothing(this.props.dataListBookmark.data)}
       </View>
     );
   }

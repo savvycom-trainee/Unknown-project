@@ -51,7 +51,7 @@ export function fetchDatagetBookmark(userId, restaurantId) {
               firebase
                 .database()
                 .ref(`/root/users/${userId}/bookmark/${restaurantId}`)
-                .update({ status: false });
+                .set({ status: false });
 
               const data = 'false';
               dispatch(getBookmarkSuccess(data));
@@ -62,7 +62,7 @@ export function fetchDatagetBookmark(userId, restaurantId) {
             firebase
               .database()
               .ref(`/root/users/${userId}/bookmark/${restaurantId}`)
-              .update({ status: false });
+              .set({ status: false });
 
             const data = 'false';
             dispatch(getBookmarkSuccess(data));

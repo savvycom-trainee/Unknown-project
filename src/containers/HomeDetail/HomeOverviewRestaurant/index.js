@@ -42,6 +42,11 @@ class HomeOverviewRestaurant extends PureComponent {
           centerHeader
           rightHeader
         />
+        {/* {() => {
+          if (this.props.dataPlaceDetail.data.photos == null) {
+            return null;
+          }
+          return ( */}
         <View style={styles.ScrollViewImages}>
           <FlatList
             horizontal
@@ -60,6 +65,8 @@ class HomeOverviewRestaurant extends PureComponent {
             keyExtractor={(item, index) => index.toString()}
           />
         </View>
+        {/* );
+        }} */}
 
         <View style={styles.ViewContent}>
           <View style={styles.ViewPointWrap}>
@@ -73,9 +80,9 @@ class HomeOverviewRestaurant extends PureComponent {
           </View>
 
           <View style={styles.ViewTypeRestaurantCost}>
-            <View style={styles.ViewTypeRestaurant}>
+            {/* <View style={styles.ViewTypeRestaurant}>
               <Text style={styles.TextTypeRestaurant}>{data.city}</Text>
-            </View>
+            </View> */}
             <View style={styles.ViewCost}>
               <StarRating
                 disabled={false}

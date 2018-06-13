@@ -57,7 +57,7 @@ class PinView extends Component {
     axios
       .get(`https://maps.googleapis.com/maps/api/place/details/json?placeid=${id}&key=AIzaSyBftI7qlfXFzlklaejl63pyeO8J9kivXys`)
       .then((response) => {
-        // console.log(response.data.result.photos[0].photo_reference);
+        console.log(response.data.result.photos[0].photo_reference);
 
         this.setState({
           destination: {

@@ -40,19 +40,28 @@ export function fetchDatagetListBookmark(userId) {
 
           if (checkHaveBookmark) {
             let data = null;
-            const returnArr = [];
+
             firebase
               .database()
               .ref(`/root/users/${userId}/bookmark`)
               .on('value', (snapshot1) => {
                 console.log(snapshot1.val());
+                const returnArr = [];
                 snapshot1.forEach((item) => {
-                  const arr = { key: item.key, status: item._value.status };
-                  returnArr.push(arr);
+                  if (item._value.status) {
+                    const arr = { key: item.key, status: item._value.status };
+                    returnArr.push(arr);
+                  }
                 });
-                console.log(returnArr);
-                data = returnArr;
-                dispatch(getListBookmarkSuccess(data));
+                console.log(returnArr.length);
+                if (returnArr.length === 0) {
+                  dispatch(getListBookmarkSuccess(null));
+                } else {
+                  data = returnArr;
+                  console.log(data);
+
+                  dispatch(getListBookmarkSuccess(data));
+                }
               });
             dispatch(getListBookmarkSuccess(data));
           } else {

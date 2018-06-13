@@ -53,8 +53,8 @@ export function fetchDatagetPlaceDetail(id) {
             .then((response) => {
               if (response.data.status === 'OK') {
                 console.log(response.data.result);
-
-                const data = {
+                let data = null;
+                data = {
                   idRestaurant: id,
                   location: {
                     lat: response.data.result.geometry.location.lat,

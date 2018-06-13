@@ -8,7 +8,7 @@ import { fetchDatagetReview } from '../../../actions/getReviewAction';
 import Loading from '../../../components/LoadingContainer';
 import styles from './styles';
 import { Icons } from '../../../themes';
-
+import EmptyContent from '../../../components/EmptyContent';
 import Content from './Content';
 import Header from '../../../components/Header';
 // import Comment from './Comment';
@@ -22,12 +22,27 @@ class HomeReviewRestaurant extends PureComponent {
     this.props.fetchDatagetReview(this.props.idRestaurant);
   }
 
+  renderReview = (data) => {
+    console.log(data == null);
+
+    if (data == null) {
+      return <EmptyContent />;
+    }
+    return (
+      <FlatList
+        data={data}
+        renderItem={({ item }) => <Content data={item} />}
+        keyExtractor={(item, index) => index.toString()}
+      />
+    );
+  };
+
   render() {
     if (this.props.dataReview.isFetching === true) {
       return <Loading />;
     }
-    const data = this.props.dataReview.data;
-    console.log(data);
+    // const data = this.props.dataReview.data;
+    // console.log(data);
 
     return (
       <View style={styles.ViewMain}>
@@ -38,13 +53,7 @@ class HomeReviewRestaurant extends PureComponent {
           rightHeader
         />
 
-        <View style={styles.ViewContent}>
-          <FlatList
-            data={data}
-            renderItem={({ item }) => <Content data={item} />}
-            keyExtractor={(item, index) => index.toString()}
-          />
-        </View>
+        <View style={styles.ViewContent}>{this.renderReview(this.props.dataReview.data)}</View>
       </View>
     );
   }

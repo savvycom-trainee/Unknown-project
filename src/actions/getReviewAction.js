@@ -1,4 +1,4 @@
-import axios from 'axios';
+// import axios from 'axios';
 import firebase from 'react-native-firebase';
 
 import { GET_REVIEW_ING, GET_REVIEW_SUCCESS, GET_REVIEW_FAIL } from '../constants/actionTypes';
@@ -38,8 +38,13 @@ export function fetchDatagetReview(id) {
           }
         });
         // console.log(returnArr);
-
-        dispatch(getReviewSuccess(returnArr));
+        console.log(returnArr.length);
+        if (returnArr.length === 0) {
+          dispatch(getReviewSuccess(null));
+        } else {
+          dispatch(getReviewSuccess(returnArr));
+        }
+        // dispatch(getReviewSuccess(returnArr));
       });
   };
 }
