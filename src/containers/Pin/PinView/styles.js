@@ -4,14 +4,15 @@ import colors from '../../../themes/Colors';
 const styles = {
   cardStyle: {
     marginHorizontal: 30 * d.ratioW,
-    marginTop: 25 * d.ratioH,
+    marginTop: 10 * d.ratioH,
+    marginBottom: 10 * d.ratioH,
   },
   detailContainer: {
     justifyContent: 'space-evenly',
     paddingLeft: 25 * d.ratioW,
   },
   restaurantNameStyle: {
-    fontSize: 15,
+    fontSize: 13,
     fontWeight: '700',
     color: colors.text,
   },

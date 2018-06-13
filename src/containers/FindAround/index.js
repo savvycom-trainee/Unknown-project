@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { View, Text, Image, FlatList, ActivityIndicator } from 'react-native';
+import { View, Text, Image, FlatList, ActivityIndicator, BackHandler } from 'react-native';
 import firebase from 'react-native-firebase';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
@@ -18,7 +18,17 @@ class FindAround extends Component {
   };
   componentDidMount() {
     this._getUserAround();
+    BackHandler.addEventListener('hardwareBackPress', this.handleBackPress);
   }
+  componentWillUnmount() {
+    BackHandler.removeEventListener('hardwareBackPress', this.handleBackPress);
+  }
+
+  handleBackPress = () => {
+    this.props.navigation.goBack(null);
+    return true;
+  };
+
   _getUserAround = () => {
     const { user } = this.props.user;
     firebase
@@ -98,10 +108,14 @@ class FindAround extends Component {
       <View style={{ flex: 1 }}>
         <Header
           leftHeader={<Image source={Icons.back} />}
+<<<<<<< HEAD
           onPressLeftHeader={() => {
             this._reload();
             this.props.navigation.goBack();
           }}
+=======
+          onPressLeftHeader={() => this.props.navigation.goBack()}
+>>>>>>> e041756fbf8c20b74c0de854af03d496a064a370
           centerHeader={<Text style={{ fontSize: 15, fontWeight: '600' }}>Find Around</Text>}
           rightHeader={<Image source={Icons.user} />}
         />
