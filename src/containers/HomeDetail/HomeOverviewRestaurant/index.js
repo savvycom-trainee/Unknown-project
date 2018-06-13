@@ -133,7 +133,7 @@ HomeOverviewRestaurant.propTypes = {
   fetchDatagetPlaceDetail: PropTypes.func.isRequired,
   dataPlaceDetail: PropTypes.object.isRequired,
   onPressGoBack: PropTypes.func.isRequired,
-  onPressDirect: PropTypes.func.isRequired,
+  // onPressDirect: PropTypes.func.isRequired,
 };
 
 const mapStateToProps = state => ({

@@ -29,7 +29,7 @@ class ButtonBookmark extends PureComponent {
     firebase
       .database()
       .ref(`/root/users/${userId}/bookmark/${restaurantId}`)
-      .update({ status: !this.props.dataBookmark.data });
+      .set({ status: !this.props.dataBookmark.data });
   };
 
   renderButtonIcon = () => {
@@ -82,7 +82,7 @@ class ButtonBookmark extends PureComponent {
 ButtonBookmark.propTypes = {
   // onPressButton: PropTypes.func,
   dataBookmark: PropTypes.object.isRequired,
-  dataPlaceDetail: PropTypes.object.isRequired,
+  // dataPlaceDetail: PropTypes.object.isRequired,
   fetchDatagetBookmark: PropTypes.func.isRequired,
   idRestaurant: PropTypes.string.isRequired,
 };

@@ -1,16 +1,19 @@
 import React, { Component } from 'react';
-import { View, Text, TouchableOpacity, Image } from 'react-native';
+import { View, Text, Image, TouchableOpacity } from 'react-native';
 import axios from 'axios';
+import PropTypes from 'prop-types';
+
 import StarRating from 'react-native-star-rating';
 import icons from '../../../themes/Icons';
 import { Card, OpenAndDistance, GreenCircle } from '../../../components';
 import styles from './styles';
+import Loading from '../../../components/LoadingContainer';
 
 class PinView extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      data: [],
+      data: null,
       openingStatus: true,
       type: 'restaurant',
       image:
@@ -19,19 +22,21 @@ class PinView extends Component {
   }
 
   componentDidMount() {
-    // console.log(this.props);
     this.getDataFromApi(this.props.item.key);
   }
-  // https://maps.googleapis.com/maps/api/place/details/json?placeid=ChIJtyxMhkurNTERwzERCRw92us&key=AIzaSyBftI7qlfXFzlklaejl63pyeO8J9kivXys
 
   getDataFromApi = (id) => {
     axios
       .get(`https://maps.googleapis.com/maps/api/place/details/json?placeid=${id}&key=AIzaSyBftI7qlfXFzlklaejl63pyeO8J9kivXys`)
       .then((response) => {
         console.log(response.data.result);
-        console.log(response.data.result.photos[0].photo_reference);
+        // console.log(response.data.result.photos[0].photo_reference);
 
         this.setState({
+          destination: {
+            latitude: response.data.result.geometry.location.lat,
+            longitude: response.data.result.geometry.location.lng,
+          },
           data: response.data.result,
           image: response.data.result.photos[0].photo_reference,
           type: response.data.result.types[0],
@@ -44,9 +49,11 @@ class PinView extends Component {
 
   render() {
     if (this.props.item.status) {
+      if (this.state.data == null) {
+        return <Loading />;
+      }
       return (
         <Card onPress={this.props.onPress} direction="row" style={styles.cardStyle}>
-          {/* <View style={styles.photoContainerStyle}> */}
           <View style={styles.photoViewStyle}>
             <Image
               source={{
@@ -57,10 +64,14 @@ class PinView extends Component {
               style={{ height: 110, width: 110 }}
             />
           </View>
-          {/* </View> */}
-          <GreenCircle onPress={this.props.onDirectPress} style={styles.directStyle}>
+
+          <GreenCircle
+            onPress={() => this.props.navigate('Direct', { destination: this.state.destination })}
+            style={styles.directStyle}
+          >
             <Image source={icons.direct} style={styles.directIconStyle} />
           </GreenCircle>
+
           <View style={styles.detailContainer}>
             <View>
               <Text style={styles.restaurantNameStyle}>{this.state.data.name}</Text>
@@ -74,17 +85,14 @@ class PinView extends Component {
                 emptyStar="ios-star-outline"
                 fullStar="ios-star"
                 iconSet="Ionicons"
-                maxStars={4}
+                maxStars={5}
                 rating={this.state.data.rating}
                 fullStarColor="#4CB33E"
                 reversed
                 starSize={12}
               />
             </View>
-            <OpenAndDistance
-              openingStatus={this.state.openingStatus}
-              // distance={this.props.item.distance}
-            />
+            <OpenAndDistance openingStatus={this.state.openingStatus} distance="1km" />
           </View>
         </Card>
       );
@@ -92,5 +100,10 @@ class PinView extends Component {
     return null;
   }
 }
+PinView.propTypes = {
+  navigate: PropTypes.func.isRequired,
+  onPress: PropTypes.func.isRequired,
+  item: PropTypes.object.isRequired,
+};
 
 export default PinView;

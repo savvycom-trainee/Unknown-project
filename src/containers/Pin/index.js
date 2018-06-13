@@ -23,6 +23,7 @@ class Pin extends PureComponent {
     console.log(userId);
     this.props.fetchDatagetListBookmark(userId);
   };
+
   renderCatchNothing = (data) => {
     if (data == null) {
       return <Text>You dont have Bookmark</Text>;
@@ -37,9 +38,7 @@ class Pin extends PureComponent {
             onPress={() => {
               this.props.navigation.navigate('HomeDetail', { data: item.key });
             }}
-            onDirectPress={() => {
-              // this.props.navigation.navigate('Direct');
-            }}
+            navigate={this.props.navigation.navigate}
           />
         )}
         // keyExtractor={item => item.restaurantName.toString()}
@@ -65,11 +64,11 @@ class Pin extends PureComponent {
 
 // export default Pin;
 Pin.propTypes = {
-  // navigation: PropTypes.shape({
-  //   navigate: PropTypes.func.isRequired,
-  //   // getParam: PropTypes.func.isRequired,
-  //   // goBack: PropTypes.func.isRequired,
-  // }).isRequired,
+  navigation: PropTypes.shape({
+    navigate: PropTypes.func.isRequired,
+    // getParam: PropTypes.func.isRequired,
+    // goBack: PropTypes.func.isRequired,
+  }).isRequired,
   fetchDatagetListBookmark: PropTypes.func.isRequired,
   dataListBookmark: PropTypes.object.isRequired,
 };
