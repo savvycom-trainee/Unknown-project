@@ -35,7 +35,6 @@ export function fetchDatagetPlaceDetail(id) {
       .ref('root/restaurants')
       .on('value', (snapshot) => {
         const checkInFirebase = snapshot.val().hasOwnProperty(id);
-        console.log(checkInFirebase);
 
         // find restaurant in firebase
         if (checkInFirebase) {
@@ -44,8 +43,6 @@ export function fetchDatagetPlaceDetail(id) {
             .database()
             .ref(`root/restaurants/${id}`)
             .on('value', (snapshot1) => {
-              console.log(snapshot1.val());
-
               dispatch(getPlaceDetailSuccess(snapshot1.val()));
             });
         }
@@ -69,19 +66,18 @@ export function fetchDatagetPlaceDetail(id) {
                   city: response.data.result.address_components[0].long_name,
                   vicinity: response.data.result.formatted_address,
                 };
-                console.log(data.vincinity);
 
                 firebase
                   .database()
                   .ref(`root/restaurants/${id}`)
                   .set(data);
+
                 dispatch(getPlaceDetailSuccess(data));
               } else {
                 firebase
                   .database()
                   .ref('root/restaurants/ChIJ5wFaYfKrNTERKqOASecEi3k')
                   .on('value', (snapshot1) => {
-                    console.log(snapshot1.val());
                     dispatch(getPlaceDetailSuccess(snapshot1.val()));
                   });
               }

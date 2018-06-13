@@ -38,7 +38,7 @@ class FindAround extends Component {
       .then((snapshot) => {
         this.setState({ isLoading: false });
         const data = [];
-        
+        // eslint-disable-next-line
         for (let i = 0; i < snapshot._childKeys.length; i++) {
           const uid = snapshot._childKeys[i];
           const userItem = snapshot.val()[uid];
@@ -47,7 +47,7 @@ class FindAround extends Component {
             this.props.setUser(userItem);
           } else if (userItem.location && userItem.location.lat && userItem.location.lng) {
             // console.log(userItem);
-           
+            /*eslint-disable */
             const distance = this._getDistanceFromLatLonInKm(
               userItem.location.lat,
               userItem.location.lng,
@@ -60,7 +60,7 @@ class FindAround extends Component {
               userItem.isFollow = userItem.follower.indexOf(user.uid) !== -1 ? true : false;
             } else userItem.isFollow = false;
             // console.log(userItem);
-            
+            /* eslint-enable */
             if (distance < 1000) {
               data.push(userItem);
             }
@@ -86,7 +86,7 @@ class FindAround extends Component {
     const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
     const d = R * c; // Distance in km
     return Math.round(d);
-   
+    /* eslint-enable */
   };
 
   // TODO navigate to user detail
@@ -124,9 +124,9 @@ class FindAround extends Component {
   }
 }
 FindAround.propTypes = {
-  navigation: PropTypes.object, 
-  user: PropTypes.object, 
-  setUser: PropTypes.func, 
+  navigation: PropTypes.object, // eslint-disable-line
+  user: PropTypes.object, // eslint-disable-line
+  setUser: PropTypes.func, //eslint-disable-line
 };
 const mapStateToProps = state => ({
   user: state.user,

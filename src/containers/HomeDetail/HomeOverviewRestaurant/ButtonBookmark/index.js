@@ -69,7 +69,11 @@ class ButtonBookmark extends PureComponent {
 
   render() {
     if (this.props.dataBookmark.isFetching === true) {
-      return <Loading />;
+      return (
+        <View style={styles.ViewMain}>
+          <Loading />
+        </View>
+      );
     }
     return (
       <TouchableOpacity style={styles.ViewMain} onPress={this.pressBookmark}>

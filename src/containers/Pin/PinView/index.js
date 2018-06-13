@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
-import { View, Text, Image, TouchableOpacity } from 'react-native';
+import { View, Text, Image, TouchableOpacity, AsyncStorage } from 'react-native';
 import axios from 'axios';
+import firebase from 'react-native-firebase';
 import PropTypes from 'prop-types';
 
 import StarRating from 'react-native-star-rating';
@@ -18,18 +19,44 @@ class PinView extends Component {
       type: 'restaurant',
       image:
         'CmRaAAAAtaX7SDQa-6BWxHR1H_Y9yszIOxtdcyMJxg6NLptggntTVTxoiFUahgBnswCO4O8dpACeFXFGamR0QsXVc6iCllGq08YO4rK_bDPiYXy3uZEwGQyTV3LJxmjJbO9vrb9jEhByGXCdMlCu32rAgCtZvS1YGhRe9Ox_fKQnjpG6Vo-UQAjydSGB7A',
+      // location: {
+      //   latitude: 0,
+      //   longitude: 0,
+      // },
+      // destination: {
+      //   latitude: 1,
+      //   longitude: 1,
+      // },
+      distance: 'far',
     };
   }
 
   componentDidMount() {
     this.getDataFromApi(this.props.item.key);
+    this.getLocationUser();
+    // this.computingDistance();
   }
+
+  getLocationUser = async () => {
+    const user = await AsyncStorage.getItem('user');
+    const userId = JSON.parse(user).uid;
+    firebase
+      .database()
+      .ref(`/root/users/${userId}/location`)
+      .on('value', (snapshot) => {
+        this.setState({
+          location: {
+            latitude: snapshot.val().lat,
+            longitude: snapshot.val().lng,
+          },
+        });
+      });
+  };
 
   getDataFromApi = (id) => {
     axios
       .get(`https://maps.googleapis.com/maps/api/place/details/json?placeid=${id}&key=AIzaSyBftI7qlfXFzlklaejl63pyeO8J9kivXys`)
       .then((response) => {
-        console.log(response.data.result);
         // console.log(response.data.result.photos[0].photo_reference);
 
         this.setState({
@@ -45,6 +72,47 @@ class PinView extends Component {
       .catch((error) => {
         console.log(error);
       });
+  };
+
+  /* eslint-disable */
+  deg2rad = deg => deg * (Math.PI / 180);
+  _getDistanceFromLatLonInKm = (lat1, lon1, lat2, lon2) => {
+    const R = 6371; // Radius of the earth in km
+    const dLat = this.deg2rad(lat2 - lat1); // deg2rad below
+    const dLon = this.deg2rad(lon2 - lon1);
+    const a =
+      Math.sin(dLat / 2) * Math.sin(dLat / 2) +
+      Math.cos(this.deg2rad(lat1)) *
+        Math.cos(this.deg2rad(lat2)) *
+        Math.sin(dLon / 2) *
+        Math.sin(dLon / 2);
+    const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
+    const d = R * c; // Distance in km
+
+    return d;
+    /* eslint-enable */
+  };
+
+  computingDistance = () => {
+    console.log(this.state);
+
+    const distanceComputing = this._getDistanceFromLatLonInKm(
+      this.state.location.latitude,
+      this.state.location.longitude,
+      this.state.destination.latitude,
+      this.state.destination.longitude,
+    );
+    console.log(distanceComputing);
+
+    if (distanceComputing < 1000 && distanceComputing > 0) {
+      this.setState({
+        distance: distanceComputing,
+      });
+    } else {
+      this.setState({
+        distance: 'far ',
+      });
+    }
   };
 
   render() {
@@ -86,13 +154,16 @@ class PinView extends Component {
                 fullStar="ios-star"
                 iconSet="Ionicons"
                 maxStars={5}
-                rating={this.state.data.rating}
+                rating={Math.floor(this.state.data.rating)}
                 fullStarColor="#4CB33E"
                 reversed
                 starSize={12}
               />
             </View>
-            <OpenAndDistance openingStatus={this.state.openingStatus} distance="1km" />
+            <OpenAndDistance
+              openingStatus={this.state.openingStatus}
+              distance={this.state.distance}
+            />
           </View>
         </Card>
       );

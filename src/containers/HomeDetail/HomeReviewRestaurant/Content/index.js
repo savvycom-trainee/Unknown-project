@@ -19,7 +19,6 @@ class Content extends PureComponent {
           data={this.props.data.content.photos}
           renderItem={({ item }) => <Image source={{ uri: item }} style={styles.gallery} />}
           keyExtractor={(item, index) => index.toString()}
-          horizontal
         />
       );
     }

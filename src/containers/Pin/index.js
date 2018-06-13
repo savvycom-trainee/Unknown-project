@@ -7,7 +7,7 @@ import { fetchDatagetListBookmark } from '../../actions/getListBookmarkAction';
 import Loading from '../../components/LoadingContainer';
 import { Header } from '../../components';
 import { Icons } from '../../themes';
-import restaurantData from './PinView/data/restaurantData';
+// import restaurantData from './PinView/data/restaurantData';
 import PinView from './PinView';
 import styles from './styles';
 

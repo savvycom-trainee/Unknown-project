@@ -12,7 +12,7 @@ const styles = {
     paddingLeft: 25 * d.ratioW,
   },
   restaurantNameStyle: {
-    fontSize: 15,
+    fontSize: 13,
     fontWeight: '700',
     color: colors.text,
   },
