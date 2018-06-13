@@ -7,7 +7,10 @@ import PinView from './PinView';
 import styles from './styles';
 
 class Pin extends PureComponent {
-  state = {};
+  // merge lai branch bookmark
+  state = {
+    isBookmark: true,
+  };
   render() {
     return (
       <View style={{ flex: 1 }}>
