@@ -11,12 +11,11 @@ const styles = StyleSheet.create({
     textAlign: 'center',
     fontWeight: '600',
     fontSize: 14,
-    lineHeight: 40,
   },
   scrollView: {
     flex: 1,
+    paddingTop: 5,
     width: '100%',
-    flexDirection: 'row',
     flexWrap: 'wrap',
     backgroundColor: 'white',
   },

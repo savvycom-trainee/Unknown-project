@@ -11,18 +11,16 @@ export const getPositionUser = () => {
   // eslint-disable-next-line
   navigator.geolocation.getCurrentPosition(
     (position) => {
+      console.log(position);
       const { coord } = position.coords;
       return {
         type: 'success',
         data: coord,
       };
     },
-    (error) => {
-      console.log(error);
-      return {
-        type: 'error',
-        data: error,
-      };
-    },
+    error => ({
+      type: 'error',
+      data: error,
+    }),
   );
 };

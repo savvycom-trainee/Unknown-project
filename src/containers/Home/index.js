@@ -28,8 +28,13 @@ class Home extends Component {
 
   componentDidMount() {
     this.onGetCurrentPosition();
+<<<<<<< HEAD
     this.props.fetchDatagetNewFeed(this.props.user.user.uid);
     const { uid } = this.props.user.user;
+=======
+    const { uid } = this.props.user.user;
+    this.props.fetchDatagetNewFeed(uid);
+>>>>>>> 932a443fc521d3ec507c5475643432ac8da18b9e
     firebase
       .database()
       .ref('root/users')

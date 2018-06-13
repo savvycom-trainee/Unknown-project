@@ -2,7 +2,6 @@ import React, { PureComponent } from 'react';
 import {
   View,
   Text,
-  StatusBar,
   Image,
   TouchableOpacity,
   FlatList,
@@ -18,7 +17,6 @@ import { connect } from 'react-redux';
 import { fetchDatagetUserDetail, fetchDataGetUserPin } from '../../actions/';
 import { Header } from '../../components';
 import icon from '../../themes/Icons';
-import Loading from '../../components/LoadingContainer';
 import account from './style';
 import { Card, Statistic } from './component';
 import images from '../../themes/Images';
@@ -26,15 +24,18 @@ import images from '../../themes/Images';
 class Account extends PureComponent {
   constructor(props) {
     super(props);
-    this.otherUserId = this.props.navigation.getParam('idUser', null);
-    this.user = this.props.user.user;
+    this.otherUserId = props.navigation.getParam('idUser', null);
+    this.user = props.user.user;
     this.state = {
       isOwner: true,
     };
   }
   componentDidMount() {
     this.onGetOtherUser();
+<<<<<<< HEAD
     console.log(this.state);
+=======
+>>>>>>> 932a443fc521d3ec507c5475643432ac8da18b9e
     BackHandler.addEventListener('hardwareBackPress', this.handleBackPress);
   }
   componentWillUnmount() {
@@ -47,7 +48,6 @@ class Account extends PureComponent {
       .ref(`root/users/${this.otherUserId}`)
       .on('value', (snapshot) => {
         this.otherUser = snapshot.val();
-        console.log(snapshot.val());
         if (this.otherUserId && this.otherUserId !== this.user.uid) {
           this.setState({
             ...this.otherUser,
@@ -65,7 +65,6 @@ class Account extends PureComponent {
   };
 
   logOut = () => {
-    console.log('logout');
     AsyncStorage.removeItem('user');
     const navigateAction = NavigationActions.navigate({
       routeName: 'Auth',
@@ -183,6 +182,7 @@ Account.propTypes = {
     goBack: PropTypes.func.isRequired,
     params: PropTypes.object,
     dispatch: PropTypes.func.isRequired,
+    getParam: PropTypes.func.isRequired,
   }).isRequired,
   fetchDataGetUserPin: PropTypes.func.isRequired,
   user: PropTypes.object.isRequired,
