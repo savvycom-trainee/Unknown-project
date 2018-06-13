@@ -108,14 +108,7 @@ class FindAround extends Component {
       <View style={{ flex: 1 }}>
         <Header
           leftHeader={<Image source={Icons.back} />}
-<<<<<<< HEAD
-          onPressLeftHeader={() => {
-            this._reload();
-            this.props.navigation.goBack();
-          }}
-=======
           onPressLeftHeader={() => this.props.navigation.goBack()}
->>>>>>> e041756fbf8c20b74c0de854af03d496a064a370
           centerHeader={<Text style={{ fontSize: 15, fontWeight: '600' }}>Find Around</Text>}
           rightHeader={<Image source={Icons.user} />}
         />

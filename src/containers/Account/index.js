@@ -31,12 +31,9 @@ class Account extends PureComponent {
     };
   }
   componentDidMount() {
-    this.onGetOtherUser();
-<<<<<<< HEAD
-    console.log(this.state);
-=======
->>>>>>> 932a443fc521d3ec507c5475643432ac8da18b9e
     BackHandler.addEventListener('hardwareBackPress', this.handleBackPress);
+
+    this.onGetOtherUser();
   }
   componentWillUnmount() {
     BackHandler.removeEventListener('hardwareBackPress', this.handleBackPress);

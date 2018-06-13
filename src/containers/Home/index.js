@@ -1,6 +1,15 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import { View, Text, ScrollView, TouchableOpacity, Image, FlatList, Modal, RefreshControl } from 'react-native';
+import {
+  View,
+  Text,
+  ScrollView,
+  TouchableOpacity,
+  Image,
+  FlatList,
+  Modal,
+  RefreshControl,
+} from 'react-native';
 import { connect } from 'react-redux';
 import Moment from 'moment';
 import firebase from 'react-native-firebase';
@@ -25,16 +34,10 @@ class Home extends Component {
       refreshing: false,
     };
   }
-
   componentDidMount() {
     this.onGetCurrentPosition();
-<<<<<<< HEAD
-    this.props.fetchDatagetNewFeed(this.props.user.user.uid);
-    const { uid } = this.props.user.user;
-=======
     const { uid } = this.props.user.user;
     this.props.fetchDatagetNewFeed(uid);
->>>>>>> 932a443fc521d3ec507c5475643432ac8da18b9e
     firebase
       .database()
       .ref('root/users')
