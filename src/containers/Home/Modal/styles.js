@@ -65,18 +65,23 @@ export default StyleSheet.create({
     padding: 3,
   },
   textPosted: {
+    fontSize: 15,
+    fontWeight: '500',
+    color: Colors.white,
+  },
+  textPost: {
+    fontSize: 15,
+    fontWeight: '500',
+    color: 'rgba(19,19,19,0.8)',
+  },
+  textCreatePost: {
     fontSize: 17,
     fontWeight: '700',
     color: Colors.white,
   },
-  textPost: {
-    fontSize: 17,
-    fontWeight: '700',
-    color: '#000',
-  },
-  textCreatePost: {
-    fontSize: 14,
-    fontWeight: '700',
+  textCancelPost: {
+    fontSize: 15,
+    fontWeight: '500',
     color: Colors.white,
   },
   textButtonPost: {
@@ -86,15 +91,15 @@ export default StyleSheet.create({
   },
   textAddPost: {
     fontSize: 16,
-    fontWeight: '600',
-    color: Colors.white,
+    fontWeight: '500',
+    color: Colors.text,
   },
   viewTextInputSearch: {
     paddingBottom: 10 * d.ratioH,
   },
   ViewContentFlatList: {
     marginTop: 10 * d.ratioH,
-    height: 400 * d.ratioH,
+    flex: 0.84,
     width: 250 * d.ratioW,
     padding: 1,
   },
@@ -160,10 +165,10 @@ export default StyleSheet.create({
     padding: 0,
     paddingLeft: 10,
     borderRadius: 2.5,
-    width: 340 * d.ratioW,
+    width: 350 * d.ratioW,
     height: 50 * d.ratioH,
     fontSize: 20,
-    fontWeight: '700',
+    fontWeight: '400',
   },
   textInputSearch: {
     padding: 0,
@@ -237,15 +242,17 @@ export default StyleSheet.create({
     paddingLeft: 10 * d.ratioH,
   },
   viewStarRating: {
+    justifyContent: 'center',
+    alignItems: 'center',
     height: 45 * d.ratioH,
   },
   viewCustom: {
     padding: 14,
-    backgroundColor: Colors.default,
+    borderTopColor: Colors.default,
+    borderTopWidth: 1,
     justifyContent: 'space-between',
     flexDirection: 'row',
     alignItems: 'center',
-
     flex: 0.054,
   },
   viewButton: {
@@ -319,7 +326,7 @@ export default StyleSheet.create({
     fontWeight: '700',
   },
   textUserName: {
-    color: Colors.text,
+    color: 'rgb(19,19,19)',
     fontSize: 14,
     fontWeight: '700',
   },

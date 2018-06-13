@@ -151,6 +151,7 @@ export default StyleSheet.create({
     flexDirection: 'row',
   },
   viewContent: {
+    alignItems: 'center',
     flex: 1,
   },
 });

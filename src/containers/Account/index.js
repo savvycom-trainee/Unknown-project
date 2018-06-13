@@ -146,21 +146,28 @@ class Account extends PureComponent {
             />
           </View>
           <Text style={account.botRestaurant}>My Pin</Text>
-          <FlatList
-            horizontal
-            data={this.props.dataUserPin.data}
-            keyExtractor={(item, index) => index.toString()}
-            renderItem={({ item }) => (
-              <Card
-                name={item.restaurantName}
-                image={item.content.photos[0]}
-                status={item.content.detail}
-                restaurantVicinity={item.restaurantVicinity}
-                review={item.rating}
-                restaurantPlaceId={item.restaurantPlaceId}
-              />
-            )}
-          />
+          {this.props.dataUserPin.data.length === 0 ? (
+            <Text style={account.textNotPin}>You not pin</Text>
+          ) : (
+            <FlatList
+              horizontal
+              data={this.props.dataUserPin.data}
+              keyExtractor={(item, index) => index.toString()}
+              renderItem={({ item }) => (
+                <Card
+                  onPressNavi={() =>
+                    this.props.navigation.navigate('HomeDetail', { data: item.restaurantPlaceId })
+                  }
+                  name={item.restaurantName}
+                  image={item.content.photos[0]}
+                  status={item.content.detail}
+                  restaurantVicinity={item.restaurantVicinity}
+                  review={item.rating}
+                  restaurantPlaceId={item.restaurantPlaceId}
+                />
+              )}
+            />
+          )}
         </View>
       </View>
     );

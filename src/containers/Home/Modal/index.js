@@ -6,7 +6,6 @@ import {
   TouchableOpacity,
   TextInput,
   CameraRoll,
-  ScrollView,
   FlatList,
   Alert,
 } from 'react-native';
@@ -33,9 +32,9 @@ class ModalView extends PureComponent {
     this.state = {
       latitude: null,
       longitude: null,
-      progressing: null,
       postDone: false,
       error: null,
+      pagePhotos: 10,
       listadd: true,
       photos: [],
       keyword: '',
@@ -56,8 +55,9 @@ class ModalView extends PureComponent {
           lat: 21.065863,
           lng: 105.78003,
         },
+        name: 'Name Restaurant',
         photo: '',
-        vicinity: '',
+        vicinity: 'Vicinity Restaurant',
       },
     };
   }
@@ -65,7 +65,6 @@ class ModalView extends PureComponent {
   componentDidMount() {
     this.onGetCurrentLocation();
     this._getPhoto();
-
   }
 
   onGetCurrentLocation = () => {
@@ -91,7 +90,7 @@ class ModalView extends PureComponent {
   };
   _getPhoto = () => {
     CameraRoll.getPhotos({
-      first: 1000,
+      first: this.state.pagePhotos,
       assetType: 'Photos',
     })
       .then((r) => {
@@ -125,20 +124,31 @@ class ModalView extends PureComponent {
             },
           });
           if (this.state.post.content.photos.length === file.length) {
-            console.log(this.state.post.content.photos);
-            this.setState({ postDone: true });
-            const { post, restaurant } = this.state;
-            this.props.fetchPostNewFeed(post, restaurant);
-            console.log(this.props.dataPost.dataSuccess);
-            if (this.props.dataPost.dataSuccess === true) {
-              this.props.hideModal(false);
-            }
+            this._onPostDone();
           }
         })
         .catch(err => console.log(err));
     });
   };
-
+  _onPostDone() {
+    console.log(this.state.post.content.photos);
+    this.setState({ postDone: true });
+    const { post, restaurant } = this.state;
+    this.props.fetchPostNewFeed(post, restaurant);
+    console.log(this.props.dataPost.dataSuccess);
+    if (this.props.dataPost.dataSuccess === true) {
+      this.props.hideModal(false);
+    }
+  }
+  _onSearch() {
+    const { latitude, longitude, keyword } = this.state;
+    if (!this._validateSearch()) {
+      this.props.fetchDataGetAddSearch(latitude, longitude, keyword);
+      this.setState({ listadd: false });
+    } else {
+      Alert.alert('Mày Nhập hộ tao cái ');
+    }
+  }
   _onAddImages(a) {
     // console.log(a);
     this.setState({
@@ -172,6 +182,12 @@ class ModalView extends PureComponent {
         userName: this.props.user.user.fullName, // eslint-disable-line
       },
     });
+  }
+  _ItemLoadMore() {
+    this.setState({
+      pagePhotos: this.state.pagePhotos + 10,
+    });
+    this._getPhoto();
   }
   _onPost() {
     if (!this._validateNameLocal()) {
@@ -221,7 +237,7 @@ class ModalView extends PureComponent {
     return false;
   }
   _validateNameLocal() {
-    if (this.state.restaurant.name === '') {
+    if (this.state.restaurant.name === 'Name Restaurant') {
       return true;
     }
     return false;
@@ -235,6 +251,21 @@ class ModalView extends PureComponent {
     this.setState({ listadd: true });
     this.modal.close();
   }
+  _onClearAdd() {
+    this.setState({
+      restaurant: {
+        ...this.state.restaurant,
+        name: '',
+        vicinity: '',
+      },
+    });
+  }
+  _onRemoveItemPhotoSelected(item) {
+    const array = [...this.state.photosselect];
+    const index = array.indexOf(item);
+    array.splice(index, 1);
+    this.setState({ photosselect: array });
+  }
   render() {
     return (
       <View style={styles.container}>
@@ -242,7 +273,7 @@ class ModalView extends PureComponent {
           <ModalCustom onRef={ref => (this.modal = ref)}>
             <View style={{ flex: 1, width: null, backgroundColor: '#fff' }}>
               <View style={styles.viewHeadModal}>
-                <Text style={styles.textHeadModal}>Near Add You</Text>
+                <Text style={styles.textHeadModal}>Places near you </Text>
               </View>
               <View style={styles.bodyModal}>
                 <View style={styles.bodyModal}>
@@ -345,11 +376,11 @@ class ModalView extends PureComponent {
                   this.props.hideModal(false);
                 }}
               >
-                <Image source={Icons.close} style={styles.imgClose} />
+                <Text style={styles.textCancelPost}>Cancel</Text>
               </TouchableOpacity>
             </View>
             <View>
-              <Text style={styles.textCreatePost}>Create post</Text>
+              <Text style={styles.textCreatePost}>Create Post</Text>
             </View>
             <View>
               <TouchableOpacity onPress={() => this._onPost()}>
@@ -362,7 +393,10 @@ class ModalView extends PureComponent {
               <View style={styles.viewform}>
                 <View style={styles.viewInfoDetail}>
                   <View style={styles.viewFormImageUser}>
-                    <Image source={{ uri: this.props.user.user.photoURL }} style={styles.ImageAvatar} />
+                    <Image
+                      source={{ uri: this.props.user.user.photoURL }}
+                      style={styles.ImageAvatar}
+                    />
                   </View>
                   <View>
                     <View style={styles.viewFormUserName}>
@@ -370,7 +404,10 @@ class ModalView extends PureComponent {
                     </View>
                     <View style={styles.viewNameAndRes}>
                       <View>
-                        <TouchableOpacity style={styles.viewFormAddSelected}>
+                        <TouchableOpacity
+                          style={styles.viewFormAddSelected}
+                          onPress={() => this._onClearAdd()}
+                        >
                           <Icon name="ios-home" color={Colors.text} size={16} />
                           <Text numberOfLines={1} style={styles.textSelectedShow}>
                             {this.state.restaurant.name}
@@ -378,7 +415,10 @@ class ModalView extends PureComponent {
                         </TouchableOpacity>
                       </View>
                       <View>
-                        <TouchableOpacity style={styles.viewFormAddSelected}>
+                        <TouchableOpacity
+                          style={styles.viewFormAddSelected}
+                          onPress={() => this._onClearAdd()}
+                        >
                           <Icon name="md-locate" color={Colors.text} size={16} />
                           <Text numberOfLines={1} style={styles.textSelectedShow}>
                             {this.state.restaurant.vicinity}
@@ -414,38 +454,38 @@ class ModalView extends PureComponent {
                   </View>
                 </View>
                 <View style={styles.viewImageSelected}>
-                  <ScrollView horizontal>
-                    <View style={styles.viewImageSelectedItem}>
-                      {this.state.photosselect.map((p, i) => (
-                        <TouchableOpacity key={i}>
-                          <Image
-                            key={i}
-                            style={styles.imagePhotoSelectedItem}
-                            source={{ uri: p }}
-                          />
-                        </TouchableOpacity>
-                      ))}
-                    </View>
-                  </ScrollView>
+                  <FlatList
+                    numColumns={1}
+                    data={this.state.photosselect}
+                    renderItem={({ item }) => (
+                      <TouchableOpacity onPress={() => this._onRemoveItemPhotoSelected(item)}>
+                        <Image style={styles.imagePhotoItem} source={{ uri: item }} />
+                      </TouchableOpacity>
+                    )}
+                    horizontal
+                    keyExtractor={(item, index) => index.toString()}
+                    onEndReachedThreshold={0.5}
+                  />
                 </View>
                 <View style={styles.viewImage}>
                   <View style={styles.viewPhotoMobile}>
-                    <ScrollView>
-                      <View style={styles.viewMenuItem}>
-                        {this.state.photos.map((p, i) => (
-                          <TouchableOpacity
-                            key={i}
-                            onPress={() => this._onAddImages(p.node.image.uri)}
-                          >
-                            <Image
-                              key={i}
-                              style={styles.imagePhotoItem}
-                              source={{ uri: p.node.image.uri }}
-                            />
-                          </TouchableOpacity>
-                        ))}
-                      </View>
-                    </ScrollView>
+                    <FlatList
+                      numColumns={2}
+                      data={this.state.photos}
+                      renderItem={({ item }) => (
+                        <TouchableOpacity onPress={() => this._onAddImages(item.node.image.uri)}>
+                          <Image
+                            style={styles.imagePhotoItem}
+                            source={{ uri: item.node.image.uri }}
+                          />
+                        </TouchableOpacity>
+                      )}
+                      keyExtractor={(item, index) => index}
+                      onEndReachedThreshold={0.5}
+                      onEndReached={() => {
+                        this._ItemLoadMore();
+                      }}
+                    />
                   </View>
                 </View>
               </View>
@@ -453,13 +493,13 @@ class ModalView extends PureComponent {
           </View>
           <View style={styles.viewCustom}>
             <View>
-              <Text style={styles.textAddPost}>Add your post</Text>
+              <Text style={styles.textAddPost}>Add to your post</Text>
             </View>
             <View style={styles.viewCustomItem}>
               <View style={styles.viewStarRating}>
                 <StarRating
                   disabled={false}
-                  emptyStarColor={Colors.white}
+                  emptyStarColor={Colors.default}
                   emptyStar="ios-star-outline"
                   fullStar="ios-star"
                   halfStar="ios-star-half"
@@ -467,7 +507,8 @@ class ModalView extends PureComponent {
                   maxStars={5}
                   rating={this.state.post.rating}
                   selectedStar={rating => this.onStarRatingPress(rating)}
-                  fullStarColor={Colors.white}
+                  fullStarColor={Colors.default}
+                  starSize={30}
                 />
               </View>
               <View>
@@ -475,7 +516,7 @@ class ModalView extends PureComponent {
                   style={styles.butonCustomItem}
                   onPress={() => this._onShowModal(2)}
                 >
-                  <Icon name="ios-navigate" color="white" size={33} />
+                  <Icon name="ios-navigate" color={Colors.default} size={30} />
                 </TouchableOpacity>
               </View>
               <View />
