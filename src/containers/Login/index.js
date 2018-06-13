@@ -189,7 +189,10 @@ class Login extends PureComponent {
                   .auth()
                   .signInAndRetrieveDataWithCredential(credential)
                   .then(() => {
-                    this.props.navigation.navigate('UpdateUser', { user: res, fb: true });
+                    const user = { ...res, uid: res.id, fullName: res.name };
+
+                    AsyncStorage.setItem('user', JSON.stringify(user), error => console.log(error));
+                    this.props.navigation.navigate('UpdateUser', { user, fb: true });
                   })
                   .catch((error) => {
                     console.log(error);

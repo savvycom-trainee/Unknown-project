@@ -1,4 +1,4 @@
-import React, { PureComponent } from 'react';
+import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { View, Text, ScrollView, TouchableOpacity, Image, FlatList, Modal } from 'react-native';
 import { connect } from 'react-redux';
@@ -14,7 +14,7 @@ import { getPositionSuccess, getPositionFail, setUser } from '../../actions';
 import ModalView from './Modal';
 import Loading from '../../components/LoadingContainer';
 
-class Home extends PureComponent {
+class Home extends Component {
   constructor(props) {
     super(props);
     this.state = {
