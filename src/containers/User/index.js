@@ -1,5 +1,14 @@
 import React, { PureComponent } from 'react';
-import { View, Text, Image, FlatList, TouchableOpacity, TextInput, Alert } from 'react-native';
+import {
+  View,
+  Text,
+  Image,
+  FlatList,
+  TouchableOpacity,
+  BackHandler,
+  TextInput,
+  Alert,
+} from 'react-native';
 import PropTypes from 'prop-types';
 import Icon from 'react-native-vector-icons/Ionicons';
 import { connect } from 'react-redux';
@@ -20,7 +29,16 @@ class User extends PureComponent {
   }
   componentDidMount() {
     this.props.fetchDatagetUser();
+    BackHandler.addEventListener('hardwareBackPress', this.handleBackPress);
   }
+  componentWillUnmount() {
+    BackHandler.removeEventListener('hardwareBackPress', this.handleBackPress);
+  }
+
+  handleBackPress = () => {
+    this.props.navigation.goBack(null);
+    return true;
+  };
   _validateSearch() {
     if (this.state.queryText === '') {
       return true;

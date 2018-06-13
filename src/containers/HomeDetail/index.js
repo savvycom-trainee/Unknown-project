@@ -74,6 +74,7 @@ class HomeDetail extends Component {
       if (activeTab === 'HomeOverviewRestaurant') {
         return (
           <HomeOverviewRestaurant
+            navigate={this.props.navigation.navigate}
             idRestaurant={this.state.idRestaurant}
             onPressGoBack={() => this.props.navigation.goBack()}
             onPressDirect={() => this.props.navigation.navigate('Direct')}

@@ -35,7 +35,6 @@ class Account extends PureComponent {
   componentDidMount() {
     this.onGetOtherUser();
     console.log(this.state);
-
     BackHandler.addEventListener('hardwareBackPress', this.handleBackPress);
   }
   componentWillUnmount() {
@@ -73,6 +72,10 @@ class Account extends PureComponent {
       action: NavigationActions.navigate({ routeName: 'Login' }),
     });
     this.props.navigation.dispatch(navigateAction);
+  };
+  handleBackPress = () => {
+    this.props.navigation.goBack(null);
+    return true;
   };
   render() {
     return (
