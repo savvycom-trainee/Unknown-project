@@ -101,7 +101,9 @@ class FindAround extends Component {
       });
   };
   // TODO navigate to user detail
-  _renderItem = ({ item, index }) => <FindCard item={item} index={index} />;
+  _renderItem = ({ item, index }) => (
+    <FindCard navigation={this.props.navigation} item={item} index={index} />
+  );
   render() {
     const { data, isLoading } = this.state;
     return (
@@ -139,6 +141,7 @@ FindAround.propTypes = {
   user: PropTypes.object, // eslint-disable-line
   setUser: PropTypes.func, //eslint-disable-line
   fetchDatagetNewFeed: PropTypes.func, //eslint-disable-line
+  setUserDatabase: PropTypes.func, //eslint-disable-line
 };
 const mapStateToProps = state => ({
   user: state.user,
