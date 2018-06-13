@@ -7,7 +7,7 @@ import Header from '../../components/Header';
 import { Icons } from '../../themes';
 // import * as d from '../../utilities/Tranform';
 import FindCard from './FindCard';
-import { setUserDatabase } from '../../actions';
+import { setUserDatabase, fetchDatagetNewFeed, setUser } from '../../actions';
 
 // import styles from './styles';
 
@@ -34,7 +34,7 @@ class FindAround extends Component {
           const userItem = snapshot.val()[uid];
           if (uid === user.uid) {
             userItem.uid = uid;
-            this.props.setUser(userItem);
+            this.props.setUserDatabase(userItem);
           } else if (userItem.location && userItem.location.lat && userItem.location.lng) {
             // console.log(userItem);
             /*eslint-disable */
@@ -78,7 +78,18 @@ class FindAround extends Component {
     return Math.round(d);
     /* eslint-enable */
   };
-
+  _reload = () => {
+    const { user } = this.props.user;
+    console.log('_reload', user.uid);
+    this.props.fetchDatagetNewFeed(user.uid);
+    firebase
+      .database()
+      .ref('root/users')
+      .child(user.uid)
+      .on('value', (data) => {
+        this.props.setUser(data._value);
+      });
+  };
   // TODO navigate to user detail
   _renderItem = ({ item, index }) => <FindCard item={item} index={index} />;
   render() {
@@ -86,8 +97,11 @@ class FindAround extends Component {
     return (
       <View style={{ flex: 1 }}>
         <Header
-          leftHeader={<Image source={Icons.back}  />}
-          onPressLeftHeader={() => this.props.navigation.goBack()}
+          leftHeader={<Image source={Icons.back} />}
+          onPressLeftHeader={() => {
+            this._reload();
+            this.props.navigation.goBack();
+          }}
           centerHeader={<Text style={{ fontSize: 15, fontWeight: '600' }}>Find Around</Text>}
           rightHeader={<Image source={Icons.user} />}
         />
@@ -117,12 +131,15 @@ FindAround.propTypes = {
   navigation: PropTypes.object, // eslint-disable-line
   user: PropTypes.object, // eslint-disable-line
   setUser: PropTypes.func, //eslint-disable-line
+  fetchDatagetNewFeed: PropTypes.func, //eslint-disable-line
 };
 const mapStateToProps = state => ({
   user: state.user,
 });
 const mapDispatchToProps = dispatch => ({
-  setUser: user => dispatch(setUserDatabase(user)),
+  fetchDatagetNewFeed: uid => dispatch(fetchDatagetNewFeed(uid)),
+  setUserDatabase: user => dispatch(setUserDatabase(user)),
+  setUser: user => dispatch(setUser(user)),
 });
 export default connect(
   mapStateToProps,
