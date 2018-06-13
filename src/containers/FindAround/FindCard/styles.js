@@ -3,7 +3,7 @@ import * as d from '../../../utilities/Tranform';
 
 const styles = StyleSheet.create({
   content_layout: {
-    width: 265 * d.ratioW,
+    width: 200 * d.ratioW,
     flexDirection: 'row',
     height: 70 * d.ratioH,
     alignItems: 'center',
@@ -14,7 +14,7 @@ const styles = StyleSheet.create({
     height: 25 * d.ratioH,
     justifyContent: 'center',
     alignItems: 'center',
-    borderWidth: 1,
+    // borderWidth: 1,
     borderColor: 'green',
     alignSelf: 'center',
   },
@@ -39,6 +39,7 @@ const styles = StyleSheet.create({
     alignSelf: 'center',
     margin: 5,
     borderRadius: 10,
+    flexDirection: 'row',
   },
 });
 

@@ -5,7 +5,7 @@ import PropTypes from 'prop-types';
 import firebase from 'react-native-firebase';
 import { connect } from 'react-redux';
 import styles from './styles';
-import { Images } from '../../../themes';
+import { Images, Colors } from '../../../themes';
 import * as d from '../../../utilities/Tranform';
 
 class FindCard extends React.PureComponent {
@@ -52,44 +52,57 @@ class FindCard extends React.PureComponent {
     }
   }
   _onPress = () => this.setState({ isFollow: !this.state.isFollow });
+  _onAccountPress = () => {
+    // eslint-disable-next-line
+    this.props.navigation.navigate('Account', { idUser: this.props.item.uid });
+  };
   render() {
     const { isFollow } = this.state;
     const { item, index } = this.props;
     return (
-      <TouchableOpacity style={[styles.item, { marginTop: index === 0 ? 15 : 10 }]}>
-        <View style={styles.content_layout}>
-          <Image
-            source={item.photoURL ? { uri: item.photoURL } : Images.avatar}
-            style={styles.avatar}
-          />
-          <View style={{ marginLeft: 10, flex: 1 }}>
-            <Text style={styles.name}>{item.fullName}</Text>
-            <View style={styles.item_layout}>
-              <Icon
-                name={item.gender === 'Male' ? 'md-male' : 'md-female'}
-                color={item.gender === 'Male' ? '#42bcf4' : '#ff82d5'}
-                size={15}
-                style={{ margin: 5 }}
-              />
-              <Text>{item.gender === 'Male' ? 'Nam' : 'Nữ'}</Text>
-            </View>
-            <View style={styles.item_layout}>
-              <Icon name="ios-compass-outline" color="green" size={18} style={{ margin: 5 }} />
-              <Text> {item.distance} km</Text>
+      <View style={[styles.item, { marginTop: index === 0 ? 15 : 10 }]}>
+        <TouchableOpacity style={[]} onPress={this._onAccountPress}>
+          <View style={styles.content_layout}>
+            <Image
+              source={item.photoURL ? { uri: item.photoURL } : Images.avatar}
+              style={styles.avatar}
+            />
+            <View style={{ marginLeft: 10, flex: 1 }}>
+              <Text style={styles.name}>{item.fullName}</Text>
+              <View style={styles.item_layout}>
+                <Icon
+                  name={item.gender === 'Male' ? 'md-male' : 'md-female'}
+                  color={item.gender === 'Male' ? '#42bcf4' : '#ff82d5'}
+                  size={15}
+                  style={{ margin: 5 }}
+                />
+                <Text>{item.gender === 'Male' ? 'Nam' : 'Nữ'}</Text>
+              </View>
+              <View style={styles.item_layout}>
+                <Icon name="ios-compass-outline" color="green" size={18} style={{ margin: 5 }} />
+                <Text> {item.distance} km</Text>
+              </View>
             </View>
           </View>
-          <View style={{ width: 80 * d.ratioH }}>
-            <TouchableOpacity
-              onPress={this._onPress}
-              style={[styles.button, { borderColor: !isFollow ? 'green' : 'blue' }]}
+        </TouchableOpacity>
+        <View>
+          <TouchableOpacity
+            onPress={this._onPress}
+            style={[styles.button, { backgroundColor: !isFollow ? Colors.default : '#42bcf9' }]}
+          >
+            <Text
+              style={{
+                color: '#fff',
+                fontSize: 9,
+                margin: 5,
+                fontWeight: '400',
+              }}
             >
-              <Text style={{ color: !isFollow ? 'green' : 'blue', fontSize: 7, margin: 5 }}>
-                {!isFollow ? '+ FOLLOW' : '√ FOLLOW'}
-              </Text>
-            </TouchableOpacity>
-          </View>
+              {!isFollow ? '+ Follow' : '√ Follow'}
+            </Text>
+          </TouchableOpacity>
         </View>
-      </TouchableOpacity>
+      </View>
     );
   }
 }

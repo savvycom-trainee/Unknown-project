@@ -15,7 +15,12 @@ import Icon from 'react-native-vector-icons/Ionicons';
 import firebase from 'react-native-firebase';
 import { NavigationActions } from 'react-navigation';
 import { connect } from 'react-redux';
-import { fetchDatagetUserDetail, fetchDataGetUserPin } from '../../actions/';
+import {
+  fetchDatagetUserDetail,
+  fetchDataGetUserPin,
+  fetchDatagetNewFeed,
+  setUser,
+} from '../../actions/';
 import { Header } from '../../components';
 import icon from '../../themes/Icons';
 import Loading from '../../components/LoadingContainer';
@@ -30,6 +35,8 @@ class Account extends PureComponent {
     this.user = this.props.user.user;
     this.state = {
       isOwner: true,
+      isFollow:
+        this.otherUserId === null ? false : this.user.following.indexOf(this.otherUserId) !== -1,
     };
   }
   componentDidMount() {
@@ -43,26 +50,27 @@ class Account extends PureComponent {
   }
 
   onGetOtherUser = () => {
-    firebase
-      .database()
-      .ref(`root/users/${this.otherUserId}`)
-      .on('value', (snapshot) => {
-        this.otherUser = snapshot.val();
-        console.log(snapshot.val());
-        if (this.otherUserId && this.otherUserId !== this.user.uid) {
+    if (this.otherUserId && this.otherUserId !== this.user.uid) {
+      firebase
+        .database()
+        .ref(`root/users/${this.otherUserId}`)
+        .on('value', (snapshot) => {
+          this.otherUser = snapshot.val();
+          console.log(snapshot.val());
+          this.item = snapshot.val();
           this.setState({
             ...this.otherUser,
             isOwner: false,
           });
           this.props.fetchDataGetUserPin(this.otherUser.uid);
-        } else {
-          this.setState({
-            ...this.user,
-            isOwner: true,
-          });
-          this.props.fetchDataGetUserPin(this.user.uid);
-        }
+        });
+    } else {
+      this.setState({
+        ...this.user,
+        isOwner: true,
       });
+      this.props.fetchDataGetUserPin(this.user.uid);
+    }
   };
 
   logOut = () => {
@@ -74,18 +82,62 @@ class Account extends PureComponent {
     });
     this.props.navigation.dispatch(navigateAction);
   };
+  _onFollowPress = () => {
+    const { isFollow } = this.state;
+    const { user, item } = this;
+    if (!isFollow) {
+      const updates = {};
+      item.follower = item.follower || [];
+      user.following = user.following || [];
+      updates[`/root/users/${item.uid}/follower`] = [...item.follower, user.uid];
+      this.item.follower = [...item.follower, user.uid];
+      updates[`/root/users/${user.uid}/following`] = [...user.following, item.uid];
+      this.user.following = [...user.following, item.uid];
+      firebase
+        .database()
+        .ref()
+        .update(updates);
+    } else {
+      const updates = {};
+      const index = item.follower ? item.follower.indexOf(user.uid) : -1;
+      if (index !== -1) item.follower.splice(index, 1);
+      updates[`/root/users/${item.uid}/follower`] = item.follower ? [...item.follower] : [];
+      const index1 = user.following ? user.following.indexOf(item.uid) : -1;
+      if (index1 !== -1) user.following.splice(index1, 1);
+      updates[`/root/users/${user.uid}/following`] = user.following ? [...user.following] : [];
+      firebase
+        .database()
+        .ref()
+        .update(updates);
+    }
+    this.setState({ isFollow: !isFollow });
+  };
+  _reload = () => {
+    const { user } = this.props.user;
+    console.log('_reload', user.uid);
+    this.props.fetchDatagetNewFeed(user.uid);
+    firebase
+      .database()
+      .ref('root/users')
+      .child(user.uid)
+      .on('value', (data) => {
+        this.props.setUser(data._value);
+      });
+  };
   render() {
+    // const { user } = this.props.user;
+    // console.log('user,', user);
     return (
       <View style={account.container}>
         {/* <StatusBar hidden /> */}
         <View style={account.topView}>
           <View style={{ flex: 1, backgroundColor: 'white' }}>
             <Header
-              leftHeader={
-                <TouchableOpacity onPress={() => this.props.navigation.goBack()}>
-                  <Image source={icon.back} />
-                </TouchableOpacity>
-              }
+              leftHeader={<Image source={icon.back} />}
+              onPressLeftHeader={() => {
+                this._reload();
+                this.props.navigation.goBack();
+              }}
               centerHeader={<Text style={account.title}>Account</Text>}
               rightHeader={
                 this.state.isOwner ? (
@@ -115,16 +167,24 @@ class Account extends PureComponent {
           </View>
           <View style={{ height: 20, width: 10 }} />
           {!this.state.isOwner ? (
-            <TouchableOpacity style={account.btnFollow}>
-              <Image source={icon.follow} style={account.imageFollow} />
+            <TouchableOpacity style={account.btnFollow} onPress={this._onFollowPress}>
+              {/* <Image source={icon.follow} style={account.imageFollow} /> */}
               <Text
                 style={{
                   fontSize: 14,
-                  lineHeight: 14,
                   color: 'white',
                   textAlign: 'center',
                 }}
               >
+                <Text
+                  style={{
+                    fontSize: 18,
+                    color: 'white',
+                    textAlign: 'center',
+                  }}
+                >
+                  {this.state.isFollow ? '√  ' : '+  '}
+                </Text>
                 Follow
               </Text>
             </TouchableOpacity>
@@ -177,6 +237,8 @@ Account.propTypes = {
   fetchDataGetUserPin: PropTypes.func.isRequired,
   user: PropTypes.object.isRequired,
   dataUserPin: PropTypes.object.isRequired,
+  fetchDatagetNewFeed: PropTypes.func, //eslint-disable-line
+  setUser: PropTypes.func, //eslint-disable-line
 };
 
 const mapStateToProps = state => ({
@@ -188,6 +250,8 @@ const mapStateToProps = state => ({
 const mapDispatchToProps = dispatch => ({
   fetchDatagetUserDetail: id => dispatch(fetchDatagetUserDetail(id)),
   fetchDataGetUserPin: id => dispatch(fetchDataGetUserPin(id)),
+  fetchDatagetNewFeed: id => dispatch(fetchDatagetNewFeed(id)),
+  setUser: user => dispatch(setUser(user)),
 });
 
 export default connect(
