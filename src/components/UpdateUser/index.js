@@ -12,15 +12,14 @@ import {
 } from 'react-native';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
-import Icon from 'react-native-vector-icons/FontAwesome';
 import { NavigationActions } from 'react-navigation';
 import firebase from 'react-native-firebase';
 import styles from './style';
-import { Images } from '../../themes';
+import { Images, Icons } from '../../themes';
 import Gallery from '../Gallery';
 import CheckBox from '../CheckBox';
 import Header from '../Header';
-import { setUser, getPositionUser } from '../../actions';
+import { setUser } from '../../actions';
 
 const data = [
   {
@@ -51,14 +50,15 @@ class UpdateUser extends PureComponent {
         isNewUser: true,
       };
     }
-    console.log(this.user);
     this.genderValue = 'Male';
-    this.location = getPositionUser();
-    console.log('position', this.location);
   }
 
   componentDidMount() {
-    console.log('user', this.user);
+    // eslint-disable-next-line
+    navigator.geolocation.getCurrentPosition(position => {
+      const { coord } = position.coords;
+      this.location = coord;
+    });
   }
 
   uploadPhoto = (tmpInfo, url) => {
@@ -99,14 +99,7 @@ class UpdateUser extends PureComponent {
 
     if (!error) {
       this.props.setUser(info);
-      // eslint-disable-next-line
-      const navigateAction = NavigationActions.navigate({
-        routeName: 'Home',
-        action: NavigationActions.navigate({
-          routeName: 'Home',
-        }),
-      });
-      this.props.navigation.dispatch(navigateAction);
+      this.navigate();
     } else {
       console.log(error);
     }
@@ -126,6 +119,26 @@ class UpdateUser extends PureComponent {
         .child(this.user.uid ? this.user.uid : this.user.id)
         .update(info, error => this.uploadDone(info, error));
     }
+  };
+  navigate = () => {
+    let navigateAction = null;
+    if (this.state.isNewUser) {
+      navigateAction = NavigationActions.navigate({
+        routeName: 'Home',
+        action: NavigationActions.navigate({
+          routeName: 'Home',
+        }),
+      });
+    } else {
+      navigateAction = NavigationActions.navigate({
+        routeName: 'Home',
+        action: NavigationActions.navigate({
+          routeName: 'Account',
+        }),
+      });
+    }
+
+    this.props.navigation.dispatch(navigateAction);
   };
   submit = () => {
     const fullName = this.fullName._lastNativeText || this.user.fullName;
@@ -170,17 +183,13 @@ class UpdateUser extends PureComponent {
         <ScrollView style={{ flex: 1 }}>
           <Header
             centerHeader={<Text style={styles.title}>Information</Text>}
-            rightHeader={
-              !this.state.isNewUser ? (
-                <TouchableOpacity style={styles.editPassword}>
-                  <Icon name="wrench" size={26} />
-                </TouchableOpacity>
-              ) : null
-            }
+            leftHeader={!this.state.isNewUser ? <Image source={Icons.back} /> : null}
+            onPressLeftHeader={!this.state.isNewUser ? this.navigate : null}
           />
           <View style={styles.topView}>
             <TouchableOpacity style={styles.imageView} onPress={() => this.gallery.open()}>
               <Image
+                /* eslint-disable*/
                 source={
                   this.state.photoURL === ''
                     ? this.user.photoURL
@@ -188,6 +197,7 @@ class UpdateUser extends PureComponent {
                       : Images.defaultAvatar
                     : { uri: this.state.photoURL }
                 }
+                /* eslint-enable */
                 style={styles.image}
               />
             </TouchableOpacity>
@@ -257,6 +267,7 @@ UpdateUser.propTypes = {
     navigate: PropTypes.func.isRequired,
     dispatch: PropTypes.func.isRequired,
     getParam: PropTypes.func.isRequired,
+    goBack: PropTypes.func.isRequired,
   }).isRequired,
   user: PropTypes.object.isRequired,
   setUser: PropTypes.func.isRequired,

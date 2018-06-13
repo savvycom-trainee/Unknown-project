@@ -8,7 +8,6 @@ const styles = StyleSheet.create({
   title: {
     fontSize: 14,
     fontWeight: '600',
-    lineHeight: 30,
     textAlign: 'center',
   },
   checkBox: {

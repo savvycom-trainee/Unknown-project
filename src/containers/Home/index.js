@@ -28,13 +28,15 @@ class Home extends PureComponent {
 
   componentDidMount() {
     this.onGetCurrentPosition();
-    console.log(this.props.region);
-    this.props.fetchDatagetNewFeed(this.props.user.user.uid);
-    console.log(this.props.dataNewFeed.data);
     const { uid } = this.props.user.user;
-    firebase.database().ref('root/users').child(uid).on('value', (data) => {
-      this.props.setUser(data._value);
-    });
+    this.props.fetchDatagetNewFeed(uid);
+    firebase
+      .database()
+      .ref('root/users')
+      .child(uid)
+      .on('value', (data) => {
+        this.props.setUser(data._value);
+      });
   }
 
   onGetCurrentPosition = () => {
@@ -52,7 +54,7 @@ class Home extends PureComponent {
         console.log(`position ${JSON.stringify(this.props.getPositionSuccess(position))}`);
         console.log(`state: ${JSON.stringify(this.state)}`);
       },
-      error => {
+      (error) => {
         this.setState({ error });
         this.props.getPositionFail();
       },
@@ -120,7 +122,9 @@ class Home extends PureComponent {
                   this.props.navigation.navigate('HomeDetail', { data: item.restaurantPlaceId });
                 }}
               >
-                <TouchableOpacity onPress={() => this.props.navigation.navigate('Account', { idUser: item.idUser })}>
+                <TouchableOpacity
+                  onPress={() => this.props.navigation.navigate('Account', { idUser: item.idUser })}
+                >
                   <View style={styles.viewUserPost}>
                     <Image source={{ uri: item.userAvatar }} style={styles.viewImageUser} />
                     <View>
@@ -260,5 +264,10 @@ const mapStateToProps = state => ({
 
 export default connect(
   mapStateToProps,
-  { fetchDatagetNewFeed, getPositionSuccess, getPositionFail, setUser },
+  {
+    fetchDatagetNewFeed,
+    getPositionSuccess,
+    getPositionFail,
+    setUser,
+  },
 )(Home);
