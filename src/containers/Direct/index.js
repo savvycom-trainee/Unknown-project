@@ -13,7 +13,7 @@ import * as d from '../../utilities/Tranform';
 const PADDING = {
   top: 50 * d.ratioH,
   right: 50 * d.ratioW,
-  bottom: 50 * d.ratioH,
+  bottom: 150 * d.ratioH,
   left: 50 * d.ratioW,
 };
 

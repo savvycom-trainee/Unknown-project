@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import { View, Text, ScrollView, TouchableOpacity, Image, FlatList, Modal } from 'react-native';
+import { View, Text, ScrollView, TouchableOpacity, Image, FlatList, Modal, RefreshControl } from 'react-native';
 import { connect } from 'react-redux';
 import Moment from 'moment';
 import firebase from 'react-native-firebase';
@@ -22,7 +22,7 @@ class Home extends Component {
       longitude: null,
       modalVisible: false,
       error: null,
-      // starCount: 2.5,
+      refreshing: false,
     };
   }
 
@@ -68,6 +68,7 @@ class Home extends Component {
   hideModal = (message) => {
     this.setModalVisible(message);
   };
+
   _updateLocation = (lat, lng) => {
     const { uid } = this.props.user.user;
     console.log(this.props.user);
@@ -117,12 +118,6 @@ class Home extends Component {
         <FlatList
           data={this.props.dataNewFeed.data.reverse()}
           renderItem={({ item }) => (
-            // const distance = this._getDistanceFromLatLonInKm(
-            //   item.location.lat,
-            //   item.location.lng,
-            //   this.state.latitude,
-            //   this.state.longitude,
-            // );
             <View style={styles.formItem}>
               <TouchableOpacity
                 onPress={() => {

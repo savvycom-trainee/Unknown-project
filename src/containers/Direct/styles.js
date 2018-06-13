@@ -15,7 +15,7 @@ const styles = {
     backgroundColor: '#4CB23E',
     borderTopLeftRadius: 2.5,
     borderBottomLeftRadius: 2.5,
-    height: 75 * d.ratioH,
+    height: isIphoneX() ? 60 * d.ratioH : 75 * d.ratioH,
     width: 75 * d.ratioW,
   },
   secondViewStyle: {
@@ -49,7 +49,7 @@ const styles = {
     backgroundColor: 'rgba(63, 175, 40, 0.2)',
   },
   smallMarkerLocation: {
-    height: 20 * d.ratioH,
+    height: isIphoneX() ? 16 * d.ratioH : 20 * d.ratioH,
     width: 20 * d.ratioW,
     borderRadius: 10,
     justifyContent: 'center',
@@ -57,7 +57,7 @@ const styles = {
     backgroundColor: 'rgba(63, 175, 40, 0.2)',
   },
   smallCenterMarker: {
-    height:10 * d.ratioH,
+    height: isIphoneX() ? 8 * d.ratioH : 10 * d.ratioH,
     width: 10 * d.ratioW,
     borderRadius: 5,
     backgroundColor: 'rgb(63, 175, 40)',
@@ -70,22 +70,22 @@ const styles = {
     zIndex: 1000,
   },
   largeMarker: {
-    height: 100 * d.ratioH,
+    height: isIphoneX() ? 80 * d.ratioH : 100 * d.ratioH,
     width: 100 * d.ratioW,
     borderRadius: 50,
   },
   mediumMarker: {
-    height: 75 * d.ratioH,
+    height: isIphoneX() ? 60 * d.ratioH : 75 * d.ratioH,
     width: 75 * d.ratioW,
     borderRadius: 37.5,
   },
   smallMarker: {
-    height: 50 * d.ratioH,
+    height: isIphoneX() ? 40 * d.ratioH : 50 * d.ratioH,
     width: 50 * d.ratioW,
     borderRadius: 25,
   },
   userImageMarker: {
-    height: 25 * d.ratioH,
+    height: isIphoneX() ? 20 * d.ratioH : 25 * d.ratioH,
     width: 25 * d.ratioW,
     borderRadius: 12.5,
   },

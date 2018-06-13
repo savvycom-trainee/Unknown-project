@@ -197,6 +197,7 @@ class MapScreen extends PureComponent {
                     focusing: this._marker[index].id,
                     destination: this._marker[index].marker.props.coordinate,
                   });
+                  console.log(this._marker[index].marker.props.coordinate);
                   this.scrollToIndex(index);
                 }}
               >
