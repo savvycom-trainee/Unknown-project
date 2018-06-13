@@ -12,7 +12,7 @@ const styles = {
   flatListStyle: {
     position: 'absolute',
     bottom: 25 * d.ratioH,
-    paddingLeft: 40 * d.ratioW,
+    paddingLeft: 50 * d.ratioW,
     left: 0,
     right: 0,
   },
