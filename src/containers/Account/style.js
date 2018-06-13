@@ -22,6 +22,10 @@ const account = StyleSheet.create({
     marginTop: 12.5 * d.ratioH,
     alignItems: 'center',
   },
+  formCanotData: {
+    justifyContent: 'center',
+    alignContent: 'center',
+  },
   avatar: {
     width: 110 * d.ratioW,
     height: 100 * d.ratioH,
@@ -71,6 +75,11 @@ const account = StyleSheet.create({
     marginLeft: 30 * d.ratioW,
     marginTop: 50 * d.ratioH,
     marginBottom: 25 * d.ratioH,
+  },
+  textNotPin: {
+    fontSize: 14,
+    fontWeight: '300',
+    marginLeft: 30 * d.ratioW,
   },
   viewButton: {
     flexDirection: 'row',

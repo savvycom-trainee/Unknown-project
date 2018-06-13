@@ -8,7 +8,7 @@ import Icon from 'react-native-vector-icons/Ionicons';
 import StarRating from 'react-native-star-rating';
 import { Header } from '../../components';
 import styles from './styles';
-import { Icons } from '../../themes';
+import { Icons, Colors } from '../../themes';
 import { fetchDatagetNewFeed } from '../../actions/getNewFeedAction';
 import { getPositionSuccess, getPositionFail, setUser } from '../../actions';
 import ModalView from './Modal';
@@ -28,13 +28,15 @@ class Home extends Component {
 
   componentDidMount() {
     this.onGetCurrentPosition();
-    console.log(this.props.region);
     this.props.fetchDatagetNewFeed(this.props.user.user.uid);
-    console.log(this.props.dataNewFeed.data);
     const { uid } = this.props.user.user;
-    firebase.database().ref('root/users').child(uid).on('value', (data) => {
-      this.props.setUser(data._value);
-    });
+    firebase
+      .database()
+      .ref('root/users')
+      .child(uid)
+      .on('value', (data) => {
+        this.props.setUser(data._value);
+      });
   }
 
   onGetCurrentPosition = () => {
@@ -52,11 +54,11 @@ class Home extends Component {
         console.log(`position ${JSON.stringify(this.props.getPositionSuccess(position))}`);
         console.log(`state: ${JSON.stringify(this.state)}`);
       },
-      error => {
+      (error) => {
         this.setState({ error });
         this.props.getPositionFail();
       },
-      { enableHighAccuracy: false, timeout: 20000, maximumAge: 1000 },
+      { timeout: 20000, maximumAge: 1000 },
     );
   };
 
@@ -104,6 +106,13 @@ class Home extends Component {
       return <Loading />;
     }
     if (this.props.dataNewFeed.dataSuccess === true) {
+      if (this.props.dataNewFeed.data.length === 0) {
+        return (
+          <View style={styles.formCanotData}>
+            <Text style={{ color: Colors.text }}> You cannot follow or error!</Text>
+          </View>
+        );
+      }
       return (
         <FlatList
           data={this.props.dataNewFeed.data.reverse()}
@@ -120,7 +129,9 @@ class Home extends Component {
                   this.props.navigation.navigate('HomeDetail', { data: item.restaurantPlaceId });
                 }}
               >
-                <TouchableOpacity onPress={() => this.props.navigation.navigate('Account', { idUser: item.idUser })}>
+                <TouchableOpacity
+                  onPress={() => this.props.navigation.navigate('Account', { idUser: item.idUser })}
+                >
                   <View style={styles.viewUserPost}>
                     <Image source={{ uri: item.userAvatar }} style={styles.viewImageUser} />
                     <View>
@@ -260,5 +271,10 @@ const mapStateToProps = state => ({
 
 export default connect(
   mapStateToProps,
-  { fetchDatagetNewFeed, getPositionSuccess, getPositionFail, setUser },
+  {
+    fetchDatagetNewFeed,
+    getPositionSuccess,
+    getPositionFail,
+    setUser,
+  },
 )(Home);
