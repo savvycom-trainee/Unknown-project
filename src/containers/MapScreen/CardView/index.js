@@ -43,7 +43,11 @@ export default class CardView extends Component {
   render() {
     // console.warn(this.props);
     return (
-      <Card direction="row" style={styles.cardStyle} onPress={this.props.onPress}>
+      <Card
+        direction="row"
+        style={[styles.cardStyle, this.props.style]}
+        onPress={this.props.onPress}
+      >
         <View style={styles.blankView} />
         <GreenCircle
           onPress={() => {
