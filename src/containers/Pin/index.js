@@ -6,7 +6,7 @@ import { View, Text, FlatList, AsyncStorage } from 'react-native';
 import { fetchDatagetListBookmark } from '../../actions/getListBookmarkAction';
 import Loading from '../../components/LoadingContainer';
 import { Header } from '../../components';
-import { Icons } from '../../themes';
+// import { Icons } from '../../themes';
 // import restaurantData from './PinView/data/restaurantData';
 import PinView from './PinView';
 import styles from './styles';
@@ -49,6 +49,7 @@ class Pin extends PureComponent {
     if (this.props.dataListBookmark.isFetching === true) {
       return <Loading />;
     }
+    // eslint-disable-next-line
     const data = this.props.dataListBookmark.data;
     console.log(this.props.dataListBookmark);
 

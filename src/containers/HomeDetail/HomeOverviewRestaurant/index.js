@@ -31,6 +31,7 @@ class HomeOverviewRestaurant extends PureComponent {
     if (this.props.dataPlaceDetail.isFetching === true) {
       return <Loading />;
     }
+    // eslint-disable-next-line
     const data = this.props.dataPlaceDetail.data;
     return (
       // <Loading />
@@ -125,7 +126,7 @@ class HomeOverviewRestaurant extends PureComponent {
 
 HomeOverviewRestaurant.propTypes = {
   // navigation: PropTypes.shape({
-  //   navigate: PropTypes.func.isRequired,
+  navigate: PropTypes.func.isRequired,
   //   getParam: PropTypes.func.isRequired,
   //   goBack: PropTypes.func.isRequired,
   // }).isRequired,

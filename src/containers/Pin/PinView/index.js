@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { View, Text, Image, TouchableOpacity, AsyncStorage } from 'react-native';
+import { View, Text, Image, AsyncStorage } from 'react-native';
 import axios from 'axios';
 import firebase from 'react-native-firebase';
 import PropTypes from 'prop-types';

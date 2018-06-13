@@ -34,6 +34,7 @@ export function fetchDatagetPlaceDetail(id) {
       .database()
       .ref('root/restaurants')
       .on('value', (snapshot) => {
+        // eslint-disable-next-line
         const checkInFirebase = snapshot.val().hasOwnProperty(id);
 
         // find restaurant in firebase
@@ -45,13 +46,12 @@ export function fetchDatagetPlaceDetail(id) {
             .on('value', (snapshot1) => {
               dispatch(getPlaceDetailSuccess(snapshot1.val()));
             });
-        }
-        // if dont have
-        else {
+        } else {
+          // if dont have
           axios
             .get(`https://maps.googleapis.com/maps/api/place/details/json?placeid=${id}&key=AIzaSyBftI7qlfXFzlklaejl63pyeO8J9kivXys`)
             .then((response) => {
-              if (response.data.status == 'OK') {
+              if (response.data.status === 'OK') {
                 console.log(response.data.result);
 
                 const data = {

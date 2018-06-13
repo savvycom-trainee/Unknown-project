@@ -1,14 +1,18 @@
 import React, { PureComponent } from 'react';
+import PropTypes from 'prop-types';
+
 import { View, Text, Image, FlatList } from 'react-native';
 import Moment from 'moment';
 import styles from './styles';
-import { Images } from '../../../../themes';
+
+// import { Images } from '../../../../themes';
 
 class Content extends PureComponent {
   state = {};
 
   gallery() {
     // console.log(this.props.data.content.photos);
+    // eslint-disable-next-line
     if (this.props.data.content.hasOwnProperty('photos')) {
       if (this.props.data.content.photos <= 0) {
         return null;
@@ -55,5 +59,9 @@ class Content extends PureComponent {
     );
   }
 }
+
+Content.propTypes = {
+  data: PropTypes.object.isRequired,
+};
 
 export default Content;
