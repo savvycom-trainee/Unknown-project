@@ -56,8 +56,9 @@ class FindAround extends Component {
             );
             userItem.uid = uid;
             userItem.distance = distance;
-            if (userItem.follower) {
-              userItem.isFollow = userItem.follower.indexOf(user.uid) !== -1 ? true : false;
+            if (user.following) {
+              userItem.isFollow = user.following.indexOf(userItem.uid) !== -1;
+              console.log(user.follower, userItem.uid);
             } else userItem.isFollow = false;
             // console.log(userItem);
             /* eslint-enable */
@@ -102,7 +103,12 @@ class FindAround extends Component {
   };
   // TODO navigate to user detail
   _renderItem = ({ item, index }) => (
-    <FindCard navigation={this.props.navigation} item={item} index={index} />
+    <FindCard
+      navigation={this.props.navigation}
+      item={item}
+      index={index}
+      refresh={this._getUserAround}
+    />
   );
   render() {
     const { data, isLoading } = this.state;
@@ -110,7 +116,10 @@ class FindAround extends Component {
       <View style={{ flex: 1 }}>
         <Header
           leftHeader={<Image source={Icons.back} />}
-          onPressLeftHeader={() => this.props.navigation.goBack()}
+          onPressLeftHeader={() => {
+            this._reload();
+            this.props.navigation.goBack();
+          }}
           centerHeader={<Text style={{ fontSize: 15, fontWeight: '600' }}>Find Around</Text>}
           rightHeader={<Image source={Icons.user} />}
         />

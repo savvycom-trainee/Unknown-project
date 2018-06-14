@@ -1,14 +1,6 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import {
-  View,
-  Text,
-  ScrollView,
-  TouchableOpacity,
-  Image,
-  FlatList,
-  Modal,
-} from 'react-native';
+import { View, Text, ScrollView, TouchableOpacity, Image, FlatList, Modal } from 'react-native';
 import { connect } from 'react-redux';
 import Moment from 'moment';
 import firebase from 'react-native-firebase';
@@ -42,6 +34,8 @@ class Home extends Component {
       .ref('root/users')
       .child(uid)
       .on('value', (data) => {
+        console.log('user', data._value);
+
         this.props.setUser(data._value);
       });
   }

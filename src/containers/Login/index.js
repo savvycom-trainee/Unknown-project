@@ -190,7 +190,7 @@ class Login extends PureComponent {
                   .signInAndRetrieveDataWithCredential(credential)
                   .then(() => {
                     const user = { ...res, uid: res.id, fullName: res.name };
-
+                    firebase.database().ref(`root/users/${user.uid}`).set(user);
                     AsyncStorage.setItem('user', JSON.stringify(user), error => console.log(error));
                     this.props.navigation.navigate('UpdateUser', { user, fb: true });
                   })

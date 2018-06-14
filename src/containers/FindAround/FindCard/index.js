@@ -6,7 +6,7 @@ import firebase from 'react-native-firebase';
 import { connect } from 'react-redux';
 import styles from './styles';
 import { Images, Colors } from '../../../themes';
-import * as d from '../../../utilities/Tranform';
+import { setUser } from '../../../actions';
 
 class FindCard extends React.PureComponent {
   constructor(props) {
@@ -17,22 +17,26 @@ class FindCard extends React.PureComponent {
   state = {
     isFollow: this.props.item.isFollow,
   };
-  componentDidMount() {
-    console.log(this.props.item);
-  }
-  componentDidUpdate() {
+
+  componentDidUpdate() {}
+  setFollow = (follow) => {
+    this.setState({ isFollow: follow });
+  };
+  _onPress = () => {
+    console.log('_onPress');
     const { isFollow } = this.state;
     const { item, user } = this;
-    console.log(user);
 
-    if (isFollow) {
+    if (!isFollow) {
       const updates = {};
       item.follower = item.follower || [];
-      user.followed = user.followed || [];
+      user.following = user.following || [];
       updates[`/root/users/${item.uid}/follower`] = [...item.follower, user.uid];
-      this.item.follower = [...item.follower, user.uid];
-      updates[`/root/users/${user.uid}/following`] = [...user.followed, item.uid];
-      this.user.followed = [...user.followed, item.uid];
+      item.follower = [...item.follower, user.uid];
+      updates[`/root/users/${user.uid}/following`] = [...user.following, item.uid];
+
+      user.following = [...user.following, item.uid];
+      this.props.setUser(user);
       firebase
         .database()
         .ref()
@@ -42,26 +46,30 @@ class FindCard extends React.PureComponent {
       const index = item.follower ? item.follower.indexOf(user.uid) : -1;
       if (index !== -1) item.follower.splice(index, 1);
       updates[`/root/users/${item.uid}/follower`] = item.follower ? [...item.follower] : [];
-      const index1 = user.followed ? user.followed.indexOf(item.uid) : -1;
-      if (index1 !== -1) user.followed.splice(index1, 1);
-      updates[`/root/users/${user.uid}/following`] = user.followed ? [...user.followed] : [];
+      const index1 = user.following ? user.following.indexOf(item.uid) : -1;
+      if (index1 !== -1) user.following.splice(index1, 1);
+      updates[`/root/users/${user.uid}/following`] = user.following ? [...user.following] : [];
+      this.props.setUser(user);
       firebase
         .database()
         .ref()
         .update(updates);
     }
-  }
-  _onPress = () => this.setState({ isFollow: !this.state.isFollow });
+    this.setState({ isFollow: !this.state.isFollow });
+  };
   _onAccountPress = () => {
     // eslint-disable-next-line
-    this.props.navigation.navigate('Account', { idUser: this.props.item.uid });
+    this.props.navigation.navigate('Account', {
+      idUser: this.item.uid,
+      setFollow: this.setFollow,
+    });
   };
   render() {
     const { isFollow } = this.state;
     const { item, index } = this.props;
     return (
       <View style={[styles.item, { marginTop: index === 0 ? 15 : 10 }]}>
-        <TouchableOpacity style={[]} onPress={this._onAccountPress}>
+        <TouchableOpacity onPress={this._onAccountPress}>
           <View style={styles.content_layout}>
             <Image
               source={item.photoURL ? { uri: item.photoURL } : Images.avatar}
@@ -85,23 +93,21 @@ class FindCard extends React.PureComponent {
             </View>
           </View>
         </TouchableOpacity>
-        <View>
-          <TouchableOpacity
-            onPress={this._onPress}
-            style={[styles.button, { backgroundColor: !isFollow ? Colors.default : '#42bcf9' }]}
+        <TouchableOpacity
+          onPress={this._onPress}
+          style={[styles.button, { backgroundColor: !isFollow ? Colors.default : '#42bcf9' }]}
+        >
+          <Text
+            style={{
+              color: '#fff',
+              fontSize: 9,
+              margin: 5,
+              fontWeight: '400',
+            }}
           >
-            <Text
-              style={{
-                color: '#fff',
-                fontSize: 9,
-                margin: 5,
-                fontWeight: '400',
-              }}
-            >
-              {!isFollow ? '+ Follow' : '√ Follow'}
-            </Text>
-          </TouchableOpacity>
-        </View>
+            {!isFollow ? '+ Follow' : '√ Follow'}
+          </Text>
+        </TouchableOpacity>
       </View>
     );
   }
@@ -110,8 +116,16 @@ FindCard.propTypes = {
   item: PropTypes.object.isRequired,
   index: PropTypes.number.isRequired,
   user: PropTypes.object, //eslint-disable-line
+  setUser: PropTypes.func, //eslint-disable-line
+  refresh: PropTypes.func, //eslint-disable-line
 };
+const mapDispatchToProps = dispatch => ({
+  setUser: user => dispatch(setUser(user)),
+});
 const mapStateToProps = state => ({
   user: state.user.userDatabase,
 });
-export default connect(mapStateToProps)(FindCard);
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps,
+)(FindCard);

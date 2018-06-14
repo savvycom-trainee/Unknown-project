@@ -30,12 +30,20 @@ class Account extends PureComponent {
   constructor(props) {
     super(props);
     this.otherUserId = props.navigation.getParam('idUser', null);
+    this.setFollow = props.navigation.getParam('setFollow', () => {});
     this.user = props.user.user;
+    console.log(this.user);
+    /*eslint-disable*/
     this.state = {
       isOwner: true,
       isFollow:
-        this.otherUserId === null ? false : this.user.following.indexOf(this.otherUserId) !== -1,
+        this.otherUserId === null
+          ? false
+          : this.user.following
+            ? this.user.following.indexOf(this.otherUserId) !== -1
+            : false,
     };
+    /* eslint-enable */
   }
   componentDidMount() {
     BackHandler.addEventListener('hardwareBackPress', this.handleBackPress);
@@ -47,6 +55,7 @@ class Account extends PureComponent {
   }
 
   onGetOtherUser = () => {
+    console.log(this.user.uid);
     if (this.otherUserId && this.otherUserId !== this.user.uid) {
       firebase
         .database()
@@ -62,6 +71,7 @@ class Account extends PureComponent {
           this.props.fetchDataGetUserPin(this.otherUser.uid);
         });
     } else {
+      console.log(this.user);
       this.setState({
         ...this.user,
         isOwner: true,
@@ -137,6 +147,7 @@ class Account extends PureComponent {
               onPressLeftHeader={() => {
                 this._reload();
                 this.props.navigation.goBack();
+                this.setFollow(this.state.isFollow);
               }}
               centerHeader={<Text style={account.title}>Account</Text>}
               rightHeader={
