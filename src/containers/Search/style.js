@@ -14,8 +14,8 @@ const search = StyleSheet.create({
     color: 'black',
     marginLeft: 30 * d.ratioW,
     fontWeight: '600',
-    marginTop: 49.5 * d.ratioH,
-    marginBottom: 25 * d.ratioH,
+    marginTop: 15 * d.ratioH,
+    marginBottom: 15 * d.ratioH,
   },
   opacity: {
     position: 'absolute',

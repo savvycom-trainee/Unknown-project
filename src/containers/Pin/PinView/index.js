@@ -33,8 +33,6 @@ class PinView extends Component {
 
   componentDidMount() {
     this.getDataFromApi(this.props.item.key);
-    // this.getLocationUser();
-    // this.computingDistance();
   }
 
   getLocationUser = async () => {
@@ -68,8 +66,6 @@ class PinView extends Component {
     axios
       .get(`https://maps.googleapis.com/maps/api/place/details/json?placeid=${id}&key=AIzaSyBftI7qlfXFzlklaejl63pyeO8J9kivXys`)
       .then((response) => {
-        console.log(response.data.result.photos[0].photo_reference);
-
         this.setState({
           destination: {
             latitude: response.data.result.geometry.location.lat,
@@ -79,7 +75,6 @@ class PinView extends Component {
           image: response.data.result.photos[0].photo_reference,
           type: response.data.result.types[0],
         });
-
         this.getLocationUser();
       })
       .catch((error) => {
@@ -105,28 +100,6 @@ class PinView extends Component {
     return d + 1;
     /* eslint-enable */
   };
-
-  // computingDistance = () => {
-  //   console.log(this.state);
-
-  //   const distanceComputing = this._getDistanceFromLatLonInKm(
-  //     this.state.location.latitude,
-  //     this.state.location.longitude,
-  //     this.state.destination.latitude,
-  //     this.state.destination.longitude,
-  //   );
-  //   console.log(distanceComputing);
-
-  //   if (distanceComputing < 1000 && distanceComputing > 0) {
-  //     this.setState({
-  //       distance: distanceComputing,
-  //     });
-  //   } else {
-  //     this.setState({
-  //       distance: 'far ',
-  //     });
-  //   }
-  // };
 
   render() {
     if (this.props.item.status) {

@@ -1,15 +1,15 @@
 import React, { PureComponent } from 'react';
 import PropTypes from 'prop-types';
-import StarRating from 'react-native-star-rating';
+// import StarRating from 'react-native-star-rating';
 
-import { View, Text, Image, TouchableOpacity } from 'react-native';
+import { View, Text, Image } from 'react-native';
 import card from './style';
 
 class Card extends PureComponent {
   state = {};
   componentDidMount() {
-    console.log(this.props.dataSearch);
-    console.log(this.props.dataSearch.hasOwnProperty('photos'));
+    // console.log(this.props.dataSearch);
+    // console.log(this.props.dataSearch.hasOwnProperty('photos'));
   }
 
   renderPhotos = (data) => {
@@ -55,5 +55,8 @@ class Card extends PureComponent {
     );
   }
 }
+Card.propTypes = {
+  dataSearch: PropTypes.object.isRequired,
+};
 
 export default Card;

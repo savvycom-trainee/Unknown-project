@@ -1,17 +1,9 @@
 import React, { PureComponent } from 'react';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
-import {
-  View,
-  Text,
-  ScrollView,
-  StatusBar,
-  TextInput,
-  TouchableOpacity,
-  FlatList,
-} from 'react-native';
+import { View, Text, StatusBar, TextInput, TouchableOpacity, FlatList } from 'react-native';
 import { search, header } from './style';
-import images from '../../themes/Images';
+// import images from '../../themes/Images';
 import Card from './components/Card';
 import { fetchDatagetSearchRecomend } from '../../actions/getSearchRecomend';
 import Loading from '../../components/LoadingContainer';
@@ -21,7 +13,6 @@ class Search extends PureComponent {
 
   componentDidMount() {
     this.props.fetchDatagetSearchRecomend();
-    console.log(this.props.dataSearchRecomend);
   }
 
   searchSubmit = () => {
@@ -46,7 +37,7 @@ class Search extends PureComponent {
         <FlatList
           style
           data={data.data}
-          renderItem={({ item, index }) => (
+          renderItem={({ item }) => (
             <TouchableOpacity
               onPress={() => {
                 this.props.navigation.navigate('HomeDetail', { data: item.idRestaurant });
@@ -87,13 +78,13 @@ class Search extends PureComponent {
 
 // export default Search;
 Search.propTypes = {
-  // navigation: PropTypes.shape({
-  //   navigate: PropTypes.func.isRequired,
-  //   // getParam: PropTypes.func.isRequired,
-  //   // goBack: PropTypes.func.isRequired,
-  // }),
+  navigation: PropTypes.shape({
+    navigate: PropTypes.func.isRequired,
+    //   // getParam: PropTypes.func.isRequired,
+    //   // goBack: PropTypes.func.isRequired,
+  }).isRequired,
   fetchDatagetSearchRecomend: PropTypes.func.isRequired,
-  // dataSearchRecomend: PropTypes.object.isRequired,
+  dataSearchRecomend: PropTypes.object.isRequired,
 };
 
 const mapStateToProps = state => ({
