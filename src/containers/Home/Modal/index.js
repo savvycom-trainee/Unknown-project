@@ -16,7 +16,7 @@ import PropTypes from 'prop-types';
 import StarRating from 'react-native-star-rating';
 import { connect } from 'react-redux';
 import * as Progress from 'react-native-progress';
-import Camera from 'react-native-camera';
+import { RNCamera } from 'react-native-camera';
 import Icon from 'react-native-vector-icons/Ionicons';
 import styles from './styles';
 import { Colors } from '../../../themes';
@@ -104,14 +104,22 @@ class ModalView extends PureComponent {
     this.setState({ photoView: item });
     this.setModalVisible(true);
   }
-  takePicture() {
-    this.camera
-      .capture()
-      .then(data =>
-        this.setState({
-          photosselect: this.state.photosselect.concat(data.mediaUri),
-        }))
-      .catch(err => console.error(err));
+  async takePicture() {
+    if (this.camera) {
+      const options = { quality: 0.5, base64: true };
+      const data = await this.camera.takePictureAsync(options);
+      this.setState({
+        photosselect: this.state.photosselect.concat(data.uri),
+      });
+      console.log(data.uri);
+    }
+    // this.camera
+    //   .capture()
+    //   .then(data =>
+    //     this.setState({
+    //       photosselect: this.state.photosselect.concat(data.mediaUri),
+    //     }))
+    //   .catch(err => console.error(err));
   }
 
   _getPhoto = () => {
@@ -539,12 +547,12 @@ class ModalView extends PureComponent {
                     />
                   </View>
                   <View style={styles.viewPhotoMobile}>
-                    <Camera
+                    <RNCamera
                       style={styles.preview}
                       ref={(cam) => {
                         this.camera = cam;
                       }}
-                      aspect={Camera.constants.Aspect.fill}
+                   //   aspect={RNCamera.Constants.}
                     >
                       <View style={styles.camera}>
                         <TouchableOpacity style={styles.capture}>
@@ -557,7 +565,7 @@ class ModalView extends PureComponent {
                           <Icon name="ios-flash" color="white" size={33} />
                         </TouchableOpacity>
                       </View>
-                    </Camera>
+                    </RNCamera>
                   </View>
                 </View>
               </View>
