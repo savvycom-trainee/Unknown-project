@@ -224,8 +224,8 @@ export default StyleSheet.create({
   imagePhotoItem: {
     borderColor: Colors.white,
     borderWidth: 0.4,
-    height: 93.7 * d.ratioH,
-    width: 93.7 * d.ratioW,
+    height: 95.7 * d.ratioH,
+    width: 95.7 * d.ratioW,
   },
   imagePhotoSelectedItem: {
     borderColor: Colors.white,
@@ -247,9 +247,7 @@ export default StyleSheet.create({
     height: 45 * d.ratioH,
   },
   viewCustom: {
-    padding: 14,
-    borderTopColor: Colors.default,
-    borderTopWidth: 1,
+    padding: 10,
     justifyContent: 'space-between',
     flexDirection: 'row',
     alignItems: 'center',
@@ -323,7 +321,7 @@ export default StyleSheet.create({
   textHeadModal: {
     color: Colors.white,
     fontSize: 15,
-    fontWeight: '700',
+    fontWeight: '500',
   },
   textUserName: {
     color: 'rgb(19,19,19)',
@@ -332,5 +330,10 @@ export default StyleSheet.create({
   },
   bodyModal: {
     alignItems: 'center',
+  },
+  viewFormPhoto: {
+    backgroundColor: 'red',
+    width: 450 * d.ratioW,
+    flexDirection: 'row',
   },
 });

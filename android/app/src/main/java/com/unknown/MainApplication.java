@@ -5,7 +5,7 @@ import android.app.Application;
 import com.facebook.react.ReactApplication;
 //camera
 import com.airbnb.android.react.maps.MapsPackage;
-// import org.reactnative.camera.RNCameraPackage;
+import org.reactnative.camera.RNCameraPackage;
 // import org.reactnative.camera.RNCameraPackage;
 //fbsdk
 import com.facebook.reactnative.androidsdk.FBSDKPackage;
@@ -51,7 +51,7 @@ public class MainApplication extends Application implements ReactApplication {
           new MainReactPackage(),
             new MapsPackage(),
             new RNFirebasePackage(),
-            //new RNCameraPackage(),
+            new RNCameraPackage(),
               new VectorIconsPackage(),
           new RNFirebaseAuthPackage(),
           new RNFirebaseDatabasePackage(),
