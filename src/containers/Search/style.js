@@ -32,7 +32,7 @@ const header = StyleSheet.create({
     backgroundColor: 'white',
     paddingHorizontal: 30 * d.ratioW,
     paddingTop: 30 * d.ratioH,
-    height: 136 * d.ratioH,
+    height: 70 * d.ratioH,
   },
   input: {
     fontWeight: '600',
