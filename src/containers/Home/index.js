@@ -63,9 +63,9 @@ class Home extends Component {
     );
   };
 
-  setModalVisible(visible) {
+  setModalVisible = (visible) => {
     this.setState({ modalVisible: visible });
-  }
+  };
   hideModal = (message) => {
     this.setModalVisible(message);
   };

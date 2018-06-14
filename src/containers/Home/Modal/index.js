@@ -26,6 +26,7 @@ import {
   fetchPostNewFeed,
   getPositionSuccess,
   fetchDataGetAddSearch,
+  postNewFeedFail,
 } from '../../../actions';
 import ModalCustom from '../../../components/Modal';
 import Loading from '../../../components/LoadingContainer';
@@ -71,7 +72,12 @@ class ModalView extends PureComponent {
     this.onGetCurrentLocation();
     this._getPhoto();
   }
-
+  UNSAFE_componentWillReceiveProps(nextProps) {
+    if (nextProps.dataPost.dataSuccess === true) {
+      this.props.hideModal(false);
+      this.props.postNewFeedFail();
+    }
+  }
   onGetCurrentLocation = () => {
     this.setState({
       latitude: this.props.region.coords.latitude, // eslint-disable-line
@@ -89,13 +95,14 @@ class ModalView extends PureComponent {
   }
 
   setModalVisible(visible) {
+    console.log('visible', visible);
     this.setState({
       modalVisible: visible,
     });
   }
   _onViewPhoto(item) {
     this.setState({ photoView: item });
-    this.setModalVisible();
+    this.setModalVisible(true);
   }
   takePicture() {
     this.camera
@@ -154,11 +161,15 @@ class ModalView extends PureComponent {
     this.setState({ postDone: true });
     const { post, restaurant } = this.state;
     this.props.fetchPostNewFeed(post, restaurant);
-    console.log(this.props.dataPost.dataSuccess);
-    if (this.props.dataPost.dataSuccess === true) {
-      this.props.hideModal(false);
-    }
+    this.props.fetchPostNewFeed(this.props.user.user.uid);
   }
+  // _setHideModal = () => {
+  //   console.log(this.props.dataPost.dataSuccess);
+
+  //   if (this.props.dataPost.dataSuccess === true) {
+  //     this.props.hideModal(false);
+  //   }
+  // };
   _onSearch() {
     const { latitude, longitude, keyword } = this.state;
     if (!this._validateSearch()) {
@@ -597,6 +608,7 @@ ModalView.propTypes = {
   dataPost: PropTypes.object.isRequired,
   dataSearchAdd: PropTypes.object.isRequired,
   dataSuccess: PropTypes.bool, // eslint-disable-line
+  postNewFeedFail: PropTypes.func, // eslint-disable-line
   // progress: PropTypes.string.isRequired,  // eslint-disable-line
 };
 const mapStateToProps = state => ({
@@ -613,5 +625,6 @@ export default connect(
     fetchPostNewFeed,
     getPositionSuccess,
     fetchDataGetAddSearch,
+    postNewFeedFail,
   },
 )(ModalView);
