@@ -27,30 +27,13 @@ class HomeOverviewRestaurant extends PureComponent {
     console.log(this.props.dataPlaceDetail.data);
   };
 
-  render() {
-    if (this.props.dataPlaceDetail.isFetching === true) {
-      return <Loading />;
-    }
-    // eslint-disable-next-line
-    const data = this.props.dataPlaceDetail.data;
-    return (
-      // <Loading />
-      <View style={styles.ViewMain}>
-        <Header
-          leftHeader={<Image source={Icons.back} style={{ marginTop: 2 * d.ratioH }} />}
-          onPressLeftHeader={this.props.onPressGoBack}
-          centerHeader
-          rightHeader
-        />
-        {/* {() => {
-          if (this.props.dataPlaceDetail.data.photos == null) {
-            return null;
-          }
-          return ( */}
+  renderPhotos = (data) => {
+    if (data.hasOwnProperty('photos')) {
+      return (
         <View style={styles.ScrollViewImages}>
           <FlatList
             horizontal
-            data={data.photos}
+            data={this.props.dataPlaceDetail.data.photos}
             showsHorizontalScrollIndicator={false}
             renderItem={({ item }) => (
               <Image
@@ -65,18 +48,60 @@ class HomeOverviewRestaurant extends PureComponent {
             keyExtractor={(item, index) => index.toString()}
           />
         </View>
-        {/* );
-        }} */}
+      );
+    }
+    return (
+      <View style={styles.ScrollViewImages}>
+        <Image
+          source={require('../../../../assets/images/restaurantPhoto.png')}
+          style={styles.ImagesOverView}
+        />
+      </View>
+    );
+  };
+
+  renderGreencircle = (data) => {
+    if (data.hasOwnProperty('rating')) {
+      return (
+        <View style={styles.ViewPointWrap}>
+          <View style={styles.ViewPoint}>
+            <Text style={styles.Point}>{this.props.dataPlaceDetail.data.rating}</Text>
+          </View>
+        </View>
+      );
+    }
+    return null;
+  };
+
+  render() {
+    if (this.props.dataPlaceDetail.isFetching === true) {
+      return <Loading />;
+    }
+    // eslint-disable-next-line
+    const data = this.props.dataPlaceDetail.data;
+    console.log(this.props.dataPlaceDetail.data.hasOwnProperty('rating'));
+
+    return (
+      // <Loading />
+      <View style={styles.ViewMain}>
+        <Header
+          leftHeader={<Image source={Icons.back} style={{ marginTop: 2 * d.ratioH }} />}
+          onPressLeftHeader={this.props.onPressGoBack}
+          centerHeader
+          rightHeader
+        />
+        {this.renderPhotos(this.props.dataPlaceDetail.data)}
 
         <View style={styles.ViewContent}>
-          <View style={styles.ViewPointWrap}>
+          {/* <View style={styles.ViewPointWrap}>
             <View style={styles.ViewPoint}>
-              <Text style={styles.Point}>{data.rating}</Text>
+              <Text style={styles.Point}>{this.props.dataPlaceDetail.data.rating}</Text>
             </View>
-          </View>
+          </View> */}
+          {this.renderGreencircle(this.props.dataPlaceDetail.data)}
 
           <View style={styles.ViewNameRestaurant}>
-            <Text style={styles.TextNameRestaurant}>{data.name}</Text>
+            <Text style={styles.TextNameRestaurant}>{this.props.dataPlaceDetail.data.name}</Text>
           </View>
 
           <View style={styles.ViewTypeRestaurantCost}>
@@ -90,7 +115,7 @@ class HomeOverviewRestaurant extends PureComponent {
                 fullStar="ios-star"
                 iconSet="Ionicons"
                 maxStars={5}
-                rating={Math.floor(data.rating)}
+                rating={Math.floor(this.props.dataPlaceDetail.data.rating)}
                 fullStarColor="#4CB33E"
                 reversed
                 starSize={12}
@@ -103,7 +128,7 @@ class HomeOverviewRestaurant extends PureComponent {
           </View>
 
           <View style={styles.ViewLocation}>
-            <Text style={styles.TextLocation}>{data.vicinity}</Text>
+            <Text style={styles.TextLocation}>{this.props.dataPlaceDetail.data.vicinity}</Text>
           </View>
 
           <View style={styles.ViewBtnBottom}>
@@ -118,7 +143,10 @@ class HomeOverviewRestaurant extends PureComponent {
               iconColor={Colors.text}
               onPressButton={() =>
                 this.props.navigate('Direct', {
-                  destination: { latitude: data.location.lat, longitude: data.location.lng },
+                  destination: {
+                    latitude: this.props.dataPlaceDetail.data.location.lat,
+                    longitude: this.props.dataPlaceDetail.data.location.lng,
+                  },
                 })
               }
             />
