@@ -58,7 +58,7 @@ class Gallery extends Component {
           onPressLeftHeader={this.close}
           centerHeader={<Text style={styles.title}>Recent Gellary</Text>}
         />
-        <ScrollView horizontal>
+        <ScrollView horizontal style={{ width: '100%', height: '100%', backgroundColor: 'white' }}>
           <View style={styles.scrollView}>
             {this.state.photos.map(({ node }) => (
               <TouchableOpacity

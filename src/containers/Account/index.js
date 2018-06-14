@@ -7,10 +7,11 @@ import {
   FlatList,
   AsyncStorage,
   BackHandler,
+  Animated,
 } from 'react-native';
 
 import PropTypes from 'prop-types';
-import Icon from 'react-native-vector-icons/Ionicons';
+import Icon from 'react-native-vector-icons/FontAwesome';
 import firebase from 'react-native-firebase';
 import { NavigationActions } from 'react-navigation';
 import { connect } from 'react-redux';
@@ -32,7 +33,9 @@ class Account extends PureComponent {
     this.otherUserId = props.navigation.getParam('idUser', null);
     this.user = props.user.user;
     this.state = {
+      menuAnim: new Animated.Value(0),
       isOwner: true,
+      isShowMenu: false,
       isFollow:
         this.otherUserId === null ? false : this.user.following.indexOf(this.otherUserId) !== -1,
     };
@@ -45,7 +48,6 @@ class Account extends PureComponent {
   componentWillUnmount() {
     BackHandler.removeEventListener('hardwareBackPress', this.handleBackPress);
   }
-
   onGetOtherUser = () => {
     if (this.otherUserId && this.otherUserId !== this.user.uid) {
       firebase
@@ -69,7 +71,23 @@ class Account extends PureComponent {
       this.props.fetchDataGetUserPin(this.user.uid);
     }
   };
-
+  menu = () => {
+    this.setState(
+      {
+        isShowMenu: !this.state.isShowMenu,
+      },
+      () => {
+        let value = 0;
+        if (this.state.isShowMenu) {
+          value = 100;
+        }
+        Animated.timing(this.state.menuAnim, {
+          toValue: value,
+          duration: 500,
+        }).start();
+      },
+    );
+  };
   logOut = () => {
     AsyncStorage.removeItem('user');
     const navigateAction = NavigationActions.navigate({
@@ -124,9 +142,11 @@ class Account extends PureComponent {
         this.props.setUser(data._value);
       });
   };
+
+  resetPassword = () => {
+    console.log('resetPassword');
+  }
   render() {
-    // const { user } = this.props.user;
-    // console.log('user,', user);
     return (
       <View style={account.container}>
         {/* <StatusBar hidden /> */}
@@ -141,17 +161,35 @@ class Account extends PureComponent {
               centerHeader={<Text style={account.title}>Account</Text>}
               rightHeader={
                 this.state.isOwner ? (
-                  <View style={account.viewButton}>
-                    <TouchableOpacity onPress={() => this.props.navigation.navigate('UpdateUser')}>
-                      <Icon name="ios-contact" size={30} color="#000" />
-                    </TouchableOpacity>
-                    <TouchableOpacity onPress={() => this.logOut()}>
-                      <Icon name="md-log-out" style={{ paddingLeft: 12 }} size={30} color="red" />
-                    </TouchableOpacity>
-                  </View>
+                  <Icon name="bars" size={24} color="#000" />
                 ) : null
               }
+              onPressRightHeader={this.state.isOwner ? this.menu : null}
             />
+            {this.state.isShowMenu ? (
+              <View style={account.menu}>
+                <Text
+                  style={account.menuItem}
+                  onPress={this.logOut}
+                >LOG OUT
+                </Text>
+                <Text
+                  style={account.menuItem}
+                  onPress={() => this.props.navigation.navigate('UpdateUser')}
+                >Edit Profile
+                </Text>
+                <Text
+                  style={account.menuItem}
+                  onPress={this.resetPassword}
+                >Reset Password
+                </Text>
+                <Text
+                  style={account.menuItem}
+                  onPress={this.menu}
+                >Close
+                </Text>
+              </View>
+            ) : null}
             <View style={account.info}>
               <Image
                 source={
