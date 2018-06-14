@@ -223,6 +223,16 @@ class Home extends PureComponent {
                   >
                     <Image source={Icons.add} />
                   </TouchableOpacity>
+                  <Text
+                    style={{
+                      fontSize: 12,
+                      color: Colors.text,
+                      fontWeight: '600',
+                      paddingVertical: 5,
+                    }}
+                  >
+                    Add Post
+                  </Text>
                 </View>
                 <View style={styles.itemMenu}>
                   <TouchableOpacity
@@ -231,6 +241,16 @@ class Home extends PureComponent {
                   >
                     <Icon name="md-contacts" size={20} color="#fff" />
                   </TouchableOpacity>
+                  <Text
+                    style={{
+                      fontSize: 12,
+                      color: Colors.text,
+                      fontWeight: '600',
+                      paddingVertical: 5,
+                    }}
+                  >
+                    Profile
+                  </Text>
                 </View>
                 <View style={styles.itemMenu}>
                   <TouchableOpacity
@@ -239,6 +259,16 @@ class Home extends PureComponent {
                   >
                     <Icon name="ios-navigate" size={20} color="#fff" />
                   </TouchableOpacity>
+                  <Text
+                    style={{
+                      fontSize: 12,
+                      color: Colors.text,
+                      fontWeight: '600',
+                      paddingVertical: 5,
+                    }}
+                  >
+                    Find Around
+                  </Text>
                 </View>
               </View>
             </View>

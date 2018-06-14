@@ -8,15 +8,19 @@ import {
   CameraRoll,
   FlatList,
   Alert,
+  Modal,
+  ImageBackground,
 } from 'react-native';
 import firebase from 'react-native-firebase';
 import PropTypes from 'prop-types';
 import StarRating from 'react-native-star-rating';
 import { connect } from 'react-redux';
 import * as Progress from 'react-native-progress';
+import Camera from 'react-native-camera';
 import Icon from 'react-native-vector-icons/Ionicons';
 import styles from './styles';
-import { Icons, Colors, Images } from '../../../themes';
+import { Colors } from '../../../themes';
+import ModalViewImage from './ModalViewImage';
 import {
   fetchDataGetAdd,
   fetchPostNewFeed,
@@ -34,6 +38,7 @@ class ModalView extends PureComponent {
       longitude: null,
       postDone: false,
       error: null,
+      modalVisible: false,
       pagePhotos: 10,
       listadd: true,
       photos: [],
@@ -82,12 +87,26 @@ class ModalView extends PureComponent {
       },
     });
   }
-  takePicture = async function (camera) {
-    const options = { quality: 0.5, base64: true };
-    const data = await camera.takePictureAsync(options);
-    //  eslint-disable-next-line
-    // console.log(data.uri);
-  };
+
+  setModalVisible(visible) {
+    this.setState({
+      modalVisible: visible,
+    });
+  }
+  _onViewPhoto(item) {
+    this.setState({ photoView: item });
+    this.setModalVisible();
+  }
+  takePicture() {
+    this.camera
+      .capture()
+      .then(data =>
+        this.setState({
+          photosselect: this.state.photosselect.concat(data.mediaUri),
+        }))
+      .catch(err => console.error(err));
+  }
+
   _getPhoto = () => {
     CameraRoll.getPhotos({
       first: this.state.pagePhotos,
@@ -270,10 +289,17 @@ class ModalView extends PureComponent {
     return (
       <View style={styles.container}>
         <View style={styles.body}>
+          <Modal animationType="slide" transparent={false} visible={this.state.modalVisible}>
+            <ModalViewImage
+              onShowModalImage={() => this.setModalVisible(!this.state.modalVisible)}
+              photoView={this.state.photoView}
+            />
+          </Modal>
+
           <ModalCustom onRef={ref => (this.modal = ref)}>
             <View style={{ flex: 1, width: null, backgroundColor: '#fff' }}>
               <View style={styles.viewHeadModal}>
-                <Text style={styles.textHeadModal}>Places near you </Text>
+                <Text style={styles.textHeadModal}>Places Near You </Text>
               </View>
               <View style={styles.bodyModal}>
                 <View style={styles.bodyModal}>
@@ -458,8 +484,21 @@ class ModalView extends PureComponent {
                     numColumns={1}
                     data={this.state.photosselect}
                     renderItem={({ item }) => (
-                      <TouchableOpacity onPress={() => this._onRemoveItemPhotoSelected(item)}>
-                        <Image style={styles.imagePhotoItem} source={{ uri: item }} />
+                      <TouchableOpacity
+                        onPress={() => {
+                          this._onViewPhoto(item);
+                        }}
+                      >
+                        <ImageBackground style={styles.imagePhotoItem} source={{ uri: item }}>
+                          <TouchableOpacity
+                            onPress={() => {
+                              this._onRemoveItemPhotoSelected(item);
+                            }}
+                            style={{ width: 25, height: 25 }}
+                          >
+                            <Icon name="ios-trash" color="red" size={25} style={{ padding: 5 }} />
+                          </TouchableOpacity>
+                        </ImageBackground>
                       </TouchableOpacity>
                     )}
                     horizontal
@@ -467,6 +506,7 @@ class ModalView extends PureComponent {
                     onEndReachedThreshold={0.5}
                   />
                 </View>
+
                 <View style={styles.viewImage}>
                   <View style={styles.viewPhotoMobile}>
                     <FlatList
@@ -486,6 +526,27 @@ class ModalView extends PureComponent {
                         this._ItemLoadMore();
                       }}
                     />
+                  </View>
+                  <View style={styles.viewPhotoMobile}>
+                    <Camera
+                      style={styles.preview}
+                      ref={(cam) => {
+                        this.camera = cam;
+                      }}
+                      aspect={Camera.constants.Aspect.fill}
+                    >
+                      <View style={styles.camera}>
+                        <TouchableOpacity style={styles.capture}>
+                          <Icon name="ios-reverse-camera-outline" color="white" size={33} />
+                        </TouchableOpacity>
+                        <TouchableOpacity onPress={() => this.takePicture()} style={styles.capture}>
+                          <Icon name="ios-camera" color="white" size={50} />
+                        </TouchableOpacity>
+                        <TouchableOpacity style={styles.capture}>
+                          <Icon name="ios-flash" color="white" size={33} />
+                        </TouchableOpacity>
+                      </View>
+                    </Camera>
                   </View>
                 </View>
               </View>
