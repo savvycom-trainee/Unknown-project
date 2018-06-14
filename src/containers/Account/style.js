@@ -18,6 +18,21 @@ const account = StyleSheet.create({
     fontWeight: '600',
     fontSize: 14,
   },
+  menu: {
+    position: 'absolute',
+    zIndex: 10,
+    top: 20 * d.ratioH,
+    right: 0,
+    width: 100 * d.ratioW,
+    backgroundColor: 'white',
+  },
+  menuItem: {
+    paddingHorizontal: 5,
+    marginHorizontal: 10,
+    paddingVertical: 10,
+    borderBottomColor: 'grey',
+    borderBottomWidth: 1,
+  },
   info: {
     marginTop: 12.5 * d.ratioH,
     alignItems: 'center',

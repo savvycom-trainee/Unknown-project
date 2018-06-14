@@ -44,22 +44,26 @@ class Home extends Component {
     // eslint-disable-next-line
     navigator.geolocation.getCurrentPosition(
       (position) => {
-        this.setState({
-          latitude: position.coords.latitude,
-          longitude: position.coords.longitude,
-          error: null,
-        });
-        console.log(position);
+        this.setState(
+          {
+            latitude: position.coords.latitude,
+            longitude: position.coords.longitude,
+            error: null,
+          },
+          () => {
+            console.log(`state: ${JSON.stringify(this.state)}`);
+          },
+        );
         this.props.getPositionSuccess(position);
         this._updateLocation(position.coords.latitude, position.coords.longitude);
         console.log(`position ${JSON.stringify(this.props.getPositionSuccess(position))}`);
-        console.log(`state: ${JSON.stringify(this.state)}`);
       },
       (error) => {
+        console.log(error);
         this.setState({ error });
         this.props.getPositionFail();
       },
-      { timeout: 20000, maximumAge: 1000 },
+      { enableHighAccuracy: false, timeout: 20000, maximumAge: 1000 },
     );
   };
 

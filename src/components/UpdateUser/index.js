@@ -9,6 +9,7 @@ import {
   Alert,
   ActivityIndicator,
   StatusBar,
+  AsyncStorage,
 } from 'react-native';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
@@ -50,15 +51,21 @@ class UpdateUser extends PureComponent {
         isNewUser: true,
       };
     }
+    console.log(this.user);
     this.genderValue = 'Male';
   }
 
   componentDidMount() {
     // eslint-disable-next-line
-    navigator.geolocation.getCurrentPosition(position => {
-      const { coord } = position.coords;
-      this.location = coord;
-    });
+    navigator.geolocation.getCurrentPosition(
+      (position) => {
+        const { coord } = position.coords;
+        this.location = coord;
+        console.log(this.location);
+      },
+      error => console.log(error),
+      { enableHighAccuracy: false, timeout: 20000, maximumAge: 1000 },
+    );
   }
 
   uploadPhoto = (tmpInfo, url) => {
@@ -88,6 +95,8 @@ class UpdateUser extends PureComponent {
             ...info,
             photoURL: uploadedFile.downloadURL,
           };
+          console.log(info);
+          console.log(this.user);
           this.uploadUser(info);
         }
       },
@@ -96,9 +105,9 @@ class UpdateUser extends PureComponent {
 
   uploadDone = (info, error) => {
     if (this.type) this.props.setUser({ ...info, uid: this.user.id });
-
     if (!error) {
       this.props.setUser(info);
+      AsyncStorage.setItem('user', JSON.stringify(info));
       this.navigate();
     } else {
       console.log(error);
@@ -106,18 +115,15 @@ class UpdateUser extends PureComponent {
   };
 
   uploadUser = (info) => {
+    console.log(this.state.isNewUser);
+    const ref = firebase
+      .database()
+      .ref('root/users')
+      .child(this.user.uid ? this.user.uid : this.user.id);
     if (this.state.isNewUser) {
-      firebase
-        .database()
-        .ref('root/users')
-        .child(this.user.uid ? this.user.uid : this.user.id)
-        .set(info, error => this.uploadDone(info, error));
+      ref.set(info, error => this.uploadDone(info, error));
     } else {
-      firebase
-        .database()
-        .ref('root/users')
-        .child(this.user.uid ? this.user.uid : this.user.id)
-        .update(info, error => this.uploadDone(info, error));
+      ref.update(info, error => this.uploadDone(info, error));
     }
   };
   navigate = () => {
@@ -131,7 +137,7 @@ class UpdateUser extends PureComponent {
       });
     } else {
       navigateAction = NavigationActions.navigate({
-        routeName: 'Home',
+        routeName: 'Account',
         action: NavigationActions.navigate({
           routeName: 'Account',
         }),
@@ -153,7 +159,7 @@ class UpdateUser extends PureComponent {
         home,
         gender,
         phone,
-        location: this.location ? this.location.data : [],
+        location: this.location ? this.location.data : this.user.location,
         photoURL: this.user.photoURL ? this.user.photoURL : '',
         uid: this.user.uid ? this.user.uid : this.user.id,
       };
