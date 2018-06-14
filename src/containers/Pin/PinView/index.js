@@ -19,22 +19,20 @@ class PinView extends Component {
       type: 'restaurant',
       image:
         'CmRaAAAAtaX7SDQa-6BWxHR1H_Y9yszIOxtdcyMJxg6NLptggntTVTxoiFUahgBnswCO4O8dpACeFXFGamR0QsXVc6iCllGq08YO4rK_bDPiYXy3uZEwGQyTV3LJxmjJbO9vrb9jEhByGXCdMlCu32rAgCtZvS1YGhRe9Ox_fKQnjpG6Vo-UQAjydSGB7A',
-      // location: {
-      //   latitude: 0,
-      //   longitude: 0,
-      // },
-      // destination: {
-      //   latitude: 1,
-      //   longitude: 1,
-      // },
+      location: {
+        latitude: 21.0302782,
+        longitude: 105.7848205,
+      },
+      destination: {
+        latitude: 21.0302782,
+        longitude: 105.7848205,
+      },
       distance: 'far',
     };
   }
 
   componentDidMount() {
     this.getDataFromApi(this.props.item.key);
-    this.getLocationUser();
-    // this.computingDistance();
   }
 
   getLocationUser = async () => {
@@ -50,6 +48,17 @@ class PinView extends Component {
             longitude: snapshot.val().lng,
           },
         });
+
+        console.log(this.state);
+
+        this.setState({
+          distance: Math.round(this._getDistanceFromLatLonInKm(
+            this.state.location.latitude,
+            this.state.location.longitude,
+            this.state.destination.latitude,
+            this.state.destination.longitude,
+          )),
+        });
       });
   };
 
@@ -57,8 +66,6 @@ class PinView extends Component {
     axios
       .get(`https://maps.googleapis.com/maps/api/place/details/json?placeid=${id}&key=AIzaSyBftI7qlfXFzlklaejl63pyeO8J9kivXys`)
       .then((response) => {
-        console.log(response.data.result.photos[0].photo_reference);
-
         this.setState({
           destination: {
             latitude: response.data.result.geometry.location.lat,
@@ -68,6 +75,7 @@ class PinView extends Component {
           image: response.data.result.photos[0].photo_reference,
           type: response.data.result.types[0],
         });
+        this.getLocationUser();
       })
       .catch((error) => {
         console.log(error);
@@ -89,30 +97,8 @@ class PinView extends Component {
     const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
     const d = R * c; // Distance in km
 
-    return d;
+    return d + 1;
     /* eslint-enable */
-  };
-
-  computingDistance = () => {
-    console.log(this.state);
-
-    const distanceComputing = this._getDistanceFromLatLonInKm(
-      this.state.location.latitude,
-      this.state.location.longitude,
-      this.state.destination.latitude,
-      this.state.destination.longitude,
-    );
-    console.log(distanceComputing);
-
-    if (distanceComputing < 1000 && distanceComputing > 0) {
-      this.setState({
-        distance: distanceComputing,
-      });
-    } else {
-      this.setState({
-        distance: 'far ',
-      });
-    }
   };
 
   render() {
@@ -162,7 +148,7 @@ class PinView extends Component {
             </View>
             <OpenAndDistance
               openingStatus={this.state.openingStatus}
-              distance={this.state.distance}
+              distance={`${this.state.distance} km`}
             />
           </View>
         </Card>

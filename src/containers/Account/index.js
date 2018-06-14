@@ -213,12 +213,12 @@ class Account extends PureComponent {
             />
             <Statistic
               number={this.props.dataUserPin.data.length ? this.props.dataUserPin.data.length : 0}
-              title="Pin"
+              title="Post"
             />
           </View>
-          <Text style={account.botRestaurant}>My Pin</Text>
+          <Text style={account.botRestaurant}>Post</Text>
           {this.props.dataUserPin.data.length === 0 ? (
-            <Text style={account.textNotPin}>You not pin</Text>
+            <Text style={account.textNotPin}>You have not post yet.</Text>
           ) : (
             <FlatList
               horizontal
