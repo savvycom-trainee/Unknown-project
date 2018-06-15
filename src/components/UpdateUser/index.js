@@ -51,7 +51,6 @@ class UpdateUser extends PureComponent {
         isNewUser: true,
       };
     }
-    console.log(this.user);
     this.genderValue = 'Male';
   }
 
@@ -95,8 +94,6 @@ class UpdateUser extends PureComponent {
             ...info,
             photoURL: uploadedFile.downloadURL,
           };
-          console.log(info);
-          console.log(this.user);
           this.uploadUser(info);
         }
       },
@@ -138,9 +135,6 @@ class UpdateUser extends PureComponent {
     } else {
       navigateAction = NavigationActions.navigate({
         routeName: 'Account',
-        action: NavigationActions.navigate({
-          routeName: 'Account',
-        }),
       });
     }
 
@@ -213,10 +207,11 @@ class UpdateUser extends PureComponent {
               ref={(node) => {
                 this.fullName = node;
               }}
+              onFocus={() => this.fullName.focus()}
               defaultValue={this.user.fullName ? this.user.fullName : ''}
               style={styles.input}
               placeholder="Full name"
-              underlineColorAndroid="transparent"
+              returnKeyType="next"
             />
             <CheckBox
               style={styles.checkBox}
@@ -230,11 +225,11 @@ class UpdateUser extends PureComponent {
               ref={(node) => {
                 this.phone = node;
               }}
+              onFocus={() => this.phone.focus()}
               style={styles.input}
               keyboardType="phone-pad"
               placeholder="Phone"
               defaultValue={this.user.phone ? this.user.phone : ''}
-              underlineColorAndroid="transparent"
               returnKeyType="next"
               onSubmitEditing={() => this.home.focus()}
             />
@@ -242,10 +237,10 @@ class UpdateUser extends PureComponent {
               ref={(node) => {
                 this.home = node;
               }}
+              onFocus={() => this.home.focus()}
               style={styles.input}
               defaultValue={this.user.home ? this.user.home : ''}
               placeholder="Home: Hanoi, Vietnam"
-              underlineColorAndroid="transparent"
               returnKeyType="done"
             />
             <TouchableOpacity onPress={this.submit} style={styles.btnSubmit}>

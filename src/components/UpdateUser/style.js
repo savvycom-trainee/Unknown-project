@@ -43,6 +43,7 @@ const styles = StyleSheet.create({
     width: '100%',
     alignItems: 'center',
     paddingHorizontal: 50 * d.ratioW,
+    marginBottom: 17 * d.ratioH,
   },
   input: {
     width: '100%',

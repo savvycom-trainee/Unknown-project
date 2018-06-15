@@ -22,8 +22,13 @@ const styles = StyleSheet.create({
     /* eslint-enable */
   },
   leftHeaderStyle: {
-    paddingHorizontal: 10 * d.ratioW,
-    paddingVertical: 10 * d.ratioH,
+    width: 50 * d.ratioW,
+    height: 30 * d.ratioH,
+  },
+  rightHeaderStyle: {
+    alignItems: 'center',
+    width: 50 * d.ratioW,
+    height: 30 * d.ratioH,
   },
 });
 

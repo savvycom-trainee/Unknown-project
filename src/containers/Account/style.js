@@ -24,7 +24,9 @@ const account = StyleSheet.create({
     top: 20 * d.ratioH,
     right: 0,
     width: 100 * d.ratioW,
-    backgroundColor: 'white',
+    backgroundColor: '#e5e5e5',
+    borderLeftColor: 'grey',
+    borderLeftWidth: 1,
   },
   menuItem: {
     paddingHorizontal: 5,
@@ -44,17 +46,17 @@ const account = StyleSheet.create({
   avatar: {
     width: 110 * d.ratioW,
     height: 100 * d.ratioH,
-    marginBottom: 24.5 * d.ratioH,
+    marginBottom: 20 * d.ratioH,
   },
   name: {
-    fontSize: 14,
+    fontSize: 16,
     fontWeight: '600',
-    lineHeight: 14,
-    marginBottom: 7,
+    marginBottom: 5,
+    backgroundColor: 'red',
   },
   detail: {
-    fontSize: 9,
-    lineHeight: 9,
+    fontSize: 12,
+    lineHeight: 12,
   },
   btnFollow: {
     position: 'absolute',
