@@ -8,6 +8,7 @@ import Icon from 'react-native-vector-icons/Ionicons';
 import StarRating from 'react-native-star-rating';
 import { Header } from '../../components';
 import styles from './styles';
+import AsyncImage from '../../components/AsyncImage';
 import { Icons, Colors } from '../../themes';
 import { fetchDatagetNewFeed } from '../../actions/getNewFeedAction';
 import { getPositionSuccess, getPositionFail, setUser } from '../../actions';
@@ -156,7 +157,11 @@ class Home extends Component {
                     </Text>
                   </View>
                   <View style={styles.imageContent}>
-                    <Image source={{ uri: item.content.photos[0] }} style={styles.imageContent} />
+                    <AsyncImage
+                      style={styles.imageContent}
+                      source={{ uri: item.content.photos[0] }}
+                      placeholderColor={Colors.textOpacity10}
+                    />
                   </View>
                   <View style={styles.viewPointForm}>
                     <View style={styles.viewPoint}>

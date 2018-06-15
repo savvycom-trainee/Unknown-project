@@ -1,6 +1,8 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { View, Text, Image, TouchableOpacity } from 'react-native';
+import AsyncImage from '../../../../components/AsyncImage';
+import { Colors } from '../../../../themes';
 import card from './style';
 
 const Card = props => (
@@ -10,7 +12,11 @@ const Card = props => (
         <Text style={card.txtCircle}>{props.review}</Text>
       </View>
       <View style={card.imageView}>
-        <Image style={card.image} source={{ uri: props.image }} />
+        <AsyncImage
+          style={card.image}
+          source={{ uri: props.image }}
+          placeholderColor={Colors.textOpacity10}
+        />
       </View>
       <View style={card.infoView}>
         <Text style={card.name} numberOfLines={1}>

@@ -24,8 +24,9 @@ import {
 } from '../../actions/';
 import { Header } from '../../components';
 import icon from '../../themes/Icons';
-import { Color, Colors } from '../../themes';
+import { Colors } from '../../themes';
 import account from './style';
+import AsyncImage from '../../components/AsyncImage';
 import { Card, Statistic } from './component';
 import images from '../../themes/Images';
 
@@ -195,10 +196,13 @@ class Account extends PureComponent {
               </View>
             ) : null}
             <View style={account.info}>
-              <Image
+
+            
+              <AsyncImage
                 source={
                   this.state.photoURL === '' ? images.defaultAvatar : { uri: this.state.photoURL }
                 }
+                placeholderColor={Colors.textOpacity10}
                 style={account.avatar}
               />
               <Text style={account.name}>{this.state.fullName}</Text>

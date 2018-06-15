@@ -5,6 +5,7 @@ const colors = {
   background: 'rgba(245,245,245,1)',
   text: 'rgba(82,82,82,1)',
   textOpacity: 'rgba(153,153,153,1)',
+  textOpacity10: 'rgba(153,153,153,0.3)',
 };
 
 export default colors;
