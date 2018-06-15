@@ -9,21 +9,18 @@ import { fetchDatagetSearchRecomend } from '../../actions/getSearchRecomend';
 import Loading from '../../components/LoadingContainer';
 
 class Search extends PureComponent {
-  state = {};
+  state = {
+    queryText: '',
+  };
 
   componentDidMount() {
-    this.props.fetchDatagetSearchRecomend();
+    this.props.fetchDatagetSearchRecomend(this.state.queryText);
   }
 
   searchSubmit = () => {
-    const value = this.search._lastNativeText;
-    console.log(value);
-    console.log(this.search);
+    this.props.fetchDatagetSearchRecomend(this.state.queryText);
   };
-  placeSubmit = () => {
-    const value = this.place._lastNativeText;
-    console.log(value);
-  };
+
   searchBlur = () => {
     console.log('blur');
   };
@@ -66,6 +63,7 @@ class Search extends PureComponent {
               underlineColorAndroid="transparent"
               onSubmitEditing={this.searchSubmit}
               onBlur={this.searchBlur}
+              onChangeText={text => this.setState({ queryText: text })}
             />
           </View>
         </View>
@@ -92,7 +90,7 @@ const mapStateToProps = state => ({
 });
 
 const mapDispatchToProps = dispatch => ({
-  fetchDatagetSearchRecomend: () => dispatch(fetchDatagetSearchRecomend()),
+  fetchDatagetSearchRecomend: queryText => dispatch(fetchDatagetSearchRecomend(queryText)),
 });
 
 export default connect(

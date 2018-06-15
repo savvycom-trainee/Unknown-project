@@ -25,7 +25,7 @@ export function getSearchRecomendFail() {
   };
 }
 
-export function fetchDatagetSearchRecomend() {
+export function fetchDatagetSearchRecomend(queryText) {
   return (dispatch) => {
     dispatch(getSearchRecomend());
 
@@ -33,11 +33,17 @@ export function fetchDatagetSearchRecomend() {
       firebase
         .database()
         .ref('/root/restaurants')
+        .orderByChild('name')
+        .startAt(`${queryText}`)
+        .endAt(`${queryText}\uf8ff`)
         .on('value', (snapshot) => {
-          const returnArr = [];
-          // console.log(snapshot.val());
-          snapshot.forEach((item) => {
-            returnArr.push(item._value);
+          console.log(snapshot.val());
+
+          let returnArr = [];
+          snapshot.forEach((childSnapshot) => {
+            const item = childSnapshot.val();
+            item.key = childSnapshot.key;
+            returnArr = [...returnArr, item];
           });
           console.log(returnArr);
 
