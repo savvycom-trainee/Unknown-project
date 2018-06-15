@@ -66,15 +66,27 @@ class PinView extends Component {
     axios
       .get(`https://maps.googleapis.com/maps/api/place/details/json?placeid=${id}&key=AIzaSyBftI7qlfXFzlklaejl63pyeO8J9kivXys`)
       .then((response) => {
-        this.setState({
-          destination: {
-            latitude: response.data.result.geometry.location.lat,
-            longitude: response.data.result.geometry.location.lng,
-          },
-          data: response.data.result,
-          image: response.data.result.photos[0].photo_reference,
-          type: response.data.result.types[0],
-        });
+        if (response.data.result.hasOwnProperty('photos')) {
+          this.setState({
+            destination: {
+              latitude: response.data.result.geometry.location.lat,
+              longitude: response.data.result.geometry.location.lng,
+            },
+            data: response.data.result,
+            image: response.data.result.photos[0].photo_reference,
+            type: response.data.result.types[0],
+          });
+        } else {
+          this.setState({
+            destination: {
+              latitude: response.data.result.geometry.location.lat,
+              longitude: response.data.result.geometry.location.lng,
+            },
+            data: response.data.result,
+            type: response.data.result.types[0],
+          });
+        }
+
         this.getLocationUser();
       })
       .catch((error) => {
@@ -104,7 +116,7 @@ class PinView extends Component {
   render() {
     if (this.props.item.status) {
       if (this.state.data == null) {
-        return <Loading />;
+        return null;
       }
       return (
         <Card onPress={this.props.onPress} direction="row" style={styles.cardStyle}>

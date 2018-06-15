@@ -55,7 +55,7 @@ class User extends PureComponent {
         checklist: false,
       });
     } else {
-      Alert.alert('Mày Nhập hộ tao cái ');
+      Alert.alert('Please fill in blank.');
     }
   }
   render() {

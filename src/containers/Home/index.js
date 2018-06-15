@@ -14,6 +14,7 @@ import { fetchDatagetNewFeed } from '../../actions/getNewFeedAction';
 import { getPositionSuccess, getPositionFail, setUser } from '../../actions';
 import ModalView from './Modal';
 import Loading from '../../components/LoadingContainer';
+import EmptyContent from '../../components/EmptyContent';
 
 class Home extends Component {
   constructor(props) {
@@ -116,7 +117,8 @@ class Home extends Component {
       if (this.props.dataNewFeed.data.length === 0) {
         return (
           <View style={styles.formCanotData}>
-            <Text style={{ color: Colors.text }}> You cannot follow or error!</Text>
+            {/* <Text style={{ color: Colors.text }}> You cannot follow or error!</Text> */}
+            <EmptyContent />
           </View>
         );
       }

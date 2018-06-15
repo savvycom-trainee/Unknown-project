@@ -185,7 +185,7 @@ class ModalView extends PureComponent {
       this.props.fetchDataGetAddSearch(latitude, longitude, keyword);
       this.setState({ listadd: false });
     } else {
-      Alert.alert('Mày Nhập hộ tao cái ');
+      Alert.alert('Please fill in blank');
     }
   }
   _onAddImages(a) {
@@ -194,7 +194,7 @@ class ModalView extends PureComponent {
       photosselect: this.state.photosselect.concat(a),
     });
     if (this.state.photosselect.length >= 5) {
-      Alert.alert('thêm ít thôi');
+      Alert.alert('too much images.');
     }
     // console.log(this.state.test.photos);
   }
@@ -237,16 +237,16 @@ class ModalView extends PureComponent {
             // this.props.fetchPostNewFeed(post, restaurant);
             this._onUploadPhoto();
           } else {
-            Alert.alert('Mày chọn tối thiểu 3 ảnh hộ tao cái');
+            Alert.alert('please choose one image');
           }
         } else {
-          Alert.alert('Mày đánh giá hộ tao cái');
+          Alert.alert('rating for restaurant please?');
         }
       } else {
-        Alert.alert('Mày đánh điền Detail hộ tao cái ');
+        Alert.alert('please fill in detail.');
       }
     } else {
-      Alert.alert('Mày Checkin hộ tao cái ');
+      Alert.alert('check in please.');
     }
   }
   _validateImages() {
