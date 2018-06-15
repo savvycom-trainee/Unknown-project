@@ -11,7 +11,6 @@ import {
 } from 'react-native';
 
 import PropTypes from 'prop-types';
-import Icon from 'react-native-vector-icons/FontAwesome';
 import firebase from 'react-native-firebase';
 import { NavigationActions } from 'react-navigation';
 import IconIon from 'react-native-vector-icons/Ionicons';
@@ -28,6 +27,7 @@ import { Colors } from '../../themes';
 import account from './style';
 import AsyncImage from '../../components/AsyncImage';
 import { Card, Statistic } from './component';
+import { Icons } from '../../themes';
 import images from '../../themes/Images';
 
 class Account extends PureComponent {
@@ -36,7 +36,6 @@ class Account extends PureComponent {
     this.otherUserId = props.navigation.getParam('idUser', null);
     this.setFollow = props.navigation.getParam('setFollow', () => {});
     this.user = props.user.user;
-    console.log(this.user);
     /*eslint-disable*/
     this.state = {
       menuAnim: new Animated.Value(0),
@@ -162,7 +161,6 @@ class Account extends PureComponent {
   render() {
     return (
       <View style={account.container}>
-        {/* <StatusBar hidden /> */}
         <View style={account.topView}>
           <View style={{ flex: 1, backgroundColor: 'white' }}>
             <Header
@@ -173,22 +171,28 @@ class Account extends PureComponent {
                 this.setFollow(this.state.isFollow);
               }}
               centerHeader={<Text style={account.title}>Account</Text>}
-              rightHeader={this.state.isOwner ? <Icon name="bars" size={24} color="#000" /> : null}
+              rightHeader={this.state.isOwner ? <Image source={Icons.menu} /> : null}
               onPressRightHeader={this.state.isOwner ? this.menu : null}
             />
             {this.state.isShowMenu ? (
               <View style={account.menu}>
-                <Text style={account.menuItem} onPress={this.logOut}>
-                  LOG OUT
-                </Text>
                 <Text
                   style={account.menuItem}
                   onPress={() => this.props.navigation.navigate('UpdateUser')}
                 >
                   Edit Profile
                 </Text>
-                <Text style={account.menuItem} onPress={this.resetPassword}>
-                  Reset Password
+                <Text
+                  style={account.menuItem}
+                  onPress={() => {
+                    this.menu();
+                    this.props.navigation.navigate('Change');
+                  }}
+                >
+                  Change Password
+                </Text>
+                <Text style={[account.menuItem, { color: 'red' }]} onPress={this.logOut}>
+                  LOG OUT
                 </Text>
                 <Text style={account.menuItem} onPress={this.menu}>
                   Close
@@ -206,9 +210,8 @@ class Account extends PureComponent {
                 style={account.avatar}
               />
               <Text style={account.name}>{this.state.fullName}</Text>
-              <Text style={account.detail}>
-                {this.state.gender}, {this.state.home}
-              </Text>
+              <Text style={account.detail}>{this.state.gender}</Text>
+              <Text style={account.detail}>{this.state.home}</Text>
             </View>
           </View>
           <View style={{ height: 20, width: 10 }} />

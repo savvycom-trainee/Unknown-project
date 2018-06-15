@@ -226,6 +226,8 @@ class Login extends PureComponent {
               <View style={login.form}>
                 <TextInput
                   style={login.input}
+                  ref={(node) => { this.loginInput = node; }}
+                  onFocus={() => this.loginInput.focus()}
                   placeholder="Email"
                   keyboardType="email-address"
                   underlineColorAndroid="transparent"
@@ -238,6 +240,7 @@ class Login extends PureComponent {
                   ref={(ref) => {
                     this.passwordField = ref;
                   }}
+                  onFocus={() => this.passwordField.focus()}
                   style={login.input}
                   placeholder="Password"
                   underlineColorAndroid="transparent"
@@ -259,32 +262,6 @@ class Login extends PureComponent {
                   <Image source={images.logofb} style={login.logofb} />
                   <Text style={login.txtfb}> Continue With Facebook </Text>
                 </TouchableOpacity>
-                {/* <LoginButton
-                  publishPermissions={['publish_actions']}
-                  onLoginFinished={(error, result) => {
-                    if (error) {
-                      console.log(`login has error: ${result.error}`);
-                      Alert.alert(`login has error: ${result.error}`);
-                    } else if (result.isCancelled) {
-                      console.log('login is cancelled.');
-                      Alert.alert('login is cancelled.');
-                    } else {
-                      AccessToken.getCurrentAccessToken().then((data) => {
-                        console.log(data);
-                        const { accessToken } = data;
-                        try {
-                          AsyncStorage.setItem('Token', JSON.stringify(accessToken));
-                        } catch (error1) {
-                          console.log(error1);
-                        }
-                      });
-                    }
-                  }}
-                  onLogoutFinished={() => {
-                    console.log('logout.');
-                    AsyncStorage.removeItem('Token');
-                  }}
-                /> */}
               </View>
               <View style={login.textContainer}>
                 <Text style={login.txtBottom}>Not account? Go to </Text>
