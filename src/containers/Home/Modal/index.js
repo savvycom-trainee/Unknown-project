@@ -27,6 +27,7 @@ import {
   getPositionSuccess,
   fetchDataGetAddSearch,
   postNewFeedFail,
+  fetchDatagetNewFeed,
 } from '../../../actions';
 import ModalCustom from '../../../components/Modal';
 import Loading from '../../../components/LoadingContainer';
@@ -169,7 +170,7 @@ class ModalView extends PureComponent {
     this.setState({ postDone: true });
     const { post, restaurant } = this.state;
     this.props.fetchPostNewFeed(post, restaurant);
-    this.props.fetchPostNewFeed(this.props.user.user.uid);
+    this.props.fetchDatagetNewFeed(this.props.user.user.uid);
   }
   // _setHideModal = () => {
   //   console.log(this.props.dataPost.dataSuccess);
@@ -612,6 +613,7 @@ ModalView.propTypes = {
   fetchDataGetAdd: PropTypes.func.isRequired,
   fetchPostNewFeed: PropTypes.func.isRequired,
   fetchDataGetAddSearch: PropTypes.func.isRequired,
+  fetchDatagetNewFeed: PropTypes.func.isRequired,
   dataAdd: PropTypes.object.isRequired,
   dataPost: PropTypes.object.isRequired,
   dataSearchAdd: PropTypes.object.isRequired,
@@ -634,5 +636,6 @@ export default connect(
     getPositionSuccess,
     fetchDataGetAddSearch,
     postNewFeedFail,
+    fetchDatagetNewFeed,
   },
 )(ModalView);

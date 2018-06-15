@@ -97,7 +97,14 @@ class User extends PureComponent {
               ) : (
                 <FlatList
                   data={this.props.dataUser.data}
-                  renderItem={({ item }) => <Content data={item} />}
+                  renderItem={({ item }) => (
+                    <Content
+                      data={item}
+                      onPress={() =>
+                        this.props.navigation.navigate('Account', { idUser: item.idUser })
+                      }
+                    />
+                  )}
                   keyExtractor={(item, index) => index.toString()}
                 />
               )}

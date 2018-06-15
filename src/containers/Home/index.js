@@ -137,7 +137,7 @@ class Home extends Component {
                     <View>
                       <Text style={styles.textNameUser}>{item.userName}</Text>
                       <Text style={styles.textPost}>
-                        {Moment(item.create).format('h:mm a, Do MMMM YYYY')}
+                        {Moment(item.created).format('h:mm a, Do MMMM YYYY')}
                       </Text>
                     </View>
                   </View>

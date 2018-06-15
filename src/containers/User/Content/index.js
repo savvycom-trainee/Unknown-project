@@ -28,8 +28,8 @@ class Content extends PureComponent {
               </View>
             </View>
             <View style={styles.ViewBTN}>
-              <TouchableOpacity style={styles.ViewFollowBtn}>
-                <Text style={styles.TextBtnFollow}>+ FOLLOW</Text>
+              <TouchableOpacity style={styles.ViewFollowBtn} onPress={this.props.onPress}>
+                <Text style={styles.TextBtnFollow}>+ PROFILE</Text>
               </TouchableOpacity>
             </View>
           </View>
