@@ -40,7 +40,9 @@ const styles = StyleSheet.create({
     borderBottomColor: Colors.default,
     borderBottomWidth: 0.3,
   },
-  viewFlatList: {},
+  viewFlatList: {
+    flex: 1,
+  },
   viewDataUser: {
     alignItems: 'center',
   },

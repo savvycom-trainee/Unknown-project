@@ -75,19 +75,26 @@ class FindCard extends React.PureComponent {
               source={item.photoURL ? { uri: item.photoURL } : Images.avatar}
               style={styles.avatar}
             />
-            <View style={{ marginLeft: 10, flex: 1 }}>
-              <Text style={styles.name}>{item.fullName}</Text>
+            <View style={{ marginLeft: 14, flex: 1 }}>
+              <Text style={styles.name} numberOfLines={1} ellipsizeMode="tail">
+                {item.fullName}
+              </Text>
               <View style={styles.item_layout}>
                 <Icon
                   name={item.gender === 'Male' ? 'md-male' : 'md-female'}
                   color={item.gender === 'Male' ? '#42bcf4' : '#ff82d5'}
-                  size={15}
-                  style={{ margin: 5 }}
+                  size={18}
+                  // style={{ margin: 5 }}
                 />
-                <Text>{item.gender === 'Male' ? 'Nam' : 'Nữ'}</Text>
+                <Text> {item.gender === 'Male' ? 'Nam' : 'Nữ'}</Text>
               </View>
               <View style={styles.item_layout}>
-                <Icon name="ios-compass-outline" color="green" size={18} style={{ margin: 5 }} />
+                <Icon
+                  name="ios-compass-outline"
+                  color={Colors.default}
+                  size={18}
+                  // style={{ margin: 5 }}
+                />
                 <Text> {item.distance} km</Text>
               </View>
             </View>
@@ -101,7 +108,7 @@ class FindCard extends React.PureComponent {
             style={{
               color: '#fff',
               fontSize: 9,
-              margin: 5,
+              padding: 6,
               fontWeight: '400',
             }}
           >

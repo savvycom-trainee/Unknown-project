@@ -22,8 +22,8 @@ const styles = StyleSheet.create({
     /* eslint-enable */
   },
   leftHeaderStyle: {
-    paddingHorizontal: 10 * d.ratioW,
-    paddingVertical: 10 * d.ratioH,
+    paddingHorizontal: 5 * d.ratioW,
+    paddingVertical: 5 * d.ratioH,
   },
 });
 

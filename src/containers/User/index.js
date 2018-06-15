@@ -69,7 +69,7 @@ class User extends PureComponent {
           }
           centerHeader={<Text style={{ fontSize: 15, fontWeight: '600' }}>User</Text>}
         />
-        <View>
+        <View styles={{ flex: 1 }}>
           <View style={styles.viewFromSearch}>
             <View style={styles.viewTextInputSearch}>
               <TextInput
@@ -101,7 +101,7 @@ class User extends PureComponent {
                     <Content
                       data={item}
                       onPress={() =>
-                        this.props.navigation.navigate('Account', { idUser: item.idUser })
+                        this.props.navigation.navigate('Account', { idUser: item.uid })
                       }
                     />
                   )}
@@ -124,7 +124,14 @@ class User extends PureComponent {
                   ) : (
                     <FlatList
                       data={this.props.dataSearchUser.data}
-                      renderItem={({ item }) => <Content data={item} />}
+                      renderItem={({ item }) => (
+                        <Content
+                          data={item}
+                          onPress={() =>
+                            this.props.navigation.navigate('Account', { idUser: item.uid })
+                          }
+                        />
+                      )}
                       keyExtractor={(item, index) => index.toString()}
                     />
                   )}

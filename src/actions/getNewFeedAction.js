@@ -1,4 +1,5 @@
 import { AsyncStorage } from 'react-native';
+import Moment from 'moment';
 import firebase from 'react-native-firebase';
 import { GET_NEWFEED_ING, GET_NEWFEED_SUCCESS, GET_NEWFEED_FAIL } from '../constants/actionTypes';
 
@@ -17,6 +18,12 @@ export function getNewFeedFail() {
   return {
     type: GET_NEWFEED_FAIL,
   };
+}
+function sortFunction(a, b) {
+  const dateA = new Date(a.created).getTime();
+  console.log(dateA);
+  const dateB = new Date(b.created).getTime();
+  return dateA < dateB ? 1 : -1;
 }
 
 export function fetchDatagetNewFeed(userId) {
@@ -47,11 +54,13 @@ export function fetchDatagetNewFeed(userId) {
                 postSnapshot.forEach((item) => {
                   returnArr = [...returnArr, item._value];
                 });
-                dispatch(getNewFeedSuccess(returnArr));
+                const DataArray = returnArr.sort(sortFunction);
+                dispatch(getNewFeedSuccess(DataArray));
               });
           });
         } else {
-          dispatch(getNewFeedSuccess(returnArr));
+          const DataArray = returnArr.sort(sortFunction);
+          dispatch(getNewFeedSuccess(DataArray));
         }
       });
     } catch (error) {

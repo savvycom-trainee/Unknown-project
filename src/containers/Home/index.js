@@ -121,7 +121,7 @@ class Home extends Component {
       }
       return (
         <FlatList
-          data={this.props.dataNewFeed.data.reverse()}
+          data={this.props.dataNewFeed.data}
           renderItem={({ item }) => (
             <View style={styles.formItem}>
               <TouchableOpacity
@@ -133,7 +133,14 @@ class Home extends Component {
                   onPress={() => this.props.navigation.navigate('Account', { idUser: item.idUser })}
                 >
                   <View style={styles.viewUserPost}>
-                    <Image source={{ uri: item.userAvatar }} style={styles.viewImageUser} />
+                    {item.userAvatar ? (
+                      <Image source={{ uri: item.userAvatar }} style={styles.viewImageUser} />
+                    ) : (
+                      <View style={styles.viewImageUserNull}>
+                        <Icon name="md-contact" size={55} color={Colors.textOpacity} />
+                      </View>
+                    )}
+
                     <View>
                       <Text style={styles.textNameUser}>{item.userName}</Text>
                       <Text style={styles.textPost}>
@@ -223,52 +230,22 @@ class Home extends Component {
                   >
                     <Image source={Icons.add} />
                   </TouchableOpacity>
-                  <Text
-                    style={{
-                      fontSize: 12,
-                      color: Colors.text,
-                      fontWeight: '600',
-                      paddingVertical: 5,
-                    }}
-                  >
-                    Add Post
-                  </Text>
                 </View>
                 <View style={styles.itemMenu}>
                   <TouchableOpacity
                     style={styles.itemMenuIcon}
                     onPress={() => this.props.navigation.navigate('Account')}
                   >
-                    <Icon name="md-contacts" size={20} color="#fff" />
+                    <Icon name="ios-contact" size={20} color="#fff" />
                   </TouchableOpacity>
-                  <Text
-                    style={{
-                      fontSize: 12,
-                      color: Colors.text,
-                      fontWeight: '600',
-                      paddingVertical: 5,
-                    }}
-                  >
-                    Profile
-                  </Text>
                 </View>
                 <View style={styles.itemMenu}>
                   <TouchableOpacity
                     style={styles.itemMenuIcon}
                     onPress={() => this.props.navigation.navigate('FindAround')}
                   >
-                    <Icon name="ios-navigate" size={20} color="#fff" />
+                    <Icon name="md-contacts" size={20} color="#fff" />
                   </TouchableOpacity>
-                  <Text
-                    style={{
-                      fontSize: 12,
-                      color: Colors.text,
-                      fontWeight: '600',
-                      paddingVertical: 5,
-                    }}
-                  >
-                    Find Around
-                  </Text>
                 </View>
               </View>
             </View>

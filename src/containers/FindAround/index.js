@@ -121,7 +121,6 @@ class FindAround extends Component {
             this.props.navigation.goBack();
           }}
           centerHeader={<Text style={{ fontSize: 15, fontWeight: '600' }}>Find Around</Text>}
-          rightHeader={<Image source={Icons.user} />}
         />
         {isLoading && (
           <ActivityIndicator

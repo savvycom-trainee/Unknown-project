@@ -14,6 +14,7 @@ import PropTypes from 'prop-types';
 import Icon from 'react-native-vector-icons/FontAwesome';
 import firebase from 'react-native-firebase';
 import { NavigationActions } from 'react-navigation';
+import IconIon from 'react-native-vector-icons/Ionicons';
 import { connect } from 'react-redux';
 import {
   fetchDatagetUserDetail,
@@ -23,6 +24,7 @@ import {
 } from '../../actions/';
 import { Header } from '../../components';
 import icon from '../../themes/Icons';
+import { Color, Colors } from '../../themes';
 import account from './style';
 import { Card, Statistic } from './component';
 import images from '../../themes/Images';
@@ -155,7 +157,7 @@ class Account extends PureComponent {
 
   resetPassword = () => {
     console.log('resetPassword');
-  }
+  };
   render() {
     return (
       <View style={account.container}>
@@ -170,34 +172,25 @@ class Account extends PureComponent {
                 this.setFollow(this.state.isFollow);
               }}
               centerHeader={<Text style={account.title}>Account</Text>}
-              rightHeader={
-                this.state.isOwner ? (
-                  <Icon name="bars" size={24} color="#000" />
-                ) : null
-              }
+              rightHeader={this.state.isOwner ? <Icon name="bars" size={24} color="#000" /> : null}
               onPressRightHeader={this.state.isOwner ? this.menu : null}
             />
             {this.state.isShowMenu ? (
               <View style={account.menu}>
-                <Text
-                  style={account.menuItem}
-                  onPress={this.logOut}
-                >LOG OUT
+                <Text style={account.menuItem} onPress={this.logOut}>
+                  LOG OUT
                 </Text>
                 <Text
                   style={account.menuItem}
                   onPress={() => this.props.navigation.navigate('UpdateUser')}
-                >Edit Profile
+                >
+                  Edit Profile
                 </Text>
-                <Text
-                  style={account.menuItem}
-                  onPress={this.resetPassword}
-                >Reset Password
+                <Text style={account.menuItem} onPress={this.resetPassword}>
+                  Reset Password
                 </Text>
-                <Text
-                  style={account.menuItem}
-                  onPress={this.menu}
-                >Close
+                <Text style={account.menuItem} onPress={this.menu}>
+                  Close
                 </Text>
               </View>
             ) : null}
@@ -216,26 +209,28 @@ class Account extends PureComponent {
           </View>
           <View style={{ height: 20, width: 10 }} />
           {!this.state.isOwner ? (
-            <TouchableOpacity style={account.btnFollow} onPress={this._onFollowPress}>
-              {/* <Image source={icon.follow} style={account.imageFollow} /> */}
-              <Text
-                style={{
-                  fontSize: 14,
-                  color: 'white',
-                  textAlign: 'center',
-                }}
-              >
+            <TouchableOpacity
+              style={this.state.isFollow ? account.btnFollowEd : account.btnFollow}
+              onPress={this._onFollowPress}
+            >
+              <View style={{ flexDirection: 'row' }}>
+                <IconIon
+                  name={this.state.isFollow ? 'md-checkmark-circle-outline' : 'ios-add-circle'}
+                  color={Colors.white}
+                  size={18}
+                  // style={{ margin: 5 }}
+                />
                 <Text
                   style={{
-                    fontSize: 18,
+                    marginLeft: 5,
+                    fontSize: 14,
                     color: 'white',
                     textAlign: 'center',
                   }}
                 >
-                  {this.state.isFollow ? '√  ' : '+  '}
+                  Follow
                 </Text>
-                Follow
-              </Text>
+              </View>
             </TouchableOpacity>
           ) : null}
         </View>

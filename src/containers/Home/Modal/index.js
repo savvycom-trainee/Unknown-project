@@ -439,10 +439,14 @@ class ModalView extends PureComponent {
               <View style={styles.viewform}>
                 <View style={styles.viewInfoDetail}>
                   <View style={styles.viewFormImageUser}>
-                    <Image
-                      source={{ uri: this.props.user.user.photoURL }}
-                      style={styles.ImageAvatar}
-                    />
+                    {this.props.user.user.photoURL ? (
+                      <Image
+                        source={{ uri: this.props.user.user.photoURL }}
+                        style={styles.ImageAvatar}
+                      />
+                    ) : (
+                      <Icon name="md-contact" size={55} color={Colors.textOpacity} />
+                    )}
                   </View>
                   <View>
                     <View style={styles.viewFormUserName}>
@@ -553,7 +557,7 @@ class ModalView extends PureComponent {
                       ref={(cam) => {
                         this.camera = cam;
                       }}
-                   //   aspect={RNCamera.Constants.}
+                      //   aspect={RNCamera.Constants.}
                     >
                       <View style={styles.camera}>
                         <TouchableOpacity style={styles.capture}>

@@ -1,15 +1,32 @@
 import React, { PureComponent } from 'react';
 import PropTypes from 'prop-types';
-
-import { View, Text, Image, FlatList } from 'react-native';
+import Icon from 'react-native-vector-icons/Ionicons';
+import { View, Text, Image, FlatList, TouchableOpacity, Modal } from 'react-native';
 import Moment from 'moment';
 import styles from './styles';
-
+import { Colors } from '../../../../themes';
+import ModalViewImage from '../../../../components/ModalViewImage';
 // import { Images } from '../../../../themes';
 
 class Content extends PureComponent {
-  state = {};
+  constructor(props) {
+    super(props);
+    this.state = {
+      modalVisible: false,
+      photoView: null,
+    };
+  }
 
+  setModalVisible(visible) {
+    console.log('visible', visible);
+    this.setState({
+      modalVisible: visible,
+    });
+  }
+  _onViewPhoto(item) {
+    this.setState({ photoView: item });
+    this.setModalVisible(true);
+  }
   gallery() {
     // console.log(this.props.data.content.photos);
     // eslint-disable-next-line
@@ -21,7 +38,11 @@ class Content extends PureComponent {
         <FlatList
           style={styles.ViewGallery}
           data={this.props.data.content.photos}
-          renderItem={({ item }) => <Image source={{ uri: item }} style={styles.gallery} />}
+          renderItem={({ item }) => (
+            <TouchableOpacity onPress={() => this._onViewPhoto(item)}>
+              <Image source={{ uri: item }} style={styles.gallery} />
+            </TouchableOpacity>
+          )}
           keyExtractor={(item, index) => index.toString()}
         />
       );
@@ -32,10 +53,20 @@ class Content extends PureComponent {
   render() {
     return (
       <View style={styles.ViewMain}>
+        <Modal animationType="slide" transparent={false} visible={this.state.modalVisible}>
+          <ModalViewImage
+            onShowModalImage={() => this.setModalVisible(!this.state.modalVisible)}
+            photoView={this.state.photoView}
+          />
+        </Modal>
         <View style={styles.ViewMainChild}>
           <View style={styles.ViewMainChildTop}>
             <View style={styles.ViewAvatar}>
-              <Image source={{ uri: this.props.data.userAvatar }} style={styles.avatar} />
+              {this.props.data.userAvatar ? (
+                <Image source={{ uri: this.props.data.userAvatar }} style={styles.avatar} />
+              ) : (
+                <Icon name="md-contact" size={35} color={Colors.textOpacity} />
+              )}
             </View>
             <View style={styles.ViewNameHours}>
               <Text style={styles.TextName}>{this.props.data.userName}</Text>

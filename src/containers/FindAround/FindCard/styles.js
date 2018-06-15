@@ -1,5 +1,6 @@
 import { StyleSheet } from 'react-native';
 import * as d from '../../../utilities/Tranform';
+import { Colors } from '../../../themes';
 
 const styles = StyleSheet.create({
   content_layout: {
@@ -10,7 +11,7 @@ const styles = StyleSheet.create({
   },
   button: {
     borderRadius: 5,
-    width: 50 * d.ratioH,
+    width: 70 * d.ratioW,
     height: 25 * d.ratioH,
     justifyContent: 'center',
     alignItems: 'center',
@@ -24,6 +25,7 @@ const styles = StyleSheet.create({
   },
   name: {
     fontSize: 16,
+    color: Colors.text,
     fontWeight: '600',
   },
   item_layout: {
@@ -38,7 +40,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     alignSelf: 'center',
     margin: 5,
-    borderRadius: 10,
+    borderRadius: 8,
     flexDirection: 'row',
   },
 });
