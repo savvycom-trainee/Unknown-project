@@ -6,6 +6,7 @@ import { search, header } from './style';
 // import images from '../../themes/Images';
 import Card from './components/Card';
 import { fetchDatagetSearchRecomend } from '../../actions/getSearchRecomend';
+import { fetchDataGetAddSearch } from '../../actions/getAddbySearchAction';
 import Loading from '../../components/LoadingContainer';
 
 class Search extends PureComponent {
@@ -18,26 +19,50 @@ class Search extends PureComponent {
   }
 
   searchSubmit = () => {
-    this.props.fetchDatagetSearchRecomend(this.state.queryText);
+    this.props.fetchDataGetAddSearch(21.0176556, 105.8063218, this.state.queryText);
   };
 
   searchBlur = () => {
     console.log('blur');
   };
 
-  renderRecomened = (data) => {
+  renderRecomened = (data, labelText) => {
     if (data.isFetching === true) {
       return <Loading />;
     }
+    if (labelText == 'Recommended for you') {
+      return (
+        <View style={search.resultView}>
+          <Text style={search.title}>{labelText}</Text>
+          <FlatList
+            style
+            data={data.data}
+            renderItem={({ item }) => (
+              <TouchableOpacity
+                onPress={() => {
+                  this.props.navigation.navigate('HomeDetail', { data: item.idRestaurant });
+                }}
+              >
+                <Card dataSearch={item} />
+              </TouchableOpacity>
+            )}
+          />
+        </View>
+      );
+    }
     return (
       <View style={search.resultView}>
+        <Text style={search.title}>
+          Found {data.data.length} {labelText} after 0.5s
+        </Text>
         <FlatList
           style
           data={data.data}
           renderItem={({ item }) => (
             <TouchableOpacity
+              key={item.key}
               onPress={() => {
-                this.props.navigation.navigate('HomeDetail', { data: item.idRestaurant });
+                this.props.navigation.navigate('HomeDetail', { data: item.place_id });
               }}
             >
               <Card dataSearch={item} />
@@ -48,7 +73,16 @@ class Search extends PureComponent {
     );
   };
 
+  renderResult = (queryText) => {
+    if (queryText === '') {
+      return this.renderRecomened(this.props.dataSearchRecomend, 'Recommended for you');
+    }
+    return this.renderRecomened(this.props.dataSearchAdd, 'Result');
+  };
+
   render() {
+    console.log(this.props.dataSearchAdd);
+
     return (
       <View style={search.container}>
         <StatusBar backgroundColor="white" barStyle="dark-content" />
@@ -67,8 +101,7 @@ class Search extends PureComponent {
             />
           </View>
         </View>
-        <Text style={search.title}> Recommended for you </Text>
-        {this.renderRecomened(this.props.dataSearchRecomend)}
+        {this.renderResult(this.state.queryText)}
       </View>
     );
   }
@@ -83,14 +116,20 @@ Search.propTypes = {
   }).isRequired,
   fetchDatagetSearchRecomend: PropTypes.func.isRequired,
   dataSearchRecomend: PropTypes.object.isRequired,
+
+  fetchDataGetAddSearch: PropTypes.func.isRequired,
+  dataSearchAdd: PropTypes.object.isRequired,
 };
 
 const mapStateToProps = state => ({
   dataSearchRecomend: state.getSearchRecomendReducers,
+  dataSearchAdd: state.getAddSearchReducers,
 });
 
 const mapDispatchToProps = dispatch => ({
   fetchDatagetSearchRecomend: queryText => dispatch(fetchDatagetSearchRecomend(queryText)),
+  fetchDataGetAddSearch: (latitude, longitude, keyword) =>
+    dispatch(fetchDataGetAddSearch(latitude, longitude, keyword)),
 });
 
 export default connect(

@@ -47,7 +47,7 @@ export function fetchDatagetSearchRecomend(queryText) {
           });
           console.log(returnArr);
 
-          dispatch(getSearchRecomendSuccess(returnArr));
+          dispatch(getSearchRecomendSuccess(returnArr.slice(0, 10)));
         });
     } catch (error) {
       dispatch(getSearchRecomendFail(error));

@@ -8,7 +8,9 @@ const search = StyleSheet.create({
   header: {
     height: 136 * d.ratioH,
   },
-  resultView: {},
+  resultView: {
+    flex: 1,
+  },
   title: {
     fontSize: 14,
     color: 'black',
