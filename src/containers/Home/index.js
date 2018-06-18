@@ -40,6 +40,7 @@ class Home extends Component {
 
         this.props.setUser(data._value);
       });
+    this._getToken();
   }
 
   onGetCurrentPosition = () => {
@@ -90,6 +91,16 @@ class Home extends Component {
         user.location = { lat, lng };
         this.props.setUser(user);
       });
+  };
+  _getToken = async () => {
+    const { uid } = this.props.user.user;
+    const token = await firebase.messaging().getToken();
+    const update = {};
+    update[`root/users${uid}\token`] = token;
+    firebase
+      .database()
+      .ref()
+      .update(update);
   };
   /* eslint-disable */
   deg2rad = deg => deg * (Math.PI / 180);
