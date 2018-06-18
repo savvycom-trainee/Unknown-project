@@ -21,7 +21,6 @@ export function getNewFeedFail() {
 }
 function sortFunction(a, b) {
   const dateA = new Date(a.created).getTime();
-  console.log(dateA);
   const dateB = new Date(b.created).getTime();
   return dateA < dateB ? 1 : -1;
 }

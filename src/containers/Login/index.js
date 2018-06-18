@@ -190,7 +190,10 @@ class Login extends PureComponent {
                   .signInAndRetrieveDataWithCredential(credential)
                   .then(() => {
                     const user = { ...res, uid: res.id, fullName: res.name };
-                    firebase.database().ref(`root/users/${user.uid}`).set(user);
+                    firebase
+                      .database()
+                      .ref(`root/users/${user.uid}`)
+                      .set(user);
                     AsyncStorage.setItem('user', JSON.stringify(user), error => console.log(error));
                     this.props.navigation.navigate('UpdateUser', { user, fb: true });
                   })
@@ -226,11 +229,12 @@ class Login extends PureComponent {
               <View style={login.form}>
                 <TextInput
                   style={login.input}
-                  ref={(node) => { this.loginInput = node; }}
+                  ref={(node) => {
+                    this.loginInput = node;
+                  }}
                   onFocus={() => this.loginInput.focus()}
                   placeholder="Email"
                   keyboardType="email-address"
-                  underlineColorAndroid="transparent"
                   onChangeText={this.changeAccount}
                   onSubmitEditing={this.accNext}
                   returnKeyType="next"
@@ -243,7 +247,6 @@ class Login extends PureComponent {
                   onFocus={() => this.passwordField.focus()}
                   style={login.input}
                   placeholder="Password"
-                  underlineColorAndroid="transparent"
                   secureTextEntry
                   onChangeText={this.changePassword}
                   onSubmitEditing={this.loginAccount}

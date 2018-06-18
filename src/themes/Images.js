@@ -9,6 +9,8 @@ const images = {
   avatar: require('../../assets/images/avata.png'),
   defaultImage: require('../../assets/images/defaultImage.png'),
   defaultAvatar: require('../../assets/images/defaultAvatar.png'),
+  borderAvatar: require('../../assets/images/borderAvatar.jpg'),
+  borderAvatar1: require('../../assets/images/borderAvatar1.jpg'),
   defaultImage: require('../../assets/images/no_image_available.png'),
 };
 
