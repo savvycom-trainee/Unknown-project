@@ -23,6 +23,8 @@ exports.sendNotification = functions.database
               body: `${after.fullName} is now following you.`
             }
           };
+          console.log('token', user.token);
+          
           return admin.messaging().sendToDevice(user.token, payload);
         });
     }

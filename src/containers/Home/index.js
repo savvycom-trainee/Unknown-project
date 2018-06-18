@@ -16,6 +16,8 @@ import ModalView from './Modal';
 import Loading from '../../components/LoadingContainer';
 import EmptyContent from '../../components/EmptyContent';
 
+const FCM = firebase.messaging();
+
 class Home extends Component {
   constructor(props) {
     super(props);
@@ -94,7 +96,11 @@ class Home extends Component {
   };
   _getToken = async () => {
     const { uid } = this.props.user.user;
-    const token = await firebase.messaging().getToken();
+    const enabled = await FCM.hasPermission();
+    if (!enabled) {
+      FCM.requestPermission();
+    }
+    const token = await FCM.getToken();
     const update = {};
     update[`root/users/${uid}/token`] = token;
     firebase
