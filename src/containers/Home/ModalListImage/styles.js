@@ -1,5 +1,5 @@
 import { StyleSheet } from 'react-native';
-import { Colors } from '../../themes';
+import { Colors, Metrics } from '../../../themes';
 
 export default StyleSheet.create({
   container: {
@@ -7,7 +7,6 @@ export default StyleSheet.create({
     backgroundColor: '#000',
   },
   viewImageBG: {
-    position: 'absolute',
     top: 0,
     left: 0,
     width: '100%',
@@ -17,8 +16,18 @@ export default StyleSheet.create({
     flex: 1,
     resizeMode: 'center',
   },
+  imagePhotoItem4: {
+    height: Metrics.screenHeight / 4,
+    width: Metrics.screenWidth,
+  },
+  imagePhotoItem3: {
+    height: Metrics.screenHeight / 2,
+    width: Metrics.screenWidth,
+  },
   viewButton: {
     padding: 20,
+    zIndex: 12,
+    position: 'absolute',
     height: 30,
     width: 30,
   },

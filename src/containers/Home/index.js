@@ -1,6 +1,16 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import { View, Text, ScrollView, TouchableOpacity, Image, FlatList, Modal } from 'react-native';
+import {
+  View,
+  Text,
+  ScrollView,
+  TouchableOpacity,
+  Image,
+  FlatList,
+  RefreshControl,
+  Modal,
+  Dimensions,
+} from 'react-native';
 import { connect } from 'react-redux';
 import Moment from 'moment';
 import firebase from 'react-native-firebase';
@@ -13,6 +23,7 @@ import { Icons, Colors } from '../../themes';
 import { fetchDatagetNewFeed } from '../../actions/getNewFeedAction';
 import { getPositionSuccess, getPositionFail, setUser } from '../../actions';
 import ModalView from './Modal';
+import ModalListImage from './ModalListImage';
 import Loading from '../../components/LoadingContainer';
 import EmptyContent from '../../components/EmptyContent';
 
@@ -24,7 +35,9 @@ class Home extends Component {
       longitude: null,
       modalVisible: false,
       error: null,
+      modalViewImage: false,
       refreshing: false,
+      arrayPhotos: [],
     };
   }
   componentDidMount() {
@@ -73,10 +86,28 @@ class Home extends Component {
   setModalVisible = (visible) => {
     this.setState({ modalVisible: visible });
   };
+  showModalViewImage = (visible, itemArrayImages) => {
+    this.setState({ modalViewImage: visible, arrayPhotos: itemArrayImages });
+  };
+
   hideModal = (message) => {
     this.setModalVisible(message);
   };
-
+  hideModalListImage = (message) => {
+    this.showModalViewImage(message);
+  };
+  _onRefresh() {
+    this.setState({ refreshing: true });
+    this._ItemLoadMore();
+  }
+  _ItemLoadMore() {
+    this.setState({ refreshing: false });
+    const { uid } = this.props.user.user;
+    this.props.fetchDatagetNewFeed(uid);
+  }
+  _ItemLoadMoreEnd() {
+    const { uid } = this.props.user.user;
+  }
   _updateLocation = (lat, lng) => {
     const { uid } = this.props.user.user;
     console.log(this.props.user);
@@ -170,11 +201,17 @@ class Home extends Component {
                     </Text>
                   </View>
                   <View style={styles.imageContent}>
-                    <AsyncImage
-                      style={styles.imageContent}
-                      source={{ uri: item.content.photos[0] }}
-                      placeholderColor={Colors.textOpacity10}
-                    />
+                    <TouchableOpacity
+                      onPress={() => {
+                        this.showModalViewImage(true, item.content.photos);
+                      }}
+                    >
+                      <AsyncImage
+                        style={styles.imageContent}
+                        source={{ uri: item.content.photos[0] }}
+                        placeholderColor={Colors.textOpacity10}
+                      />
+                    </TouchableOpacity>
                   </View>
                   <View style={styles.viewPointForm}>
                     <View style={styles.viewPoint}>
@@ -228,15 +265,28 @@ class Home extends Component {
             leftHeader={<Text />}
             rightHeader={<Text />}
           />
-          <Modal
-            animationType="slide"
-            transparent={false}
-            onRequestClose={() => {}}
-            visible={this.state.modalVisible}
-          >
+          <Modal animationType="slide" transparent={false} visible={this.state.modalVisible}>
             <ModalView hideModal={this.hideModal} />
           </Modal>
-          <ScrollView style={{ flex: 1 }}>
+          <Modal animationType="slide" transparent={false} visible={this.state.modalViewImage}>
+            <ModalListImage
+              hideModalListImage={() => this.hideModalListImage(!this.state.modalViewImage)}
+              arrayImage={this.state.arrayPhotos}
+            />
+          </Modal>
+          <ScrollView
+            style={{ flex: 1 }}
+            refreshControl={
+              <RefreshControl
+                refreshing={this.state.refreshing}
+                onRefresh={this._onRefresh.bind(this)}
+                onEndReachedThreshold={0.5}
+                onEndReached={() => {
+                  this.EndhandleScroll();
+                }}
+              />
+            }
+          >
             <View style={styles.viewMenu}>
               <View style={styles.viewMenuItem}>
                 <View style={[styles.itemMenu]}>

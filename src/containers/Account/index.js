@@ -193,7 +193,7 @@ class Account extends PureComponent {
                     textAlign: 'center',
                   }}
                 >
-                  Follow
+                  {this.state.isFollow ? 'Followed' : 'Follow'}
                 </Text>
               </View>
             </TouchableOpacity>
