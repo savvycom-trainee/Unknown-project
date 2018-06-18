@@ -34,6 +34,13 @@ class Pin extends PureComponent {
         data={data}
         renderItem={({ item, index }) => (
           <PinView
+            // style={{
+            //   elevation: 6,
+            //   shadowColor: 'rgba(0,0,0,0.6)',
+            //   shadowOffset: { width: 0, height: 0 },
+            //   shadowOpacity: 0.4,
+            //   shadowRadius: 20,
+            // }}
             item={item}
             index={index}
             onPress={() => {
@@ -52,9 +59,19 @@ class Pin extends PureComponent {
     }
 
     return (
-      <View style={{ flex: 1 }}>
+      <View style={{ flex: 1, backgroundColor: 'white' }}>
+        {/* <View
+          style={{
+            backgroundColor: ,
+            elevation: 6,
+            shadowColor: 'rgba(0,0,0,0.6)',
+            shadowOffset: { width: 0, height: 0 },
+            shadowOpacity: 0.4,
+            shadowRadius: 20,
+          }}
+        > */}
         <Header centerHeader={<Text style={styles.centerHeaderStyle}>Bookmark</Text>} />
-
+        {/* </View> */}
         {this.renderCatchNothing(this.props.dataListBookmark.data)}
       </View>
     );

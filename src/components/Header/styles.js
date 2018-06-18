@@ -7,6 +7,11 @@ const styles = StyleSheet.create({
     width: d.windowSize.width,
     height: d.navBarHeight,
     backgroundColor: '#FFFFFF',
+    // elevation: 6,
+    // shadowColor: 'rgba(0,0,0,0.6)',
+    // shadowOffset: { width: 0, height: 0 },
+    // shadowOpacity: 0.4,
+    // shadowRadius: 20,
   },
   headerComponent: {
     flexDirection: 'row',

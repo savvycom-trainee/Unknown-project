@@ -6,6 +6,12 @@ const styles = {
     marginHorizontal: 30 * d.ratioW,
     marginTop: 10 * d.ratioH,
     marginBottom: 10 * d.ratioH,
+
+    elevation: 4,
+    shadowColor: 'rgba(0,0,0,0.6)',
+    shadowOffset: { width: 0, height: 0 },
+    shadowOpacity: 0.4,
+    shadowRadius: 20,
   },
   detailContainer: {
     justifyContent: 'space-evenly',

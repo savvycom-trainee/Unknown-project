@@ -4,6 +4,7 @@ import * as d from '../../utilities/Tranform';
 const search = StyleSheet.create({
   container: {
     flex: 1,
+    backgroundColor: 'white',
   },
   header: {
     height: 136 * d.ratioH,

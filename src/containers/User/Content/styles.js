@@ -12,7 +12,13 @@ const styles = StyleSheet.create({
     backgroundColor: 'white',
     padding: 20 * d.ratioH,
     flexDirection: 'row',
-    borderRadius: 5 * d.ratioH,
+    borderRadius: 3 * d.ratioH,
+
+    elevation: 6,
+    shadowColor: 'rgba(0,0,0,0.6)',
+    shadowOffset: { width: 0, height: 0 },
+    shadowOpacity: 0.4,
+    shadowRadius: 20,
   },
   ViewAge: {
     paddingTop: 4 * d.ratioH,

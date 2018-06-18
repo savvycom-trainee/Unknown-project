@@ -13,6 +13,12 @@ const styles = StyleSheet.create({
     padding: 20 * d.ratioH,
     flexDirection: 'row',
     borderRadius: 5 * d.ratioH,
+
+    elevation: 4,
+    shadowColor: 'rgba(0,0,0,0.6)',
+    shadowOffset: { width: 0, height: 0 },
+    shadowOpacity: 0.4,
+    shadowRadius: 20,
   },
   ViewAvatar: {
     // borderRadius: 10,

@@ -7,6 +7,7 @@ import { search, header } from './style';
 import Card from './components/Card';
 import { fetchDatagetSearchRecomend } from '../../actions/getSearchRecomend';
 import Loading from '../../components/LoadingContainer';
+import EmptyContent from '../../components/EmptyContent';
 
 class Search extends PureComponent {
   state = {
@@ -28,11 +29,13 @@ class Search extends PureComponent {
   renderRecomened = (data) => {
     if (data.isFetching === true) {
       return <Loading />;
+    } else if (data.data.length === 0) {
+      return <EmptyContent />;
     }
     return (
-      <View style={search.resultView}>
+      <View style={{ flex: 1 }}>
         <FlatList
-          style
+          // style={{ backgroundColor: 'red', marginBottom: 10 }}
           data={data.data}
           renderItem={({ item }) => (
             <TouchableOpacity
@@ -46,6 +49,13 @@ class Search extends PureComponent {
         />
       </View>
     );
+  };
+
+  renderTextRecommened = (condition) => {
+    if (condition === '') {
+      return <Text style={search.title}> Recommended for you </Text>;
+    }
+    return <Text style={search.title}> Result </Text>;
   };
 
   render() {
@@ -67,7 +77,7 @@ class Search extends PureComponent {
             />
           </View>
         </View>
-        <Text style={search.title}> Recommended for you </Text>
+        {this.renderTextRecommened(this.state.queryText)}
         {this.renderRecomened(this.props.dataSearchRecomend)}
       </View>
     );

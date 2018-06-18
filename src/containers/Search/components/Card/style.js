@@ -6,8 +6,15 @@ const card = StyleSheet.create({
     backgroundColor: '#FFFFFF',
     borderRadius: 2.5,
     marginHorizontal: 30 * d.ratioW,
-    marginBottom: 25 * d.ratioH,
+    marginTop: 10 * d.ratioH,
+    marginBottom: 10 * d.ratioH,
     zIndex: 0,
+
+    elevation: 6,
+    shadowColor: 'rgba(0,0,0,0.6)',
+    shadowOffset: { width: 0, height: 0 },
+    shadowOpacity: 0.4,
+    shadowRadius: 20,
   },
   container: {
     width: 315 * d.ratioW,

@@ -40,8 +40,14 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     alignSelf: 'center',
     margin: 5,
-    borderRadius: 8,
+    borderRadius: 5 * d.ratioH,
     flexDirection: 'row',
+
+    elevation: 4,
+    shadowColor: 'rgba(0,0,0,0.6)',
+    shadowOffset: { width: 0, height: 0 },
+    shadowOpacity: 0.4,
+    shadowRadius: 20,
   },
 });
 

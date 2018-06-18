@@ -33,15 +33,26 @@ class Card extends PureComponent {
     );
   };
 
+  renderRating = (condition) => {
+    if (condition >= 0 && condition <= 5) {
+      return (
+        <View style={card.circle}>
+          <Text style={card.txtCircle}>{this.props.dataSearch.rating}</Text>
+        </View>
+      );
+    }
+    return null;
+  };
+
   render() {
+    console.log(this.props.dataSearch.rating);
+
     return (
       <View style={card.component}>
         <View style={card.container}>
           <View style={card.imageView}>
             {this.renderPhotos(this.props.dataSearch)}
-            <View style={card.circle}>
-              <Text style={card.txtCircle}>{this.props.dataSearch.rating}</Text>
-            </View>
+            {this.renderRating(this.props.dataSearch.rating)}
           </View>
           <View style={card.cardInfo}>
             <Text style={card.name}>{this.props.dataSearch.name}</Text>

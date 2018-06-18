@@ -6,6 +6,7 @@ const styles = StyleSheet.create({
   ViewMain: {
     flex: 1,
     flexDirection: 'column',
+    backgroundColor: 'white',
   },
   ViewContent: {
     marginLeft: 30 * d.ratioW,

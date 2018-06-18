@@ -128,6 +128,13 @@ class Home extends Component {
           renderItem={({ item }) => (
             <View style={styles.formItem}>
               <TouchableOpacity
+                // style={{
+                //   elevation: 6,
+                //   shadowColor: 'rgba(0,0,0,0.6)',
+                //   shadowOffset: { width: 0, height: 0 },
+                //   shadowOpacity: 0.4,
+                //   shadowRadius: 20,
+                // }}
                 onPress={() => {
                   this.props.navigation.navigate('HomeDetail', { data: item.restaurantPlaceId });
                 }}
@@ -197,7 +204,6 @@ class Home extends Component {
                       />
                     </View>
                   </View>
-                  <View />
                 </View>
               </TouchableOpacity>
             </View>

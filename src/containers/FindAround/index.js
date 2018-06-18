@@ -103,17 +103,19 @@ class FindAround extends Component {
   };
   // TODO navigate to user detail
   _renderItem = ({ item, index }) => (
-    <FindCard
-      navigation={this.props.navigation}
-      item={item}
-      index={index}
-      refresh={this._getUserAround}
-    />
+    <View style={{ marginTop: 2, marginBottom: 3 }}>
+      <FindCard
+        navigation={this.props.navigation}
+        item={item}
+        index={index}
+        refresh={this._getUserAround}
+      />
+    </View>
   );
   render() {
     const { data, isLoading } = this.state;
     return (
-      <View style={{ flex: 1 }}>
+      <View style={{ flex: 1, backgroundColor: 'white' }}>
         <Header
           leftHeader={<Image source={Icons.back} />}
           onPressLeftHeader={() => {
