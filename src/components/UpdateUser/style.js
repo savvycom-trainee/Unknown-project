@@ -39,7 +39,6 @@ const styles = StyleSheet.create({
   },
   botView: {
     marginTop: 24 * d.ratioH,
-    height: 470 * d.ratioH,
     width: '100%',
     alignItems: 'center',
     paddingHorizontal: 50 * d.ratioW,

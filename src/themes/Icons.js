@@ -28,6 +28,7 @@ const icons = {
   greenMarker: require('../../assets/icons/greenMarker.png'),
   grayMarker: require('../../assets/icons/grayMarker.png'),
   follow: require('../../assets/icons/follow.png'),
+  changePassword: require('../../assets/icons/changePassword.png'),
 };
 
 export default icons;

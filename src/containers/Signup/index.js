@@ -117,7 +117,6 @@ class Signup extends PureComponent {
             <TextInput
               style={signup.input}
               placeholder="Email"
-              underlineColorAndroid="transparent"
               keyboardType="email-address"
               onChangeText={this.changeAccount}
               onSubmitEditing={this.accNext}
@@ -130,7 +129,6 @@ class Signup extends PureComponent {
               }}
               style={signup.input}
               placeholder="Password"
-              underlineColorAndroid="transparent"
               secureTextEntry
               onChangeText={this.changePassword}
               onSubmitEditing={this.passwordNext}
@@ -142,7 +140,6 @@ class Signup extends PureComponent {
               }}
               style={signup.input}
               placeholder="Re-Password"
-              underlineColorAndroid="transparent"
               secureTextEntry
               onChangeText={this.changeRePassword}
               onSubmitEditing={this.signupAccount}
@@ -157,18 +154,14 @@ class Signup extends PureComponent {
                 <ActivityIndicator size="small" color="white" />
               )}
             </TouchableOpacity>
-            <TouchableOpacity style={signup.btnfb}>
-              <Image source={images.logofb} style={signup.logofb} />
-              <Text style={signup.txtfb}>Continue With Facebook</Text>
-            </TouchableOpacity>
           </View>
           <View style={signup.textContainer}>
-            <Text style={signup.txtBottom}>Not account? Go to </Text>
+            <Text style={signup.txtBottom}>Have a account? Go to </Text>
             <TouchableOpacity
               style={signup.textSignUpContainer}
               onPress={() => this.props.navigation.goBack()}
             >
-              <Text style={signup.txtSignUp}>Sign up</Text>
+              <Text style={signup.txtSignUp}>Sign In</Text>
             </TouchableOpacity>
           </View>
         </View>

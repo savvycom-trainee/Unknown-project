@@ -38,7 +38,6 @@ const login = StyleSheet.create({
     paddingRight: 50 * d.ratioW,
     width: '100%',
     alignItems: 'center',
-    backgroundColor: 'rgba(0,0,0,0.01)',
     borderRadius: 10,
     marginBottom: 5,
   },
@@ -50,6 +49,10 @@ const login = StyleSheet.create({
     paddingLeft: 20,
     borderRadius: 3,
     elevation: 5,
+    shadowColor: 'grey',
+    shadowOffset: { width: 0, height: 5 },
+    shadowOpacity: 0.9,
+    shadowRadius: 5,
   },
   vButton: {
     paddingLeft: 50 * d.ratioW,

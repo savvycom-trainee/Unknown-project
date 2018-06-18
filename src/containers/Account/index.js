@@ -14,6 +14,7 @@ import PropTypes from 'prop-types';
 import firebase from 'react-native-firebase';
 import { NavigationActions } from 'react-navigation';
 import IconIon from 'react-native-vector-icons/Ionicons';
+import IconAwe from 'react-native-vector-icons/FontAwesome';
 import { connect } from 'react-redux';
 import {
   fetchDatagetUserDetail,
@@ -22,12 +23,10 @@ import {
   setUser,
 } from '../../actions/';
 import { Header } from '../../components';
-import icon from '../../themes/Icons';
-import { Colors } from '../../themes';
+import { Colors, Icons } from '../../themes';
 import account from './style';
 import AsyncImage from '../../components/AsyncImage';
-import { Card, Statistic } from './component';
-import { Icons } from '../../themes';
+import { Card, Menu, Statistic } from './component';
 import images from '../../themes/Images';
 
 class Account extends PureComponent {
@@ -83,22 +82,8 @@ class Account extends PureComponent {
       this.props.fetchDataGetUserPin(this.user.uid);
     }
   };
-  menu = () => {
-    this.setState(
-      {
-        isShowMenu: !this.state.isShowMenu,
-      },
-      () => {
-        let value = 0;
-        if (this.state.isShowMenu) {
-          value = 100;
-        }
-        Animated.timing(this.state.menuAnim, {
-          toValue: value,
-          duration: 500,
-        }).start();
-      },
-    );
+  showMenu = () => {
+    this.menu.open();
   };
   logOut = () => {
     AsyncStorage.removeItem('user');
@@ -164,7 +149,7 @@ class Account extends PureComponent {
         <View style={account.topView}>
           <View style={{ flex: 1, backgroundColor: 'white' }}>
             <Header
-              leftHeader={<Image source={icon.back} />}
+              leftHeader={<Image source={Icons.back} />}
               onPressLeftHeader={() => {
                 this._reload();
                 this.props.navigation.goBack();
@@ -172,36 +157,9 @@ class Account extends PureComponent {
               }}
               centerHeader={<Text style={account.title}>Account</Text>}
               rightHeader={this.state.isOwner ? <Image source={Icons.menu} /> : null}
-              onPressRightHeader={this.state.isOwner ? this.menu : null}
+              onPressRightHeader={this.state.isOwner ? this.showMenu : null}
             />
-            {this.state.isShowMenu ? (
-              <View style={account.menu}>
-                <Text
-                  style={account.menuItem}
-                  onPress={() => this.props.navigation.navigate('UpdateUser')}
-                >
-                  Edit Profile
-                </Text>
-                <Text
-                  style={account.menuItem}
-                  onPress={() => {
-                    this.menu();
-                    this.props.navigation.navigate('Change');
-                  }}
-                >
-                  Change Password
-                </Text>
-                <Text style={[account.menuItem, { color: 'red' }]} onPress={this.logOut}>
-                  LOG OUT
-                </Text>
-                <Text style={account.menuItem} onPress={this.menu}>
-                  Close
-                </Text>
-              </View>
-            ) : null}
             <View style={account.info}>
-
-            
               <AsyncImage
                 source={
                   this.state.photoURL === '' ? images.defaultAvatar : { uri: this.state.photoURL }
@@ -253,7 +211,7 @@ class Account extends PureComponent {
             />
             <Statistic
               number={this.props.dataUserPin.data.length ? this.props.dataUserPin.data.length : 0}
-              title="Post"
+              title="Pin"
             />
           </View>
           <Text style={account.botRestaurant}>Post</Text>
@@ -280,6 +238,49 @@ class Account extends PureComponent {
             />
           )}
         </View>
+        <Menu
+          onRef={(node) => {
+            this.menu = node;
+          }}
+          style={account.menu}
+        >
+          <View style={account.menuItem}>
+            <View style={{ height: 25, width: 36 }}>
+              <IconAwe name="edit" size={26} />
+            </View>
+            <Text
+              style={account.menuText}
+              onPress={() => this.props.navigation.navigate('UpdateUser')}
+            >
+              Edit Profile
+            </Text>
+          </View>
+          <View style={account.menuItem}>
+            <View style={{ height: 25, width: 36 }}>
+              <Image
+                source={Icons.changePassword}
+                style={{ height: 24, width: 32, tintColor: 'grey' }}
+              />
+            </View>
+            <Text
+              style={account.menuText}
+              onPress={() => {
+                this.menu.close();
+                this.props.navigation.navigate('Change');
+              }}
+            >
+              Change Password
+            </Text>
+          </View>
+          <View style={account.menuItem}>
+            <View style={{ height: 25, width: 36 }}>
+              <IconIon name="ios-log-out" size={26} />
+            </View>
+            <Text style={[account.menuText, { color: 'red' }]} onPress={this.logOut}>
+              LOG OUT
+            </Text>
+          </View>
+        </Menu>
       </View>
     );
   }
