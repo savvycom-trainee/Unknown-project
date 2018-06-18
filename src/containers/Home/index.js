@@ -1,6 +1,16 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import { View, Text, ScrollView, TouchableOpacity, Image, FlatList, Modal } from 'react-native';
+import {
+  View,
+  Text,
+  ScrollView,
+  TouchableOpacity,
+  Image,
+  FlatList,
+  Modal,
+  Platform,
+  AppRegistry,
+} from 'react-native';
 import { connect } from 'react-redux';
 import Moment from 'moment';
 import firebase from 'react-native-firebase';
@@ -15,6 +25,7 @@ import { getPositionSuccess, getPositionFail, setUser } from '../../actions';
 import ModalView from './Modal';
 import Loading from '../../components/LoadingContainer';
 import EmptyContent from '../../components/EmptyContent';
+import bgMessaging from './bgMessaging';
 
 const FCM = firebase.messaging();
 
@@ -42,7 +53,7 @@ class Home extends Component {
 
         this.props.setUser(data._value);
       });
-    this._getToken();
+    if (Platform.OS === 'android') this._getToken();
   }
 
   onGetCurrentPosition = () => {
@@ -299,6 +310,8 @@ const mapStateToProps = state => ({
   region: state.getPositionReducers,
   user: state.user,
 });
+
+AppRegistry.registerHeadlessTask('RNFirebaseBackgroundMessage', () => bgMessaging);
 
 export default connect(
   mapStateToProps,

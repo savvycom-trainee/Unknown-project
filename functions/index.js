@@ -8,15 +8,13 @@ exports.sendNotification = functions.database
   .onUpdate((snapshot, context) => {
     const after = snapshot.after.val();
     const before = snapshot.before.val();
-    // console.log(after.length, after);
-    // console.log('id', context.params.id);
     if (after.length > before.length) {
       admin
         .database()
-        .ref(`root/users/${context.params.id}`)
+        .ref(`root/users/${after[after.length - 1]}`)
         .once('value', snap => {
           const user = snap.val();
-          console.log('users', snap.val());
+          console.log('users', user);
           const payload = {
             notification: {
               title: 'You have a new follower!',
@@ -24,15 +22,9 @@ exports.sendNotification = functions.database
             }
           };
           console.log('token', user.token);
-          
+
           return admin.messaging().sendToDevice(user.token, payload);
         });
     }
+    return 1;
   });
-
-// // Create and Deploy Your First Cloud Functions
-// // https://firebase.google.com/docs/functions/write-firebase-functions
-//
-// exports.helloWorld = functions.https.onRequest((request, response) => {
-//  response.send("Hello from Firebase!");
-// });
