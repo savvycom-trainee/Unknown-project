@@ -18,11 +18,14 @@ export default StyleSheet.create({
     resizeMode: 'center',
   },
   viewButton: {
+    zIndex: 12,
+    position: 'absolute',
     padding: 20,
     height: 30,
     width: 30,
   },
   viewButtonForm: {
+    zIndex: 12,
     flex: 1,
     backgroundColor: 'transparent',
     justifyContent: 'flex-start',

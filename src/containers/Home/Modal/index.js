@@ -20,7 +20,7 @@ import { RNCamera } from 'react-native-camera';
 import Icon from 'react-native-vector-icons/Ionicons';
 import styles from './styles';
 import { Colors } from '../../../themes';
-import ModalViewImage from './ModalViewImage';
+import ModalViewImage from '../../../components/ModalViewImage';
 import {
   fetchDataGetAdd,
   fetchPostNewFeed,

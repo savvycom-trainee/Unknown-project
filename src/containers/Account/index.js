@@ -23,11 +23,10 @@ import {
 } from '../../actions/';
 import { Header } from '../../components';
 import icon from '../../themes/Icons';
-import { Colors } from '../../themes';
+import { Colors, Icons } from '../../themes';
 import account from './style';
 import AsyncImage from '../../components/AsyncImage';
 import { Card, Statistic } from './component';
-import { Icons } from '../../themes';
 import images from '../../themes/Images';
 
 class Account extends PureComponent {
@@ -176,27 +175,31 @@ class Account extends PureComponent {
             />
             {this.state.isShowMenu ? (
               <View style={account.menu}>
-                <Text
-                  style={account.menuItem}
+                <TouchableOpacity
+                  style={account.itemForm}
                   onPress={() => this.props.navigation.navigate('UpdateUser')}
                 >
-                  Edit Profile
-                </Text>
-                <Text
-                  style={account.menuItem}
+                  <IconIon name="ios-create" size={27} color={Colors.white} />
+                  <Text style={account.menuItem}>Edit Profile</Text>
+                </TouchableOpacity>
+                <TouchableOpacity
+                  style={account.itemForm}
                   onPress={() => {
                     this.menu();
                     this.props.navigation.navigate('Change');
                   }}
                 >
-                  Change Password
-                </Text>
-                <Text style={[account.menuItem, { color: 'red' }]} onPress={this.logOut}>
-                  LOG OUT
-                </Text>
-                <Text style={account.menuItem} onPress={this.menu}>
-                  Close
-                </Text>
+                  <IconIon name="md-key" size={27} color={Colors.white} />
+                  <Text style={account.menuItem}>Change Password</Text>
+                </TouchableOpacity>
+                <TouchableOpacity style={account.itemForm} onPress={this.logOut}>
+                  <IconIon name="md-log-out" size={27} color={Colors.white} />
+                  <Text style={[account.menuItem, { color: 'red' }]}>LOG OUT</Text>
+                </TouchableOpacity>
+                <TouchableOpacity style={account.itemForm} onPress={this.menu}>
+                  <IconIon name="md-close" size={27} color={Colors.white} />
+                  <Text style={account.menuItem}>Close</Text>
+                </TouchableOpacity>
               </View>
             ) : null}
             <View style={account.info}>
