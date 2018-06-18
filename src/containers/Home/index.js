@@ -96,7 +96,7 @@ class Home extends Component {
     const { uid } = this.props.user.user;
     const token = await firebase.messaging().getToken();
     const update = {};
-    update[`root/users${uid}\token`] = token;
+    update[`root/users/${uid}/token`] = token;
     firebase
       .database()
       .ref()
