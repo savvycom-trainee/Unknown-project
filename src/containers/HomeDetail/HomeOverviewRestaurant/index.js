@@ -1,5 +1,5 @@
 import React, { PureComponent } from 'react';
-import { View, Text, Image, FlatList } from 'react-native';
+import { View, Text, Image, FlatList, TouchableOpacity, Modal, Dimensions } from 'react-native';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import StarRating from 'react-native-star-rating';
@@ -10,21 +10,38 @@ import Header from '../../../components/Header';
 import ButtonCustom from './ButtonCustom';
 import ButtonBookmark from './ButtonBookmark';
 import * as d from '../../../utilities/Tranform';
+import ModalViewImage from '../../../components/ModalViewImage';
 
 import styles from './styles';
 
 class HomeOverviewRestaurant extends PureComponent {
   state = {
     idRestaurant: this.props.idRestaurant,
+    modalVisible: false,
+    photoView: null,
   };
   componentDidMount() {
     console.log(this.state.idRestaurant);
     this.fetchData(this.state.idRestaurant);
   }
+  setModalVisible(visible) {
+    console.log('visible', visible);
+    this.setState({
+      modalVisible: visible,
+    });
+  }
 
   fetchData = (id) => {
     this.props.fetchDatagetPlaceDetail(id);
     console.log(this.props.dataPlaceDetail.data);
+  };
+
+  _onViewPhoto = (item) => {
+    const { height, width } = Dimensions.get('window');
+    console.log(height, width);
+
+    this.setState({ photoView: item });
+    this.setModalVisible(true);
   };
 
   renderPhotos = (data) => {
@@ -36,14 +53,22 @@ class HomeOverviewRestaurant extends PureComponent {
             data={this.props.dataPlaceDetail.data.photos}
             showsHorizontalScrollIndicator={false}
             renderItem={({ item }) => (
-              <Image
-                source={{
-                  uri: `https://maps.googleapis.com/maps/api/place/photo?photoreference=${
-                    item.photo_reference
-                  }&sensor=false&maxheight=250&maxwidth=250&key=AIzaSyCthR5BEn21xBOMCGo-qqui8a9jDRNLDOk`,
-                }}
-                style={styles.ImagesOverView}
-              />
+              <TouchableOpacity
+                onPress={() =>
+                  this._onViewPhoto(`https://maps.googleapis.com/maps/api/place/photo?photoreference=${
+                      item.photo_reference
+                    }&sensor=false&maxwidth=3000&key=AIzaSyCthR5BEn21xBOMCGo-qqui8a9jDRNLDOk`)
+                }
+              >
+                <Image
+                  source={{
+                    uri: `https://maps.googleapis.com/maps/api/place/photo?photoreference=${
+                      item.photo_reference
+                    }&sensor=false&maxheight=250&maxwidth=250&key=AIzaSyCthR5BEn21xBOMCGo-qqui8a9jDRNLDOk`,
+                  }}
+                  style={styles.ImagesOverView}
+                />
+              </TouchableOpacity>
             )}
             keyExtractor={(item, index) => index.toString()}
           />
@@ -77,10 +102,6 @@ class HomeOverviewRestaurant extends PureComponent {
     if (this.props.dataPlaceDetail.isFetching === true) {
       return <Loading />;
     }
-    // eslint-disable-next-line
-    const data = this.props.dataPlaceDetail.data;
-    console.log(this.props.dataPlaceDetail.data.hasOwnProperty('rating'));
-
     return (
       // <Loading />
       <View style={styles.ViewMain}>
@@ -90,6 +111,12 @@ class HomeOverviewRestaurant extends PureComponent {
           centerHeader
           rightHeader
         />
+        <Modal animationType="slide" transparent={false} visible={this.state.modalVisible}>
+          <ModalViewImage
+            onShowModalImage={() => this.setModalVisible(!this.state.modalVisible)}
+            photoView={this.state.photoView}
+          />
+        </Modal>
         {this.renderPhotos(this.props.dataPlaceDetail.data)}
 
         <View style={styles.ViewContent}>

@@ -14,6 +14,7 @@ class PinView extends Component {
   constructor(props) {
     super(props);
     this.state = {
+      isDataFetching: true,
       data: null,
       openingStatus: true,
       type: 'restaurant',
@@ -60,6 +61,9 @@ class PinView extends Component {
           )),
         });
       });
+    this.setState({
+      isDataFetching: false,
+    });
   };
 
   getDataFromApi = (id) => {
@@ -117,6 +121,14 @@ class PinView extends Component {
     if (this.props.item.status) {
       if (this.state.data == null) {
         return null;
+      }
+
+      if (this.state.isDataFetching) {
+        return (
+          <Card onPress={this.props.onPress} direction="row" style={styles.cardStyle}>
+            <Loading />
+          </Card>
+        );
       }
       return (
         <Card onPress={this.props.onPress} direction="row" style={styles.cardStyle}>

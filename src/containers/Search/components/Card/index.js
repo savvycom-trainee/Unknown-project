@@ -45,7 +45,9 @@ class Card extends PureComponent {
           </View>
           <View style={card.cardInfo}>
             <Text style={card.name}>{this.props.dataSearch.name}</Text>
-            <View style={card.typeView} />
+            <View style={card.typeView}>
+              <Text style={card.status}>Restaurant</Text>
+            </View>
             <View style={card.statusView}>
               <Text style={card.status}>Open Now</Text>
             </View>

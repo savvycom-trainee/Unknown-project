@@ -29,6 +29,7 @@ class Pin extends PureComponent {
     if (data == null) {
       return <EmptyContent />;
     }
+
     return (
       <FlatList
         data={data}
@@ -46,9 +47,19 @@ class Pin extends PureComponent {
       />
     );
   };
+
+  // renderLoading = () => {
+  //   setTimeout(function(){that.setState({timePassed: true})}, 1000);
+  // }
+
   render() {
     if (this.props.dataListBookmark.isFetching === true) {
-      return <Loading />;
+      return (
+        <View style={{ flex: 1 }}>
+          <Header centerHeader={<Text style={styles.centerHeaderStyle}>Bookmark</Text>} />
+          <Loading />
+        </View>
+      );
     }
 
     return (
