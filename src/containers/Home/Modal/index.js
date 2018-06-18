@@ -185,7 +185,7 @@ class ModalView extends PureComponent {
       this.props.fetchDataGetAddSearch(latitude, longitude, keyword);
       this.setState({ listadd: false });
     } else {
-      Alert.alert('Please fill in blank');
+      Alert.alert('Please fill in blank.');
     }
   }
   _onAddImages(a) {
@@ -194,7 +194,7 @@ class ModalView extends PureComponent {
       photosselect: this.state.photosselect.concat(a),
     });
     if (this.state.photosselect.length >= 5) {
-      Alert.alert('too much images.');
+      Alert.alert('Too much Images.');
     }
     // console.log(this.state.test.photos);
   }
@@ -237,16 +237,16 @@ class ModalView extends PureComponent {
             // this.props.fetchPostNewFeed(post, restaurant);
             this._onUploadPhoto();
           } else {
-            Alert.alert('please choose one image');
+            Alert.alert('Please Choose one Image.');
           }
         } else {
-          Alert.alert('rating for restaurant please?');
+          Alert.alert('Rating for Restaurant please.');
         }
       } else {
-        Alert.alert('please fill in detail.');
+        Alert.alert('Please fill in Detail.');
       }
     } else {
-      Alert.alert('check in please.');
+      Alert.alert('Check in please.');
     }
   }
   _validateImages() {

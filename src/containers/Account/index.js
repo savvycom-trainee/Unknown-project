@@ -200,8 +200,6 @@ class Account extends PureComponent {
               </View>
             ) : null}
             <View style={account.info}>
-
-            
               <AsyncImage
                 source={
                   this.state.photoURL === '' ? images.defaultAvatar : { uri: this.state.photoURL }
@@ -235,7 +233,7 @@ class Account extends PureComponent {
                     textAlign: 'center',
                   }}
                 >
-                  Follow
+                  {this.state.isFollow ? 'Followed' : 'Follow'}
                 </Text>
               </View>
             </TouchableOpacity>
