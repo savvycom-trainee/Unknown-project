@@ -34,6 +34,27 @@ class Content extends PureComponent {
       if (this.props.data.content.photos <= 0) {
         return null;
       }
+      console.log(this.props.data.content.photos[3]);
+
+      if (this.props.data.content.photos.length > 3) {
+        const dataPhotos = [
+          this.props.data.content.photos[0],
+          this.props.data.content.photos[1],
+          this.props.data.content.photos[2],
+        ];
+        return (
+          <FlatList
+            style={styles.ViewGallery}
+            data={dataPhotos}
+            renderItem={({ item }) => (
+              <TouchableOpacity onPress={() => this._onViewPhoto(item)}>
+                <Image source={{ uri: item }} style={styles.gallery} />
+              </TouchableOpacity>
+            )}
+            keyExtractor={(item, index) => index.toString()}
+          />
+        );
+      }
       return (
         <FlatList
           style={styles.ViewGallery}
@@ -42,7 +63,7 @@ class Content extends PureComponent {
             <TouchableOpacity onPress={() => this._onViewPhoto(item)}>
               <Image source={{ uri: item }} style={styles.gallery} />
             </TouchableOpacity>
-          )}
+            )}
           keyExtractor={(item, index) => index.toString()}
         />
       );
