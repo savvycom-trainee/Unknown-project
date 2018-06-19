@@ -60,7 +60,6 @@ export function fetchDatagetNewFeed(userId) {
         }
       });
     } catch (error) {
-      console.log(error);
       dispatch(getNewFeedFail(error));
     }
   };

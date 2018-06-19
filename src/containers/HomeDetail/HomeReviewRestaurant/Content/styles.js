@@ -60,7 +60,7 @@ const styles = StyleSheet.create({
   avatar: {
     height: 35 * d.ratioH,
     width: 35 * d.ratioW,
-    borderRadius: 35 * d.ratioW,
+    borderRadius: 17.5 * d.ratioW,
   },
 
   ViewNameHours: {

@@ -85,7 +85,6 @@ class Home extends Component {
         );
         this.props.getPositionSuccess(position);
         this._updateLocation(position.coords.latitude, position.coords.longitude);
-        console.log(`position ${JSON.stringify(this.props.getPositionSuccess(position))}`);
       },
       (error) => {
         this.setState({ error });
@@ -211,89 +210,93 @@ class Home extends Component {
       return (
         <FlatList
           data={this.props.dataNewFeed.data}
-          renderItem={({ item }) => (
-            <View style={styles.formItem}>
-              <TouchableOpacity
-                onPress={() => {
-                  this.props.navigation.navigate('HomeDetail', { data: item.restaurantPlaceId });
-                }}
-              >
+          renderItem={({ item }) => {
+            return (
+              <View style={styles.formItem}>
                 <TouchableOpacity
-                  onPress={() => this.props.navigation.navigate('Account', { idUser: item.idUser })}
+                  onPress={() => {
+                    this.props.navigation.navigate('HomeDetail', { data: item.restaurantPlaceId });
+                  }}
                 >
-                  <View style={styles.viewUserPost}>
-                    {item.userAvatar ? (
-                      <Image source={{ uri: item.userAvatar }} style={styles.viewImageUser} />
-                    ) : (
-                      <View style={styles.viewImageUserNull}>
-                        <Icon name="md-contact" size={55} color={Colors.textOpacity} />
-                      </View>
-                    )}
+                  <TouchableOpacity
+                    onPress={() =>
+                      this.props.navigation.navigate('Account', { idUser: item.idUser })
+                    }
+                  >
+                    <View style={styles.viewUserPost}>
+                      {item.userAvatar ? (
+                        <Image source={{ uri: item.userAvatar }} style={styles.viewImageUser} />
+                      ) : (
+                        <View style={styles.viewImageUserNull}>
+                          <Icon name="md-contact" size={55} color={Colors.textOpacity} />
+                        </View>
+                      )}
 
-                    <View>
-                      <Text style={styles.textNameUser}>{item.userName}</Text>
-                      <Text style={styles.textPost}>
-                        {Moment(item.created).format('h:mm a, Do MMMM YYYY')}
+                      <View>
+                        <Text style={styles.textNameUser}>{item.userName}</Text>
+                        <Text style={styles.textPost}>
+                          {Moment(new Date(item.created)).format('h:mm a, Do MMMM YYYY')}
+                        </Text>
+                      </View>
+                    </View>
+                  </TouchableOpacity>
+                  <View>
+                    <View style={styles.statusContainer}>
+                      <Text style={styles.statusStyle} numberOfLines={1} ellipsizeMode="tail">
+                        {item.content.detail}
                       </Text>
                     </View>
+                    <View style={styles.imageContent}>
+                      <TouchableOpacity
+                        onPress={() => {
+                          this.showModalViewImage(true, item.content.photos);
+                        }}
+                      >
+                        <AsyncImage
+                          style={styles.imageContent}
+                          source={{ uri: item.content.photos[0] }}
+                          placeholderColor={Colors.textOpacity10}
+                        />
+                      </TouchableOpacity>
+                    </View>
+                    <View style={styles.viewPointForm}>
+                      <View style={styles.viewPoint}>
+                        <Text style={styles.textPoint}>{item.rating}</Text>
+                      </View>
+                    </View>
+                  </View>
+                  <View style={styles.formItemText}>
+                    <View style={styles.viewNameRow1}>
+                      <Text numberOfLines={1} style={styles.textName}>
+                        {item.restaurantName}
+                      </Text>
+                    </View>
+                    <View style={styles.viewNameRow2}>
+                      <View>
+                        <Text style={styles.textNameRow2} numberOfLines={1} ellipsizeMode="tail">
+                          {item.restaurantVicinity}
+                        </Text>
+                      </View>
+                      <View>
+                        <StarRating
+                          disabled={false}
+                          emptyStar="ios-star-outline"
+                          fullStar="ios-star"
+                          iconSet="Ionicons"
+                          maxStars={5}
+                          rating={item.rating}
+                          fullStarColor="#4CB33E"
+                          reversed
+                          starSize={12}
+                        />
+                      </View>
+                    </View>
+                    <View />
                   </View>
                 </TouchableOpacity>
-                <View>
-                  <View style={styles.statusContainer}>
-                    <Text style={styles.statusStyle} numberOfLines={1} ellipsizeMode="tail">
-                      {item.content.detail}
-                    </Text>
-                  </View>
-                  <View style={styles.imageContent}>
-                    <TouchableOpacity
-                      onPress={() => {
-                        this.showModalViewImage(true, item.content.photos);
-                      }}
-                    >
-                      <AsyncImage
-                        style={styles.imageContent}
-                        source={{ uri: item.content.photos[0] }}
-                        placeholderColor={Colors.textOpacity10}
-                      />
-                    </TouchableOpacity>
-                  </View>
-                  <View style={styles.viewPointForm}>
-                    <View style={styles.viewPoint}>
-                      <Text style={styles.textPoint}>{item.rating}</Text>
-                    </View>
-                  </View>
-                </View>
-                <View style={styles.formItemText}>
-                  <View style={styles.viewNameRow1}>
-                    <Text numberOfLines={1} style={styles.textName}>
-                      {item.restaurantName}
-                    </Text>
-                  </View>
-                  <View style={styles.viewNameRow2}>
-                    <View>
-                      <Text style={styles.textNameRow2} numberOfLines={1} ellipsizeMode="tail">
-                        {item.restaurantVicinity}
-                      </Text>
-                    </View>
-                    <View>
-                      <StarRating
-                        disabled={false}
-                        emptyStar="ios-star-outline"
-                        fullStar="ios-star"
-                        iconSet="Ionicons"
-                        maxStars={5}
-                        rating={item.rating}
-                        fullStarColor="#4CB33E"
-                        reversed
-                        starSize={12}
-                      />
-                    </View>
-                  </View>
-                  <View />
-                </View>
-              </TouchableOpacity>
-            </View>
-          )}
+              </View>
+            );
+          }}
           keyExtractor={(item, index) => index.toString()}
         />
       );

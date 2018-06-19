@@ -21,46 +21,46 @@ class Content extends PureComponent {
           </View>
         </View>
       );
-      // } else if (type === 'discount') {
-      //   return (
-      //     <View style={styles.ViewFollow}>
-      //       <View style={styles.ViewFollowNameTime}>
-      //         <Text>
-      //           <Text style={styles.TextName}>{this.props.data.name} </Text>
-      //           <Text style={styles.TextFollowYou}>{this.props.data.type} </Text>
-      //           <Text style={styles.TextHightlight}>{this.props.data.highlight}% </Text>
-      //           <Text style={styles.TextFollowYou}>{this.props.data.description} </Text>
-      //         </Text>
-      //         <Text style={styles.TextTime}>{this.props.data.time} </Text>
-      //       </View>
-      //     </View>
-      //   );
-      // } else if (type === 'close for maintenance on') {
-      //   return (
-      //     <View style={styles.ViewFollow}>
-      //       <View style={styles.ViewFollowNameTime}>
-      //         <Text>
-      //           <Text style={styles.TextName}>{this.props.data.name} </Text>
-      //           <Text style={styles.TextFollowYou}>{this.props.data.type} </Text>
-      //           <Text style={styles.TextHightlight}>{this.props.data.highlight} </Text>
-      //         </Text>
-      //         <Text style={styles.TextTime}>{this.props.data.time} </Text>
-      //       </View>
-      //     </View>
-      //   );
-      // } else if (type === 'created a collection') {
-      //   return (
-      //     <View style={styles.ViewFollow}>
-      //       <View style={styles.ViewFollowNameTime}>
-      //         <Text>
-      //           <Text style={styles.TextName}>{this.props.data.name} </Text>
-      //           <Text style={styles.TextFollowYou}>{this.props.data.type}: </Text>
-      //           <Text style={styles.TextName}>{this.props.data.description} </Text>
-      //         </Text>
-      //         <Text style={styles.TextTime}>{this.props.data.time} </Text>
-      //       </View>
-      //     </View>
-      //   );
+    } else if (type === 'discount') {
+      return (
+        <View style={styles.ViewFollow}>
+          <View style={styles.ViewFollowNameTime}>
+            <Text>
+              <Text style={styles.TextName}>{this.props.data.name} </Text>
+              <Text style={styles.TextFollowYou}>{this.props.data.type} </Text>
+              <Text style={styles.TextHightlight}>{this.props.data.highlight}% </Text>
+              <Text style={styles.TextFollowYou}>{this.props.data.description} </Text>
+            </Text>
+            <Text style={styles.TextTime}>{this.props.data.time} </Text>
+          </View>
+        </View>
+      );
+    } else if (type === 'close for maintenance on') {
+      return (
+        <View style={styles.ViewFollow}>
+          <View style={styles.ViewFollowNameTime}>
+            <Text>
+              <Text style={styles.TextName}>{this.props.data.name} </Text>
+              <Text style={styles.TextFollowYou}>{this.props.data.type} </Text>
+              <Text style={styles.TextHightlight}>{this.props.data.highlight} </Text>
+            </Text>
+            <Text style={styles.TextTime}>{this.props.data.time} </Text>
+          </View>
+        </View>
+      );
+    } else if (type === 'created a collection') {
+      return (
+        <View style={styles.ViewFollow}>
+          <View style={styles.ViewFollowNameTime}>
+            <Text>
+              <Text style={styles.TextName}>{this.props.data.name} </Text>
+              <Text style={styles.TextFollowYou}>{this.props.data.type}: </Text>
+              <Text style={styles.TextName}>{this.props.data.description} </Text>
+            </Text>
+            <Text style={styles.TextTime}>{this.props.data.time} </Text>
+          </View>
+        </View>
+      );
     }
     return <Text>null</Text>;
   };

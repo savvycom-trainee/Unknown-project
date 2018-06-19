@@ -15,12 +15,11 @@ import firebase from 'react-native-firebase';
 import PropTypes from 'prop-types';
 import StarRating from 'react-native-star-rating';
 import { connect } from 'react-redux';
-import * as Progress from 'react-native-progress';
 import { RNCamera } from 'react-native-camera';
 import Icon from 'react-native-vector-icons/Ionicons';
 import styles from './styles';
 import { Colors } from '../../../themes';
-import ModalViewImage from './ModalViewImage';
+import ModalViewImage from '../../../components/ModalViewImage';
 import {
   fetchDataGetAdd,
   fetchPostNewFeed,
@@ -39,7 +38,7 @@ class ModalView extends PureComponent {
       latitude: null,
       longitude: null,
       postDone: false,
-      error: null,
+      startPost: false,
       modalVisible: false,
       pagePhotos: 10,
       listadd: true,
@@ -73,7 +72,7 @@ class ModalView extends PureComponent {
     this.onGetCurrentLocation();
     this._getPhoto();
   }
-  UNSAFE_componentWillReceiveProps(nextProps) {
+  UNSAFE_componentWillReceiveProps(nextProps) { // eslint-disable-line
     if (nextProps.dataPost.dataSuccess === true) {
       this.props.hideModal(false);
       this.props.postNewFeedFail();
@@ -96,7 +95,6 @@ class ModalView extends PureComponent {
   }
 
   setModalVisible(visible) {
-    console.log('visible', visible);
     this.setState({
       modalVisible: visible,
     });
@@ -112,15 +110,7 @@ class ModalView extends PureComponent {
       this.setState({
         photosselect: this.state.photosselect.concat(data.uri),
       });
-      console.log(data.uri);
     }
-    // this.camera
-    //   .capture()
-    //   .then(data =>
-    //     this.setState({
-    //       photosselect: this.state.photosselect.concat(data.mediaUri),
-    //     }))
-    //   .catch(err => console.error(err));
   }
 
   _getPhoto = () => {
@@ -130,55 +120,51 @@ class ModalView extends PureComponent {
     })
       .then((r) => {
         this.setState({ photos: r.edges });
-        // console.log(this.state.photos);
       })
       .catch((err) => {
         console.log(err);
-        // Error Loading Images
       });
   };
   _onUploadPhoto = () => {
     const file = this.state.photosselect;
-    file.forEach((item) => {
-      console.log(item);
-      firebase
-        .storage()
-        .ref('images')
-        .child(`${new Date().getTime()}`)
-        .putFile(item)
-        .then((res) => {
-          const timeAdd = new Date().toLocaleString();
-          this.setState({
-            post: {
-              ...this.state.post,
-              created: timeAdd,
-              content: {
-                ...this.state.post.content,
-                photos: [...this.state.post.content.photos, res.downloadURL],
+    if (this.state.photosselect.length < 4) {
+      Alert.alert('Please add 4 photos or more.');
+    } else {
+      this.setState({
+        startPost: true,
+      });
+      file.forEach((item) => {
+        firebase
+          .storage()
+          .ref('images')
+          .child(`${new Date().getTime()}`)
+          .putFile(item)
+          .then((res) => {
+            const timeAdd = new Date().toLocaleString();
+            this.setState({
+              post: {
+                ...this.state.post,
+                created: timeAdd,
+                content: {
+                  ...this.state.post.content,
+                  photos: [...this.state.post.content.photos, res.downloadURL],
+                },
               },
-            },
-          });
-          if (this.state.post.content.photos.length === file.length) {
-            this._onPostDone();
-          }
-        })
-        .catch(err => console.log(err));
-    });
+            });
+            if (this.state.post.content.photos.length === file.length) {
+              this._onPostDone();
+            }
+          })
+          .catch(err => console.log(err));
+      });
+    }
   };
   _onPostDone() {
-    console.log(this.state.post.content.photos);
     this.setState({ postDone: true });
     const { post, restaurant } = this.state;
     this.props.fetchPostNewFeed(post, restaurant);
     this.props.fetchDatagetNewFeed(this.props.user.user.uid);
   }
-  // _setHideModal = () => {
-  //   console.log(this.props.dataPost.dataSuccess);
-
-  //   if (this.props.dataPost.dataSuccess === true) {
-  //     this.props.hideModal(false);
-  //   }
-  // };
   _onSearch() {
     const { latitude, longitude, keyword } = this.state;
     if (!this._validateSearch()) {
@@ -193,9 +179,6 @@ class ModalView extends PureComponent {
     this.setState({
       photosselect: this.state.photosselect.concat(a),
     });
-    if (this.state.photosselect.length >= 5) {
-      Alert.alert('Too much Images.');
-    }
     // console.log(this.state.test.photos);
   }
   _onAdd(item) {
@@ -237,7 +220,7 @@ class ModalView extends PureComponent {
             // this.props.fetchPostNewFeed(post, restaurant);
             this._onUploadPhoto();
           } else {
-            Alert.alert('Please Choose one Image.');
+            Alert.alert('Please choose 4 photos or more.');
           }
         } else {
           Alert.alert('Rating for Restaurant please.');
@@ -315,8 +298,7 @@ class ModalView extends PureComponent {
               photoView={this.state.photoView}
             />
           </Modal>
-
-          <ModalCustom onRef={ref => (this.modal = ref)}>
+          <ModalCustom onRef={ref => (this.modal = ref)}> 
             <View style={{ flex: 1, width: null, backgroundColor: '#fff' }}>
               <View style={styles.viewHeadModal}>
                 <View>
@@ -460,7 +442,9 @@ class ModalView extends PureComponent {
                   </View>
                   <View>
                     <View style={styles.viewFormUserName}>
-                      <Text style={styles.textUserName}>{this.props.user.user.fullName}</Text>
+                      <Text style={styles.textUserName} numberOfLines={1}>
+                        {this.props.user.user.fullName}
+                      </Text>
                     </View>
                     <View style={styles.viewNameAndRes}>
                       <View>
@@ -489,14 +473,14 @@ class ModalView extends PureComponent {
                   </View>
 
                   <View style={{ paddingLeft: 10 }}>
-                    {/* {this.state.postDone ? <Loading /> : null} */}
+                    {this.state.startPost ? <Loading /> : null}
                   </View>
                 </View>
                 <View style={styles.viewFormInput}>
                   <View style={styles.viewTextInput}>
                     <TextInput
                       underlineColorAndroid="transparent"
-                      placeholder="What review about?"
+                      placeholder="What's on your mind?"
                       style={styles.textInput}
                       autoCorrect={false}
                       onChangeText={text =>
@@ -623,17 +607,17 @@ class ModalView extends PureComponent {
   }
 }
 ModalView.propTypes = {
+  user: PropTypes.object.isRequired,
   hideModal: PropTypes.func.isRequired,
   fetchDataGetAdd: PropTypes.func.isRequired,
   fetchPostNewFeed: PropTypes.func.isRequired,
   fetchDataGetAddSearch: PropTypes.func.isRequired,
   fetchDatagetNewFeed: PropTypes.func.isRequired,
   dataAdd: PropTypes.object.isRequired,
-  dataPost: PropTypes.object.isRequired,
+  dataPost: PropTypes.object, // eslint-disable-line
   dataSearchAdd: PropTypes.object.isRequired,
   dataSuccess: PropTypes.bool, // eslint-disable-line
   postNewFeedFail: PropTypes.func, // eslint-disable-line
-  // progress: PropTypes.string.isRequired,  // eslint-disable-line
 };
 const mapStateToProps = state => ({
   dataAdd: state.getAddReducers,

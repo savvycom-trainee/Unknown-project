@@ -24,13 +24,13 @@ const styles = StyleSheet.create({
     // borderRadius: 10,
     flex: 1,
     width: 62.5 * d.ratioW,
-    height: 57.5 * d.ratioH,
+    height: 62.5 * d.ratioH,
     marginRight: 14.5 * d.ratioW,
   },
   Avatar: {
-    width: 60 * d.ratioW,
-    height: 60 * d.ratioH,
-    borderRadius: 30 * d.ratioH,
+    width: 56 * d.ratioW,
+    height: 56 * d.ratioH,
+    borderRadius: 28 * d.ratioH,
   },
   ViewContent: {
     // backgroundColor: 'red',

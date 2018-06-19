@@ -17,7 +17,7 @@ class Content extends PureComponent {
             <Image source={{ uri: this.props.data.photoURL }} style={styles.Avatar} />
           ) : (
             <View style={styles.Avatar}>
-              <Icon name="md-contact" size={66} color={Colors.textOpacity} />
+              <Icon name="md-contact" size={64} color={Colors.textOpacity} />
             </View>
           )}
         </View>

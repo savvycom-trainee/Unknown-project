@@ -4,6 +4,7 @@ import Icon from 'react-native-vector-icons/Ionicons';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import Header from '../../components/Header';
+import EmptyContent from '../../components/EmptyContent';
 // import { Icons } from '../../themes';
 // import * as d from '../../utilities/Tranform';
 import Content from './Content';
@@ -29,15 +30,16 @@ class Notifications extends PureComponent {
           centerHeader={<Text style={{ fontSize: 15, fontWeight: '600' }}>Notification</Text>}
           rightHeader={
             <TouchableOpacity onPress={() => this.props.navigation.navigate('User')}>
-              <Icon name="ios-person-add" style={{ marginTop: -15 }} size={30} color="#000" />
+              <Icon name="ios-person-add" style={{ marginTop: -18 }} size={30} color="#000" />
             </TouchableOpacity>
           }
         />
-        <FlatList
+        <EmptyContent />
+        {/* <FlatList
           data={Data}
           renderItem={({ item }) => <Content data={item} />}
           keyExtractor={(item, index) => index.toString()}
-        />
+        /> */}
       </View>
     );
   }
