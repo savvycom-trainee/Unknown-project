@@ -19,14 +19,15 @@ const styles = StyleSheet.create({
     overflow: 'hidden',
     height: 200 * d.ratioH,
     width: '100%',
+    overflow: 'hidden',
   },
   imageHeader: {
     position: 'absolute',
     top: -300 * d.ratioH,
-    left: -130 * d.ratioW,
+    left: -140 * d.ratioW,
     height: 500 * d.ratioH,
     width: 500 * d.ratioW,
-    borderRadius: 250,
+    borderRadius: 250 * d.ratioW,
   },
   animation: {
     height: '100%',

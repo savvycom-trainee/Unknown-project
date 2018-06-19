@@ -46,7 +46,7 @@ class Login extends PureComponent {
         this.setState({ isLoading: false });
       }
     } catch (error) {
-      console.log(error);
+      // code
     }
   };
   move = (user) => {
@@ -86,12 +86,10 @@ class Login extends PureComponent {
         isLoading: true,
       },
       () => {
-        console.log(acc, pass);
         firebase
           .auth()
           .signInAndRetrieveDataWithEmailAndPassword(acc, pass)
           .then((loginUser) => {
-            console.log(loginUser);
             firebase
               .database()
               .ref('/root/users')
@@ -110,7 +108,7 @@ class Login extends PureComponent {
                       AsyncStorage.setItem('user', JSON.stringify(user));
                       this.move(user);
                     } catch (error) {
-                      console.log(error);
+                      // code
                     }
                   },
                 );
@@ -177,13 +175,11 @@ class Login extends PureComponent {
         if (err) {
           Alert.alert('Error', 'Cant get info');
         } else {
-          console.log(res);
           firebase
             .database()
             .ref(`root/users/${res.id}`)
             .once('value')
             .then((snapshot) => {
-              console.log('snapshot', snapshot.val());
               if (snapshot.val() === null) {
                 firebase
                   .auth()
@@ -194,16 +190,13 @@ class Login extends PureComponent {
                       .database()
                       .ref(`root/users/${user.uid}`)
                       .set(user);
-                    AsyncStorage.setItem('user', JSON.stringify(user), error => console.log(error));
+                    AsyncStorage.setItem('user', JSON.stringify(user));
                     this.props.navigation.navigate('UpdateUser', { user, fb: true });
-                  })
-                  .catch((error) => {
-                    console.log(error);
                   });
               } else {
                 const user = { ...snapshot.val(), uid: res.id };
                 this.props.setUser(user);
-                AsyncStorage.setItem('user', JSON.stringify(user), error => console.log(error));
+                AsyncStorage.setItem('user', JSON.stringify(user));
                 this.props.navigation.navigate('Home');
               }
             });

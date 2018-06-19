@@ -14,6 +14,7 @@ import {
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { NavigationActions } from 'react-navigation';
+import ImageResizer from 'react-native-image-resizer';
 import firebase from 'react-native-firebase';
 import styles from './style';
 import { Images, Icons } from '../../themes';
@@ -105,14 +106,18 @@ class UpdateUser extends PureComponent {
     if (!error) {
       this.props.setUser(info);
       AsyncStorage.setItem('user', JSON.stringify(info));
-      this.navigate();
+      this.setState(
+        {
+          isSubmit: false,
+        },
+        this.navigate,
+      );
     } else {
-      console.log(error);
+      // console.log(error);
     }
   };
 
   uploadUser = (info) => {
-    console.log(this.state.isNewUser);
     const ref = firebase
       .database()
       .ref('root/users')
@@ -132,15 +137,14 @@ class UpdateUser extends PureComponent {
           routeName: 'Home',
         }),
       });
+      this.props.navigation.dispatch(navigateAction);
     } else {
-      navigateAction = NavigationActions.navigate({
-        routeName: 'Account',
-      });
+      const reload = this.props.navigation.getParam('reload', () => {});
+      reload();
+      this.props.navigation.goBack();
     }
-
-    this.props.navigation.dispatch(navigateAction);
   };
-  submit = () => {
+  submit1 = () => {
     const fullName = this.fullName._lastNativeText || this.user.fullName;
     const home = this.home._lastNativeText || this.user.home;
     const gender = this.genderValue || this.user.gender;
@@ -166,15 +170,26 @@ class UpdateUser extends PureComponent {
       Alert.alert('Please enter full information');
     }
   };
-  selectAvatar = (uri) => {
+  submit = () => {
     this.setState(
       {
-        photoURL: uri,
+        isSubmit: true,
       },
-      () => {
-        this.gallery.close();
-      },
+      this.submit1,
     );
+  };
+  selectAvatar = (tmpUri) => {
+    ImageResizer.createResizedImage(tmpUri, 960, 720, 'JPEG', 80).then(({ uri }) => {
+      console.log(uri);
+      this.setState(
+        {
+          photoURL: uri,
+        },
+        () => {
+          this.gallery.close();
+        },
+      );
+    });
   };
   render() {
     return (

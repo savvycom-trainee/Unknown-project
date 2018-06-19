@@ -1,6 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { View, Text, Image, TouchableOpacity } from 'react-native';
+import { View, Text, TouchableOpacity } from 'react-native';
 import AsyncImage from '../../../../components/AsyncImage';
 import { Colors } from '../../../../themes';
 import card from './style';

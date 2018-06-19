@@ -145,7 +145,6 @@ class MapScreen extends PureComponent {
     return (
       <View style={{ flex: 1 }}>
         <Header
-          leftHeader={<Image source={Icons.menu} />}
           centerHeader={<Text style={styles.centerHeaderStyle}>Map</Text>}
           rightHeader={
             <Icon

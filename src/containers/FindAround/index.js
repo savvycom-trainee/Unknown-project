@@ -15,9 +15,16 @@ class FindAround extends Component {
   state = {
     data: [],
     isLoading: false,
+    title: 'Find Around',
   };
   componentDidMount() {
-    this._getUserAround();
+    const followId = this.props.navigation.getParam('followId', false);
+    const status = this.props.navigation.getParam('isFollowed', false);
+    if (followId) {
+      this._setTitle(followId, status);
+    } else {
+      this._getUserAround();
+    }
     BackHandler.addEventListener('hardwareBackPress', this.handleBackPress);
   }
   componentWillUnmount() {
@@ -29,6 +36,41 @@ class FindAround extends Component {
     return true;
   };
 
+  _setTitle = (tmpData, status) => {
+    let title = '';
+    if (status) {
+      title = 'Follower Info';
+    } else {
+      title = 'Following Info';
+    }
+    this.setState(
+      {
+        title,
+        isLoading: true,
+      },
+      () => this._getDataFollow(tmpData, status),
+    );
+  };
+  _getDataFollow = (tmpData, status) => {
+    console.log(status);
+    const { data } = this.state;
+    tmpData.map(id =>
+      firebase
+        .database()
+        .ref('root/users/')
+        .child(id)
+        .on('value', (snapshot) => {
+          const value = {
+            ...snapshot._value,
+            isFollow: status,
+          };
+          data.push(value);
+        }));
+    this.setState({
+      data,
+      isLoading: false,
+    });
+  };
   _getUserAround = () => {
     const { user } = this.props.user;
     firebase
@@ -120,7 +162,7 @@ class FindAround extends Component {
             this._reload();
             this.props.navigation.goBack();
           }}
-          centerHeader={<Text style={{ fontSize: 15, fontWeight: '600' }}>Find Around</Text>}
+          centerHeader={<Text style={{ fontSize: 15, fontWeight: '600' }}>{this.state.title}</Text>}
         />
         {isLoading && (
           <ActivityIndicator

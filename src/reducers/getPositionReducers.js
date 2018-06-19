@@ -13,11 +13,9 @@ const INIT_STATE = {
 const getPositionReducers = (state = INIT_STATE, action) => {
   switch (action.type) {
     case GET_POSITION_SUCCESS: {
-      console.log(`action ${action}`);
       return action.payload;
     }
     case GET_POSITION_FAIL: {
-      console.log(`action ${action}`);
       return INIT_STATE;
     }
     default:

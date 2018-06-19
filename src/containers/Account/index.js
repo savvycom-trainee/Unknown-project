@@ -7,7 +7,7 @@ import {
   FlatList,
   AsyncStorage,
   BackHandler,
-  Animated,
+  Alert,
 } from 'react-native';
 
 import PropTypes from 'prop-types';
@@ -26,7 +26,7 @@ import { Header } from '../../components';
 import { Colors, Icons } from '../../themes';
 import account from './style';
 import AsyncImage from '../../components/AsyncImage';
-import { Card, Menu, Statistic } from './component';
+import { Card, Menu, Statistic, ShowImage } from './component';
 import images from '../../themes/Images';
 
 class Account extends PureComponent {
@@ -37,7 +37,6 @@ class Account extends PureComponent {
     this.user = props.user.user;
     /*eslint-disable*/
     this.state = {
-      menuAnim: new Animated.Value(0),
       isOwner: true,
       isShowMenu: false,
       isFollow:
@@ -58,14 +57,12 @@ class Account extends PureComponent {
     BackHandler.removeEventListener('hardwareBackPress', this.handleBackPress);
   }
   onGetOtherUser = () => {
-    console.log(this.user.uid);
     if (this.otherUserId && this.otherUserId !== this.user.uid) {
       firebase
         .database()
         .ref(`root/users/${this.otherUserId}`)
         .on('value', (snapshot) => {
           this.otherUser = snapshot.val();
-          console.log(snapshot.val());
           this.item = snapshot.val();
           this.setState({
             ...this.otherUser,
@@ -74,7 +71,6 @@ class Account extends PureComponent {
           this.props.fetchDataGetUserPin(this.otherUser.uid);
         });
     } else {
-      console.log(this.user);
       this.setState({
         ...this.user,
         isOwner: true,
@@ -129,7 +125,6 @@ class Account extends PureComponent {
   };
   _reload = () => {
     const { user } = this.props.user;
-    console.log('_reload', user.uid);
     this.props.fetchDatagetNewFeed(user.uid);
     firebase
       .database()
@@ -139,13 +134,20 @@ class Account extends PureComponent {
         this.props.setUser(data._value);
       });
   };
-
-  resetPassword = () => {
-    console.log('resetPassword');
-  };
+  _reloadUser = () => {
+    console.log('lad');
+    const { user } = this.props.user;
+    this.setState({
+      ...user,
+    });
+  }
   render() {
     return (
       <View style={account.container}>
+        <ShowImage
+          onRef={(node) => { this.showImage = node; }}
+          source={this.state.photoURL === '' ? images.defaultAvatar : { uri: this.state.photoURL }}
+        />
         <View style={account.topView}>
           <View style={{ flex: 1, backgroundColor: 'white' }}>
             <Header
@@ -160,13 +162,15 @@ class Account extends PureComponent {
               onPressRightHeader={this.state.isOwner ? this.showMenu : null}
             />
             <View style={account.info}>
-              <AsyncImage
-                source={
-                  this.state.photoURL === '' ? images.defaultAvatar : { uri: this.state.photoURL }
-                }
-                placeholderColor={Colors.textOpacity10}
-                style={account.avatar}
-              />
+              <TouchableOpacity onPress={() => this.showImage.open()}>
+                <AsyncImage
+                  source={
+                    this.state.photoURL === '' ? images.defaultAvatar : { uri: this.state.photoURL }
+                  }
+                  placeholderColor={Colors.textOpacity10}
+                  style={account.avatar}
+                />
+              </TouchableOpacity>
               <Text style={account.name}>{this.state.fullName}</Text>
               <Text style={account.detail}>{this.state.gender}</Text>
               <Text style={account.detail}>{this.state.home}</Text>
@@ -202,14 +206,38 @@ class Account extends PureComponent {
         <View style={account.botView}>
           <View style={account.statisticView}>
             <Statistic
+              data={this.state.follower}
+              onPress={() => {
+                if (this.state.follower > 0) {
+                  this.props.navigation.navigate('FindAround', {
+                    followId: this.state.follower,
+                    isFollowed: true,
+                  });
+                } else {
+                  Alert.alert('Notice', 'No one is following you');
+                }
+              }}
               number={this.state.follower ? this.state.follower.length : 0}
               title="Follower"
             />
             <Statistic
+              data={this.state.following}
+              onPress={() => {
+                if (this.state.following > 0) {
+                  this.props.navigation.navigate('FindAround', {
+                    followId: this.state.following,
+                    isFollowed: false,
+                  });
+                } else {
+                  Alert.alert('Notice', 'You do not follow anyone');
+                }
+              }}
               number={this.state.following ? this.state.following.length : 0}
               title="Followings"
             />
             <Statistic
+              data={this.props.dataUserPin}
+              onPress={() => {}}
               number={this.props.dataUserPin.data.length ? this.props.dataUserPin.data.length : 0}
               title="Pin"
             />
@@ -246,18 +274,26 @@ class Account extends PureComponent {
         >
           <View style={account.menuItem}>
             <View style={{ height: 25, width: 36 }}>
-              <IconAwe name="edit" color={Colors.text} size={26} />
+              <IconAwe name="edit" size={26} color="black" />
             </View>
             <Text
               style={account.menuText}
-              onPress={() => this.props.navigation.navigate('UpdateUser')}
+              onPress={() => {
+                this.menu.close();
+                this.props.navigation.navigate('UpdateUser1', {
+                  reload: this._reloadUser,
+                });
+              }}
             >
               Edit Profile
             </Text>
           </View>
           <View style={account.menuItem}>
             <View style={{ height: 25, width: 36 }}>
-              <IconIon name="md-key" color={Colors.text} size={26} />
+              <Image
+                source={Icons.changePassword}
+                style={{ height: 24, width: 32, tintColor: 'black' }}
+              />
             </View>
             <Text
               style={account.menuText}
@@ -271,7 +307,7 @@ class Account extends PureComponent {
           </View>
           <View style={account.menuItem}>
             <View style={{ height: 25, width: 36 }}>
-              <IconIon name="md-log-out" color="red" size={26} />
+              <IconIon name="ios-log-out" size={26} color="black" />
             </View>
             <Text style={[account.menuText, { color: 'red', fontWeight: '600' }]} onPress={this.logOut}>
               LOG OUT

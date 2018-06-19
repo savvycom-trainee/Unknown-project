@@ -3,6 +3,7 @@ package com.unknown;
 import android.app.Application;
 
 import com.facebook.react.ReactApplication;
+import fr.bamlab.rnimageresizer.ImageResizerPackage;
 //camera
 import com.airbnb.android.react.maps.MapsPackage;
 import org.reactnative.camera.RNCameraPackage;
@@ -49,6 +50,7 @@ public class MainApplication extends Application implements ReactApplication {
     protected List<ReactPackage> getPackages() {
       return Arrays.<ReactPackage>asList(
           new MainReactPackage(),
+            new ImageResizerPackage(),
             new MapsPackage(),
             new RNFirebasePackage(),
             new RNCameraPackage(),

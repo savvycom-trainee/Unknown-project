@@ -16,7 +16,6 @@ class Menu extends Component {
     props.onRef(this);
   }
   close = () => {
-    console.log('close');
     Animated.timing(this.state.showAni, {
       toValue: value,
       duration: 350,
@@ -33,7 +32,6 @@ class Menu extends Component {
         isShow: true,
       },
       () => {
-        console.log('open');
         Animated.timing(this.state.showAni, {
           toValue: 0,
           duration: 350,
