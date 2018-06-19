@@ -14,6 +14,7 @@ import {
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { NavigationActions } from 'react-navigation';
+import ImageResizer from 'react-native-image-resizer';
 import firebase from 'react-native-firebase';
 import styles from './style';
 import { Images, Icons } from '../../themes';
@@ -177,15 +178,18 @@ class UpdateUser extends PureComponent {
       this.submit1,
     );
   };
-  selectAvatar = (uri) => {
-    this.setState(
-      {
-        photoURL: uri,
-      },
-      () => {
-        this.gallery.close();
-      },
-    );
+  selectAvatar = (tmpUri) => {
+    ImageResizer.createResizedImage(tmpUri, 960, 720, 'JPEG', 80).then(({ uri }) => {
+      console.log(uri);
+      this.setState(
+        {
+          photoURL: uri,
+        },
+        () => {
+          this.gallery.close();
+        },
+      );
+    });
   };
   render() {
     return (

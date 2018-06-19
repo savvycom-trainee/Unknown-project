@@ -45,6 +45,8 @@ target 'unknown' do
   pod 'Firebase/Storage'
   pod 'RNVectorIcons', :path => '../node_modules/react-native-vector-icons'
   # pod 'react-native-camera', path: '../node_modules/react-native-camera'
+  pod 'react-native-image-resizer', :path => '../node_modules/react-native-image-resizer'
+
 end
 
 post_install do |installer|
