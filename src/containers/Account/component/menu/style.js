@@ -16,13 +16,14 @@ const styles = StyleSheet.create({
     top: 0,
   },
   menuHeader: {
+    overflow: 'hidden',
     height: 200 * d.ratioH,
     width: '100%',
   },
   imageHeader: {
     position: 'absolute',
     top: -300 * d.ratioH,
-    left: -125 * d.ratioW,
+    left: -130 * d.ratioW,
     height: 500 * d.ratioH,
     width: 500 * d.ratioW,
     borderRadius: 250,

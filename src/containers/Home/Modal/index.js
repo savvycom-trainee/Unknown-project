@@ -319,7 +319,17 @@ class ModalView extends PureComponent {
           <ModalCustom onRef={ref => (this.modal = ref)}>
             <View style={{ flex: 1, width: null, backgroundColor: '#fff' }}>
               <View style={styles.viewHeadModal}>
-                <Text style={styles.textHeadModal}>Places Near You </Text>
+                <View>
+                  <TouchableOpacity onPress={() => this._onCloserModal()}>
+                    <Text style={styles.textHeadModal}>Close </Text>
+                  </TouchableOpacity>
+                </View>
+                <View>
+                  <Text style={[styles.textHeadModal, { marginRight: 23, fontWeight: '700' }]}>
+                    Places Near You{' '}
+                  </Text>
+                </View>
+                <View />
               </View>
               <View style={styles.bodyModal}>
                 <View style={styles.bodyModal}>

@@ -246,7 +246,7 @@ class Account extends PureComponent {
         >
           <View style={account.menuItem}>
             <View style={{ height: 25, width: 36 }}>
-              <IconAwe name="edit" size={26} />
+              <IconAwe name="edit" color={Colors.text} size={26} />
             </View>
             <Text
               style={account.menuText}
@@ -257,10 +257,7 @@ class Account extends PureComponent {
           </View>
           <View style={account.menuItem}>
             <View style={{ height: 25, width: 36 }}>
-              <Image
-                source={Icons.changePassword}
-                style={{ height: 24, width: 32, tintColor: 'grey' }}
-              />
+              <IconIon name="md-key" color={Colors.text} size={26} />
             </View>
             <Text
               style={account.menuText}
@@ -274,9 +271,9 @@ class Account extends PureComponent {
           </View>
           <View style={account.menuItem}>
             <View style={{ height: 25, width: 36 }}>
-              <IconIon name="ios-log-out" size={26} />
+              <IconIon name="md-log-out" color="red" size={26} />
             </View>
-            <Text style={[account.menuText, { color: 'red' }]} onPress={this.logOut}>
+            <Text style={[account.menuText, { color: 'red', fontWeight: '600' }]} onPress={this.logOut}>
               LOG OUT
             </Text>
           </View>

@@ -100,7 +100,7 @@ export default StyleSheet.create({
   ViewContentFlatList: {
     marginTop: 10 * d.ratioH,
     flex: 0.84,
-    width: 250 * d.ratioW,
+    width: 360 * d.ratioW,
     padding: 1,
   },
   ViewItemFlatList: {
@@ -123,7 +123,7 @@ export default StyleSheet.create({
   },
   ViewHeadFlatList: {
     paddingTop: 30 * d.ratioH,
-    width: 250 * d.ratioW,
+    width: 350 * d.ratioW,
     justifyContent: 'center',
     alignItems: 'center',
     height: 60 * d.ratioH,
@@ -174,7 +174,7 @@ export default StyleSheet.create({
     padding: 0,
     paddingLeft: 10,
     borderRadius: 2.5,
-    width: 222 * d.ratioW,
+    width: 298 * d.ratioW,
     height: 50 * d.ratioH,
     borderBottomColor: Colors.textOpacity,
     borderBottomWidth: 0.3,
@@ -294,10 +294,12 @@ export default StyleSheet.create({
     alignItems: 'flex-start',
   },
   viewHeadModal: {
+    padding: 14,
+    flexDirection: 'row',
+    justifyContent: 'space-between',
     backgroundColor: Colors.default,
     alignItems: 'center',
-    justifyContent: 'center',
-    height: 60 * d.ratioH,
+    height: 64 * d.ratioH,
   },
   viewFormRatingItem: {
     height: 10 * d.ratioH,
@@ -316,7 +318,7 @@ export default StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'center',
     height: 50 * d.ratioH,
-    width: 250 * d.ratioW,
+    width: 340 * d.ratioW,
   },
   textHeadModal: {
     color: Colors.white,
