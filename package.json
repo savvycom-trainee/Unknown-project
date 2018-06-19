@@ -25,6 +25,7 @@
     "react-native-camera": "^1.1.4",
     "react-native-fbsdk": "^0.7.0",
     "react-native-firebase": "^4.1.0",
+    "react-native-image-pan-zoom": "^2.1.4",
     "react-native-maps": "^0.21.0",
     "react-native-progress": "^3.5.0",
     "react-native-star-rating": "^1.0.9",

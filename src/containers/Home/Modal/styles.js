@@ -59,7 +59,7 @@ export default StyleSheet.create({
     padding: 0,
     marginLeft: 14 * d.ratioW,
     height: 25 * d.ratioH,
-    width: 110 * d.ratioW,
+    width: 130 * d.ratioW,
   },
   ViewButtonSearch: {
     padding: 3,

@@ -4903,6 +4903,10 @@ react-native-firebase@^4.1.0:
     postinstall-build "^5.0.1"
     prop-types "^15.6.1"
 
+react-native-image-pan-zoom@^2.1.4:
+  version "2.1.4"
+  resolved "https://registry.yarnpkg.com/react-native-image-pan-zoom/-/react-native-image-pan-zoom-2.1.4.tgz#7fbbb538f7fac5d1c4c088781b96fe0f9766a38c"
+
 react-native-maps@^0.21.0:
   version "0.21.0"
   resolved "https://registry.yarnpkg.com/react-native-maps/-/react-native-maps-0.21.0.tgz#005f58e93d7623ad59667e8002101970ddf235c2"

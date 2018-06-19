@@ -20,7 +20,7 @@ import { RNCamera } from 'react-native-camera';
 import Icon from 'react-native-vector-icons/Ionicons';
 import styles from './styles';
 import { Colors } from '../../../themes';
-import ModalViewImage from './ModalViewImage';
+import ModalViewImage from '../../../components/ModalViewImage';
 import {
   fetchDataGetAdd,
   fetchPostNewFeed,
@@ -40,6 +40,7 @@ class ModalView extends PureComponent {
       longitude: null,
       postDone: false,
       error: null,
+      startPost: false,
       modalVisible: false,
       pagePhotos: 10,
       listadd: true,
@@ -233,6 +234,9 @@ class ModalView extends PureComponent {
       if (!this._validateInputDetail()) {
         if (!this._validateRating()) {
           if (!this._validateImages()) {
+            this.setState({
+              startPost: true,
+            });
             // const { post, restaurant } = this.state;
             // this.props.fetchPostNewFeed(post, restaurant);
             this._onUploadPhoto();
@@ -460,7 +464,9 @@ class ModalView extends PureComponent {
                   </View>
                   <View>
                     <View style={styles.viewFormUserName}>
-                      <Text style={styles.textUserName}>{this.props.user.user.fullName}</Text>
+                      <Text style={styles.textUserName} numberOfLines={1}>
+                        {this.props.user.user.fullName}
+                      </Text>
                     </View>
                     <View style={styles.viewNameAndRes}>
                       <View>
@@ -489,14 +495,14 @@ class ModalView extends PureComponent {
                   </View>
 
                   <View style={{ paddingLeft: 10 }}>
-                    {/* {this.state.postDone ? <Loading /> : null} */}
+                    {this.state.startPost ? <Loading /> : null}
                   </View>
                 </View>
                 <View style={styles.viewFormInput}>
                   <View style={styles.viewTextInput}>
                     <TextInput
                       underlineColorAndroid="transparent"
-                      placeholder="What review about?"
+                      placeholder="What's on your mind?"
                       style={styles.textInput}
                       autoCorrect={false}
                       onChangeText={text =>
@@ -629,7 +635,7 @@ ModalView.propTypes = {
   fetchDataGetAddSearch: PropTypes.func.isRequired,
   fetchDatagetNewFeed: PropTypes.func.isRequired,
   dataAdd: PropTypes.object.isRequired,
-  dataPost: PropTypes.object.isRequired,
+  dataPost: PropTypes.object, // eslint-disable-line
   dataSearchAdd: PropTypes.object.isRequired,
   dataSuccess: PropTypes.bool, // eslint-disable-line
   postNewFeedFail: PropTypes.func, // eslint-disable-line
