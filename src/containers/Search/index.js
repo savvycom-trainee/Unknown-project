@@ -35,10 +35,10 @@ class Search extends PureComponent {
         <View style={search.resultView}>
           <Text style={search.title}>{labelText}</Text>
           <FlatList
-            style
             data={data.data}
             renderItem={({ item }) => (
               <TouchableOpacity
+                key={item.key}
                 onPress={() => {
                   this.props.navigation.navigate('HomeDetail', { data: item.idRestaurant });
                 }}

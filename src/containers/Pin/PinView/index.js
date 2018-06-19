@@ -3,12 +3,14 @@ import { View, Text, Image, AsyncStorage } from 'react-native';
 import axios from 'axios';
 import firebase from 'react-native-firebase';
 import PropTypes from 'prop-types';
+import { Colors } from '../../../themes';
 
 import StarRating from 'react-native-star-rating';
 import icons from '../../../themes/Icons';
 import { Card, OpenAndDistance, GreenCircle } from '../../../components';
 import styles from './styles';
 import Loading from '../../../components/LoadingContainer';
+import AsyncImage from '../../../components/AsyncImage';
 
 class PinView extends Component {
   constructor(props) {
@@ -133,13 +135,14 @@ class PinView extends Component {
       return (
         <Card onPress={this.props.onPress} direction="row" style={styles.cardStyle}>
           <View style={styles.photoViewStyle}>
-            <Image
+            <AsyncImage
               source={{
                 uri: `https://maps.googleapis.com/maps/api/place/photo?photoreference=${
                   this.state.image
                 }&sensor=false&maxheight=250&maxwidth=250&key=AIzaSyCthR5BEn21xBOMCGo-qqui8a9jDRNLDOk`,
               }}
               style={{ height: 110, width: 110 }}
+              placeholderColor={Colors.textOpacity10}
             />
           </View>
 

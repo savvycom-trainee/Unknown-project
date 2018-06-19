@@ -11,6 +11,7 @@ import ButtonCustom from './ButtonCustom';
 import ButtonBookmark from './ButtonBookmark';
 import * as d from '../../../utilities/Tranform';
 import ModalViewImage from '../../../components/ModalViewImage';
+import AsyncImage from '../../../components/AsyncImage';
 
 import styles from './styles';
 
@@ -60,13 +61,14 @@ class HomeOverviewRestaurant extends PureComponent {
                     }&sensor=false&maxwidth=3000&key=AIzaSyCthR5BEn21xBOMCGo-qqui8a9jDRNLDOk`)
                 }
               >
-                <Image
+                <AsyncImage
                   source={{
                     uri: `https://maps.googleapis.com/maps/api/place/photo?photoreference=${
                       item.photo_reference
                     }&sensor=false&maxheight=250&maxwidth=250&key=AIzaSyCthR5BEn21xBOMCGo-qqui8a9jDRNLDOk`,
                   }}
                   style={styles.ImagesOverView}
+                  placeholderColor={Colors.textOpacity10}
                 />
               </TouchableOpacity>
             )}

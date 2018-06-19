@@ -29,7 +29,7 @@ class ButtonCustom extends PureComponent {
 
 ButtonCustom.propTypes = {
   onPressButton: PropTypes.func,
-  iconName: PropTypes.string.isRequired,
+  iconName: PropTypes.number.isRequired,
   iconColor: PropTypes.string.isRequired,
   title: PropTypes.string.isRequired,
 };

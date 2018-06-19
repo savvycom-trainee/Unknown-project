@@ -1,6 +1,8 @@
 import React, { PureComponent } from 'react';
 import PropTypes from 'prop-types';
 // import StarRating from 'react-native-star-rating';
+import AsyncImage from '../../../../components/AsyncImage';
+import { Icons, Colors } from '../../../../themes';
 
 import { View, Text, Image } from 'react-native';
 import card from './style';
@@ -15,20 +17,22 @@ class Card extends PureComponent {
   renderPhotos = (data) => {
     if (data.hasOwnProperty('photos')) {
       return (
-        <Image
+        <AsyncImage
           source={{
             uri: `https://maps.googleapis.com/maps/api/place/photo?photoreference=${
               data.photos[0].photo_reference
             }&sensor=false&maxheight=250&maxwidth=250&key=AIzaSyCthR5BEn21xBOMCGo-qqui8a9jDRNLDOk`,
           }}
           style={card.image}
+          placeholderColor={Colors.textOpacity10}
         />
       );
     }
     return (
-      <Image
+      <AsyncImage
         source={require('../../../../../assets/images/restaurantPhoto.png')}
         style={card.image}
+        placeholderColor={Colors.textOpacity10}
       />
     );
   };
@@ -45,9 +49,7 @@ class Card extends PureComponent {
           </View>
           <View style={card.cardInfo}>
             <Text style={card.name}>{this.props.dataSearch.name}</Text>
-            <View style={card.typeView}>
-              <Text style={card.status}>Restaurant</Text>
-            </View>
+
             <View style={card.statusView}>
               <Text style={card.status}>Open Now</Text>
             </View>
