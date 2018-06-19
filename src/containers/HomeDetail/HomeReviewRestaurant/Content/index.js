@@ -36,34 +36,41 @@ class Content extends PureComponent {
       }
       console.log(this.props.data.content.photos[3]);
 
-      if (this.props.data.content.photos.length > 3) {
-        const dataPhotos = [
-          this.props.data.content.photos[0],
-          this.props.data.content.photos[1],
-          this.props.data.content.photos[2],
-        ];
-        return (
-          <FlatList
-            style={styles.ViewGallery}
-            data={dataPhotos}
-            renderItem={({ item }) => (
-              <TouchableOpacity onPress={() => this._onViewPhoto(item)}>
-                <Image source={{ uri: item }} style={styles.gallery} />
-              </TouchableOpacity>
-            )}
-            keyExtractor={(item, index) => index.toString()}
-          />
-        );
-      }
+      // if (this.props.data.content.photos.length > 3) {
+      //   const dataPhotos = [
+      //     this.props.data.content.photos[0],
+      //     this.props.data.content.photos[1],
+      //     this.props.data.content.photos[2],
+      //   ];
+      //   return (
+      //     <FlatList
+      //       style={styles.ViewGallery}
+      //       data={dataPhotos}
+      //       horizontal
+      //       renderItem={({ item }) => (
+      //         <TouchableOpacity onPress={() => this._onViewPhoto(item)}>
+      //           <Image source={{ uri: item }} style={styles.gallery} />
+      //         </TouchableOpacity>
+      //       )}
+      //       keyExtractor={(item, index) => index.toString()}
+      //     />
+      //   );
+      // }
       return (
         <FlatList
+          horizontal
+          showsHorizontalScrollIndicator={false}
           style={styles.ViewGallery}
           data={this.props.data.content.photos}
           renderItem={({ item }) => (
             <TouchableOpacity onPress={() => this._onViewPhoto(item)}>
-              <Image source={{ uri: item }} style={styles.gallery} />
+              <Image
+                // onPress={() => this._onViewPhoto(item)}
+                source={{ uri: item }}
+                style={styles.gallery}
+              />
             </TouchableOpacity>
-            )}
+          )}
           keyExtractor={(item, index) => index.toString()}
         />
       );

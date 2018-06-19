@@ -47,7 +47,7 @@ const styles = StyleSheet.create({
     flex: 1,
     flexDirection: 'row',
     marginTop: 20 * d.ratioH,
-    justifyContent: 'flex-start',
+    // justifyContent: 'flex-start',
   },
 
   linkImage: {
