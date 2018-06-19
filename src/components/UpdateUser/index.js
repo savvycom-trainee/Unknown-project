@@ -136,12 +136,12 @@ class UpdateUser extends PureComponent {
           routeName: 'Home',
         }),
       });
+      this.props.navigation.dispatch(navigateAction);
     } else {
-      navigateAction = NavigationActions.navigate({
-        routeName: 'Account',
-      });
+      const reload = this.props.navigation.getParam('reload', () => {});
+      reload();
+      this.props.navigation.goBack();
     }
-    this.props.navigation.dispatch(navigateAction);
   };
   submit1 = () => {
     const fullName = this.fullName._lastNativeText || this.user.fullName;

@@ -26,7 +26,7 @@ import { Header } from '../../components';
 import { Colors, Icons } from '../../themes';
 import account from './style';
 import AsyncImage from '../../components/AsyncImage';
-import { Card, Menu, Statistic } from './component';
+import { Card, Menu, Statistic, ShowImage } from './component';
 import images from '../../themes/Images';
 
 class Account extends PureComponent {
@@ -134,10 +134,20 @@ class Account extends PureComponent {
         this.props.setUser(data._value);
       });
   };
-
+  _reloadUser = () => {
+    console.log('lad');
+    const { user } = this.props.user;
+    this.setState({
+      ...user,
+    });
+  }
   render() {
     return (
       <View style={account.container}>
+        <ShowImage
+          onRef={(node) => { this.showImage = node; }}
+          source={this.state.photoURL === '' ? images.defaultAvatar : { uri: this.state.photoURL }}
+        />
         <View style={account.topView}>
           <View style={{ flex: 1, backgroundColor: 'white' }}>
             <Header
@@ -152,13 +162,15 @@ class Account extends PureComponent {
               onPressRightHeader={this.state.isOwner ? this.showMenu : null}
             />
             <View style={account.info}>
-              <AsyncImage
-                source={
-                  this.state.photoURL === '' ? images.defaultAvatar : { uri: this.state.photoURL }
-                }
-                placeholderColor={Colors.textOpacity10}
-                style={account.avatar}
-              />
+              <TouchableOpacity onPress={() => this.showImage.open()}>
+                <AsyncImage
+                  source={
+                    this.state.photoURL === '' ? images.defaultAvatar : { uri: this.state.photoURL }
+                  }
+                  placeholderColor={Colors.textOpacity10}
+                  style={account.avatar}
+                />
+              </TouchableOpacity>
               <Text style={account.name}>{this.state.fullName}</Text>
               <Text style={account.detail}>{this.state.gender}</Text>
               <Text style={account.detail}>{this.state.home}</Text>
@@ -266,7 +278,12 @@ class Account extends PureComponent {
             </View>
             <Text
               style={account.menuText}
-              onPress={() => this.props.navigation.navigate('UpdateUser1')}
+              onPress={() => {
+                this.menu.close();
+                this.props.navigation.navigate('UpdateUser1', {
+                  reload: this._reloadUser,
+                });
+              }}
             >
               Edit Profile
             </Text>
@@ -281,6 +298,7 @@ class Account extends PureComponent {
             <Text
               style={account.menuText}
               onPress={() => {
+                this.menu.close();
                 this.props.navigation.navigate('Change');
               }}
             >

@@ -48,8 +48,6 @@ class Home extends Component {
       .ref('root/users')
       .child(uid)
       .on('value', (data) => {
-        console.log('user', data._value);
-
         this.props.setUser(data._value);
       });
     this._getToken();
@@ -74,7 +72,6 @@ class Home extends Component {
         console.log(`position ${JSON.stringify(this.props.getPositionSuccess(position))}`);
       },
       (error) => {
-        console.log(error);
         this.setState({ error });
         this.props.getPositionFail();
       },
@@ -95,7 +92,7 @@ class Home extends Component {
   hideModalListImage = (message) => {
     this.showModalViewImage(message);
   };
-  _onRefresh() {
+  _onRefresh = () => {
     this.setState({ refreshing: true });
     this._ItemLoadMore();
   }
@@ -109,8 +106,6 @@ class Home extends Component {
   }
   _updateLocation = (lat, lng) => {
     const { uid } = this.props.user.user;
-    console.log(this.props.user);
-
     const updates = {};
     updates[`/root/users/${uid}/location`] = { lat, lng };
     firebase
@@ -278,7 +273,7 @@ class Home extends Component {
             refreshControl={
               <RefreshControl
                 refreshing={this.state.refreshing}
-                onRefresh={this._onRefresh.bind(this)}
+                onRefresh={this._onRefresh}
                 onEndReachedThreshold={0.5}
                 onEndReached={() => {
                   this.EndhandleScroll();
