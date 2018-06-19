@@ -49,8 +49,6 @@ class Home extends Component {
       .ref('root/users')
       .child(uid)
       .on('value', (data) => {
-        console.log('user', data._value);
-
         this.props.setUser(data._value);
       });
     this._getToken();
@@ -72,10 +70,8 @@ class Home extends Component {
         );
         this.props.getPositionSuccess(position);
         this._updateLocation(position.coords.latitude, position.coords.longitude);
-        console.log(`position ${JSON.stringify(this.props.getPositionSuccess(position))}`);
       },
       (error) => {
-        console.log(error);
         this.setState({ error });
         this.props.getPositionFail();
       },
@@ -110,8 +106,6 @@ class Home extends Component {
   }
   _updateLocation = (lat, lng) => {
     const { uid } = this.props.user.user;
-    console.log(this.props.user);
-
     const updates = {};
     updates[`/root/users/${uid}/location`] = { lat, lng };
     firebase

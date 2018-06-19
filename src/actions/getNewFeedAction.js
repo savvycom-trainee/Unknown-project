@@ -1,5 +1,3 @@
-import { AsyncStorage } from 'react-native';
-import Moment from 'moment';
 import firebase from 'react-native-firebase';
 import { GET_NEWFEED_ING, GET_NEWFEED_SUCCESS, GET_NEWFEED_FAIL } from '../constants/actionTypes';
 
@@ -37,7 +35,6 @@ export function fetchDatagetNewFeed(userId) {
         .orderByChild('idUser')
         .equalTo(`${userId}`)
         .on('value', (snapshot) => {
-          console.log(snapshot);
           snapshot.forEach((item) => {
             returnArr = [...returnArr, item._value];
           });
@@ -63,7 +60,6 @@ export function fetchDatagetNewFeed(userId) {
         }
       });
     } catch (error) {
-      console.log(error);
       dispatch(getNewFeedFail(error));
     }
   };

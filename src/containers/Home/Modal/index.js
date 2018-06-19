@@ -97,7 +97,6 @@ class ModalView extends PureComponent {
   }
 
   setModalVisible(visible) {
-    console.log('visible', visible);
     this.setState({
       modalVisible: visible,
     });
@@ -113,7 +112,6 @@ class ModalView extends PureComponent {
       this.setState({
         photosselect: this.state.photosselect.concat(data.uri),
       });
-      console.log(data.uri);
     }
     // this.camera
     //   .capture()
@@ -141,7 +139,6 @@ class ModalView extends PureComponent {
   _onUploadPhoto = () => {
     const file = this.state.photosselect;
     file.forEach((item) => {
-      console.log(item);
       firebase
         .storage()
         .ref('images')
@@ -167,7 +164,6 @@ class ModalView extends PureComponent {
     });
   };
   _onPostDone() {
-    console.log(this.state.post.content.photos);
     this.setState({ postDone: true });
     const { post, restaurant } = this.state;
     this.props.fetchPostNewFeed(post, restaurant);

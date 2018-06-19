@@ -24,9 +24,6 @@ export function postNewFeedFail() {
 export function fetchPostNewFeed(post, restaurant) {
   return (dispatch) => {
     dispatch(postNewFeed());
-    const idRestaurant = restaurant.idRestaurant;
-    console.log(idRestaurant);
-    console.log(post);
     firebase
       .database()
       .ref('root/posts/')
