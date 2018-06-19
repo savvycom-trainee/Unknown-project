@@ -14,16 +14,23 @@ exports.sendNotification = functions.database
         .ref(`root/users/${after[after.length - 1]}`)
         .once('value', snap => {
           const user = snap.val();
-          console.log('users', user);
-          const payload = {
-            notification: {
-              title: 'You have a new follower!',
-              body: `${after.fullName} is now following you.`
-            }
-          };
-          console.log('token', user.token);
-
-          return admin.messaging().sendToDevice(user.token, payload);
+          admin
+            .database()
+            .ref(`root/users/${context.params.id}`)
+            .once('value', snap1 => {
+              const follower = snap1.val();
+              const payload = {
+                data: {
+                  uid: follower.uid
+                },
+                notification: {
+                  title: 'You have a new follower!',
+                  body: `${follower.fullName} is now following you.`
+                }
+              };
+              console.log(user.token, payload);
+              return admin.messaging().sendToDevice(user.token, payload);
+            });
         });
     }
     return 1;

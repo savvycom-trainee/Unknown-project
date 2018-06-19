@@ -74,8 +74,10 @@
             <category android:name="android.intent.category.DEFAULT" />
           </intent-filter>
         </receiver>
-         <service android:name="io.invertase.firebase.messaging.RNFirebaseBackgroundMessagingService" />
-
+        <service android:name="io.invertase.firebase.messaging.RNFirebaseBackgroundMessagingService" />
+        <meta-data
+          android:name="com.google.firebase.messaging.default_notification_icon"
+          android:resource="@drawable/ic_launcher" />
     </application>
 
 </manifest>
