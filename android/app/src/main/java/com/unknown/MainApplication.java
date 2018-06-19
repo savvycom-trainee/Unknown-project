@@ -57,7 +57,8 @@ public class MainApplication extends Application implements ReactApplication {
           new RNFirebaseDatabasePackage(),
           new RNFirebaseStoragePackage(),
               new FBSDKPackage(mCallbackManager),
-              new RNFirebaseMessagingPackage() 
+              new RNFirebaseMessagingPackage(),
+              new RNFirebaseNotificationsPackage()
       );
     }
 

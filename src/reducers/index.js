@@ -12,7 +12,7 @@ import getUserReducers from './getUserReducers';
 import getUserSearchReducers from './getUserSearchReducers';
 import getUserPinReducers from './getUserPinReducers';
 import user from './user';
-
+import badge from './badge';
 import getUserDetailReducers from './getUserDetailReducers';
 import getPlaceDetailReducers from './getPlaceDetailReducers';
 import getReviewReducers from './getReviewReducers';
@@ -40,6 +40,7 @@ const rootRecuder = combineReducers({
   getBookmarkReducers,
   getListBookmarkReducers,
   getSearchRecomendReducers,
+  badge,
 });
 
 export default rootRecuder;
