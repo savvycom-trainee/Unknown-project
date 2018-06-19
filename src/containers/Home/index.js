@@ -11,6 +11,9 @@ import {
   Platform,
   AppRegistry,
 } from 'react-native';
+
+import type { Notification } from 'react-native-firebase';
+
 import { connect } from 'react-redux';
 import Moment from 'moment';
 import firebase from 'react-native-firebase';
@@ -21,13 +24,11 @@ import styles from './styles';
 import AsyncImage from '../../components/AsyncImage';
 import { Icons, Colors } from '../../themes';
 import { fetchDatagetNewFeed } from '../../actions/getNewFeedAction';
-import { getPositionSuccess, getPositionFail, setUser } from '../../actions';
+import { getPositionSuccess, getPositionFail, setUser, addNotification } from '../../actions';
 import ModalView from './Modal';
 import Loading from '../../components/LoadingContainer';
 import EmptyContent from '../../components/EmptyContent';
 import bgMessaging from './bgMessaging';
-
-const FCM = firebase.messaging();
 
 class Home extends Component {
   constructor(props) {
@@ -53,9 +54,19 @@ class Home extends Component {
 
         this.props.setUser(data._value);
       });
-    if (Platform.OS === 'android') this._getToken();
+    if (Platform.OS === 'android') {
+      this._getToken();
+      this._onNotification();
+      this.onMessage();
+    }
   }
-
+  componentWillReceiveProps(nextProps) {
+    console.log(nextProps.badge);
+  }
+  componentWillUnmount() {
+    this.notificationDisplayedListener();
+    this.notificationListener();
+  }
   onGetCurrentPosition = () => {
     // eslint-disable-next-line
     navigator.geolocation.getCurrentPosition(
@@ -89,7 +100,34 @@ class Home extends Component {
   hideModal = (message) => {
     this.setModalVisible(message);
   };
-
+  _onNotification = () => {
+    this.onMessage = firebase.messaging().onMessage((message) => {
+      console.log('message', message);
+      firebase.messaging().createLocalNotification({
+        title: 'My Notification Title',
+        body: 'My Notification Message',
+        sound: 'default',
+        priority: 'high',
+        click_action: 'ACTION',
+        //    icon: 'ic_launcher',
+        show_in_foreground: true,
+      });
+    });
+    this.notificationDisplayedListener = firebase
+      .notifications()
+      .onNotificationDisplayed((notification: Notification) => {
+        console.log(notification);
+        this.props.addNotification(); //eslint-disable-line
+        // Process your notification as required
+      });
+    this.notificationListener = firebase
+      .notifications()
+      .onNotification((notification: Notification) => {
+        console.log(notification);
+        this.props.addNotification();
+        // Process your notification as required
+      });
+  };
   _updateLocation = (lat, lng) => {
     const { uid } = this.props.user.user;
     console.log(this.props.user);
@@ -106,6 +144,8 @@ class Home extends Component {
       });
   };
   _getToken = async () => {
+    const FCM = firebase.messaging();
+
     const { uid } = this.props.user.user;
     const enabled = await FCM.hasPermission();
     if (!enabled) {
@@ -309,6 +349,7 @@ const mapStateToProps = state => ({
   dataNewFeed: state.getNewFeedReducers,
   region: state.getPositionReducers,
   user: state.user,
+  badge: state.badge,
 });
 
 AppRegistry.registerHeadlessTask('RNFirebaseBackgroundMessage', () => bgMessaging);
@@ -320,5 +361,6 @@ export default connect(
     getPositionSuccess,
     getPositionFail,
     setUser,
+    addNotification,
   },
 )(Home);

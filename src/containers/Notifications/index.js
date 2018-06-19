@@ -1,16 +1,27 @@
 import React, { PureComponent } from 'react';
-import { View, Text, Image, FlatList, TouchableOpacity } from 'react-native';
+import { View, Text, FlatList, TouchableOpacity } from 'react-native';
 import Icon from 'react-native-vector-icons/Ionicons';
 import PropTypes from 'prop-types';
+import { connect } from 'react-redux';
 import Header from '../../components/Header';
-import { Icons } from '../../themes';
-import * as d from '../../utilities/Tranform';
+// import { Icons } from '../../themes';
+// import * as d from '../../utilities/Tranform';
 import Content from './Content';
 import styles from './styles';
 import Data from './Data';
 
 class Notifications extends PureComponent {
+  // componentDidMount(){
+  //   this.props.
+  // }
   state = {};
+
+  componentWillReceiveProps(nextProps) {
+    console.log(nextProps);
+    if (this.props !== nextProps) {
+      this.props.navigation.setParams({ badge: true });
+    }
+  }
   render() {
     return (
       <View style={styles.ViewMain}>
@@ -34,4 +45,7 @@ class Notifications extends PureComponent {
 Notifications.propTypes = {
   navigation: PropTypes.object.isRequired,
 };
-export default Notifications;
+const mapStateToProps = state => ({
+  badge: state.badge,
+});
+export default connect(mapStateToProps)(Notifications);

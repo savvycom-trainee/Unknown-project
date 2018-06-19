@@ -200,8 +200,6 @@ class Account extends PureComponent {
               </View>
             ) : null}
             <View style={account.info}>
-
-            
               <AsyncImage
                 source={
                   this.state.photoURL === '' ? images.defaultAvatar : { uri: this.state.photoURL }

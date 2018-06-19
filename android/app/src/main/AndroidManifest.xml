@@ -77,7 +77,7 @@
         <service android:name="io.invertase.firebase.messaging.RNFirebaseBackgroundMessagingService" />
         <meta-data
           android:name="com.google.firebase.messaging.default_notification_icon"
-          android:resource="@drawable/ic_launcher" />
+          android:resource="@mipmap/ic_launcher" />
     </application>
 
 </manifest>
