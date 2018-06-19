@@ -1,5 +1,6 @@
 import { StyleSheet } from 'react-native';
 import * as d from '../../utilities/Tranform';
+import { Color } from '../../themes';
 
 const styles = StyleSheet.create({
   ViewMain: {
@@ -17,6 +18,8 @@ const styles = StyleSheet.create({
     // shadowOpacity: 0.8,
     // shadowRadius: 2,
     // elevation: 10,
+    borderTopColor: 'black',
+    borderTopWidth: 0.2,
     justifyContent: 'center',
     backgroundColor: 'white',
   },
