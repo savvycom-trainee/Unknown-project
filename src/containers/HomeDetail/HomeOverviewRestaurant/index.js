@@ -25,6 +25,7 @@ class HomeOverviewRestaurant extends PureComponent {
     console.log(this.state.idRestaurant);
     this.fetchData(this.state.idRestaurant);
   }
+  
   setModalVisible(visible) {
     console.log('visible', visible);
     this.setState({

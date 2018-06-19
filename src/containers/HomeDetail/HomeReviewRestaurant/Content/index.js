@@ -1,11 +1,16 @@
 import React, { PureComponent } from 'react';
 import PropTypes from 'prop-types';
 import Icon from 'react-native-vector-icons/Ionicons';
+import { connect } from 'react-redux';
+import { fetchDatagetUserDetail } from '../../../../actions/getUserDetailAction';
 import { View, Text, Image, FlatList, TouchableOpacity, Modal } from 'react-native';
 import Moment from 'moment';
 import styles from './styles';
 import { Colors } from '../../../../themes';
 import ModalViewImage from '../../../../components/ModalViewImage';
+import firebase from 'react-native-firebase';
+import Loading from '../../../../components/LoadingContainer';
+
 // import { Images } from '../../../../themes';
 
 class Content extends PureComponent {
@@ -15,6 +20,11 @@ class Content extends PureComponent {
       modalVisible: false,
       photoView: null,
     };
+  }
+  componentDidMount() {
+    this.props.fetchDatagetUserDetail(this.props.data.idUser);
+    console.log(this.props.dataUser.data);
+    console.log(this.props.data);
   }
 
   setModalVisible(visible) {
@@ -35,27 +45,6 @@ class Content extends PureComponent {
         return null;
       }
       console.log(this.props.data.content.photos[3]);
-
-      // if (this.props.data.content.photos.length > 3) {
-      //   const dataPhotos = [
-      //     this.props.data.content.photos[0],
-      //     this.props.data.content.photos[1],
-      //     this.props.data.content.photos[2],
-      //   ];
-      //   return (
-      //     <FlatList
-      //       style={styles.ViewGallery}
-      //       data={dataPhotos}
-      //       horizontal
-      //       renderItem={({ item }) => (
-      //         <TouchableOpacity onPress={() => this._onViewPhoto(item)}>
-      //           <Image source={{ uri: item }} style={styles.gallery} />
-      //         </TouchableOpacity>
-      //       )}
-      //       keyExtractor={(item, index) => index.toString()}
-      //     />
-      //   );
-      // }
       return (
         <FlatList
           horizontal
@@ -78,7 +67,15 @@ class Content extends PureComponent {
     return null;
   }
 
+  renderU;
+
   render() {
+    console.log(this.props.data);
+    if (this.props.dataUser.isFetching == true) {
+      return <Loading />;
+    }
+    console.log(this.props.dataUser.data);
+
     return (
       <View style={styles.ViewMain}>
         <Modal animationType="slide" transparent={false} visible={this.state.modalVisible}>
@@ -97,7 +94,7 @@ class Content extends PureComponent {
               )}
             </View>
             <View style={styles.ViewNameHours}>
-              <Text style={styles.TextName}>{this.props.data.userName}</Text>
+              <Text style={styles.TextName}>{this.props.dataUser.data.fullName}</Text>
               <Text style={styles.TextHoursComment}>
                 {Moment(this.props.data.created).format('h:mm a, Do MMMM YYYY')}
               </Text>
@@ -121,6 +118,18 @@ class Content extends PureComponent {
 
 Content.propTypes = {
   data: PropTypes.object.isRequired,
+  dataUser: PropTypes.object.isRequired,
+  fetchDatagetUserDetail: PropTypes.func.isRequired,
 };
+const mapStateToProps = state => ({
+  dataUser: state.getUserDetailReducers,
+});
 
-export default Content;
+const mapDispatchToProps = dispatch => ({
+  fetchDatagetUserDetail: id => dispatch(fetchDatagetUserDetail(id)),
+});
+
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps,
+)(Content);

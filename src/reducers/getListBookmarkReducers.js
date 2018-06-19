@@ -19,7 +19,7 @@ export default (state = INIT_STATE, action) => {
         isFetching: true,
       };
     case GET_LISTBOOKMARK_SUCCESS:
-      console.log(action.payload);
+      // console.log(action.payload);
       return {
         ...state,
         isFetching: false,

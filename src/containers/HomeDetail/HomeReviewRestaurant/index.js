@@ -23,7 +23,7 @@ class HomeReviewRestaurant extends PureComponent {
   }
 
   renderReview = (data) => {
-    console.log(data == null);
+    console.log(data);
 
     if (data == null) {
       return <EmptyContent />;
@@ -43,6 +43,7 @@ class HomeReviewRestaurant extends PureComponent {
     }
     // const data = this.props.dataReview.data;
     // console.log(data);
+    console.log(this.props.dataReview.data);
 
     return (
       <View style={styles.ViewMain}>
