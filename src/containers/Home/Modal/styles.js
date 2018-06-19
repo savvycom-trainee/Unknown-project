@@ -65,21 +65,25 @@ export default StyleSheet.create({
     padding: 3,
   },
   textPosted: {
+    paddingTop: 5,
     fontSize: 15,
     fontWeight: '500',
     color: Colors.white,
   },
   textPost: {
+    paddingTop: 5,
     fontSize: 15,
     fontWeight: '500',
-    color: 'rgba(19,19,19,0.8)',
+    color: Colors.white,
   },
   textCreatePost: {
+    paddingTop: 5,
     fontSize: 17,
     fontWeight: '700',
     color: Colors.white,
   },
   textCancelPost: {
+    paddingTop: 5,
     fontSize: 15,
     fontWeight: '500',
     color: Colors.white,
@@ -321,6 +325,7 @@ export default StyleSheet.create({
     width: 340 * d.ratioW,
   },
   textHeadModal: {
+    paddingTop: 5,
     color: Colors.white,
     fontSize: 15,
     fontWeight: '500',
