@@ -18,7 +18,7 @@ export default StyleSheet.create({
   viewImageUser: {
     height: 50 * d.ratioH,
     width: 50 * d.ratioW,
-    borderRadius: 25,
+    borderRadius: 25 * d.ratioW,
   },
   viewImageUserNull: {
     alignItems: 'center',

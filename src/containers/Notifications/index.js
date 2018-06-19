@@ -18,7 +18,7 @@ class Notifications extends PureComponent {
           centerHeader={<Text style={{ fontSize: 15, fontWeight: '600' }}>Notification</Text>}
           rightHeader={
             <TouchableOpacity onPress={() => this.props.navigation.navigate('User')}>
-              <Icon name="ios-person-add" style={{ marginTop: -15 }} size={30} color="#000" />
+              <Icon name="ios-person-add" style={{ marginTop: -18 }} size={30} color="#000" />
             </TouchableOpacity>
           }
         />
