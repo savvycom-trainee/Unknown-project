@@ -72,7 +72,7 @@ class FindCard extends React.PureComponent {
         <TouchableOpacity onPress={this._onAccountPress}>
           <View style={styles.content_layout}>
             <Image
-              source={item.photoURL ? { uri: item.photoURL } : Images.avatar}
+              source={item.photoURL ? { uri: item.photoURL } : Images.defaultAvatar}
               style={styles.avatar}
             />
             <View style={{ marginLeft: 14, flex: 1 }}>
@@ -88,15 +88,17 @@ class FindCard extends React.PureComponent {
                 />
                 <Text> {item.gender === 'Male' ? 'Nam' : 'Nữ'}</Text>
               </View>
-              <View style={styles.item_layout}>
-                <Icon
-                  name="ios-compass-outline"
-                  color={Colors.default}
-                  size={18}
-                  // style={{ margin: 5 }}
-                />
-                <Text> {item.distance} km</Text>
-              </View>
+              {item.distance ? (
+                <View style={styles.item_layout}>
+                  <Icon
+                    name="ios-compass-outline"
+                    color={Colors.default}
+                    size={18}
+                    // style={{ margin: 5 }}
+                  />
+                  <Text> {item.distance} km</Text>
+                </View>
+              ) : null}
             </View>
           </View>
         </TouchableOpacity>

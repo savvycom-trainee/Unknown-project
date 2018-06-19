@@ -9,7 +9,6 @@ import {
   FlatList,
   RefreshControl,
   Modal,
-  Dimensions,
 } from 'react-native';
 import { connect } from 'react-redux';
 import Moment from 'moment';

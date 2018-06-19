@@ -18,14 +18,15 @@ const styles = StyleSheet.create({
   menuHeader: {
     height: 200 * d.ratioH,
     width: '100%',
+    overflow: 'hidden',
   },
   imageHeader: {
     position: 'absolute',
     top: -300 * d.ratioH,
-    left: -125 * d.ratioW,
+    left: -140 * d.ratioW,
     height: 500 * d.ratioH,
     width: 500 * d.ratioW,
-    borderRadius: 250,
+    borderRadius: 250 * d.ratioW,
   },
   animation: {
     height: '100%',

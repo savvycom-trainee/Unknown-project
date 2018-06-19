@@ -105,14 +105,18 @@ class UpdateUser extends PureComponent {
     if (!error) {
       this.props.setUser(info);
       AsyncStorage.setItem('user', JSON.stringify(info));
-      this.navigate();
+      this.setState(
+        {
+          isSubmit: false,
+        },
+        this.navigate,
+      );
     } else {
-      console.log(error);
+      // console.log(error);
     }
   };
 
   uploadUser = (info) => {
-    console.log(this.state.isNewUser);
     const ref = firebase
       .database()
       .ref('root/users')
@@ -137,10 +141,9 @@ class UpdateUser extends PureComponent {
         routeName: 'Account',
       });
     }
-
     this.props.navigation.dispatch(navigateAction);
   };
-  submit = () => {
+  submit1 = () => {
     const fullName = this.fullName._lastNativeText || this.user.fullName;
     const home = this.home._lastNativeText || this.user.home;
     const gender = this.genderValue || this.user.gender;
@@ -165,6 +168,14 @@ class UpdateUser extends PureComponent {
     } else {
       Alert.alert('Please enter full information');
     }
+  };
+  submit = () => {
+    this.setState(
+      {
+        isSubmit: true,
+      },
+      this.submit1,
+    );
   };
   selectAvatar = (uri) => {
     this.setState(

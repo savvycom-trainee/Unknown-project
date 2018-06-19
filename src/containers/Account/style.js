@@ -39,6 +39,7 @@ const account = StyleSheet.create({
   menuText: {
     marginLeft: 5 * d.ratioW,
     fontSize: 14,
+    color: 'black',
   },
   info: {
     marginTop: 12.5 * d.ratioH,
