@@ -1,6 +1,15 @@
-import React, { PureComponent } from 'react';
+import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import { View, Text, ScrollView, TouchableOpacity, Image, FlatList, Modal } from 'react-native';
+import {
+  View,
+  Text,
+  ScrollView,
+  TouchableOpacity,
+  Image,
+  FlatList,
+  RefreshControl,
+  Modal,
+} from 'react-native';
 import { connect } from 'react-redux';
 import Moment from 'moment';
 import firebase from 'react-native-firebase';
@@ -8,13 +17,16 @@ import Icon from 'react-native-vector-icons/Ionicons';
 import StarRating from 'react-native-star-rating';
 import { Header } from '../../components';
 import styles from './styles';
-import { Icons } from '../../themes';
+import AsyncImage from '../../components/AsyncImage';
+import { Icons, Colors } from '../../themes';
 import { fetchDatagetNewFeed } from '../../actions/getNewFeedAction';
 import { getPositionSuccess, getPositionFail, setUser } from '../../actions';
 import ModalView from './Modal';
+import ModalListImage from './ModalListImage';
 import Loading from '../../components/LoadingContainer';
+import EmptyContent from '../../components/EmptyContent';
 
-class Home extends PureComponent {
+class Home extends Component {
   constructor(props) {
     super(props);
     this.state = {
@@ -22,37 +34,44 @@ class Home extends PureComponent {
       longitude: null,
       modalVisible: false,
       error: null,
-      // starCount: 2.5,
+      modalViewImage: false,
+      refreshing: false,
+      arrayPhotos: [],
     };
   }
-
   componentDidMount() {
     this.onGetCurrentPosition();
-    console.log(this.props.region);
-    this.props.fetchDatagetNewFeed(this.props.user.user.uid);
-    console.log(this.props.dataNewFeed.data);
     const { uid } = this.props.user.user;
-    firebase.database().ref('root/users').child(uid).on('value', (data) => {
-      this.props.setUser(data._value);
-    });
+    this.props.fetchDatagetNewFeed(uid);
+    firebase
+      .database()
+      .ref('root/users')
+      .child(uid)
+      .on('value', (data) => {
+        this.props.setUser(data._value);
+      });
+    this._getToken();
   }
 
   onGetCurrentPosition = () => {
     // eslint-disable-next-line
     navigator.geolocation.getCurrentPosition(
       (position) => {
-        this.setState({
-          latitude: position.coords.latitude,
-          longitude: position.coords.longitude,
-          error: null,
-        });
-        console.log(position);
+        this.setState(
+          {
+            latitude: position.coords.latitude,
+            longitude: position.coords.longitude,
+            error: null,
+          },
+          () => {
+            console.log(`state: ${JSON.stringify(this.state)}`);
+          },
+        );
         this.props.getPositionSuccess(position);
         this._updateLocation(position.coords.latitude, position.coords.longitude);
         console.log(`position ${JSON.stringify(this.props.getPositionSuccess(position))}`);
-        console.log(`state: ${JSON.stringify(this.state)}`);
       },
-      error => {
+      (error) => {
         this.setState({ error });
         this.props.getPositionFail();
       },
@@ -60,16 +79,33 @@ class Home extends PureComponent {
     );
   };
 
-  setModalVisible(visible) {
+  setModalVisible = (visible) => {
     this.setState({ modalVisible: visible });
-  }
+  };
+  showModalViewImage = (visible, itemArrayImages) => {
+    this.setState({ modalViewImage: visible, arrayPhotos: itemArrayImages });
+  };
+
   hideModal = (message) => {
     this.setModalVisible(message);
   };
+  hideModalListImage = (message) => {
+    this.showModalViewImage(message);
+  };
+  _onRefresh = () => {
+    this.setState({ refreshing: true });
+    this._ItemLoadMore();
+  }
+  _ItemLoadMore() {
+    this.setState({ refreshing: false });
+    const { uid } = this.props.user.user;
+    this.props.fetchDatagetNewFeed(uid);
+  }
+  _ItemLoadMoreEnd() {
+    const { uid } = this.props.user.user;
+  }
   _updateLocation = (lat, lng) => {
     const { uid } = this.props.user.user;
-    console.log(this.props.user);
-
     const updates = {};
     updates[`/root/users/${uid}/location`] = { lat, lng };
     firebase
@@ -80,6 +116,16 @@ class Home extends PureComponent {
         user.location = { lat, lng };
         this.props.setUser(user);
       });
+  };
+  _getToken = async () => {
+    const { uid } = this.props.user.user;
+    const token = await firebase.messaging().getToken();
+    const update = {};
+    update[`root/users/${uid}/token`] = token;
+    firebase
+      .database()
+      .ref()
+      .update(update);
   };
   /* eslint-disable */
   deg2rad = deg => deg * (Math.PI / 180);
@@ -104,29 +150,40 @@ class Home extends PureComponent {
       return <Loading />;
     }
     if (this.props.dataNewFeed.dataSuccess === true) {
+      if (this.props.dataNewFeed.data.length === 0) {
+        return (
+          <View style={styles.formCanotData}>
+            {/* <Text style={{ color: Colors.text }}> You cannot follow or error!</Text> */}
+            <EmptyContent />
+          </View>
+        );
+      }
       return (
         <FlatList
-          data={this.props.dataNewFeed.data.reverse()}
+          data={this.props.dataNewFeed.data}
           renderItem={({ item }) => (
-            // const distance = this._getDistanceFromLatLonInKm(
-            //   item.location.lat,
-            //   item.location.lng,
-            //   this.state.latitude,
-            //   this.state.longitude,
-            // );
             <View style={styles.formItem}>
               <TouchableOpacity
                 onPress={() => {
                   this.props.navigation.navigate('HomeDetail', { data: item.restaurantPlaceId });
                 }}
               >
-                <TouchableOpacity onPress={() => this.props.navigation.navigate('Account', { idUser: item.idUser })}>
+                <TouchableOpacity
+                  onPress={() => this.props.navigation.navigate('Account', { idUser: item.idUser })}
+                >
                   <View style={styles.viewUserPost}>
-                    <Image source={{ uri: item.userAvatar }} style={styles.viewImageUser} />
+                    {item.userAvatar ? (
+                      <Image source={{ uri: item.userAvatar }} style={styles.viewImageUser} />
+                    ) : (
+                      <View style={styles.viewImageUserNull}>
+                        <Icon name="md-contact" size={55} color={Colors.textOpacity} />
+                      </View>
+                    )}
+
                     <View>
                       <Text style={styles.textNameUser}>{item.userName}</Text>
                       <Text style={styles.textPost}>
-                        {Moment(item.create).format('h:mm a, Do MMMM YYYY')}
+                        {Moment(item.created).format('h:mm a, Do MMMM YYYY')}
                       </Text>
                     </View>
                   </View>
@@ -138,7 +195,17 @@ class Home extends PureComponent {
                     </Text>
                   </View>
                   <View style={styles.imageContent}>
-                    <Image source={{ uri: item.content.photos[0] }} style={styles.imageContent} />
+                    <TouchableOpacity
+                      onPress={() => {
+                        this.showModalViewImage(true, item.content.photos);
+                      }}
+                    >
+                      <AsyncImage
+                        style={styles.imageContent}
+                        source={{ uri: item.content.photos[0] }}
+                        placeholderColor={Colors.textOpacity10}
+                      />
+                    </TouchableOpacity>
                   </View>
                   <View style={styles.viewPointForm}>
                     <View style={styles.viewPoint}>
@@ -192,15 +259,28 @@ class Home extends PureComponent {
             leftHeader={<Text />}
             rightHeader={<Text />}
           />
-          <Modal
-            animationType="slide"
-            transparent={false}
-            onRequestClose={() => {}}
-            visible={this.state.modalVisible}
-          >
+          <Modal animationType="slide" transparent={false} visible={this.state.modalVisible}>
             <ModalView hideModal={this.hideModal} />
           </Modal>
-          <ScrollView style={{ flex: 1 }}>
+          <Modal animationType="slide" transparent={false} visible={this.state.modalViewImage}>
+            <ModalListImage
+              hideModalListImage={() => this.hideModalListImage(!this.state.modalViewImage)}
+              arrayImage={this.state.arrayPhotos}
+            />
+          </Modal>
+          <ScrollView
+            style={{ flex: 1 }}
+            refreshControl={
+              <RefreshControl
+                refreshing={this.state.refreshing}
+                onRefresh={this._onRefresh}
+                onEndReachedThreshold={0.5}
+                onEndReached={() => {
+                  this.EndhandleScroll();
+                }}
+              />
+            }
+          >
             <View style={styles.viewMenu}>
               <View style={styles.viewMenuItem}>
                 <View style={[styles.itemMenu]}>
@@ -218,7 +298,7 @@ class Home extends PureComponent {
                     style={styles.itemMenuIcon}
                     onPress={() => this.props.navigation.navigate('Account')}
                   >
-                    <Icon name="md-contacts" size={20} color="#fff" />
+                    <Icon name="ios-contact" size={20} color="#fff" />
                   </TouchableOpacity>
                 </View>
                 <View style={styles.itemMenu}>
@@ -226,7 +306,7 @@ class Home extends PureComponent {
                     style={styles.itemMenuIcon}
                     onPress={() => this.props.navigation.navigate('FindAround')}
                   >
-                    <Icon name="ios-navigate" size={20} color="#fff" />
+                    <Icon name="md-contacts" size={20} color="#fff" />
                   </TouchableOpacity>
                 </View>
               </View>
@@ -260,5 +340,10 @@ const mapStateToProps = state => ({
 
 export default connect(
   mapStateToProps,
-  { fetchDatagetNewFeed, getPositionSuccess, getPositionFail, setUser },
+  {
+    fetchDatagetNewFeed,
+    getPositionSuccess,
+    getPositionFail,
+    setUser,
+  },
 )(Home);

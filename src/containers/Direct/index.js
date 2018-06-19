@@ -1,5 +1,5 @@
 import React, { PureComponent } from 'react';
-import { View, Text, Image, Animated, Modal } from 'react-native';
+import { View, Text, Image, Animated, Modal, BackHandler } from 'react-native';
 import MapView, { Marker } from 'react-native-maps';
 import { connect } from 'react-redux';
 import Polyline from '@mapbox/polyline';
@@ -13,7 +13,7 @@ import * as d from '../../utilities/Tranform';
 const PADDING = {
   top: 50 * d.ratioH,
   right: 50 * d.ratioW,
-  bottom: 50 * d.ratioH,
+  bottom: 150 * d.ratioH,
   left: 50 * d.ratioW,
 };
 
@@ -53,6 +53,8 @@ class Direct extends PureComponent {
   }
 
   componentDidMount() {
+    BackHandler.addEventListener('hardwareBackPress', this.handleBackPress);
+
     this.onGetDirectionAPI();
     this.onGetCurrentLocation();
     this.animationMarker();
@@ -60,16 +62,19 @@ class Direct extends PureComponent {
 
   componentWillUnmount() {
     // eslint-disable-next-line
+    BackHandler.removeEventListener('hardwareBackPress', this.handleBackPress);
+
     navigator.geolocation.clearWatch(this.watchID);
   }
 
   onGetDirectionAPI = () => {
     // eslint-disable-next-line
-    fetch(`https://maps.googleapis.com/maps/api/directions/json?origin=${
-      this.props.region.coords.latitude
-    },${this.props.region.coords.longitude}&destination=${this.destination.latitude},${
-      this.destination.longitude
-    }&key=AIzaSyCthR5BEn21xBOMCGo-qqui8a9jDRNLDOk`)
+    fetch(
+      `https://maps.googleapis.com/maps/api/directions/json?origin=${
+        this.props.region.coords.latitude
+      },${this.props.region.coords.longitude}&destination=${this.destination.latitude},${
+        this.destination.longitude
+      }&key=AIzaSyCthR5BEn21xBOMCGo-qqui8a9jDRNLDOk`)
       .then(res => res.json())
       .then((resJson) => {
         // this.setState({ directionAPI: resJson });
@@ -185,6 +190,10 @@ class Direct extends PureComponent {
       }),
     ]).start(() => this.animationMarker());
   };
+  handleBackPress = () => {
+    this.props.navigation.goBack(null);
+    return true;
+  };
 
   render() {
     console.log(this.props.navigation.getParam('user'));
@@ -197,11 +206,17 @@ class Direct extends PureComponent {
         />
         <MapView
           region={this.state.region}
-          ref={(ref) => this.map = ref} // eslint-disable-line
-          onLayout={() => setTimeout(() => this.map.fitToCoordinates(this.markers, {
-            edgePadding: PADDING,
-            animated: true,
-          }), 1000)}
+          ref={ref => (this.map = ref)} // eslint-disable-line
+          onLayout={() =>
+            setTimeout(
+              () =>
+                this.map.fitToCoordinates(this.markers, {
+                  edgePadding: PADDING,
+                  animated: true,
+                }),
+              1000,
+            )
+          }
           provider="google"
           customMapStyle={mapStyles}
           style={{ flex: 1 }}
@@ -279,4 +294,7 @@ const mapStateToProps = state => ({
   dataRestaurantAround: state.getAddReducers,
 });
 
-export default connect(mapStateToProps, { fetchDataGetAdd })(Direct);
+export default connect(
+  mapStateToProps,
+  { fetchDataGetAdd },
+)(Direct);

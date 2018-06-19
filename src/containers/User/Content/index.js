@@ -9,27 +9,36 @@ import styles from './styles';
 class Content extends PureComponent {
   state = {};
   render() {
+    console.log(this.props.data.uid);
     return (
       <View style={styles.ViewMain}>
         <View style={styles.ViewAvatar}>
-          <Image source={{ uri: this.props.data.photoURL }} style={styles.Avatar} />
+          {this.props.data.photoURL ? (
+            <Image source={{ uri: this.props.data.photoURL }} style={styles.Avatar} />
+          ) : (
+            <View style={styles.Avatar}>
+              <Icon name="md-contact" size={66} color={Colors.textOpacity} />
+            </View>
+          )}
         </View>
         <View style={styles.ViewContent}>
           <View style={styles.ViewFollow}>
             <View style={styles.ViewFollowNameTime}>
-              <Text style={styles.TextName}>{this.props.data.name}</Text>
-              <View style={styles.ViewAge}>
-                <Icon name="md-locate" style={styles.icon} color={Colors.default} size={16} />
-                <Text style={styles.TextTime}>{this.props.data.fullName} </Text>
-              </View>
+              <Text style={styles.TextName}>{this.props.data.fullName}</Text>
               <View style={styles.ViewAge}>
                 <Icon name="md-ionitron" style={styles.icon} color={Colors.default} size={16} />
+                <Text style={styles.TextTime}>
+                  {this.props.data.pin ? Object.keys(this.props.data.pin).length : 0}{' '}
+                </Text>
+              </View>
+              <View style={styles.ViewAge}>
+                <Icon name="md-locate" style={styles.icon} color={Colors.default} size={16} />
                 <Text style={styles.TextTime}>{this.props.data.home} </Text>
               </View>
             </View>
             <View style={styles.ViewBTN}>
-              <TouchableOpacity style={styles.ViewFollowBtn}>
-                <Text style={styles.TextBtnFollow}>+ FOLLOW</Text>
+              <TouchableOpacity style={styles.ViewFollowBtn} onPress={this.props.onPress}>
+                <Text style={styles.TextBtnFollow}>+ PROFILE</Text>
               </TouchableOpacity>
             </View>
           </View>

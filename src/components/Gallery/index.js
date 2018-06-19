@@ -20,7 +20,7 @@ class Gallery extends Component {
   }
   loadPhoto = () => {
     let params = {
-      first: 30,
+      first: 50,
       assetType: 'Photos',
     };
     if (this.state.photos.page_info) {
@@ -58,22 +58,25 @@ class Gallery extends Component {
           onPressLeftHeader={this.close}
           centerHeader={<Text style={styles.title}>Recent Gellary</Text>}
         />
-        <ScrollView style={styles.scrollView} horizontal>
-          {this.state.photos.map(({ node }) => (
-            <TouchableOpacity
-              key={node.image.uri}
-              style={{ margin: 2 }}
-              onPress={() => this.props.select(node.image.uri)}
-            >
-              <Image
-                style={{
-                  width: 120 * d.ratioW,
-                  height: 100,
-                }}
-                source={{ uri: node.image.uri }}
-              />
-            </TouchableOpacity>
-          ))}
+        <ScrollView horizontal style={{ width: '100%', height: '100%', backgroundColor: 'white' }}>
+          <View style={styles.scrollView}>
+            {this.state.photos.map(({ node }) => (
+              <TouchableOpacity
+                key={node.image.uri}
+                style={{ margin: 2 }}
+                onPress={() => this.props.select(node.image.uri)}
+              >
+                <Image
+                  style={{
+                    width: 120 * d.ratioW,
+                    height: 111 * d.ratioH,
+                    alignContent: 'center',
+                  }}
+                  source={{ uri: node.image.uri }}
+                />
+              </TouchableOpacity>
+            ))}
+          </View>
         </ScrollView>
       </View>
     );

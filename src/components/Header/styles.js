@@ -7,6 +7,10 @@ const styles = StyleSheet.create({
     width: d.windowSize.width,
     height: d.navBarHeight,
     backgroundColor: '#FFFFFF',
+    elevation: 5,
+    shadowColor: 'grey',
+    shadowOffset: { width: 0, height: 5 },
+    shadowOpacity: 0.6,
   },
   headerComponent: {
     flexDirection: 'row',
@@ -22,7 +26,15 @@ const styles = StyleSheet.create({
     /* eslint-enable */
   },
   leftHeaderStyle: {
-    marginTop: 2 * d.ratioH,
+    width: 50 * d.ratioW,
+    height: 30 * d.ratioH,
+    paddingTop: 7 * d.ratioH,
+  },
+  rightHeaderStyle: {
+    alignItems: 'flex-end',
+    width: 50 * d.ratioW,
+    height: 30 * d.ratioH,
+    paddingTop: 7 * d.ratioH,
   },
 });
 

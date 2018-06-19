@@ -3,6 +3,7 @@ import Home from '../containers/Home';
 // import HomeDetail from '../containers/HomeDetail';
 import Account from '../containers/Account';
 import FindAround from '../containers/FindAround';
+import { ResetPassword, UpdateUser } from '../components';
 
 export default createStackNavigator(
   {
@@ -17,6 +18,12 @@ export default createStackNavigator(
     },
     FindAround: {
       screen: FindAround,
+    },
+    Change: {
+      screen: ResetPassword,
+    },
+    UpdateUser1: {
+      screen: UpdateUser,
     },
   },
   {

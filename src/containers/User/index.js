@@ -1,5 +1,14 @@
 import React, { PureComponent } from 'react';
-import { View, Text, Image, FlatList, TouchableOpacity, TextInput, Alert } from 'react-native';
+import {
+  View,
+  Text,
+  Image,
+  FlatList,
+  TouchableOpacity,
+  BackHandler,
+  TextInput,
+  Alert,
+} from 'react-native';
 import PropTypes from 'prop-types';
 import Icon from 'react-native-vector-icons/Ionicons';
 import { connect } from 'react-redux';
@@ -20,7 +29,16 @@ class User extends PureComponent {
   }
   componentDidMount() {
     this.props.fetchDatagetUser();
+    BackHandler.addEventListener('hardwareBackPress', this.handleBackPress);
   }
+  componentWillUnmount() {
+    BackHandler.removeEventListener('hardwareBackPress', this.handleBackPress);
+  }
+
+  handleBackPress = () => {
+    this.props.navigation.goBack(null);
+    return true;
+  };
   _validateSearch() {
     if (this.state.queryText === '') {
       return true;
@@ -37,7 +55,7 @@ class User extends PureComponent {
         checklist: false,
       });
     } else {
-      Alert.alert('Mày Nhập hộ tao cái ');
+      Alert.alert('Please fill in blank.');
     }
   }
   render() {
@@ -46,12 +64,12 @@ class User extends PureComponent {
         <Header
           leftHeader={
             <TouchableOpacity onPress={() => this.props.navigation.goBack()}>
-              <Image source={Icons.back} style={styles.back} />
+              <Image source={Icons.back} />
             </TouchableOpacity>
           }
           centerHeader={<Text style={{ fontSize: 15, fontWeight: '600' }}>User</Text>}
         />
-        <View>
+        <View styles={{ flex: 1 }}>
           <View style={styles.viewFromSearch}>
             <View style={styles.viewTextInputSearch}>
               <TextInput
@@ -79,7 +97,14 @@ class User extends PureComponent {
               ) : (
                 <FlatList
                   data={this.props.dataUser.data}
-                  renderItem={({ item }) => <Content data={item} />}
+                  renderItem={({ item }) => (
+                    <Content
+                      data={item}
+                      onPress={() =>
+                        this.props.navigation.navigate('Account', { idUser: item.uid })
+                      }
+                    />
+                  )}
                   keyExtractor={(item, index) => index.toString()}
                 />
               )}
@@ -99,7 +124,14 @@ class User extends PureComponent {
                   ) : (
                     <FlatList
                       data={this.props.dataSearchUser.data}
-                      renderItem={({ item }) => <Content data={item} />}
+                      renderItem={({ item }) => (
+                        <Content
+                          data={item}
+                          onPress={() =>
+                            this.props.navigation.navigate('Account', { idUser: item.uid })
+                          }
+                        />
+                      )}
                       keyExtractor={(item, index) => index.toString()}
                     />
                   )}

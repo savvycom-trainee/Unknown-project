@@ -9,18 +9,18 @@ import {
   Alert,
   ActivityIndicator,
   StatusBar,
+  AsyncStorage,
 } from 'react-native';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
-import Icon from 'react-native-vector-icons/FontAwesome';
 import { NavigationActions } from 'react-navigation';
 import firebase from 'react-native-firebase';
 import styles from './style';
-import { Images } from '../../themes';
+import { Images, Icons } from '../../themes';
 import Gallery from '../Gallery';
 import CheckBox from '../CheckBox';
 import Header from '../Header';
-import { setUser, getPositionUser } from '../../actions';
+import { setUser } from '../../actions';
 
 const data = [
   {
@@ -51,14 +51,20 @@ class UpdateUser extends PureComponent {
         isNewUser: true,
       };
     }
-    console.log(this.user);
     this.genderValue = 'Male';
-    this.location = getPositionUser();
-    console.log('position', this.location);
   }
 
   componentDidMount() {
-    console.log('user', this.user);
+    // eslint-disable-next-line
+    navigator.geolocation.getCurrentPosition(
+      (position) => {
+        const { coord } = position.coords;
+        this.location = coord;
+        console.log(this.location);
+      },
+      error => console.log(error),
+      { enableHighAccuracy: false, timeout: 20000, maximumAge: 1000 },
+    );
   }
 
   uploadPhoto = (tmpInfo, url) => {
@@ -96,11 +102,35 @@ class UpdateUser extends PureComponent {
 
   uploadDone = (info, error) => {
     if (this.type) this.props.setUser({ ...info, uid: this.user.id });
-
     if (!error) {
       this.props.setUser(info);
-      // eslint-disable-next-line
-      const navigateAction = NavigationActions.navigate({
+      AsyncStorage.setItem('user', JSON.stringify(info));
+      this.setState(
+        {
+          isSubmit: false,
+        },
+        this.navigate,
+      );
+    } else {
+      // console.log(error);
+    }
+  };
+
+  uploadUser = (info) => {
+    const ref = firebase
+      .database()
+      .ref('root/users')
+      .child(this.user.uid ? this.user.uid : this.user.id);
+    if (this.state.isNewUser) {
+      ref.set(info, error => this.uploadDone(info, error));
+    } else {
+      ref.update(info, error => this.uploadDone(info, error));
+    }
+  };
+  navigate = () => {
+    let navigateAction = null;
+    if (this.state.isNewUser) {
+      navigateAction = NavigationActions.navigate({
         routeName: 'Home',
         action: NavigationActions.navigate({
           routeName: 'Home',
@@ -108,26 +138,12 @@ class UpdateUser extends PureComponent {
       });
       this.props.navigation.dispatch(navigateAction);
     } else {
-      console.log(error);
+      const reload = this.props.navigation.getParam('reload', () => {});
+      reload();
+      this.props.navigation.goBack();
     }
   };
-
-  uploadUser = (info) => {
-    if (this.state.isNewUser) {
-      firebase
-        .database()
-        .ref('root/users')
-        .child(this.user.uid ? this.user.uid : this.user.id)
-        .set(info, error => this.uploadDone(info, error));
-    } else {
-      firebase
-        .database()
-        .ref('root/users')
-        .child(this.user.uid ? this.user.uid : this.user.id)
-        .update(info, error => this.uploadDone(info, error));
-    }
-  };
-  submit = () => {
+  submit1 = () => {
     const fullName = this.fullName._lastNativeText || this.user.fullName;
     const home = this.home._lastNativeText || this.user.home;
     const gender = this.genderValue || this.user.gender;
@@ -140,7 +156,7 @@ class UpdateUser extends PureComponent {
         home,
         gender,
         phone,
-        location: this.location ? this.location.data : [],
+        location: this.location ? this.location.data : this.user.location,
         photoURL: this.user.photoURL ? this.user.photoURL : '',
         uid: this.user.uid ? this.user.uid : this.user.id,
       };
@@ -152,6 +168,14 @@ class UpdateUser extends PureComponent {
     } else {
       Alert.alert('Please enter full information');
     }
+  };
+  submit = () => {
+    this.setState(
+      {
+        isSubmit: true,
+      },
+      this.submit1,
+    );
   };
   selectAvatar = (uri) => {
     this.setState(
@@ -170,17 +194,13 @@ class UpdateUser extends PureComponent {
         <ScrollView style={{ flex: 1 }}>
           <Header
             centerHeader={<Text style={styles.title}>Information</Text>}
-            rightHeader={
-              !this.state.isNewUser ? (
-                <TouchableOpacity style={styles.editPassword}>
-                  <Icon name="wrench" size={26} />
-                </TouchableOpacity>
-              ) : null
-            }
+            leftHeader={!this.state.isNewUser ? <Image source={Icons.back} /> : null}
+            onPressLeftHeader={!this.state.isNewUser ? this.navigate : null}
           />
           <View style={styles.topView}>
             <TouchableOpacity style={styles.imageView} onPress={() => this.gallery.open()}>
               <Image
+                /* eslint-disable*/
                 source={
                   this.state.photoURL === ''
                     ? this.user.photoURL
@@ -188,6 +208,7 @@ class UpdateUser extends PureComponent {
                       : Images.defaultAvatar
                     : { uri: this.state.photoURL }
                 }
+                /* eslint-enable */
                 style={styles.image}
               />
             </TouchableOpacity>
@@ -197,10 +218,11 @@ class UpdateUser extends PureComponent {
               ref={(node) => {
                 this.fullName = node;
               }}
+              onFocus={() => this.fullName.focus()}
               defaultValue={this.user.fullName ? this.user.fullName : ''}
               style={styles.input}
               placeholder="Full name"
-              underlineColorAndroid="transparent"
+              returnKeyType="next"
             />
             <CheckBox
               style={styles.checkBox}
@@ -214,11 +236,11 @@ class UpdateUser extends PureComponent {
               ref={(node) => {
                 this.phone = node;
               }}
+              onFocus={() => this.phone.focus()}
               style={styles.input}
               keyboardType="phone-pad"
               placeholder="Phone"
               defaultValue={this.user.phone ? this.user.phone : ''}
-              underlineColorAndroid="transparent"
               returnKeyType="next"
               onSubmitEditing={() => this.home.focus()}
             />
@@ -226,10 +248,10 @@ class UpdateUser extends PureComponent {
               ref={(node) => {
                 this.home = node;
               }}
+              onFocus={() => this.home.focus()}
               style={styles.input}
               defaultValue={this.user.home ? this.user.home : ''}
               placeholder="Home: Hanoi, Vietnam"
-              underlineColorAndroid="transparent"
               returnKeyType="done"
             />
             <TouchableOpacity onPress={this.submit} style={styles.btnSubmit}>
@@ -257,6 +279,7 @@ UpdateUser.propTypes = {
     navigate: PropTypes.func.isRequired,
     dispatch: PropTypes.func.isRequired,
     getParam: PropTypes.func.isRequired,
+    goBack: PropTypes.func.isRequired,
   }).isRequired,
   user: PropTypes.object.isRequired,
   setUser: PropTypes.func.isRequired,

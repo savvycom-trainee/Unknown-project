@@ -1,9 +1,9 @@
 import React, { PureComponent } from 'react';
 import { View, Text, Image } from 'react-native';
+import PropTypes from 'prop-types';
 
-/* eslint-disable */
 import styles from './styles';
-import { Images } from '../../../../themes';
+// import { Images } from '../../../../themes';
 
 class Content extends PureComponent {
   state = {};
@@ -30,5 +30,9 @@ class Content extends PureComponent {
     );
   }
 }
+
+Content.propTypes = {
+  data: PropTypes.object.isRequired,
+};
 
 export default Content;

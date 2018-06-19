@@ -27,6 +27,8 @@ export function fetchDataGetAddSearch(latitude, longitude, keyword) {
     fetch(`https://maps.googleapis.com/maps/api/place/nearbysearch/json?key=AIzaSyB4kVqZAVut6UvbjtMjKnM_Amg5G0qCWWQ&location=${latitude},${longitude}&radius=1000&type=restaurant&keyword=${keyword}`)
       .then(response => response.json())
       .then((responseJson) => {
+        console.log(responseJson);
+
         dispatch(getAddSearchSuccess(responseJson.results));
       })
       .catch((error) => {

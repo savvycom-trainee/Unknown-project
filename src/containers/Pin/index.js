@@ -1,36 +1,97 @@
 import React, { PureComponent } from 'react';
-import { View, Text, Image, FlatList } from 'react-native';
+import { connect } from 'react-redux';
+import PropTypes from 'prop-types';
+
+import { View, Text, FlatList, AsyncStorage } from 'react-native';
+import { fetchDatagetListBookmark } from '../../actions/getListBookmarkAction';
+import Loading from '../../components/LoadingContainer';
+import EmptyContent from '../../components/EmptyContent';
 import { Header } from '../../components';
-import { Icons } from '../../themes';
-import restaurantData from './PinView/data/restaurantData';
+// import { Icons } from '../../themes';
+// import restaurantData from './PinView/data/restaurantData';
 import PinView from './PinView';
 import styles from './styles';
 
 class Pin extends PureComponent {
   state = {};
+  componentDidMount() {
+    this.getUser();
+  }
+
+  getUser = async () => {
+    const user = await AsyncStorage.getItem('user');
+    const userId = JSON.parse(user).uid;
+    console.log(userId);
+    this.props.fetchDatagetListBookmark(userId);
+  };
+
+  renderCatchNothing = (data) => {
+    if (data == null) {
+      return <EmptyContent />;
+    }
+
+    return (
+      <FlatList
+        data={data}
+        renderItem={({ item, index }) => (
+          <PinView
+            item={item}
+            index={index}
+            onPress={() => {
+              this.props.navigation.navigate('HomeDetail', { data: item.key });
+            }}
+            navigate={this.props.navigation.navigate}
+          />
+        )}
+        // keyExtractor={item => item.restaurantName.toString()}
+      />
+    );
+  };
+
+  // renderLoading = () => {
+  //   setTimeout(function(){that.setState({timePassed: true})}, 1000);
+  // }
+
   render() {
+    if (this.props.dataListBookmark.isFetching === true) {
+      return (
+        <View style={{ flex: 1 }}>
+          <Header centerHeader={<Text style={styles.centerHeaderStyle}>Bookmark</Text>} />
+          <Loading />
+        </View>
+      );
+    }
+
     return (
       <View style={{ flex: 1 }}>
         <Header centerHeader={<Text style={styles.centerHeaderStyle}>Bookmark</Text>} />
-        <FlatList
-          data={restaurantData}
-          renderItem={({ item, index }) => (
-            <PinView
-              item={item}
-              index={index}
-              onPress={() => {
-                this.props.navigation.navigate('HomeDetail');
-              }}
-              onDirectPress={() => {
-                this.props.navigation.navigate('Direct');
-              }}
-            />
-          )}
-          keyExtractor={item => item.restaurantName.toString()}
-        />
+
+        {this.renderCatchNothing(this.props.dataListBookmark.data)}
       </View>
     );
   }
 }
 
-export default Pin;
+// export default Pin;
+Pin.propTypes = {
+  navigation: PropTypes.shape({
+    navigate: PropTypes.func.isRequired,
+    // getParam: PropTypes.func.isRequired,
+    // goBack: PropTypes.func.isRequired,
+  }).isRequired,
+  fetchDatagetListBookmark: PropTypes.func.isRequired,
+  dataListBookmark: PropTypes.object.isRequired,
+};
+
+const mapStateToProps = state => ({
+  dataListBookmark: state.getListBookmarkReducers,
+});
+
+const mapDispatchToProps = dispatch => ({
+  fetchDatagetListBookmark: id => dispatch(fetchDatagetListBookmark(id)),
+});
+
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps,
+)(Pin);

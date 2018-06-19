@@ -42,34 +42,34 @@ export function fetchPostNewFeed(post, restaurant) {
           .child(postSnapshot.key)
           .set(postSnapshot.key);
 
-        firebase
-          .database()
-          .ref('/root/restaurants')
-          .orderByChild('idRestaurant')
-          .equalTo(`${idRestaurant}`)
-          .once('value')
-          .then((restaurantSnapshot) => {
-            console.log(restaurantSnapshot._value);
-            if (restaurantSnapshot._value !== null) {
-              firebase
-                .database()
-                .ref(`/root/restaurants/${idRestaurant}/review`)
-                .child(postSnapshot.key)
-                .set(postSnapshot.key);
-            } else {
-              firebase
-                .database()
-                .ref('/root/restaurants/')
-                .child(`${idRestaurant}`)
-                .set(restaurant)
-                .then(firebase
-                  .database()
-                  .ref(`/root/restaurants/${idRestaurant}`)
-                  .child('review')
-                  .child(postSnapshot.key)
-                  .set(postSnapshot.key));
-            }
-          });
+        // firebase
+        //   .database()
+        //   .ref('/root/restaurants')
+        //   .orderByChild('idRestaurant')
+        //   .equalTo(`${idRestaurant}`)
+        //   .once('value')
+        //   .then((restaurantSnapshot) => {
+        //     console.log(restaurantSnapshot._value);
+        //     if (restaurantSnapshot._value !== null) {
+        //       firebase
+        //         .database()
+        //         .ref(`/root/restaurants/${idRestaurant}/review`)
+        //         .child(postSnapshot.key)
+        //         .set(postSnapshot.key);
+        //     } else {
+        //       firebase
+        //         .database()
+        //         .ref('/root/restarants/')
+        //         .child(`${idRestaurant}`)
+        //         .set(restaurant)
+        //         .then(firebase
+        //           .database()
+        //           .ref(`/root/restaurants/${idRestaurant}`)
+        //           .child('review')
+        //           .child(postSnapshot.key)
+        //           .set(postSnapshot.key));
+        //     }
+        //   });
       });
   };
 }

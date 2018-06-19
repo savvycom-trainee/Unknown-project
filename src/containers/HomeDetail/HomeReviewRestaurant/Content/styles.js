@@ -88,6 +88,12 @@ const styles = StyleSheet.create({
     fontWeight: 'normal',
     color: 'rgb(153,153,153)',
   },
+
+  TextHoursComment2: {
+    fontSize: 13,
+    fontWeight: 'bold',
+    color: 'rgb(153,153,153)',
+  },
 });
 
 export default styles;

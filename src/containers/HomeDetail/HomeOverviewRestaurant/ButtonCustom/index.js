@@ -1,6 +1,4 @@
 import React, { PureComponent } from 'react';
-
-/* eslint-disable */
 import { View, Text, Image, TouchableOpacity } from 'react-native';
 import PropTypes from 'prop-types';
 
@@ -31,6 +29,9 @@ class ButtonCustom extends PureComponent {
 
 ButtonCustom.propTypes = {
   onPressButton: PropTypes.func,
+  iconName: PropTypes.string.isRequired,
+  iconColor: PropTypes.string.isRequired,
+  title: PropTypes.string.isRequired,
 };
 
 ButtonCustom.defaultProps = {

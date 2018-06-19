@@ -46,7 +46,7 @@ class Login extends PureComponent {
         this.setState({ isLoading: false });
       }
     } catch (error) {
-      console.log(error);
+      // code
     }
   };
   move = (user) => {
@@ -86,12 +86,10 @@ class Login extends PureComponent {
         isLoading: true,
       },
       () => {
-        console.log(acc, pass);
         firebase
           .auth()
           .signInAndRetrieveDataWithEmailAndPassword(acc, pass)
           .then((loginUser) => {
-            console.log(loginUser);
             firebase
               .database()
               .ref('/root/users')
@@ -110,7 +108,7 @@ class Login extends PureComponent {
                       AsyncStorage.setItem('user', JSON.stringify(user));
                       this.move(user);
                     } catch (error) {
-                      console.log(error);
+                      // code
                     }
                   },
                 );
@@ -177,27 +175,28 @@ class Login extends PureComponent {
         if (err) {
           Alert.alert('Error', 'Cant get info');
         } else {
-          console.log(res);
           firebase
             .database()
             .ref(`root/users/${res.id}`)
             .once('value')
             .then((snapshot) => {
-              console.log('snapshot', snapshot.val());
               if (snapshot.val() === null) {
                 firebase
                   .auth()
                   .signInAndRetrieveDataWithCredential(credential)
                   .then(() => {
-                    this.props.navigation.navigate('UpdateUser', { user: res, fb: true });
-                  })
-                  .catch((error) => {
-                    console.log(error);
+                    const user = { ...res, uid: res.id, fullName: res.name };
+                    firebase
+                      .database()
+                      .ref(`root/users/${user.uid}`)
+                      .set(user);
+                    AsyncStorage.setItem('user', JSON.stringify(user));
+                    this.props.navigation.navigate('UpdateUser', { user, fb: true });
                   });
               } else {
                 const user = { ...snapshot.val(), uid: res.id };
                 this.props.setUser(user);
-                AsyncStorage.setItem('user', JSON.stringify(user), error => console.log(error));
+                AsyncStorage.setItem('user', JSON.stringify(user));
                 this.props.navigation.navigate('Home');
               }
             });
@@ -223,9 +222,12 @@ class Login extends PureComponent {
               <View style={login.form}>
                 <TextInput
                   style={login.input}
+                  ref={(node) => {
+                    this.loginInput = node;
+                  }}
+                  onFocus={() => this.loginInput.focus()}
                   placeholder="Email"
                   keyboardType="email-address"
-                  underlineColorAndroid="transparent"
                   onChangeText={this.changeAccount}
                   onSubmitEditing={this.accNext}
                   returnKeyType="next"
@@ -235,9 +237,9 @@ class Login extends PureComponent {
                   ref={(ref) => {
                     this.passwordField = ref;
                   }}
+                  onFocus={() => this.passwordField.focus()}
                   style={login.input}
                   placeholder="Password"
-                  underlineColorAndroid="transparent"
                   secureTextEntry
                   onChangeText={this.changePassword}
                   onSubmitEditing={this.loginAccount}
@@ -256,32 +258,6 @@ class Login extends PureComponent {
                   <Image source={images.logofb} style={login.logofb} />
                   <Text style={login.txtfb}> Continue With Facebook </Text>
                 </TouchableOpacity>
-                {/* <LoginButton
-                  publishPermissions={['publish_actions']}
-                  onLoginFinished={(error, result) => {
-                    if (error) {
-                      console.log(`login has error: ${result.error}`);
-                      Alert.alert(`login has error: ${result.error}`);
-                    } else if (result.isCancelled) {
-                      console.log('login is cancelled.');
-                      Alert.alert('login is cancelled.');
-                    } else {
-                      AccessToken.getCurrentAccessToken().then((data) => {
-                        console.log(data);
-                        const { accessToken } = data;
-                        try {
-                          AsyncStorage.setItem('Token', JSON.stringify(accessToken));
-                        } catch (error1) {
-                          console.log(error1);
-                        }
-                      });
-                    }
-                  }}
-                  onLogoutFinished={() => {
-                    console.log('logout.');
-                    AsyncStorage.removeItem('Token');
-                  }}
-                /> */}
               </View>
               <View style={login.textContainer}>
                 <Text style={login.txtBottom}>Not account? Go to </Text>

@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { View, Text, Image, FlatList, ActivityIndicator } from 'react-native';
+import { View, Text, Image, FlatList, ActivityIndicator, BackHandler } from 'react-native';
 import firebase from 'react-native-firebase';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
@@ -7,7 +7,7 @@ import Header from '../../components/Header';
 import { Icons } from '../../themes';
 // import * as d from '../../utilities/Tranform';
 import FindCard from './FindCard';
-import { setUserDatabase } from '../../actions';
+import { setUserDatabase, fetchDatagetNewFeed, setUser } from '../../actions';
 
 // import styles from './styles';
 
@@ -15,10 +15,62 @@ class FindAround extends Component {
   state = {
     data: [],
     isLoading: false,
+    title: 'Find Around',
   };
   componentDidMount() {
-    this._getUserAround();
+    const followId = this.props.navigation.getParam('followId', false);
+    const status = this.props.navigation.getParam('isFollowed', false);
+    if (followId) {
+      this._setTitle(followId, status);
+    } else {
+      this._getUserAround();
+    }
+    BackHandler.addEventListener('hardwareBackPress', this.handleBackPress);
   }
+  componentWillUnmount() {
+    BackHandler.removeEventListener('hardwareBackPress', this.handleBackPress);
+  }
+
+  handleBackPress = () => {
+    this.props.navigation.goBack(null);
+    return true;
+  };
+
+  _setTitle = (tmpData, status) => {
+    let title = '';
+    if (status) {
+      title = 'Follower Info';
+    } else {
+      title = 'Following Info';
+    }
+    this.setState(
+      {
+        title,
+        isLoading: true,
+      },
+      () => this._getDataFollow(tmpData, status),
+    );
+  };
+  _getDataFollow = (tmpData, status) => {
+    console.log(status);
+    const { data } = this.state;
+    tmpData.map(id =>
+      firebase
+        .database()
+        .ref('root/users/')
+        .child(id)
+        .on('value', (snapshot) => {
+          const value = {
+            ...snapshot._value,
+            isFollow: status,
+          };
+          data.push(value);
+        }));
+    this.setState({
+      data,
+      isLoading: false,
+    });
+  };
   _getUserAround = () => {
     const { user } = this.props.user;
     firebase
@@ -34,7 +86,7 @@ class FindAround extends Component {
           const userItem = snapshot.val()[uid];
           if (uid === user.uid) {
             userItem.uid = uid;
-            this.props.setUser(userItem);
+            this.props.setUserDatabase(userItem);
           } else if (userItem.location && userItem.location.lat && userItem.location.lng) {
             // console.log(userItem);
             /*eslint-disable */
@@ -46,8 +98,9 @@ class FindAround extends Component {
             );
             userItem.uid = uid;
             userItem.distance = distance;
-            if (userItem.follower) {
-              userItem.isFollow = userItem.follower.indexOf(user.uid) !== -1 ? true : false;
+            if (user.following) {
+              userItem.isFollow = user.following.indexOf(userItem.uid) !== -1;
+              console.log(user.follower, userItem.uid);
             } else userItem.isFollow = false;
             // console.log(userItem);
             /* eslint-enable */
@@ -78,18 +131,38 @@ class FindAround extends Component {
     return Math.round(d);
     /* eslint-enable */
   };
-
+  _reload = () => {
+    const { user } = this.props.user;
+    console.log('_reload', user.uid);
+    this.props.fetchDatagetNewFeed(user.uid);
+    firebase
+      .database()
+      .ref('root/users')
+      .child(user.uid)
+      .on('value', (data) => {
+        this.props.setUser(data._value);
+      });
+  };
   // TODO navigate to user detail
-  _renderItem = ({ item, index }) => <FindCard item={item} index={index} />;
+  _renderItem = ({ item, index }) => (
+    <FindCard
+      navigation={this.props.navigation}
+      item={item}
+      index={index}
+      refresh={this._getUserAround}
+    />
+  );
   render() {
     const { data, isLoading } = this.state;
     return (
       <View style={{ flex: 1 }}>
         <Header
-          leftHeader={<Image source={Icons.back} style={{ width: 30 }} />}
-          onPressLeftHeader={() => this.props.navigation.goBack()}
-          centerHeader={<Text style={{ fontSize: 15, fontWeight: '600' }}>Find Around</Text>}
-          rightHeader={<Image source={Icons.user} />}
+          leftHeader={<Image source={Icons.back} />}
+          onPressLeftHeader={() => {
+            this._reload();
+            this.props.navigation.goBack();
+          }}
+          centerHeader={<Text style={{ fontSize: 15, fontWeight: '600' }}>{this.state.title}</Text>}
         />
         {isLoading && (
           <ActivityIndicator
@@ -117,12 +190,16 @@ FindAround.propTypes = {
   navigation: PropTypes.object, // eslint-disable-line
   user: PropTypes.object, // eslint-disable-line
   setUser: PropTypes.func, //eslint-disable-line
+  fetchDatagetNewFeed: PropTypes.func, //eslint-disable-line
+  setUserDatabase: PropTypes.func, //eslint-disable-line
 };
 const mapStateToProps = state => ({
   user: state.user,
 });
 const mapDispatchToProps = dispatch => ({
-  setUser: user => dispatch(setUserDatabase(user)),
+  fetchDatagetNewFeed: uid => dispatch(fetchDatagetNewFeed(uid)),
+  setUserDatabase: user => dispatch(setUserDatabase(user)),
+  setUser: user => dispatch(setUser(user)),
 });
 export default connect(
   mapStateToProps,

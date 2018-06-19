@@ -1,72 +1,88 @@
 import React, { PureComponent } from 'react';
-import { View, Text, ScrollView, StatusBar, TextInput } from 'react-native';
+import { connect } from 'react-redux';
+import PropTypes from 'prop-types';
+import { View, Text, StatusBar, TextInput, TouchableOpacity, FlatList } from 'react-native';
 import { search, header } from './style';
-import images from '../../themes/Images';
-import Card from './components';
+// import images from '../../themes/Images';
+import Card from './components/Card';
+import { fetchDatagetSearchRecomend } from '../../actions/getSearchRecomend';
+import { fetchDataGetAddSearch } from '../../actions/getAddbySearchAction';
+import Loading from '../../components/LoadingContainer';
 
 class Search extends PureComponent {
   state = {
-    data: [
-      {
-        id: 'abcd',
-        image: images.restaurantPhoto,
-        number: 9.2,
-        name: 'Sublimotion',
-        type: 'RESTAURANT',
-        status: 1,
-        distance: 0.4,
-      },
-      {
-        id: 'abcdbcdefdsfdsaf',
-        image: images.restaurantPhoto,
-        number: 9.0,
-        name: 'HestonBlumenthal',
-        type: 'RESTAURANT',
-        status: 0,
-        distance: 1,
-      },
-      {
-        id: 'abcdbcdeffsdfsdf',
-        image: images.restaurantPhoto,
-        number: 9.0,
-        name: 'Le Meurice',
-        type: 'RESTAURANT',
-        status: 1,
-        distance: 0.8,
-      },
-      {
-        id: 'abcdbcdeffsdf',
-        image: images.restaurantPhoto,
-        number: 9.0,
-        name: 'Chien Manh Vu',
-        type: 'RESTAURANT',
-        status: 1,
-        distance: 0.5,
-      },
-      {
-        id: 'abcdbcdef123213',
-        image: images.restaurantPhoto,
-        number: 9.0,
-        name: 'Vu Manh Chien',
-        type: 'RESTAURANT',
-        status: 0,
-        distance: 10,
-      },
-    ],
+    queryText: '',
   };
+
+  componentDidMount() {
+    this.props.fetchDatagetSearchRecomend(this.state.queryText);
+  }
+
   searchSubmit = () => {
-    const value = this.search._lastNativeText;
-    console.log(value);
-    console.log(this.search);
+    this.props.fetchDataGetAddSearch(21.0176556, 105.8063218, this.state.queryText);
   };
-  placeSubmit = () => {
-    const value = this.place._lastNativeText;
-    console.log(value);
-  };
+
   searchBlur = () => {
     console.log('blur');
   };
+
+  renderRecomened = (data, labelText) => {
+    if (data.isFetching === true) {
+      return <Loading />;
+    }
+    if (labelText == 'Recommended for you') {
+      return (
+        <View style={search.resultView}>
+          <Text style={search.title}>{labelText}</Text>
+          <FlatList
+            style
+            data={data.data}
+            renderItem={({ item }) => (
+              <TouchableOpacity
+                onPress={() => {
+                  this.props.navigation.navigate('HomeDetail', { data: item.idRestaurant });
+                }}
+              >
+                <Card dataSearch={item} />
+              </TouchableOpacity>
+            )}
+          />
+        </View>
+      );
+    }
+    return (
+      <View style={search.resultView}>
+        <Text style={search.title}>
+          Found {data.data.length} {labelText} after 0.5s
+        </Text>
+        <FlatList
+          style
+          data={data.data}
+          renderItem={({ item }) => (
+            <TouchableOpacity
+              key={item.key}
+              onPress={() => {
+                this.props.navigation.navigate('HomeDetail', { data: item.place_id });
+              }}
+            >
+              <Card dataSearch={item} />
+            </TouchableOpacity>
+          )}
+        />
+      </View>
+    );
+  };
+
+  renderResult = (queryText) => {
+    if (queryText === '') {
+      return this.renderRecomened(this.props.dataSearchRecomend, 'Recommended for you');
+    }
+    return this.renderRecomened(this.props.dataSearchAdd, 'Result');
+  };
+
   render() {
+    console.log(this.props.dataSearchAdd);
+
     return (
       <View style={search.container}>
         <StatusBar backgroundColor="white" barStyle="dark-content" />
@@ -81,31 +97,42 @@ class Search extends PureComponent {
               underlineColorAndroid="transparent"
               onSubmitEditing={this.searchSubmit}
               onBlur={this.searchBlur}
+              onChangeText={text => this.setState({ queryText: text })}
             />
           </View>
-          <View style={header.place}>
-            <Text style={header.in}> in </Text>
-            <View style={header.borderBottom}>
-              <TextInput
-                ref={(ref) => {
-                  this.place = ref;
-                }}
-                defaultValue="Hanoi, Vietnam"
-                style={header.input}
-                underlineColorAndroid="transparent"
-                onSubmitEditing={this.placeSubmit}
-              />
-            </View>
-          </View>
         </View>
-        <Text style={search.title}> Recommended for you </Text>
-        <ScrollView style={search.resultView}>
-          <Card dataSearch={this.state.data} />
-        </ScrollView>
-        {/* <View style={search.opacity} /> */}
+        {this.renderResult(this.state.queryText)}
       </View>
     );
   }
 }
 
-export default Search;
+// export default Search;
+Search.propTypes = {
+  navigation: PropTypes.shape({
+    navigate: PropTypes.func.isRequired,
+    //   // getParam: PropTypes.func.isRequired,
+    //   // goBack: PropTypes.func.isRequired,
+  }).isRequired,
+  fetchDatagetSearchRecomend: PropTypes.func.isRequired,
+  dataSearchRecomend: PropTypes.object.isRequired,
+
+  fetchDataGetAddSearch: PropTypes.func.isRequired,
+  dataSearchAdd: PropTypes.object.isRequired,
+};
+
+const mapStateToProps = state => ({
+  dataSearchRecomend: state.getSearchRecomendReducers,
+  dataSearchAdd: state.getAddSearchReducers,
+});
+
+const mapDispatchToProps = dispatch => ({
+  fetchDatagetSearchRecomend: queryText => dispatch(fetchDatagetSearchRecomend(queryText)),
+  fetchDataGetAddSearch: (latitude, longitude, keyword) =>
+    dispatch(fetchDataGetAddSearch(latitude, longitude, keyword)),
+});
+
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps,
+)(Search);

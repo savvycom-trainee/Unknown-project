@@ -8,14 +8,16 @@ const search = StyleSheet.create({
   header: {
     height: 136 * d.ratioH,
   },
-  resultView: {},
+  resultView: {
+    flex: 1,
+  },
   title: {
     fontSize: 14,
     color: 'black',
     marginLeft: 30 * d.ratioW,
     fontWeight: '600',
-    marginTop: 49.5 * d.ratioH,
-    marginBottom: 25 * d.ratioH,
+    marginTop: 15 * d.ratioH,
+    marginBottom: 15 * d.ratioH,
   },
   opacity: {
     position: 'absolute',
@@ -32,7 +34,7 @@ const header = StyleSheet.create({
     backgroundColor: 'white',
     paddingHorizontal: 30 * d.ratioW,
     paddingTop: 30 * d.ratioH,
-    height: 136 * d.ratioH,
+    height: 70 * d.ratioH,
   },
   input: {
     fontWeight: '600',

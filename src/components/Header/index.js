@@ -11,15 +11,17 @@ const Header = ({
   onPressRightHeader,
 }) => (
   <View style={styles.container}>
-    <StatusBar backgroundColor="transparent" />
+    <StatusBar backgroundColor="transparent" barStyle="dark-content" />
     <View style={styles.headerComponent}>
       <TouchableOpacity onPress={onPressLeftHeader} style={styles.leftHeaderStyle}>
         {leftHeader}
       </TouchableOpacity>
-      <View>
+      <View style={styles.centerHeaderStyle}>
         <Text>{centerHeader}</Text>
       </View>
-      <TouchableOpacity onPress={onPressRightHeader}>{rightHeader}</TouchableOpacity>
+      <TouchableOpacity onPress={onPressRightHeader} style={styles.rightHeaderStyle}>
+        {rightHeader}
+      </TouchableOpacity>
     </View>
   </View>
 );

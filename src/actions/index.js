@@ -12,3 +12,6 @@ export * from './getUserDetailAction';
 export * from './getPlaceDetailAction';
 export * from './getReviewAction';
 export * from './getUserPinAction';
+export * from './getBookmarkAction';
+export * from './getListBookmarkAction';
+export * from './getSearchRecomend';

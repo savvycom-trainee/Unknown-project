@@ -20,6 +20,13 @@ export default StyleSheet.create({
     width: 50 * d.ratioW,
     borderRadius: 25,
   },
+  viewImageUserNull: {
+    alignItems: 'center',
+    justifyContent: 'center',
+    height: 50 * d.ratioH,
+    width: 50 * d.ratioW,
+    borderRadius: 25,
+  },
   body: {
     flex: 1,
   },
@@ -151,6 +158,7 @@ export default StyleSheet.create({
     flexDirection: 'row',
   },
   viewContent: {
+    alignItems: 'center',
     flex: 1,
   },
 });

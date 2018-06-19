@@ -18,6 +18,9 @@ export default StyleSheet.create({
   viewTextHead: {
     alignContent: 'center',
   },
+  viewNameAndRes: {
+    flexDirection: 'row',
+  },
   body: {
     flexDirection: 'column',
     flex: 1,
@@ -52,22 +55,33 @@ export default StyleSheet.create({
     borderColor: Colors.text,
     borderRadius: 6,
   },
+  viewFormUserName: {
+    padding: 0,
+    marginLeft: 14 * d.ratioW,
+    height: 25 * d.ratioH,
+    width: 110 * d.ratioW,
+  },
   ViewButtonSearch: {
     padding: 3,
   },
   textPosted: {
+    fontSize: 15,
+    fontWeight: '500',
+    color: Colors.white,
+  },
+  textPost: {
+    fontSize: 15,
+    fontWeight: '500',
+    color: 'rgba(19,19,19,0.8)',
+  },
+  textCreatePost: {
     fontSize: 17,
     fontWeight: '700',
     color: Colors.white,
   },
-  textPost: {
-    fontSize: 17,
-    fontWeight: '700',
-    color: Colors.textOpacity,
-  },
-  textCreatePost: {
-    fontSize: 14,
-    fontWeight: '700',
+  textCancelPost: {
+    fontSize: 15,
+    fontWeight: '500',
     color: Colors.white,
   },
   textButtonPost: {
@@ -77,15 +91,17 @@ export default StyleSheet.create({
   },
   textAddPost: {
     fontSize: 16,
-    fontWeight: '600',
+    fontWeight: '500',
     color: Colors.text,
   },
   viewTextInputSearch: {
     paddingBottom: 10 * d.ratioH,
   },
   ViewContentFlatList: {
-    height: 350 * d.ratioH,
-    padding: 34,
+    marginTop: 10 * d.ratioH,
+    flex: 0.84,
+    width: 250 * d.ratioW,
+    padding: 1,
   },
   ViewItemFlatList: {
     padding: 10,
@@ -106,6 +122,8 @@ export default StyleSheet.create({
     fontWeight: '600',
   },
   ViewHeadFlatList: {
+    paddingTop: 30 * d.ratioH,
+    width: 250 * d.ratioW,
     justifyContent: 'center',
     alignItems: 'center',
     height: 60 * d.ratioH,
@@ -136,6 +154,7 @@ export default StyleSheet.create({
     paddingBottom: 10 * d.ratioH,
   },
   ViewButton: {
+    paddingTop: 10 * d.ratioH,
     justifyContent: 'center',
     alignItems: 'center',
   },
@@ -146,17 +165,17 @@ export default StyleSheet.create({
     padding: 0,
     paddingLeft: 10,
     borderRadius: 2.5,
-    width: 340 * d.ratioW,
+    width: 350 * d.ratioW,
     height: 50 * d.ratioH,
     fontSize: 20,
-    fontWeight: '700',
+    fontWeight: '400',
   },
   textInputSearch: {
     padding: 0,
     paddingLeft: 10,
     borderRadius: 2.5,
-    width: 265 * d.ratioW,
-    height: 30 * d.ratioH,
+    width: 222 * d.ratioW,
+    height: 50 * d.ratioH,
     borderBottomColor: Colors.textOpacity,
     borderBottomWidth: 0.3,
   },
@@ -166,12 +185,9 @@ export default StyleSheet.create({
     flexDirection: 'row',
   },
   viewFormImageUser: {
-    alignItems: 'center',
     justifyContent: 'center',
-    // backgroundColor: '#444',
     height: 50 * d.ratioH,
     width: 50 * d.ratioW,
-    borderRadius: 25,
   },
   viewInfoDetail: {
     alignItems: 'center',
@@ -208,8 +224,8 @@ export default StyleSheet.create({
   imagePhotoItem: {
     borderColor: Colors.white,
     borderWidth: 0.4,
-    height: 93.7 * d.ratioH,
-    width: 93.7 * d.ratioW,
+    height: 95.7 * d.ratioH,
+    width: 95.7 * d.ratioW,
   },
   imagePhotoSelectedItem: {
     borderColor: Colors.white,
@@ -226,15 +242,15 @@ export default StyleSheet.create({
     paddingLeft: 10 * d.ratioH,
   },
   viewStarRating: {
+    justifyContent: 'center',
+    alignItems: 'center',
     height: 45 * d.ratioH,
   },
   viewCustom: {
-    padding: 14,
-    backgroundColor: Colors.default,
+    padding: 10,
     justifyContent: 'space-between',
     flexDirection: 'row',
     alignItems: 'center',
-
     flex: 0.054,
   },
   viewButton: {
@@ -296,7 +312,6 @@ export default StyleSheet.create({
     fontWeight: '700',
   },
   viewButtonDone: {
-    borderRadius: 30,
     backgroundColor: Colors.default,
     alignItems: 'center',
     justifyContent: 'center',
@@ -305,10 +320,20 @@ export default StyleSheet.create({
   },
   textHeadModal: {
     color: Colors.white,
-    fontSize: 18,
+    fontSize: 15,
+    fontWeight: '500',
+  },
+  textUserName: {
+    color: 'rgb(19,19,19)',
+    fontSize: 14,
     fontWeight: '700',
   },
   bodyModal: {
     alignItems: 'center',
+  },
+  viewFormPhoto: {
+    backgroundColor: 'red',
+    width: 450 * d.ratioW,
+    flexDirection: 'row',
   },
 });

@@ -1,34 +1,48 @@
-import React, { Component } from 'react';
-import firebase from 'react-native-firebase';
+import React, { PureComponent } from 'react';
+import { View, Text, TouchableOpacity, FlatList, Image } from 'react-native';
+
+// import firebase from 'react-native-firebase';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { fetchDatagetReview } from '../../../actions/getReviewAction';
 import Loading from '../../../components/LoadingContainer';
-import { View, Text, TouchableOpacity, FlatList, Image } from 'react-native';
 import styles from './styles';
 import { Icons } from '../../../themes';
-
+import EmptyContent from '../../../components/EmptyContent';
 import Content from './Content';
 import Header from '../../../components/Header';
-import Comment from './Comment';
+// import Comment from './Comment';
 
 import * as d from '../../../utilities/Tranform';
 
-class HomeReviewRestaurant extends Component {
-  constructor(props) {
-    super(props);
-  }
+class HomeReviewRestaurant extends PureComponent {
+  state = {};
 
   componentDidMount() {
     this.props.fetchDatagetReview(this.props.idRestaurant);
   }
 
+  renderReview = (data) => {
+    console.log(data == null);
+
+    if (data == null) {
+      return <EmptyContent />;
+    }
+    return (
+      <FlatList
+        data={data}
+        renderItem={({ item }) => <Content data={item} />}
+        keyExtractor={(item, index) => index.toString()}
+      />
+    );
+  };
+
   render() {
     if (this.props.dataReview.isFetching === true) {
       return <Loading />;
     }
-    const data = this.props.dataReview.data;
-    console.log(data);
+    // const data = this.props.dataReview.data;
+    // console.log(data);
 
     return (
       <View style={styles.ViewMain}>
@@ -39,13 +53,7 @@ class HomeReviewRestaurant extends Component {
           rightHeader
         />
 
-        <View style={styles.ViewContent}>
-          <FlatList
-            data={data}
-            renderItem={({ item }) => <Content data={item} />}
-            keyExtractor={(item, index) => index.toString()}
-          />
-        </View>
+        <View style={styles.ViewContent}>{this.renderReview(this.props.dataReview.data)}</View>
       </View>
     );
   }

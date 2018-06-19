@@ -11,13 +11,6 @@ import CardView from './CardView';
 import { isIphoneX } from '../../utilities/device';
 import * as d from '../../utilities/Tranform';
 
-const PADDING = {
-  top: 80 * d.ratioH,
-  right: 80 * d.ratioW,
-  bottom: 80 * d.ratioH,
-  left: 80 * d.ratioW,
-};
-
 class MapScreen extends PureComponent {
   constructor(props) {
     super(props);
@@ -112,7 +105,11 @@ class MapScreen extends PureComponent {
   onGetRestaurantPhoto = ref =>
     `https://maps.googleapis.com/maps/api/place/photo?photoreference=${ref}&sensor=false&maxheight=200&maxwidth=200&key=AIzaSyCthR5BEn21xBOMCGo-qqui8a9jDRNLDOk`;
 
-  getItemLayout = (data, index) => ({ length: 220, offset: isIphoneX ? 219 * index : 210 * index, index });
+  getItemLayout = (data, index) => ({
+    length: 220,
+    offset: isIphoneX ? 219 * index : 210 * index,
+    index,
+  });
 
   scrollToIndex = (index) => {
     this._flatListMarker.scrollToIndex({ animated: true, index, viewOffset: 1 });
@@ -167,7 +164,9 @@ class MapScreen extends PureComponent {
         />
         <MapView
           region={this.state.region}
-          ref={ref => { this.map = ref }} // eslint-disable-line
+          ref={(ref) => {
+            this.map = ref;
+          }} // eslint-disable-line
           // onLayout={() => setTimeout(() => this.map.fitToCoordinates(this.markers, {
           //   edgePadding: PADDING,
           //   animated: true,
@@ -186,38 +185,43 @@ class MapScreen extends PureComponent {
             ? this.state.dataRestaurantAround.map((markers, index) => (
               <Marker
                 key={markers.id}
-                // eslint-disable-next-line
-                ref={marker => (this._marker[index] = { marker, id: markers.id })}
+                  // eslint-disable-next-line
+                  ref={marker => (this._marker[index] = { marker, id: markers.id })}
                 coordinate={{
-                  latitude: markers.geometry.location.lat,
-                  longitude: markers.geometry.location.lng,
-                }}
+                    latitude: markers.geometry.location.lat,
+                    longitude: markers.geometry.location.lng,
+                  }}
                 onPress={() => {
-                  this.setState({
-                    focusing: this._marker[index].id,
-                    destination: this._marker[index].marker.props.coordinate,
-                  });
-                  this.scrollToIndex(index);
-                }}
+                    this.setState({
+                      focusing: this._marker[index].id,
+                      destination: this._marker[index].marker.props.coordinate,
+                    });
+                    console.log(this._marker[index].marker.props.coordinate);
+                    this.scrollToIndex(index);
+                  }}
               >
                 <View style={styles.markerContainer}>
                   <Image
-                    source={this.state.focusing === markers.id
-                              ? Icons.greenMarker : Icons.grayMarker}
+                    source={
+                        this.state.focusing === markers.id ? Icons.greenMarker : Icons.grayMarker
+                      }
                   />
                   <Image
-                    source={markers.photos !== undefined
-                            ? { uri: this.onGetRestaurantPhoto(markers.photos[0].photo_reference) }
-                            : Images.defaultImage}
+                    source={
+                        markers.photos !== undefined
+                          ? { uri: this.onGetRestaurantPhoto(markers.photos[0].photo_reference) }
+                          : Images.defaultImage
+                      }
                     style={
-                      this.state.focusing === markers.id
-                        ? styles.focusingPhotoMarkerStyle
-                        : styles.defaultPhotoMarkerStyle
-                    }
+                        this.state.focusing === markers.id
+                          ? styles.focusingPhotoMarkerStyle
+                          : styles.defaultPhotoMarkerStyle
+                      }
                   />
                 </View>
               </Marker>
-          )) : null}
+              ))
+            : null}
         </MapView>
         <FlatList
           horizontal
@@ -228,10 +232,15 @@ class MapScreen extends PureComponent {
           getItemLayout={this.getItemLayout}
           renderItem={({ item, index }) => (
             <CardView
-              restaurantPhoto={item.photos !== undefined
-                                ? this.onGetRestaurantPhoto(item.photos[0].photo_reference)
-                                : null
-                              }
+              style={{
+                marginRight:
+                  index === this.state.dataRestaurantAround.length - 1 ? 130 * d.ratioW : 0,
+              }}
+              restaurantPhoto={
+                item.photos !== undefined
+                  ? this.onGetRestaurantPhoto(item.photos[0].photo_reference)
+                  : null
+              }
               navigation={this.props.navigation}
               regionLat={this.props.region.coords.latitude}
               regionLng={this.props.region.coords.longitude}

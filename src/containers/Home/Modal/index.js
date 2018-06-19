@@ -6,23 +6,28 @@ import {
   TouchableOpacity,
   TextInput,
   CameraRoll,
-  ScrollView,
   FlatList,
   Alert,
+  Modal,
+  ImageBackground,
 } from 'react-native';
 import firebase from 'react-native-firebase';
 import PropTypes from 'prop-types';
 import StarRating from 'react-native-star-rating';
 import { connect } from 'react-redux';
 import * as Progress from 'react-native-progress';
+import { RNCamera } from 'react-native-camera';
 import Icon from 'react-native-vector-icons/Ionicons';
 import styles from './styles';
-import { Icons, Colors, Images } from '../../../themes';
+import { Colors } from '../../../themes';
+import ModalViewImage from './ModalViewImage';
 import {
   fetchDataGetAdd,
   fetchPostNewFeed,
   getPositionSuccess,
   fetchDataGetAddSearch,
+  postNewFeedFail,
+  fetchDatagetNewFeed,
 } from '../../../actions';
 import ModalCustom from '../../../components/Modal';
 import Loading from '../../../components/LoadingContainer';
@@ -33,9 +38,10 @@ class ModalView extends PureComponent {
     this.state = {
       latitude: null,
       longitude: null,
-      progressing: null,
       postDone: false,
       error: null,
+      modalVisible: false,
+      pagePhotos: 10,
       listadd: true,
       photos: [],
       keyword: '',
@@ -56,8 +62,9 @@ class ModalView extends PureComponent {
           lat: 21.065863,
           lng: 105.78003,
         },
+        name: 'Name Restaurant',
         photo: '',
-        vicinity: '',
+        vicinity: 'Vicinity Restaurant',
       },
     };
   }
@@ -66,7 +73,12 @@ class ModalView extends PureComponent {
     this.onGetCurrentLocation();
     this._getPhoto();
   }
-
+  UNSAFE_componentWillReceiveProps(nextProps) {
+    if (nextProps.dataPost.dataSuccess === true) {
+      this.props.hideModal(false);
+      this.props.postNewFeedFail();
+    }
+  }
   onGetCurrentLocation = () => {
     this.setState({
       latitude: this.props.region.coords.latitude, // eslint-disable-line
@@ -82,15 +94,38 @@ class ModalView extends PureComponent {
       },
     });
   }
-  takePicture = async function (camera) {
-    const options = { quality: 0.5, base64: true };
-    const data = await camera.takePictureAsync(options);
-    //  eslint-disable-next-line
-    // console.log(data.uri);
-  };
+
+  setModalVisible(visible) {
+    console.log('visible', visible);
+    this.setState({
+      modalVisible: visible,
+    });
+  }
+  _onViewPhoto(item) {
+    this.setState({ photoView: item });
+    this.setModalVisible(true);
+  }
+  async takePicture() {
+    if (this.camera) {
+      const options = { quality: 0.5, base64: true };
+      const data = await this.camera.takePictureAsync(options);
+      this.setState({
+        photosselect: this.state.photosselect.concat(data.uri),
+      });
+      console.log(data.uri);
+    }
+    // this.camera
+    //   .capture()
+    //   .then(data =>
+    //     this.setState({
+    //       photosselect: this.state.photosselect.concat(data.mediaUri),
+    //     }))
+    //   .catch(err => console.error(err));
+  }
+
   _getPhoto = () => {
     CameraRoll.getPhotos({
-      first: 1000,
+      first: this.state.pagePhotos,
       assetType: 'Photos',
     })
       .then((r) => {
@@ -124,27 +159,42 @@ class ModalView extends PureComponent {
             },
           });
           if (this.state.post.content.photos.length === file.length) {
-            console.log(this.state.post.content.photos);
-            this.setState({ postDone: true });
-            const { post, restaurant } = this.state;
-            this.props.fetchPostNewFeed(post, restaurant);
-            console.log(this.props.dataPost.dataSuccess);
-            if (this.props.dataPost.dataSuccess === true) {
-              this.props.hideModal(false);
-            }
+            this._onPostDone();
           }
         })
         .catch(err => console.log(err));
     });
   };
+  _onPostDone() {
+    console.log(this.state.post.content.photos);
+    this.setState({ postDone: true });
+    const { post, restaurant } = this.state;
+    this.props.fetchPostNewFeed(post, restaurant);
+    this.props.fetchDatagetNewFeed(this.props.user.user.uid);
+  }
+  // _setHideModal = () => {
+  //   console.log(this.props.dataPost.dataSuccess);
 
+  //   if (this.props.dataPost.dataSuccess === true) {
+  //     this.props.hideModal(false);
+  //   }
+  // };
+  _onSearch() {
+    const { latitude, longitude, keyword } = this.state;
+    if (!this._validateSearch()) {
+      this.props.fetchDataGetAddSearch(latitude, longitude, keyword);
+      this.setState({ listadd: false });
+    } else {
+      Alert.alert('Please fill in blank.');
+    }
+  }
   _onAddImages(a) {
     // console.log(a);
     this.setState({
       photosselect: this.state.photosselect.concat(a),
     });
     if (this.state.photosselect.length >= 5) {
-      Alert.alert('thêm ít thôi');
+      Alert.alert('Too much Images.');
     }
     // console.log(this.state.test.photos);
   }
@@ -172,6 +222,12 @@ class ModalView extends PureComponent {
       },
     });
   }
+  _ItemLoadMore() {
+    this.setState({
+      pagePhotos: this.state.pagePhotos + 10,
+    });
+    this._getPhoto();
+  }
   _onPost() {
     if (!this._validateNameLocal()) {
       if (!this._validateInputDetail()) {
@@ -181,16 +237,16 @@ class ModalView extends PureComponent {
             // this.props.fetchPostNewFeed(post, restaurant);
             this._onUploadPhoto();
           } else {
-            Alert.alert('Mày chọn tối thiểu 3 ảnh hộ tao cái');
+            Alert.alert('Please Choose one Image.');
           }
         } else {
-          Alert.alert('Mày đánh giá hộ tao cái');
+          Alert.alert('Rating for Restaurant please.');
         }
       } else {
-        Alert.alert('Mày đánh điền Detail hộ tao cái ');
+        Alert.alert('Please fill in Detail.');
       }
     } else {
-      Alert.alert('Mày Checkin hộ tao cái ');
+      Alert.alert('Check in please.');
     }
   }
   _validateImages() {
@@ -220,7 +276,7 @@ class ModalView extends PureComponent {
     return false;
   }
   _validateNameLocal() {
-    if (this.state.restaurant.name === '') {
+    if (this.state.restaurant.name === 'Name Restaurant') {
       return true;
     }
     return false;
@@ -234,21 +290,40 @@ class ModalView extends PureComponent {
     this.setState({ listadd: true });
     this.modal.close();
   }
+  _onClearAdd() {
+    this.setState({
+      restaurant: {
+        ...this.state.restaurant,
+        name: '',
+        vicinity: '',
+      },
+    });
+  }
+  _onRemoveItemPhotoSelected(item) {
+    const array = [...this.state.photosselect];
+    const index = array.indexOf(item);
+    array.splice(index, 1);
+    this.setState({ photosselect: array });
+  }
   render() {
     return (
       <View style={styles.container}>
         <View style={styles.body}>
+          <Modal animationType="slide" transparent={false} visible={this.state.modalVisible}>
+            <ModalViewImage
+              onShowModalImage={() => this.setModalVisible(!this.state.modalVisible)}
+              photoView={this.state.photoView}
+            />
+          </Modal>
+
           <ModalCustom onRef={ref => (this.modal = ref)}>
             <View style={{ flex: 1, width: null, backgroundColor: '#fff' }}>
               <View style={styles.viewHeadModal}>
-                <Text style={styles.textHeadModal}>List Add</Text>
+                <Text style={styles.textHeadModal}>Places Near You </Text>
               </View>
               <View style={styles.bodyModal}>
-                <View>
+                <View style={styles.bodyModal}>
                   <View style={styles.ViewHeadFlatList}>
-                    <View style={styles.viewTextHead}>
-                      <Text style={styles.textHeadNear}> Near Add You </Text>
-                    </View>
                     <View style={styles.viewFromSearch}>
                       <View style={styles.viewTextInputSearch}>
                         <TextInput
@@ -347,11 +422,11 @@ class ModalView extends PureComponent {
                   this.props.hideModal(false);
                 }}
               >
-                <Image source={Icons.close} style={styles.imgClose} />
+                <Text style={styles.textCancelPost}>Cancel</Text>
               </TouchableOpacity>
             </View>
             <View>
-              <Text style={styles.textCreatePost}>Create post</Text>
+              <Text style={styles.textCreatePost}>Create Post</Text>
             </View>
             <View>
               <TouchableOpacity onPress={() => this._onPost()}>
@@ -364,26 +439,47 @@ class ModalView extends PureComponent {
               <View style={styles.viewform}>
                 <View style={styles.viewInfoDetail}>
                   <View style={styles.viewFormImageUser}>
-                    <Image source={Images.restaurantPhoto} style={styles.ImageAvatar} />
+                    {this.props.user.user.photoURL ? (
+                      <Image
+                        source={{ uri: this.props.user.user.photoURL }}
+                        style={styles.ImageAvatar}
+                      />
+                    ) : (
+                      <Icon name="md-contact" size={55} color={Colors.textOpacity} />
+                    )}
                   </View>
                   <View>
-                    <TouchableOpacity style={styles.viewFormAddSelected}>
-                      <Icon name="ios-home" color={Colors.text} size={16} />
-                      <Text numberOfLines={1} style={styles.textSelectedShow}>
-                        {this.state.restaurant.name}
-                      </Text>
-                    </TouchableOpacity>
+                    <View style={styles.viewFormUserName}>
+                      <Text style={styles.textUserName}>{this.props.user.user.fullName}</Text>
+                    </View>
+                    <View style={styles.viewNameAndRes}>
+                      <View>
+                        <TouchableOpacity
+                          style={styles.viewFormAddSelected}
+                          onPress={() => this._onClearAdd()}
+                        >
+                          <Icon name="ios-home" color={Colors.text} size={16} />
+                          <Text numberOfLines={1} style={styles.textSelectedShow}>
+                            {this.state.restaurant.name}
+                          </Text>
+                        </TouchableOpacity>
+                      </View>
+                      <View>
+                        <TouchableOpacity
+                          style={styles.viewFormAddSelected}
+                          onPress={() => this._onClearAdd()}
+                        >
+                          <Icon name="md-locate" color={Colors.text} size={16} />
+                          <Text numberOfLines={1} style={styles.textSelectedShow}>
+                            {this.state.restaurant.vicinity}
+                          </Text>
+                        </TouchableOpacity>
+                      </View>
+                    </View>
                   </View>
-                  <View>
-                    <TouchableOpacity style={styles.viewFormAddSelected}>
-                      <Icon name="md-locate" color={Colors.text} size={16} />
-                      <Text numberOfLines={1} style={styles.textSelectedShow}>
-                        {this.state.restaurant.vicinity}
-                      </Text>
-                    </TouchableOpacity>
-                  </View>
+
                   <View style={{ paddingLeft: 10 }}>
-                        {/* {this.state.postDone ? <Loading /> : null} */}
+                    {/* {this.state.postDone ? <Loading /> : null} */}
                   </View>
                 </View>
                 <View style={styles.viewFormInput}>
@@ -408,38 +504,73 @@ class ModalView extends PureComponent {
                   </View>
                 </View>
                 <View style={styles.viewImageSelected}>
-                  <ScrollView horizontal>
-                    <View style={styles.viewImageSelectedItem}>
-                      {this.state.photosselect.map((p, i) => (
-                        <TouchableOpacity key={i}>
-                          <Image
-                            key={i}
-                            style={styles.imagePhotoSelectedItem}
-                            source={{ uri: p }}
-                          />
-                        </TouchableOpacity>
-                      ))}
-                    </View>
-                  </ScrollView>
+                  <FlatList
+                    numColumns={1}
+                    data={this.state.photosselect}
+                    renderItem={({ item }) => (
+                      <TouchableOpacity
+                        onPress={() => {
+                          this._onViewPhoto(item);
+                        }}
+                      >
+                        <ImageBackground style={styles.imagePhotoItem} source={{ uri: item }}>
+                          <TouchableOpacity
+                            onPress={() => {
+                              this._onRemoveItemPhotoSelected(item);
+                            }}
+                            style={{ width: 25, height: 25 }}
+                          >
+                            <Icon name="ios-trash" color="red" size={25} style={{ padding: 5 }} />
+                          </TouchableOpacity>
+                        </ImageBackground>
+                      </TouchableOpacity>
+                    )}
+                    horizontal
+                    keyExtractor={(item, index) => index.toString()}
+                    onEndReachedThreshold={0.5}
+                  />
                 </View>
+
                 <View style={styles.viewImage}>
                   <View style={styles.viewPhotoMobile}>
-                    <ScrollView>
-                      <View style={styles.viewMenuItem}>
-                        {this.state.photos.map((p, i) => (
-                          <TouchableOpacity
-                            key={i}
-                            onPress={() => this._onAddImages(p.node.image.uri)}
-                          >
-                            <Image
-                              key={i}
-                              style={styles.imagePhotoItem}
-                              source={{ uri: p.node.image.uri }}
-                            />
-                          </TouchableOpacity>
-                        ))}
+                    <FlatList
+                      numColumns={2}
+                      data={this.state.photos}
+                      renderItem={({ item }) => (
+                        <TouchableOpacity onPress={() => this._onAddImages(item.node.image.uri)}>
+                          <Image
+                            style={styles.imagePhotoItem}
+                            source={{ uri: item.node.image.uri }}
+                          />
+                        </TouchableOpacity>
+                      )}
+                      keyExtractor={(item, index) => index}
+                      onEndReachedThreshold={0.5}
+                      onEndReached={() => {
+                        this._ItemLoadMore();
+                      }}
+                    />
+                  </View>
+                  <View style={styles.viewPhotoMobile}>
+                    <RNCamera
+                      style={styles.preview}
+                      ref={(cam) => {
+                        this.camera = cam;
+                      }}
+                      //   aspect={RNCamera.Constants.}
+                    >
+                      <View style={styles.camera}>
+                        <TouchableOpacity style={styles.capture}>
+                          <Icon name="ios-reverse-camera-outline" color="white" size={33} />
+                        </TouchableOpacity>
+                        <TouchableOpacity onPress={() => this.takePicture()} style={styles.capture}>
+                          <Icon name="ios-camera" color="white" size={50} />
+                        </TouchableOpacity>
+                        <TouchableOpacity style={styles.capture}>
+                          <Icon name="ios-flash" color="white" size={33} />
+                        </TouchableOpacity>
                       </View>
-                    </ScrollView>
+                    </RNCamera>
                   </View>
                 </View>
               </View>
@@ -447,13 +578,13 @@ class ModalView extends PureComponent {
           </View>
           <View style={styles.viewCustom}>
             <View>
-              <Text style={styles.textAddPost}>Add post</Text>
+              <Text style={styles.textAddPost}>Add to your post</Text>
             </View>
             <View style={styles.viewCustomItem}>
               <View style={styles.viewStarRating}>
                 <StarRating
                   disabled={false}
-                  emptyStarColor={Colors.white}
+                  emptyStarColor={Colors.default}
                   emptyStar="ios-star-outline"
                   fullStar="ios-star"
                   halfStar="ios-star-half"
@@ -461,7 +592,8 @@ class ModalView extends PureComponent {
                   maxStars={5}
                   rating={this.state.post.rating}
                   selectedStar={rating => this.onStarRatingPress(rating)}
-                  fullStarColor={Colors.white}
+                  fullStarColor={Colors.default}
+                  starSize={30}
                 />
               </View>
               <View>
@@ -469,14 +601,10 @@ class ModalView extends PureComponent {
                   style={styles.butonCustomItem}
                   onPress={() => this._onShowModal(2)}
                 >
-                  <Icon name="ios-navigate" color="white" size={33} />
+                  <Icon name="ios-navigate" color={Colors.default} size={30} />
                 </TouchableOpacity>
               </View>
-              <View>
-                <TouchableOpacity style={styles.butonCustomItem}>
-                  <Icon name="ios-list" color="white" size={33} />
-                </TouchableOpacity>
-              </View>
+              <View />
             </View>
           </View>
         </View>
@@ -489,10 +617,12 @@ ModalView.propTypes = {
   fetchDataGetAdd: PropTypes.func.isRequired,
   fetchPostNewFeed: PropTypes.func.isRequired,
   fetchDataGetAddSearch: PropTypes.func.isRequired,
+  fetchDatagetNewFeed: PropTypes.func.isRequired,
   dataAdd: PropTypes.object.isRequired,
   dataPost: PropTypes.object.isRequired,
   dataSearchAdd: PropTypes.object.isRequired,
   dataSuccess: PropTypes.bool, // eslint-disable-line
+  postNewFeedFail: PropTypes.func, // eslint-disable-line
   // progress: PropTypes.string.isRequired,  // eslint-disable-line
 };
 const mapStateToProps = state => ({
@@ -509,5 +639,7 @@ export default connect(
     fetchPostNewFeed,
     getPositionSuccess,
     fetchDataGetAddSearch,
+    postNewFeedFail,
+    fetchDatagetNewFeed,
   },
 )(ModalView);
